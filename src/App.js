@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import HeaderMenu from "./components/HeaderMenu";
 
-function App() {
+// login and authenticated route
+import Welcome from "./components/Welcome";
+import AuthRoute from "./components/AuthRoute";
+
+// Main pages. Use below in items to include in header menu
+import DataSquare from "./components/DataSquare";
+import Footprints from "./components/Footprints";
+
+// Change to add new components to the header
+// The first item will be the opening page after login
+const items = [
+  { label: "Data square", path: "/datasquare", Component: DataSquare },
+  { label: "Footprints", path: "/footprints", Component: Footprints },
+];
+
+const App = () => {
+  const createNavigation = (items) => {
+    return items.map((item) => {
+      return <AuthRoute key={item.path} path={item.path} Component={item.Component} />;
+    });
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <HeaderMenu items={items}>
+        <Switch>
+          <Route exact path={"/"} render={() => <Welcome items={items} />} />
+          {createNavigation(items)}
+        </Switch>
+      </HeaderMenu>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
