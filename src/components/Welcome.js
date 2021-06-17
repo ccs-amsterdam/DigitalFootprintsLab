@@ -42,7 +42,7 @@ const Welcome = ({ items }) => {
             We do, however, kindly ask you to anonymously donate some parts of this data for
             scientific research. Specifically, we are interested in how you seek, consume and share
             news articles. The data will be used for non-commercial research by a select group of
-            academics.
+            researchers at Dutch Universities.
           </p>
           <Button primary onClick={() => beWelcomed(false)}>
             Great, let's get started!
