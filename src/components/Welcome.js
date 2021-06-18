@@ -27,7 +27,11 @@ const Welcome = ({ items }) => {
     <Grid
       inverted
       textAlign="center"
-      style={{ height: "100vh", backgroundImage: `url(${background})` }}
+      style={{
+        height: "100vh",
+        backgroundImage: `url(${background})`,
+        backgroundSize: "100% 100%",
+      }}
       verticalAlign="middle"
     >
       <Grid.Column style={{ maxWidth: 600 }}>

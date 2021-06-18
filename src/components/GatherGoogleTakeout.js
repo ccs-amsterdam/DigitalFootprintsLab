@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 
 import { Button, Container, Grid, Header, List, Modal, Segment } from "semantic-ui-react";
-import { GatherCard } from "./CardTemplate";
 import gt1 from "../images/googleTakeout1.gif";
 import gt2 from "../images/googleTakeout2.gif";
 import db from "../apis/dexie";
@@ -10,22 +9,17 @@ import JSZip from "jszip";
 import { useDispatch } from "react-redux";
 import { updatePlatformStatus } from "../actions";
 
-const NAME = "Google Takeout";
-
-const GatherGoogleTakeout = ({ children }) => {
+const GatherGoogleTakeout = ({ children, setLoading }) => {
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState("idle"); // idle, loading, failed, finished
 
   return (
     <Modal
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
       open={open}
-      trigger={
-        <GatherCard name={NAME} subname={"takeout.google.com"} icon={"google"} loading={loading} />
-      }
+      trigger={children}
     >
-      <Modal.Header>{NAME}</Modal.Header>
+      <Modal.Header>Google Takeout</Modal.Header>
       <Modal.Content>
         <Modal.Description>
           <p>
@@ -117,7 +111,6 @@ const UploadGoogleTakeout = ({ setOpen, setLoading }) => {
       let fileblob = e.target.files[0];
 
       const zipped = await newZip.loadAsync(fileblob);
-      console.log(zipped);
 
       let history = await zipped.file("Takeout/Chrome/BrowserHistory.json").async("text");
       history = JSON.parse(history);
@@ -153,13 +146,14 @@ const writeHistory = async (history) => {
     url.date = convertTimestamp(url.time_usec);
     return url;
   });
+  console.log(urls);
   await db.addBrowsingHistory(urls, "Chrome");
   await db.updatePlatform("Chrome", "finished");
 };
 
 const convertTimestamp = (time) => {
-  const dateInSeconds = Math.round(time / 1000000) - 11644473600;
-  return new Date(dateInSeconds * 1000);
+  // seems to be in microseconds since epoch
+  return new Date(Math.round(time / 1000));
 };
 
 export default GatherGoogleTakeout;

@@ -2,8 +2,8 @@ import React from "react";
 import { Card, Grid, Header, Icon } from "semantic-ui-react";
 import logo from "../images/logo.png";
 
-import GatherGoogleTakeout from "./GatherGoogleTakeout";
-import PlatformChrome from "./PlatformChrome";
+import GatherCards from "./GatherCards";
+import PlatformCards from "./PlatformCards";
 
 const headerStyle = {
   color: "white",
@@ -33,7 +33,7 @@ const DataSquare = () => {
           </Header>
 
           <Card.Group style={cardGroupStyle}>
-            <GatherGoogleTakeout />
+            <GatherCards />
           </Card.Group>
         </Grid.Column>
         <Grid.Column textAlign="center" width={5} style={columnStyle}>
@@ -43,7 +43,7 @@ const DataSquare = () => {
           </Header>
 
           <Card.Group style={cardGroupStyle}>
-            <PlatformChrome />
+            <PlatformCards />
           </Card.Group>
         </Grid.Column>
         <Grid.Column textAlign="center" width={5} style={columnStyle}>

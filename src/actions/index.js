@@ -1,16 +1,3 @@
-export const resetDB = () => {
-  return {
-    type: "RESET_DB",
-  };
-};
-
-export const setBrowserHistoryData = (data) => {
-  return {
-    type: "SET_BROWSER_HISTORY_DATA",
-    data,
-  };
-};
-
 export const setPlatformStatus = (platformStatus) => {
   return {
     type: "SET_PLATFORM_STATUS",
@@ -19,9 +6,15 @@ export const setPlatformStatus = (platformStatus) => {
 };
 
 export const updatePlatformStatus = (name, status) => {
-  return {
-    type: "UPDATE_PLATFORM_STATUS",
-    name,
-    status,
+  return (dispatch, getState) => {
+    const { platformStatus } = getState();
+    const newPlatformStatus = [...platformStatus];
+    const i = newPlatformStatus.findIndex((platform) => platform.name === name);
+    if (i < 0) {
+      newPlatformStatus.push({ name, date: null, status: status });
+    } else {
+      newPlatformStatus[i] = { ...newPlatformStatus[i], status: status };
+    }
+    dispatch(setPlatformStatus(newPlatformStatus));
   };
 };

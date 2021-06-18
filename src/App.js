@@ -9,13 +9,12 @@ import AuthRoute from "./components/AuthRoute";
 // Main pages. Use below in items to include in header menu
 import DataSquare from "./components/DataSquare";
 import BrowsingHistory from "./components/BrowsingHistory";
-import DexieRedux from "./components/DexieRedux";
 
 // Change to add new components to the header
 // The first item will be the opening page after login
 const items = [
   { label: "Data square", path: "/datasquare", Component: DataSquare },
-  { label: "Footprints", path: "/footprints", Component: BrowsingHistory },
+  { label: "BrowsingHistory", path: "/browsinghistory", Component: BrowsingHistory },
 ];
 
 const App = () => {
@@ -35,7 +34,6 @@ const App = () => {
           </Switch>
         </HeaderMenu>
       </BrowserRouter>
-      <DexieRedux />
     </div>
   );
 };

@@ -1,52 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { Card, Dimmer, Icon, Loader } from "semantic-ui-react";
-
-export const GatherCard = ({ name, subname, icon, onClick, loading }) => {
-  const statusMessage = (loading) => {
-    if (loading === "failed")
-      return (
-        <>
-          <Icon name="close" color="red" />
-          <i>Something went wrong :(</i>
-        </>
-      );
-    if (loading === "finished")
-      return (
-        <>
-          <Icon name="checkmark" color="green" />
-          <i>Data succesfully imported</i>
-        </>
-      );
-    return <i>Click here to gather data</i>;
-  };
-
-  return (
-    <CardTemplate name={name} subname={subname} icon={icon} onClick={onClick} loading={loading}>
-      {statusMessage(loading)}
-    </CardTemplate>
-  );
-};
-
-export const PlatformCard = ({ name, subname, icon, onClick }) => {
-  const platformStatus = useSelector((state) =>
-    state.platformStatus.find((platform) => platform.name === name)
-  );
-  if (!platformStatus) return null;
-  if (platformStatus.status === "failed" && !platformStatus.date) return null;
-
-  return (
-    <CardTemplate
-      name={name}
-      subname={subname}
-      icon={icon}
-      onClick={onClick}
-      loading={platformStatus.status}
-    >
-      <i>{lastUpdated(platformStatus.date)}</i>
-    </CardTemplate>
-  );
-};
 
 const CardTemplate = ({ children, name, subname, icon, onClick, loading }) => {
   return (
@@ -75,15 +28,4 @@ const CardTemplate = ({ children, name, subname, icon, onClick, loading }) => {
   );
 };
 
-const lastUpdated = (date) => {
-  if (!date) return "Data not yet gathered";
-  const oldTime = date.toISOString();
-  const currentTime = new Date().toISOString();
-
-  // if different day, show day
-  if (oldTime.slice(0, 10) !== currentTime.slice(0, 10))
-    return `Data gathered on ${oldTime.slice(0, 10)}`;
-
-  // otherwise show time
-  return "Data gathered today";
-};
+export default CardTemplate;
