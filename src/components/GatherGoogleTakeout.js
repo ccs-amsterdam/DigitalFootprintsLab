@@ -112,10 +112,10 @@ const UploadGoogleTakeout = ({ setOpen, setLoading }) => {
 
       const zipped = await newZip.loadAsync(fileblob);
 
-      let history = await zipped.file("Takeout/Chrome/BrowserHistory.json").async("text");
-      history = JSON.parse(history);
+      let chrome = await zipped.file("Takeout/Chrome/BrowserHistory.json").async("text");
+      chrome = JSON.parse(chrome);
 
-      writeHistory(history["Browser History"]);
+      writeChromeHistory(chrome["Browser History"]);
       setLoading("finished");
     } catch (e) {
       dispatch(updatePlatformStatus("Chrome", "failed"));
@@ -141,13 +141,16 @@ const UploadGoogleTakeout = ({ setOpen, setLoading }) => {
   );
 };
 
-const writeHistory = async (history) => {
-  let urls = history.map((url) => {
-    url.date = convertTimestamp(url.time_usec);
-    return url;
+const writeChromeHistory = async (history) => {
+  let d = history.map((item) => {
+    return {
+      url: item.url,
+      title: item.title,
+      date: convertTimestamp(item.time_usec),
+      page_transition: item.page_transition,
+    };
   });
-  console.log(urls);
-  await db.addBrowsingHistory(urls, "Chrome");
+  await db.addBrowsingHistory(d, "Chrome");
   await db.updatePlatform("Chrome", "finished");
 };
 

@@ -9,12 +9,14 @@ import AuthRoute from "./components/AuthRoute";
 // Main pages. Use below in items to include in header menu
 import DataSquare from "./components/DataSquare";
 import BrowsingHistory from "./components/BrowsingHistory";
+import Survey from "./components/Survey";
 
 // Change to add new components to the header
 // The first item will be the opening page after login
 const items = [
   { label: "Data square", path: "/datasquare", Component: DataSquare },
   { label: "BrowsingHistory", path: "/browsinghistory", Component: BrowsingHistory },
+  { label: "Survey", path: "/survey", Component: Survey },
 ];
 
 const App = () => {

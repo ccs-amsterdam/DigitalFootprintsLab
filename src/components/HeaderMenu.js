@@ -27,7 +27,7 @@ const HeaderMenu = ({ items, children }) => {
 
   return (
     <Sidebar.Pushable>
-      <Sidebar as={Menu} inverted animation="push" visible={false} direction={"top"} size="mini">
+      <Sidebar as={Menu} inverted animation="push" visible={true} direction={"top"} size="mini">
         {menuItems}
       </Sidebar>
       <Sidebar.Pusher>{children}</Sidebar.Pusher>

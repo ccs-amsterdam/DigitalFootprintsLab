@@ -7,14 +7,12 @@ class AnnotationDB {
 
     // the following 2 lines are only for developing
     // they reset the db every time the app is started (also when refreshing)
-    // this.idb.delete();
-    // this.idb = new Dexie("DataDonationsLab");
+    //this.idb.delete();
+    //this.idb = new Dexie("DataDonationsLab");
 
     this.idb.version(2).stores({
       meta: "welcome", // this just serves to keep track of whether db was 'created' via the welcome component
-      data: "++id",
-      browsing_history: "++id, domain, date, platform",
-
+      browsing_history: "id++, domain, date, platform",
       platforms: "name",
     });
   }
@@ -37,8 +35,38 @@ class AnnotationDB {
     if (limit !== null) rows = rows.offset(offset).limit(limit);
     return rows.toArray();
   }
+
+  async getTableFromIds(table, ids) {
+    if (ids.length === 0) return [];
+    return await this.idb.table(table).where("id").anyOf(ids).toArray();
+  }
+
   async getTableN(table) {
-    return this.idb.table(table).count();
+    let rows = await this.idb.table(table);
+    return rows.count();
+  }
+
+  async deleteTableIds(table, ids) {
+    if (ids.length === 0) return [];
+    await this.idb.table(table).where("id").anyOf(ids).delete();
+  }
+
+  // SEARCH TABLE DATA
+  async getSelection(table, fields, query) {
+    let regex = new RegExp(query.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"));
+
+    let rows = await this.idb.table(table);
+
+    let selection = [];
+    await rows.toCollection().each((row) => {
+      for (let field of fields) {
+        if (regex.test(row[field])) {
+          selection.push(row.id);
+          return;
+        }
+      }
+    });
+    return selection;
   }
 
   // PLATFORMS
@@ -67,6 +95,7 @@ class AnnotationDB {
       let domain = new URL(url.url);
       url.domain = domain.hostname;
       url.platform = platform;
+      url.filter = 0;
       return url;
     });
 

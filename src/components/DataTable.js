@@ -1,35 +1,39 @@
 import React, { useEffect, useState } from "react";
-import { Container, Pagination, Table, Icon } from "semantic-ui-react";
+import { Container, Pagination, Table, Icon, Input, Dimmer, Loader } from "semantic-ui-react";
 import db from "../apis/dexie";
 
 const PAGESIZE = 10;
 
-const DocumentTable = ({ table, columns, widths }) => {
+const DocumentTable = ({ table, columns, selection, allColumns }) => {
+  // table from db
+  // columns is array of objects with name (of field) and width
+  // allColumns is bool for whether or not to include the rest of the columns
   const [data, setData] = useState([]);
   const [pages, setPages] = useState(1);
+  const [useColumns, setUseColumns] = useState(columns);
 
   useEffect(() => {
     if (!table) {
       setData([]);
       return null;
     }
-    fetchFromDb(table, PAGESIZE, setPages, setData);
-  }, [table]);
+    fetchFromDb(table, PAGESIZE, setPages, setData, columns, allColumns, setUseColumns, selection);
+  }, [table, columns, allColumns, selection]);
 
-  const createHeaderRow = (data) => {
-    return columns.map((colname, i) => {
+  const createHeaderRow = () => {
+    return useColumns.map((column, i) => {
       return (
-        <Table.HeaderCell key={i} width={widths[i]}>
-          <span title={colname}>{colname}</span>
+        <Table.HeaderCell key={i} width={column.width}>
+          <span title={column.name}>{column.name}</span>
         </Table.HeaderCell>
       );
     });
   };
 
   const createBodyRows = (data) => {
-    console.log(data.length);
+    if (data === null || data.length === 0) return null;
+
     while (data.length < PAGESIZE) data.push(null);
-    console.log(data);
     return data.map((rowObj, i) => {
       return (
         <Table.Row key={i} style={{ height: "3.1em" }}>
@@ -40,9 +44,9 @@ const DocumentTable = ({ table, columns, widths }) => {
   };
 
   const createRowCells = (rowObj) => {
-    return columns.map((key, i) => {
-      let content = rowObj ? rowObj[key] : null;
-      if (content instanceof Date) content = content.toString();
+    return useColumns.map((column, i) => {
+      let content = rowObj ? rowObj[column.name] : null;
+      if (content instanceof Date) content = content.toISOString().slice(0, 19).replace(/T/g, " ");
       return (
         <Table.Cell key={i}>
           <span title={content}>{content}</span>
@@ -53,14 +57,17 @@ const DocumentTable = ({ table, columns, widths }) => {
 
   const pageChange = async (event, data) => {
     const offset = (data.activePage - 1) * PAGESIZE;
-    const newdata = await db.getTableBatch(table, offset, PAGESIZE);
+    let newdata = null;
+    if (selection === null) {
+      newdata = await db.getTableBatch(table, offset, PAGESIZE);
+    } else {
+      newdata = await db.getTableFromIds(table, selection.slice(offset, offset + PAGESIZE));
+    }
     setData(newdata);
   };
 
-  if (data.length < 1) return null;
-
   return (
-    <Container style={{ marginTop: "2em" }}>
+    <Container style={{ width: "100vw", overflow: "auto", marginTop: "1em", padding: "1%" }}>
       <Table
         unstackable
         selectable
@@ -104,7 +111,6 @@ const DocumentTable = ({ table, columns, widths }) => {
                   secondary
                   defaultActivePage={1}
                   totalPages={pages}
-                  onClick={() => console.log("wtf")}
                   onPageChange={pageChange}
                 ></Pagination>
               ) : null}
@@ -116,13 +122,50 @@ const DocumentTable = ({ table, columns, widths }) => {
   );
 };
 
-const fetchFromDb = async (table, pageSize, setPages, setData) => {
-  const n = await db.getTableN(table);
+const fetchFromDb = async (
+  table,
+  pageSize,
+  setPages,
+  setData,
+  columns,
+  allColumns,
+  setUseColumns,
+  selection
+) => {
+  let n = null;
+  if (selection === null) {
+    n = await db.getTableN(table);
+  } else {
+    n = selection.length;
+  }
   setPages(Math.ceil(n / pageSize));
   let newdata = [];
-  if (n > 0) newdata = await db.getTableBatch(table, 0, pageSize);
+  const useColumns = [...columns];
 
+  if (n > 0) {
+    if (selection === null) {
+      newdata = await db.getTableBatch(table, 0, pageSize);
+    } else {
+      newdata = await db.getTableFromIds(table, selection.slice(0, PAGESIZE));
+    }
+    if (allColumns) addBatchColumns(useColumns, newdata); // pushes to useColumns
+  }
+
+  setUseColumns(useColumns);
   setData(newdata);
+};
+
+const addBatchColumns = (columns, data) => {
+  const colnames = columns.map((col) => col.name);
+
+  for (let row of data) {
+    for (let cname of Object.keys(row)) {
+      if (!colnames.includes(cname)) {
+        colnames.push(cname);
+        columns.push({ name: cname, width: 2 });
+      }
+    }
+  }
 };
 
 export default DocumentTable;

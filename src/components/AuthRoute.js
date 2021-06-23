@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Route, Redirect } from "react-router";
 import db from "../apis/dexie";
 
-const AuthRoute = ({ Component, homepage, ...componentProps }) => {
+const AuthRoute = ({ Component, ...componentProps }) => {
   const [loading, setLoading] = useState(true);
   const [hasdb, setHasdb] = useState(false);
   // the trick for passing on componentProps is basically
@@ -28,7 +28,7 @@ const AuthRoute = ({ Component, homepage, ...componentProps }) => {
         ) : hasdb ? (
           <Component {...componentProps} {...props} />
         ) : (
-          <Redirect to={homepage} />
+          <Redirect to={"/"} />
         )
       }
     />

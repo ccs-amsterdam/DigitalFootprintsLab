@@ -8,7 +8,7 @@ import CardTemplate from "./CardTemplate";
 
 // the idea is to add all possible platforms here.
 // each platform is a (very simple) component
-// Platforms returns all of them
+// PlatformCards returns all of them
 
 const PlatformCards = () => {
   const dispatch = useDispatch();
@@ -20,15 +20,31 @@ const PlatformCards = () => {
     dispatch(setPlatformStatus(platformStatus));
   });
 
-  return <Chrome />;
+  return (
+    <>
+      <Chrome />;
+      <Youtube />
+    </>
+  );
 };
 
 const Chrome = () => {
   return (
     <PlatformCard
-      name={"Chrome"}
+      name={"Chrome"} // name needs to match the name in the idb.platforms table
       subname={"Browsing history"}
       icon={"chrome"}
+      type={"browsinghistory"}
+    />
+  );
+};
+
+const Youtube = () => {
+  return (
+    <PlatformCard
+      name={"Youtube"}
+      subname={"Viewing history"}
+      icon={"youtube"}
       type={"browsinghistory"}
     />
   );
