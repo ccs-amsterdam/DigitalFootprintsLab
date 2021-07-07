@@ -4,50 +4,94 @@ import ColoredBackgroundGrid from "./ColoredBackgroundGrid";
 import background from "../images/background.jpeg";
 import DataTable from "./DataTable";
 import db from "../apis/dexie";
-import { Dimmer, Grid, Loader, Segment } from "semantic-ui-react";
-import SearchInput from "./SearchInput";
+import { Dimmer, Dropdown, Form, Grid, Loader, Segment } from "semantic-ui-react";
+import QueryTable from "./QueryTable";
+import { useLiveQuery } from "dexie-react-hooks";
+import intersect from "../util/intersect";
+
+const gridStyle = { paddingTop: "2em" };
+const gridRowStyle = { paddingLeft: "1em", paddingRight: "1em" };
 
 const SEARCHON = ["url", "title"];
 
+const COLUMNS = [
+  { name: "domain", width: 2 },
+  { name: "url", width: 3 },
+  { name: "date", width: 2 },
+  { name: "title", width: 6 },
+];
+
 const BrowsingHistory = () => {
   const [data, setData] = useState({});
-  const [selection, setSelection] = useState(null);
+  const [querySelection, setQuerySelection] = useState(null);
+  const [domainSelection, setDomainSelection] = useState([]);
 
   useEffect(() => {
-    prepareData(db, selection, setData);
-  }, [selection, setData]);
+    prepareData(db, querySelection, setData);
+  }, [querySelection, setData]);
 
   return (
     <ColoredBackgroundGrid background={background} color={"#000000b0"}>
-      <Grid.Column>
-        <Grid.Row>
-          <Grid.Column>
-            <SearchInput
+      <Grid divided={"vertically"} style={gridStyle}>
+        <Grid.Row style={gridRowStyle}>
+          <Grid.Column width={4}>
+            <QueryTable
               table={"browsing_history"}
               searchOn={SEARCHON}
-              selection={selection}
-              setSelection={setSelection}
+              setSelection={setQuerySelection}
             />
           </Grid.Column>
-          <Grid.Column>
+          <Grid.Column width={12}>
             <DataTable
               table={"browsing_history"}
-              columns={[
-                { name: "domain", width: 2 },
-                { name: "url", width: 3 },
-                { name: "date", width: 2 },
-                { name: "title", width: 6 },
-              ]}
-              selection={selection}
+              columns={COLUMNS}
+              selection={querySelection}
               allColumns={false}
             />
           </Grid.Column>
         </Grid.Row>
-        <Grid.Row>
-          <DomainCloud data={data} nWords={50} />
+        <Grid.Row style={gridRowStyle}>
+          <Grid.Column width={4}>
+            <LookupTable
+              table={"browsing_history"}
+              searchOn={"domain"}
+              setSelection={setDomainSelection}
+            />
+          </Grid.Column>
+          <Grid.Column width={12}>
+            <DomainCloud data={data} nWords={50} />
+          </Grid.Column>
         </Grid.Row>
-      </Grid.Column>
+      </Grid>
     </ColoredBackgroundGrid>
+  );
+};
+
+const LookupTable = ({ table, searchOn, setSelection }) => {
+  const [selected, setSelected] = useState([]);
+  const data = useLiveQuery(() => {
+    return db.idb.table(table).orderBy(searchOn).uniqueKeys();
+  });
+  if (!data) return null;
+
+  return (
+    <Dropdown
+      search
+      clearable
+      selection
+      multiple={true}
+      options={data.map((d) => ({
+        key: d,
+        text: d,
+        value: d,
+      }))}
+      value={selected}
+      onChange={(e, d) => {
+        setSelected(d.value);
+        setSelection(d.value);
+      }}
+      style={{ minWidth: "25em", fontSize: "10px" }}
+    />
   );
 };
 
@@ -87,8 +131,12 @@ const prepareData = async (db, selection, setData) => {
   let hourTotal = new Array(24).fill(0);
 
   let table = await db.idb.browsing_history;
+
+  let uniqueDomains = await table.orderBy("domain").uniqueKeys();
+
   let collection =
     selection === null ? await table.toCollection() : await table.where("id").anyOf(selection);
+
   await collection.each((url) => {
     if (url.domain !== "") {
       domainTotalObj[url.domain] = (domainTotalObj[url.domain] || 0) + 1;
@@ -100,7 +148,7 @@ const prepareData = async (db, selection, setData) => {
     return { text: domain, value: domainTotalObj[domain] };
   });
   domainTotal.sort((a, b) => b.value - a.value); // sort from high to low value
-  setData({ domainTotal });
+  setData({ domainTotal, uniqueDomains });
 };
 
 export default BrowsingHistory;

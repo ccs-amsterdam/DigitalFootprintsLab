@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Input, Segment } from "semantic-ui-react";
 import db from "../apis/dexie";
 
-const SearchInput = ({ table, searchOn, selection, setSelection }) => {
+const QueryTable = ({ table, searchOn, setSelection }) => {
+  // table: what table in db
+  // searchOn: what columns to search in
+  // setSelection: parent hook
+
   const [search, setSearch] = useState("");
   const [selectionStatus, setSelectionStatus] = useState("none");
 
@@ -30,17 +34,18 @@ const searchSelection = async (table, searchOn, search, setSelection, setSelecti
     return;
   }
   setSelectionStatus("searching");
+
   const selection = await db.getSelection(table, searchOn, search);
   setSelection(selection);
   setSelectionStatus("finished");
 };
 
-export default React.memo(SearchInput);
+export default React.memo(QueryTable);
 
 // just keeping this here so I wont forget how insanely usefull this is.
 // A second argument to React.memo lets you view the prev and next props
 // to see which bastard rerenders the living hell out of a component
-// export default React.memo(SearchInput, (prevprops, nextprops) => {
+// export default React.memo(QueryTable, (prevprops, nextprops) => {
 //   console.log(prevprops);
 //   console.log(nextprops);
 //   console.log(prevprops.selection === nextprops.selection);

@@ -67,7 +67,7 @@ const DocumentTable = ({ table, columns, selection, allColumns }) => {
   };
 
   return (
-    <Container style={{ width: "100vw", overflow: "auto", marginTop: "1em", padding: "1%" }}>
+    <Container style={{ overflow: "auto" }}>
       <Table
         unstackable
         selectable
@@ -168,4 +168,4 @@ const addBatchColumns = (columns, data) => {
   }
 };
 
-export default DocumentTable;
+export default React.memo(DocumentTable);

@@ -52,14 +52,24 @@ class AnnotationDB {
   }
 
   // SEARCH TABLE DATA
-  async getSelection(table, fields, query) {
-    let regex = new RegExp(query.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"));
+  async getSelection(table, fields, query, key, any) {
+    // table: what table to search
+    // fields: what columns to search
+    // query: direct text match
+    // key, any: optionally, filter on an indexed key, where any is an array of values
+    let regex = null;
+    if (query !== "") regex = new RegExp(query.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"));
 
     let rows = await this.idb.table(table);
 
     let selection = [];
-    await rows.toCollection().each((row) => {
+    let collection = any == null ? await rows.toCollection() : await rows.where(key).anyOf(any);
+    await collection.each((row) => {
       for (let field of fields) {
+        if (regex === null) {
+          selection.push(row.id);
+          return;
+        }
         if (regex.test(row[field])) {
           selection.push(row.id);
           return;
