@@ -1,8 +1,12 @@
 const intersect = (arrays) => {
   // intersect for sorted arrays
   // (dexie doesn't do AND queries, so we search ids for different filters separately and intersect them)
+  arrays = arrays.filter((array) => array !== null);
+  if (arrays.length === 0) return null;
+
   const cursors = new Array(arrays.length).fill(0);
   const res = [];
+
   while (!anyDone(arrays, cursors)) {
     if (allEqual(arrays, cursors)) {
       res.push(arrays[0][cursors[0]]);

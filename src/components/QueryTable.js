@@ -1,24 +1,32 @@
+import { useLiveQuery } from "dexie-react-hooks";
 import React, { useEffect, useState } from "react";
 import { Input } from "semantic-ui-react";
 import db from "../apis/dexie";
 
-const QueryTable = ({ table, searchOn, setSelection }) => {
+const QueryTable = ({ table, searchOn, setSelection, setLoading }) => {
   // table: what table in db
   // searchOn: what columns to search in
   // setSelection: parent hook
-
   const [search, setSearch] = useState("");
   const [selectionStatus, setSelectionStatus] = useState("none");
+
+  const n = useLiveQuery(() => db.idb.table(table).count());
+
+  useEffect(() => {
+    setLoading(selectionStatus === "searching");
+  }, [selectionStatus, setLoading]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       searchSelection(table, searchOn, search, setSelection, setSelectionStatus);
     }, 500);
     return () => clearTimeout(timer);
-  }, [table, search, setSelectionStatus, searchOn, setSelection]);
+  }, [table, search, setSelectionStatus, searchOn, setSelection, n]);
 
   return (
     <Input
+      fluid
+      label="Search data"
       loading={selectionStatus === "searching"}
       value={search}
       icon="search"
@@ -35,7 +43,7 @@ const searchSelection = async (table, searchOn, search, setSelection, setSelecti
   }
   setSelectionStatus("searching");
 
-  const selection = await db.getSelection(table, searchOn, search);
+  const selection = await db.getSelectionQuery(table, searchOn, search);
   setSelection(selection);
   setSelectionStatus("finished");
 };

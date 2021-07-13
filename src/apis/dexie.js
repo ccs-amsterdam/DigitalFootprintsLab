@@ -52,7 +52,7 @@ class AnnotationDB {
   }
 
   // SEARCH TABLE DATA
-  async getSelection(table, fields, query, key, any) {
+  async getSelectionQuery(table, fields, query, key, any) {
     // table: what table to search
     // fields: what columns to search
     // query: direct text match
@@ -77,6 +77,11 @@ class AnnotationDB {
       }
     });
     return selection;
+  }
+
+  async getSelection(table, key, any) {
+    let rows = await this.idb.table(table);
+    return await rows.where(key).anyOf(any).primaryKeys();
   }
 
   // PLATFORMS

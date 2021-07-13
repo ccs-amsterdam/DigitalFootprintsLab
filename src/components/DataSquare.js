@@ -24,7 +24,7 @@ const cardGroupStyle = {
 
 const DataSquare = () => {
   return (
-    <div style={{ height: "100vh", backgroundImage: `url(${logo})`, backgroundSize: "100% 100%" }}>
+    <div style={{ height: "102vh", backgroundImage: `url(${logo})`, backgroundSize: "100% 100%" }}>
       <Grid stackable divided centered style={{ paddingTop: "4em" }}>
         <Grid.Column textAlign="center" width={5} style={columnStyle}>
           <Header style={headerStyle}>

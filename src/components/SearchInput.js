@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Search } from "semantic-ui-react";
 
-const resultRenderer = option => (
+const resultRenderer = (option) => (
   <div key="content" className="content">
     <div className="title">{option.value}</div>
   </div>
@@ -25,7 +25,7 @@ const SearchInput = ({ options, value, setValue }) => {
       }
 
       const re = new RegExp(data.value.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"), "i");
-      const isMatch = options => re.test(options.value);
+      const isMatch = (options) => re.test(options.value);
 
       setLoading(false);
       setResults(options.filter(isMatch));
