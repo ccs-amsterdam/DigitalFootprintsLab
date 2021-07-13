@@ -3,29 +3,35 @@ import ReactWordcloud from "react-wordcloud";
 import ColoredBackgroundGrid from "./ColoredBackgroundGrid";
 import background from "../images/background.jpeg";
 import DataTable from "./DataTable";
+import DataList from "./DataList";
 import db from "../apis/dexie";
-import { Dimmer, Dropdown, Form, Grid, Loader, Segment } from "semantic-ui-react";
+import { Dimmer, Dropdown, Grid, Loader, Segment } from "semantic-ui-react";
 import QueryTable from "./QueryTable";
 import { useLiveQuery } from "dexie-react-hooks";
-import intersect from "../util/intersect";
+// import intersect from "../util/intersect";
 
 const gridStyle = { paddingTop: "2em" };
-const gridRowStyle = { paddingLeft: "1em", paddingRight: "1em" };
+const gridColumnStyle = { paddingLeft: "2em", paddingRight: "1em", overflow: "hidden" };
 
 const SEARCHON = ["url", "title"];
 
-const COLUMNS = [
-  { name: "domain", width: 2 },
-  { name: "url", width: 3 },
-  { name: "date", width: 2 },
-  { name: "title", width: 6 },
-];
+const LAYOUT = {
+  domain: { type: "header", style: { color: "white" } },
+  url: { type: "meta", style: { color: "white" } },
+  title: { type: "description", style: { color: "white" } },
+  date: { type: "extra", style: { color: "white" } },
+};
+
+//https://nivo.rocks/calendar/
+//https://github.com/motiz88/react-dygraphs#readme
+//https://nivo.rocks/heatmap/   maybe for weekday by time
 
 const BrowsingHistory = () => {
   const [data, setData] = useState({});
   const [querySelection, setQuerySelection] = useState(null);
   const [domainSelection, setDomainSelection] = useState([]);
 
+  console.log(domainSelection);
   useEffect(() => {
     prepareData(db, querySelection, setData);
   }, [querySelection, setData]);
@@ -33,35 +39,19 @@ const BrowsingHistory = () => {
   return (
     <ColoredBackgroundGrid background={background} color={"#000000b0"}>
       <Grid divided={"vertically"} style={gridStyle}>
-        <Grid.Row style={gridRowStyle}>
-          <Grid.Column width={4}>
-            <QueryTable
-              table={"browsing_history"}
-              searchOn={SEARCHON}
-              setSelection={setQuerySelection}
-            />
-          </Grid.Column>
-          <Grid.Column width={12}>
-            <DataTable
-              table={"browsing_history"}
-              columns={COLUMNS}
-              selection={querySelection}
-              allColumns={false}
-            />
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row style={gridRowStyle}>
-          <Grid.Column width={4}>
-            <LookupTable
-              table={"browsing_history"}
-              searchOn={"domain"}
-              setSelection={setDomainSelection}
-            />
-          </Grid.Column>
-          <Grid.Column width={12}>
+        <Grid.Column width={5} style={gridColumnStyle}>
+          <QueryTable
+            table={"browsing_history"}
+            searchOn={SEARCHON}
+            setSelection={setQuerySelection}
+          />
+          <DataList table={"browsing_history"} layout={LAYOUT} selection={querySelection} />
+        </Grid.Column>
+        <Grid.Column width={11} style={gridColumnStyle}>
+          <Grid.Row>
             <DomainCloud data={data} nWords={50} />
-          </Grid.Column>
-        </Grid.Row>
+          </Grid.Row>
+        </Grid.Column>
       </Grid>
     </ColoredBackgroundGrid>
   );
@@ -70,7 +60,10 @@ const BrowsingHistory = () => {
 const LookupTable = ({ table, searchOn, setSelection }) => {
   const [selected, setSelected] = useState([]);
   const data = useLiveQuery(() => {
-    return db.idb.table(table).orderBy(searchOn).uniqueKeys();
+    return db.idb
+      .table(table)
+      .orderBy(searchOn)
+      .uniqueKeys();
   });
   if (!data) return null;
 
@@ -80,7 +73,7 @@ const LookupTable = ({ table, searchOn, setSelection }) => {
       clearable
       selection
       multiple={true}
-      options={data.map((d) => ({
+      options={data.map(d => ({
         key: d,
         text: d,
         value: d,
@@ -97,7 +90,7 @@ const LookupTable = ({ table, searchOn, setSelection }) => {
 
 const DomainCloud = ({ data, nWords }) => {
   const callbacks = {
-    onWordClick: (word) => console.log(word),
+    onWordClick: word => alert(word.text),
     onWordMouseOver: console.log,
   };
 
@@ -137,14 +130,14 @@ const prepareData = async (db, selection, setData) => {
   let collection =
     selection === null ? await table.toCollection() : await table.where("id").anyOf(selection);
 
-  await collection.each((url) => {
+  await collection.each(url => {
     if (url.domain !== "") {
       domainTotalObj[url.domain] = (domainTotalObj[url.domain] || 0) + 1;
     }
     const hour = url.date.getHours();
     hourTotal[hour]++;
   });
-  let domainTotal = Object.keys(domainTotalObj).map((domain) => {
+  let domainTotal = Object.keys(domainTotalObj).map(domain => {
     return { text: domain, value: domainTotalObj[domain] };
   });
   domainTotal.sort((a, b) => b.value - a.value); // sort from high to low value

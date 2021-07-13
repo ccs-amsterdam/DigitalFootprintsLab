@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Input, Segment } from "semantic-ui-react";
+import { Input } from "semantic-ui-react";
 import db from "../apis/dexie";
 
 const QueryTable = ({ table, searchOn, setSelection }) => {

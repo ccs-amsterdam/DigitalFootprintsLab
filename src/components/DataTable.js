@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Pagination, Table, Icon, Input, Dimmer, Loader } from "semantic-ui-react";
+import { Container, Pagination, Table, Icon } from "semantic-ui-react";
 import db from "../apis/dexie";
 
 const PAGESIZE = 10;
@@ -30,7 +30,7 @@ const DocumentTable = ({ table, columns, selection, allColumns }) => {
     });
   };
 
-  const createBodyRows = (data) => {
+  const createBodyRows = data => {
     if (data === null || data.length === 0) return null;
 
     while (data.length < PAGESIZE) data.push(null);
@@ -43,10 +43,14 @@ const DocumentTable = ({ table, columns, selection, allColumns }) => {
     });
   };
 
-  const createRowCells = (rowObj) => {
+  const createRowCells = rowObj => {
     return useColumns.map((column, i) => {
       let content = rowObj ? rowObj[column.name] : null;
-      if (content instanceof Date) content = content.toISOString().slice(0, 19).replace(/T/g, " ");
+      if (content instanceof Date)
+        content = content
+          .toISOString()
+          .slice(0, 19)
+          .replace(/T/g, " ");
       return (
         <Table.Cell key={i}>
           <span title={content}>{content}</span>
@@ -156,7 +160,7 @@ const fetchFromDb = async (
 };
 
 const addBatchColumns = (columns, data) => {
-  const colnames = columns.map((col) => col.name);
+  const colnames = columns.map(col => col.name);
 
   for (let row of data) {
     for (let cname of Object.keys(row)) {
