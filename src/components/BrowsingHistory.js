@@ -106,7 +106,6 @@ const DomainCloud = React.memo(({ table, field, data, nWords, loading, setSelect
   const [words, setWords] = useState([]);
 
   useEffect(() => {
-    console.log("test");
     if (!data.domainTotal) {
       setWords([]);
       return null;
@@ -142,7 +141,6 @@ const DomainCloud = React.memo(({ table, field, data, nWords, loading, setSelect
     };
   }, [selected]);
 
-  console.log("render");
   return (
     <Segment
       style={{
@@ -197,7 +195,6 @@ const prepareData = async (db, selection, setData) => {
     return { text: domain, value: domainTotalObj[domain] };
   });
   domainTotal.sort((a, b) => b.value - a.value); // sort from high to low value
-  console.log("test");
   setData({ domainTotal, uniqueDomains });
 };
 
