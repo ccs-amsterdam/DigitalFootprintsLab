@@ -26,7 +26,6 @@ const DataList = ({ table, layout, selection, loading }) => {
   const [selectionN, setSelectionN] = useState(1);
 
   const [confirm, setConfirm] = useState({ open: false, ask: true, itemIds: [] });
-
   useEffect(() => {
     if (!table) {
       setData([]);

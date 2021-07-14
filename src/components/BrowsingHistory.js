@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import ReactWordcloud, { defaultCallbacks } from "react-wordcloud";
 import ColoredBackgroundGrid from "./ColoredBackgroundGrid";
 import background from "../images/background.jpeg";
-import DataTable from "./DataTable";
 import DataList from "./DataList";
 import db from "../apis/dexie";
-import { Dimmer, Dropdown, Grid, Header, Loader, Segment } from "semantic-ui-react";
+import { Divider, Grid } from "semantic-ui-react";
+
 import QueryTable from "./QueryTable";
-import { useLiveQuery } from "dexie-react-hooks";
+import KeyCloud from "./KeyCloud";
+import TimeLine from "./TimeLine";
 import intersect from "../util/intersect";
 
 const gridStyle = { paddingTop: "0em", marginTop: "0em", height: "90vh" };
@@ -33,18 +33,25 @@ const LAYOUT = {
 // this can be any selection from indices (date, domain)
 
 const BrowsingHistory = () => {
-  const [data, setData] = useState({});
   const [querySelection, setQuerySelection] = useState(null);
   const [cloudSelection, setCloudSelection] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [selection, setSelection] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    prepareData(db, querySelection, setData);
-  }, [querySelection, setData]);
+  const [keyCloudSelection, setKeyCloudSelection] = useState(null);
+  const [timelineSelection, setTimelineSelection] = useState(null);
 
   useEffect(() => {
     setSelection(intersect([querySelection, cloudSelection]));
+  }, [querySelection, cloudSelection]);
+
+  useEffect(() => {
+    //setKeyCloudSelection(intersect([querySelection, cloudSelection]));
+    setKeyCloudSelection(querySelection);
+  }, [querySelection]);
+
+  useEffect(() => {
+    setTimelineSelection(intersect([querySelection, cloudSelection]));
   }, [querySelection, cloudSelection]);
 
   return (
@@ -69,12 +76,23 @@ const BrowsingHistory = () => {
           </Grid.Row>
         </Grid.Column>
         <Grid.Column width={12} style={{ padding: "0", paddingRight: "1em" }}>
-          <Grid.Row style={{ overflow: "auto" }}>
-            <DomainCloud
+          <br />
+          <Grid.Row>
+            <KeyCloud
               table={"browsing_history"}
               field={"domain"}
-              data={data}
+              selection={keyCloudSelection}
               nWords={50}
+              loading={loading}
+              setSelection={setCloudSelection}
+            />
+          </Grid.Row>
+          <Divider style={{ borderColor: "white" }} />
+          <Grid.Row>
+            <TimeLine
+              table={"browsing_history"}
+              field={"date"}
+              selection={timelineSelection}
               loading={loading}
               setSelection={setCloudSelection}
             />
@@ -83,119 +101,6 @@ const BrowsingHistory = () => {
       </Grid>
     </ColoredBackgroundGrid>
   );
-};
-
-const wordcloudOptions = {
-  rotations: 0,
-  enableTooltip: false,
-  padding: 0.3,
-  deterministic: true,
-  fontFamily: "impact",
-  fontSizes: [15, 50],
-  transitionDuration: 100,
-  colors: ["white"],
-};
-
-const getSelection = async (table, field, selected, setSelection) => {
-  let selection = await db.getSelection(table, field, [...selected]);
-  setSelection(selection);
-};
-
-const DomainCloud = React.memo(({ table, field, data, nWords, loading, setSelection }) => {
-  const [selected, setSelected] = useState(new Set([]));
-  const [words, setWords] = useState([]);
-
-  useEffect(() => {
-    if (!data.domainTotal) {
-      setWords([]);
-      return null;
-    }
-    const words = data.domainTotal.slice(0, nWords).map((word) => {
-      const text = word.text.replace("www.", "");
-      return { text: text, domain: word.text, value: word.value };
-    });
-    setWords(words);
-  }, [data, nWords]);
-
-  useEffect(() => {
-    selected.size > 0 ? getSelection(table, field, selected, setSelection) : setSelection(null);
-  }, [selected, setSelection, table, field]);
-
-  const callbacks = React.useCallback(() => {
-    return {
-      onWordClick: (word) => {
-        setSelected((old) => {
-          const newselected = new Set([...old]);
-          if (newselected.has(word.domain)) {
-            newselected.delete(word.domain);
-          } else {
-            newselected.add(word.domain);
-          }
-          return newselected;
-        });
-      },
-      getWordColor: (word) => {
-        if (selected.size === 0) return "white";
-        return selected.has(word.domain) ? "white" : "grey";
-      },
-    };
-  }, [selected]);
-
-  return (
-    <Segment
-      style={{
-        width: "100%",
-        background: "#ffffff00",
-        border: "none",
-        boxShadow: "none",
-        paddingTop: "2em",
-      }}
-    >
-      <Dropdown
-        fluid
-        multiple
-        selection
-        clearable
-        value={[...selected]}
-        onChange={(e, d) => setSelected(new Set(d.value))}
-        options={
-          data.domainTotal
-            ? data.domainTotal.map((e) => ({ value: e.text, text: e.text, key: e.text }))
-            : []
-        }
-      />
-
-      <Dimmer active={loading}>
-        <Loader />
-      </Dimmer>
-      <ReactWordcloud words={words} callbacks={callbacks()} options={wordcloudOptions} />
-    </Segment>
-  );
-});
-
-const prepareData = async (db, selection, setData) => {
-  let domainTotalObj = {};
-  let hourTotal = new Array(24).fill(0);
-
-  let table = await db.idb.browsing_history;
-
-  let uniqueDomains = await table.orderBy("domain").uniqueKeys();
-
-  let collection =
-    selection === null ? await table.toCollection() : await table.where("id").anyOf(selection);
-
-  await collection.each((url) => {
-    if (url.domain !== "") {
-      domainTotalObj[url.domain] = (domainTotalObj[url.domain] || 0) + 1;
-    }
-    const hour = url.date.getHours();
-    hourTotal[hour]++;
-  });
-  let domainTotal = Object.keys(domainTotalObj).map((domain) => {
-    return { text: domain, value: domainTotalObj[domain] };
-  });
-  domainTotal.sort((a, b) => b.value - a.value); // sort from high to low value
-  setData({ domainTotal, uniqueDomains });
 };
 
 export default BrowsingHistory;

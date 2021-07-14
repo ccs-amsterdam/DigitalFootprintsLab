@@ -58,12 +58,12 @@ class AnnotationDB {
     // query: direct text match
     // key, any: optionally, filter on an indexed key, where any is an array of values
     let regex = null;
-    if (query !== "") regex = new RegExp(query.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"));
-
+    if (query !== "") regex = new RegExp(query.replace(/[-/\\^$*+?.()|[\]{}]/, "\\$&"), "i");
     let rows = await this.idb.table(table);
 
     let selection = [];
     let collection = any == null ? await rows.toCollection() : await rows.where(key).anyOf(any);
+
     await collection.each((row) => {
       for (let field of fields) {
         if (regex === null) {
@@ -79,9 +79,16 @@ class AnnotationDB {
     return selection;
   }
 
-  async getSelection(table, key, any) {
+  async getSelectionAny(table, key, any) {
     let rows = await this.idb.table(table);
     return await rows.where(key).anyOf(any).primaryKeys();
+  }
+
+  async getSelectionRange(table, key, from, to) {
+    let rows = await this.idb.table(table);
+    if (from) rows = await rows.where(key).aboveOrEqual(from);
+    if (to) rows = await rows.where(key).belowOrEqual(to);
+    return await rows.primaryKeys();
   }
 
   // PLATFORMS
