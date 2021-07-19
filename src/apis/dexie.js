@@ -12,7 +12,8 @@ class AnnotationDB {
 
     this.idb.version(2).stores({
       meta: "welcome", // this just serves to keep track of whether db was 'created' via the welcome component
-      browsing_history: "id++, domain, date, platform",
+      browsinghistory: "id++, &[url+date], domain, date", // &[url+date] is unique compound key
+      youtube: "id++, &[url+date], channel, date",
       platforms: "name",
     });
   }
@@ -38,7 +39,11 @@ class AnnotationDB {
 
   async getTableFromIds(table, ids) {
     if (ids.length === 0) return [];
-    return await this.idb.table(table).where("id").anyOf(ids).toArray();
+    return await this.idb
+      .table(table)
+      .where("id")
+      .anyOf(ids)
+      .toArray();
   }
 
   async getTableN(table) {
@@ -48,7 +53,11 @@ class AnnotationDB {
 
   async deleteTableIds(table, ids) {
     if (ids.length === 0) return [];
-    await this.idb.table(table).where("id").anyOf(ids).delete();
+    await this.idb
+      .table(table)
+      .where("id")
+      .anyOf(ids)
+      .delete();
   }
 
   // SEARCH TABLE DATA
@@ -64,7 +73,7 @@ class AnnotationDB {
     let selection = [];
     let collection = any == null ? await rows.toCollection() : await rows.where(key).anyOf(any);
 
-    await collection.each((row) => {
+    await collection.each(row => {
       for (let field of fields) {
         if (regex === null) {
           selection.push(row.id);
@@ -81,7 +90,10 @@ class AnnotationDB {
 
   async getSelectionAny(table, key, any) {
     let rows = await this.idb.table(table);
-    return await rows.where(key).anyOf(any).primaryKeys();
+    return await rows
+      .where(key)
+      .anyOf(any)
+      .primaryKeys();
   }
 
   async getSelectionRange(table, key, from, to) {
@@ -102,26 +114,18 @@ class AnnotationDB {
     // This way the 'loading' status can be triggered via dispatch, and is set to finished when the update is finished
     const current = await this.idb.platforms.get(name);
     if (current) {
-      this.idb.platform.get(name).modify({ date: new Date(), status: "finished" });
+      this.idb.platforms
+        .where("name")
+        .equals(name)
+        .modify({ date: new Date(), status: "finished" });
     } else {
       this.idb.platforms.add({ name, date: new Date(), status: "finished" });
     }
   }
 
-  // BROWSING HISTORY
-  async addBrowsingHistory(urls, platform) {
-    // urls has to be an array with objects, that must have 'url', 'title' and 'date' keys
-
-    // add domain and browser
-    let urlsWithDomain = urls.map((url) => {
-      let domain = new URL(url.url);
-      url.domain = domain.hostname;
-      url.platform = platform;
-      url.filter = 0;
-      return url;
-    });
-
-    return this.idb.browsing_history.bulkAdd(urlsWithDomain);
+  async addData(data, table) {
+    // build in duplicate check?
+    return this.idb.table(table).bulkAdd(data);
   }
 }
 

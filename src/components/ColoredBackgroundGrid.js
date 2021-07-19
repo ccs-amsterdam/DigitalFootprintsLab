@@ -21,7 +21,7 @@ const ColoredBackgroundGrid = ({ children, background, color }) => {
       />
       <Grid
         style={{
-          height: "102vh",
+          height: "100vh",
           overflow: "auto",
           backgroundSize: "100% 100%",
 

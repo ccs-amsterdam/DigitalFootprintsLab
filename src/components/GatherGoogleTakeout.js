@@ -100,10 +100,11 @@ const UploadGoogleTakeout = ({ setOpen, setLoading }) => {
   const dispatch = useDispatch();
   const ref = useRef();
 
-  const onChangeHandler = async (e) => {
-    dispatch(updatePlatformStatus("Chrome", "loading"));
+  const onChangeHandler = async e => {
+    dispatch(updatePlatformStatus("browsinghistory", "loading"));
     dispatch(updatePlatformStatus("Youtube", "loading"));
 
+    let failed = false;
     try {
       setLoading("loading");
       setOpen(false);
@@ -112,16 +113,39 @@ const UploadGoogleTakeout = ({ setOpen, setLoading }) => {
 
       const zipped = await newZip.loadAsync(fileblob);
 
-      let chrome = await zipped.file("Takeout/Chrome/BrowserHistory.json").async("text");
-      chrome = JSON.parse(chrome);
+      try {
+        let chrome = await zipped.file("Takeout/Chrome/BrowserHistory.json").async("text");
+        chrome = JSON.parse(chrome);
+        writeChromeHistory(chrome["Browser History"]);
+      } catch (e) {
+        failed = true;
+        dispatch(updatePlatformStatus("browsinghistory", "failed"));
+      }
 
-      writeChromeHistory(chrome["Browser History"]);
-      setLoading("finished");
+      try {
+        let youtube;
+        const isJSON = zipped.file("Takeout/YouTube and YouTube Music/history/watch-history.json");
+        if (isJSON) {
+          youtube = await zipped
+            .file("Takeout/YouTube and YouTube Music/history/watch-history.json")
+            .async("text");
+          youtube = JSON.parse(youtube);
+        } else {
+          youtube = await zipped
+            .file("Takeout/YouTube and YouTube Music/history/watch-history.html")
+            .async("text");
+          youtube = parseYoutubeHtml(youtube);
+        }
+        writeYoutubeHistory(youtube);
+      } catch (e) {
+        console.log(e);
+        failed = true;
+        dispatch(updatePlatformStatus("youtube", "failed"));
+      }
     } catch (e) {
-      dispatch(updatePlatformStatus("Chrome", "failed"));
-      dispatch(updatePlatformStatus("Youtube", "failed"));
       setLoading("failed");
     }
+    setLoading(failed ? "failed" : "finished");
   };
 
   return (
@@ -141,20 +165,68 @@ const UploadGoogleTakeout = ({ setOpen, setLoading }) => {
   );
 };
 
-const writeChromeHistory = async (history) => {
-  let d = history.map((item) => {
+const parseYoutubeHtml = string => {
+  const doc = new DOMParser().parseFromString(string, "text/html");
+  const nodes = doc.querySelector(".mdl-grid").querySelectorAll(".mdl-grid");
+
+  const items = [];
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i];
+    const aList = node.querySelectorAll("a");
+
+    const item = {};
+    if (aList.length === 2) {
+      item.subtitles = { name: aList[1].textContent, url: aList[1].attributes.href.textContent };
+    }
+    item.titleUrl = aList[0].attributes.href.textContent;
+    item.title = aList[0].textContent;
+
+    const br = node.children[1].querySelectorAll("br");
+    const datestring = br[br.length - 1].nextSibling.textContent;
+    const date = new Date(Date.parse(datestring.replace("CEST", "GMT+0200")));
+    item.time = date.toISOString();
+    items.push(item);
+  }
+  return items;
+};
+
+const writeChromeHistory = async history => {
+  let d = history.map(item => {
+    let domain = new URL(item.url);
+
     return {
       url: item.url,
       title: item.title,
+      domain: domain.hostname,
+      platform: "Chrome",
       date: convertTimestamp(item.time_usec),
       page_transition: item.page_transition,
     };
   });
-  await db.addBrowsingHistory(d, "Chrome");
-  await db.updatePlatform("Chrome", "finished");
+  await db.addData(d, "browsinghistory");
+  await db.updatePlatform("browsinghistory", "finished");
 };
 
-const convertTimestamp = (time) => {
+const writeYoutubeHistory = async history => {
+  let d = history.map(item => {
+    return {
+      url: item.titleUrl,
+      title: item.title,
+      date: new Date(item.time),
+      channel: item.subtitles ? item.subtitles.name : "channel removed",
+      channel_url: item.subtitles ? item.subtitles.url : "channel removed",
+    };
+  });
+  // for (let i = 0; i < d.length; i++) {
+  //   console.log(d[i]);
+  //   await db.addData([d[i]], "youtube");
+
+  // }
+  await db.addData(d, "youtube");
+  await db.updatePlatform("youtube", "finished");
+};
+
+const convertTimestamp = time => {
   // seems to be in microseconds since epoch
   return new Date(Math.round(time / 1000));
 };

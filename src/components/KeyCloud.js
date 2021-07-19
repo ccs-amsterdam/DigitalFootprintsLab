@@ -15,7 +15,7 @@ const wordcloudOptions = {
   transitionDuration: 500,
   colors: ["white"],
 };
-const wordcloudSize = [1000, 400];
+const wordcloudSize = undefined;
 
 const KeyCloud = ({ table, field, selection, nWords, loading, setSelection }) => {
   // makes a wordcloud for keys in a table:field in db
@@ -37,7 +37,7 @@ const KeyCloud = ({ table, field, selection, nWords, loading, setSelection }) =>
       setWords([]);
       return null;
     }
-    const words = data.keys.slice(0, nWords).map((word) => {
+    const words = data.keys.slice(0, nWords).map(word => {
       const text = word.text.replace("www.", "");
       return { text: text, domain: word.text, value: word.value };
     });
@@ -61,8 +61,8 @@ const KeyCloud = ({ table, field, selection, nWords, loading, setSelection }) =>
 
   const callbacks = React.useCallback(() => {
     return {
-      onWordClick: (word) => {
-        setKeys((old) => {
+      onWordClick: word => {
+        setKeys(old => {
           const newkeys = new Set([...old]);
           if (newkeys.has(word.domain)) {
             newkeys.delete(word.domain);
@@ -72,7 +72,7 @@ const KeyCloud = ({ table, field, selection, nWords, loading, setSelection }) =>
           return newkeys;
         });
       },
-      getWordColor: (word) => {
+      getWordColor: word => {
         if (keys.size === 0) return "white";
         return keys.has(word.domain) ? "white" : "grey";
       },
@@ -82,6 +82,7 @@ const KeyCloud = ({ table, field, selection, nWords, loading, setSelection }) =>
   return (
     <Grid
       style={{
+        height: "100%",
         width: "100%",
         background: "#ffffff00",
         border: "none",
@@ -89,19 +90,23 @@ const KeyCloud = ({ table, field, selection, nWords, loading, setSelection }) =>
         paddingTop: "2em",
       }}
     >
-      <Grid.Column width={12} style={{ height: "100%", padding: "0", margin: "0" }}>
+      <Grid.Column width={12} style={{ padding: "0", margin: "0" }}>
         <Dimmer active={loading || loadingData}>
           <Loader />
         </Dimmer>
         <Header as="h1" align={"center"} style={{ color: "white", padding: "0", margin: "0" }}>
           Top {nWords} {field}s
         </Header>
-        <ReactWordcloud
-          words={words}
-          minSize={wordcloudSize}
-          callbacks={callbacks()}
-          options={wordcloudOptions}
-        />
+        <div style={{ overflow: "auto" }}>
+          <div style={{ height: "400px", minWidth: "800px" }}>
+            <ReactWordcloud
+              words={words}
+              minSize={wordcloudSize}
+              callbacks={callbacks()}
+              options={wordcloudOptions}
+            />
+          </div>
+        </div>
       </Grid.Column>
       <Grid.Column width={4}>
         <Header style={{ color: "white" }}>{field.toUpperCase()} FILTER</Header>
@@ -124,7 +129,7 @@ const KeyCloud = ({ table, field, selection, nWords, loading, setSelection }) =>
           onChange={(e, d) => setKeys(new Set(d.value))}
           options={
             data
-              ? data.uniqueKeys.map((e) => ({
+              ? data.uniqueKeys.map(e => ({
                   value: e,
                   text: e.replace("www.", ""),
                   key: e,
@@ -149,12 +154,12 @@ const prepareData = async (table, field, selection, setData, setLoadingData, set
   let collection =
     selection === null ? await t.toCollection() : await t.where("id").anyOf(selection);
 
-  await collection.each((url) => {
+  await collection.each(url => {
     if (url[field] !== "") {
       keyTotalObj[url[field]] = (keyTotalObj[url[field]] || 0) + 1;
     }
   });
-  let keyTotal = Object.keys(keyTotalObj).map((key) => {
+  let keyTotal = Object.keys(keyTotalObj).map(key => {
     return { text: key, value: keyTotalObj[key] };
   });
   keyTotal.sort((a, b) => b.value - a.value); // sort from high to low value
@@ -162,7 +167,7 @@ const prepareData = async (table, field, selection, setData, setLoadingData, set
   setLoadingData(false);
 
   console.log(keyTotalObj);
-  setKeys((keys) => new Set([...keys].filter((key) => keyTotalObj[key] != null)));
+  setKeys(keys => new Set([...keys].filter(key => keyTotalObj[key] != null)));
 };
 
 export default React.memo(KeyCloud);

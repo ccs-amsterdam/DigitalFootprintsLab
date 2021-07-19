@@ -33,7 +33,7 @@ const TimeLine = ({ table, field, selection, loading, setSelection }) => {
       return;
     }
     setDays(
-      data.day.data.filter((day) => {
+      data.day.data.filter(day => {
         if (dayRange[0] !== null && day.date < dayRange[0]) return false;
         if (dayRange[1] !== null && day.date > dayRange[1]) return false;
         return true;
@@ -62,7 +62,9 @@ const TimeLine = ({ table, field, selection, loading, setSelection }) => {
           >
             {selectionStatus === "select_start"
               ? "Click on calender to set start date"
-              : `From date: ${dayRange[0] ? formatDate(dayRange[0]) : data.day.min}`}
+              : dayRange[0]
+              ? `From date: ${formatDate(dayRange[0])}`
+              : `Click here to set start date`}
           </Button>
           <Button
             secondary
@@ -71,7 +73,15 @@ const TimeLine = ({ table, field, selection, loading, setSelection }) => {
           >
             {selectionStatus === "select_end"
               ? "Click on calender to set end date"
-              : `To date: ${dayRange[1] ? formatDate(dayRange[1]) : data.day.max}`}
+              : dayRange[1]
+              ? `To date: ${formatDate(dayRange[1])}`
+              : `Click here to set end date`}
+          </Button>
+          <Button
+            disabled={dayRange[0] === null && dayRange[1] === null}
+            onClick={() => setDayRange([null, null])}
+          >
+            reset
           </Button>
         </ButtonGroup>
       </Grid.Row>
@@ -88,8 +98,8 @@ const TimeLine = ({ table, field, selection, loading, setSelection }) => {
             from={data.day.min}
             to={data.day.max}
             emptyColor="#ededed1f"
-            colors={days.some((day) => day.value > 0) ? COLORS : ["white"]}
-            margin={{ top: 0, right: 40, bottom: 20, left: 40 }}
+            colors={days.some(day => day.value > 0) ? COLORS : ["white"]}
+            margin={{ top: 0, right: 0, bottom: 0, left: 40 }}
             yearSpacing={35}
             monthSpacing={30}
             monthBorderColor="#ffffff"
@@ -107,8 +117,8 @@ const TimeLine = ({ table, field, selection, loading, setSelection }) => {
                 itemDirection: "right-to-left",
               },
             ]}
-            onContextMenu={(e) => console.log(e)}
-            onClick={(e) => {
+            onContextMenu={e => console.log(e)}
+            onClick={e => {
               if (selectionStatus === "select_start") {
                 let midnightMorning = new Date(e.day);
                 if (dayRange[1] !== null && dayRange[1] < midnightMorning)
@@ -152,7 +162,7 @@ const prepareData = async (table, field, selection, setData, setLoadingData) => 
   minDate = minDate.date;
   maxDate = maxDate.date;
 
-  await collection.each((url) => {
+  await collection.each(url => {
     if (url[field] !== "") {
       weekday[url[field].getDay()]++;
       const day = formatDate(url[field]);
@@ -168,7 +178,7 @@ const prepareData = async (table, field, selection, setData, setLoadingData) => 
     if (!dayTotalObj[day]) dayTotalObj[day] = 0;
   }
 
-  let dayTotal = Object.keys(dayTotalObj).map((day) => {
+  let dayTotal = Object.keys(dayTotalObj).map(day => {
     const date = new Date(day);
     date.setHours(0, 0, 0, 0);
     return { date: date, day: day, value: dayTotalObj[day] };
@@ -181,11 +191,11 @@ const prepareData = async (table, field, selection, setData, setLoadingData) => 
   setLoadingData(false);
 };
 
-const addZ = (n) => {
+const addZ = n => {
   return n < 10 ? "0" + n : "" + n;
 };
 
-const formatDate = (date) => {
+const formatDate = date => {
   return date.getFullYear() + "-" + addZ(date.getMonth() + 1) + "-" + addZ(date.getDate());
 };
 

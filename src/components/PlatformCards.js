@@ -31,35 +31,31 @@ const PlatformCards = () => {
 const Chrome = () => {
   return (
     <PlatformCard
-      name={"Chrome"} // name needs to match the name in the idb.platforms table
-      subname={"Browsing history"}
-      icon={"chrome"}
-      type={"browsinghistory"}
+      name={"Browsing history"} // name needs to match the name in the idb.platforms table
+      subname={"What pages did you visit?"}
+      icon={"history"}
+      table={"browsinghistory"}
     />
   );
 };
 
 const Youtube = () => {
   return (
-    <PlatformCard
-      name={"Youtube"}
-      subname={"Viewing history"}
-      icon={"youtube"}
-      type={"browsinghistory"}
-    />
+    <PlatformCard name={"Youtube"} subname={"Viewing history"} icon={"youtube"} table={"youtube"} />
   );
 };
 
-const PlatformCard = ({ name, subname, icon, type }) => {
+const PlatformCard = ({ name, subname, icon, table }) => {
   const history = useHistory();
-  const platformStatus = useSelector((state) =>
-    state.platformStatus.find((platform) => platform.name === name)
+  const platformStatus = useSelector(state =>
+    state.platformStatus.find(platform => platform.name === table)
   );
   if (!platformStatus) return null;
   if (platformStatus.status === "failed" && !platformStatus.date) return null;
 
   const onClick = () => {
-    history.push(`${type}?platform=${name}`);
+    //history.push(`${type}?platform=${name}`);
+    history.push(table);
   };
 
   return (
@@ -75,17 +71,17 @@ const PlatformCard = ({ name, subname, icon, type }) => {
   );
 };
 
-const lastUpdated = (date) => {
+const lastUpdated = date => {
   if (!date) return "Data not yet gathered";
   const oldTime = date.toISOString();
   const currentTime = new Date().toISOString();
 
   // if different day, show day
   if (oldTime.slice(0, 10) !== currentTime.slice(0, 10))
-    return `Data gathered on ${oldTime.slice(0, 10)}`;
+    return `Data imported on ${oldTime.slice(0, 10)}`;
 
   // otherwise show time
-  return "Data gathered today";
+  return "Data imported today";
 };
 
 export default PlatformCards;
