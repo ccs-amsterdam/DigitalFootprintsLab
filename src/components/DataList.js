@@ -47,10 +47,14 @@ const DataList = ({ table, layout, selection, loading }) => {
     setData([...data, ...newdata]);
   };
 
-  const createItem = (item) => {
-    return Object.keys(layout).map((field) => {
+  const createItem = item => {
+    return Object.keys(layout).map(field => {
       let content = item[field];
-      if (content instanceof Date) content = content.toISOString().slice(0, 19).replace(/T/g, " ");
+      if (content instanceof Date)
+        content = content
+          .toISOString()
+          .slice(0, 19)
+          .replace(/T/g, " ");
       if (field === "url") {
         let url = new URL(content);
         content = (
@@ -82,7 +86,7 @@ const DataList = ({ table, layout, selection, loading }) => {
   const createItems = () => {
     if (data === null || data.length === 0) return null;
 
-    const image = Object.keys(layout).find((field) => layout[field].type === "image");
+    const image = Object.keys(layout).find(field => layout[field].type === "image");
 
     return data.map((item, i) => {
       return (
@@ -103,14 +107,12 @@ const DataList = ({ table, layout, selection, loading }) => {
     <Container
       style={{
         height: "98%",
-        border: "1px solid",
-        borderColor: "white",
-        padding: "1em",
+        padding: "0",
         background: "#00000087",
       }}
     >
       <Segment style={{ background: "white" }}>
-        <Header textAlign="center" as="h1" style={{ color: "black" }}>
+        <Header textAlign="center" as="h2" style={{ color: "black" }}>
           <Dimmer active={loading}>
             <Loader />
           </Dimmer>
@@ -118,7 +120,7 @@ const DataList = ({ table, layout, selection, loading }) => {
             <Button
               onClick={() => setConfirm({ ...confirm, open: true, itemIds: selection })}
               icon="trash alternate"
-              style={{ color: "#b23434bd", height: "1em", background: "#ffffff00" }}
+              style={{ color: "#b23434bd", height: "1em", padding: "0", background: "#ffffff00" }}
             />
           )}
           {selectionN === n ? n : `${selectionN} / ${n}`} items

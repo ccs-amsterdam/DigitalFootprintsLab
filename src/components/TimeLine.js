@@ -7,6 +7,21 @@ import { Button, ButtonGroup, Dimmer, Grid, Header, Loader, Popup } from "semant
 import { useLiveQuery } from "dexie-react-hooks";
 
 const COLORS = createColors(100, "white", "#0C1D35", "#954856");
+const ZEROCOLOR = ["white"];
+const LEGENDS = [
+  {
+    anchor: "bottom-right",
+    direction: "row",
+    translateY: 36,
+    itemCount: 4,
+    itemWidth: 42,
+    itemHeight: 36,
+    itemsSpacing: 14,
+    itemDirection: "right-to-left",
+  },
+];
+const MARGIN = { top: 0, right: 0, bottom: 0, left: 40 };
+const THEME = { textColor: "white", fontSize: 14 };
 
 const getSelection = async (table, field, dayRange, setSelection) => {
   let selection = await db.getSelectionAny(table, field, dayRange);
@@ -98,25 +113,14 @@ const TimeLine = ({ table, field, selection, loading, setSelection }) => {
             from={data.day.min}
             to={data.day.max}
             emptyColor="#ededed1f"
-            colors={days.some(day => day.value > 0) ? COLORS : ["white"]}
-            margin={{ top: 0, right: 0, bottom: 0, left: 40 }}
+            colors={days.some(day => day.value > 0) ? COLORS : ZEROCOLOR}
+            margin={MARGIN}
             yearSpacing={35}
             monthSpacing={30}
             monthBorderColor="#ffffff"
             dayBorderWidth={2}
             dayBorderColor="#150a0a2e"
-            legends={[
-              {
-                anchor: "bottom-right",
-                direction: "row",
-                translateY: 36,
-                itemCount: 4,
-                itemWidth: 42,
-                itemHeight: 36,
-                itemsSpacing: 14,
-                itemDirection: "right-to-left",
-              },
-            ]}
+            legends={LEGENDS}
             onContextMenu={e => console.log(e)}
             onClick={e => {
               if (selectionStatus === "select_start") {
@@ -137,7 +141,7 @@ const TimeLine = ({ table, field, selection, loading, setSelection }) => {
                 setSelectionStatus("idle");
               }
             }}
-            theme={{ textColor: "white", fontSize: 14 }}
+            theme={THEME}
           />
         </Grid.Column>
       </Grid.Row>

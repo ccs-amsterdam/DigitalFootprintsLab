@@ -11,6 +11,7 @@ import AuthRoute from "./components/AuthRoute";
 import DataSquare from "./components/DataSquare";
 import BrowsingHistory from "./components/BrowsingHistory";
 import YoutubeHistory from "./components/YoutubeHistory";
+import SearchHistory from "./components/SearchHistory";
 import Survey from "./components/Survey";
 
 // Change to add new components to the header
@@ -18,6 +19,7 @@ import Survey from "./components/Survey";
 const items = [
   { label: "Data square", path: "/datasquare", Component: DataSquare },
   { label: "Browsing History", path: "/browsinghistory", Component: BrowsingHistory },
+  { label: "Search", path: "/searchhistory", Component: SearchHistory },
   { label: "Youtube", path: "/youtube", Component: YoutubeHistory },
   { label: "Survey", path: "/survey", Component: Survey },
 ];

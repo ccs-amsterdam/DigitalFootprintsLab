@@ -51,7 +51,10 @@ const History = ({ searchOn, layout, table, cloudKey }) => {
   return (
     <ColoredBackgroundGrid background={background} color={"#000000b0"}>
       <Grid divided={"vertically"} style={gridStyle}>
-        <Grid.Column width={4} style={{ ...gridColumnStyle }}>
+        <Grid.Column
+          width={4}
+          style={{ ...gridColumnStyle, borderRight: "2px solid white", height: "100vh" }}
+        >
           <Grid.Row centered style={{ padding: "1em", paddingRight: "0" }}>
             <QueryTable
               table={table}
@@ -64,7 +67,7 @@ const History = ({ searchOn, layout, table, cloudKey }) => {
             <DataList table={table} layout={layout} selection={selection} loading={loading} />
           </Grid.Row>
         </Grid.Column>
-        <Grid.Column width={12} style={{ padding: "0", paddingRight: "1em" }}>
+        <Grid.Column width={12} style={{ padding: "0", paddingLeft: "1em", paddingRight: "1em" }}>
           <Grid.Row style={{ paddingBottom: "0", paddingRight: "0" }} textAlign="right">
             <Grid.Column style={{ paddingBottom: "0", paddingRight: "0" }}>
               <Button.Group floated="right">

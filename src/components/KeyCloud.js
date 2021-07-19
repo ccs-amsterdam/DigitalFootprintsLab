@@ -155,8 +155,11 @@ const prepareData = async (table, field, selection, setData, setLoadingData, set
     selection === null ? await t.toCollection() : await t.where("id").anyOf(selection);
 
   await collection.each(url => {
-    if (url[field] !== "") {
-      keyTotalObj[url[field]] = (keyTotalObj[url[field]] || 0) + 1;
+    let keys = Array.isArray(url[field]) ? url[field] : [url[field]];
+    for (let key of keys) {
+      if (key !== "") {
+        keyTotalObj[key] = (keyTotalObj[key] || 0) + 1;
+      }
     }
   });
   let keyTotal = Object.keys(keyTotalObj).map(key => {
@@ -166,7 +169,6 @@ const prepareData = async (table, field, selection, setData, setLoadingData, set
   setData({ keys: keyTotal, uniqueKeys: uniqueKeys });
   setLoadingData(false);
 
-  console.log(keyTotalObj);
   setKeys(keys => new Set([...keys].filter(key => keyTotalObj[key] != null)));
 };
 

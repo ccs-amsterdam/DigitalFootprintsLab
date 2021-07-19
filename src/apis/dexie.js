@@ -14,6 +14,7 @@ class AnnotationDB {
       meta: "welcome", // this just serves to keep track of whether db was 'created' via the welcome component
       browsinghistory: "id++, &[url+date], domain, date", // &[url+date] is unique compound key
       youtube: "id++, &[url+date], channel, date",
+      searchhistory: "id++, &[query+date], *word, date", // *word is a multientry index that takes an array of words
       platforms: "name",
     });
   }

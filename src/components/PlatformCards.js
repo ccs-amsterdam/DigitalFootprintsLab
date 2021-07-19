@@ -22,13 +22,14 @@ const PlatformCards = () => {
 
   return (
     <>
-      <Chrome />;
+      <Browsing />
+      <Search />
       <Youtube />
     </>
   );
 };
 
-const Chrome = () => {
+const Browsing = () => {
   return (
     <PlatformCard
       name={"Browsing history"} // name needs to match the name in the idb.platforms table
@@ -39,9 +40,25 @@ const Chrome = () => {
   );
 };
 
+const Search = () => {
+  return (
+    <PlatformCard
+      name={"Google searches"}
+      subname={"What did you search for?"}
+      icon={"search"}
+      table={"searchhistory"}
+    />
+  );
+};
+
 const Youtube = () => {
   return (
-    <PlatformCard name={"Youtube"} subname={"Viewing history"} icon={"youtube"} table={"youtube"} />
+    <PlatformCard
+      name={"Youtube"}
+      subname={"Channels and videos"}
+      icon={"youtube"}
+      table={"youtube"}
+    />
   );
 };
 

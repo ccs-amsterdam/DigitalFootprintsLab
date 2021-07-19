@@ -4,6 +4,7 @@ import { Button, Container, Grid, Header, List, Modal, Segment } from "semantic-
 import gt1 from "../images/googleTakeout1.gif";
 import gt2 from "../images/googleTakeout2.gif";
 import db from "../apis/dexie";
+import tokenize from "../util/tokenize";
 
 import JSZip from "jszip";
 import { useDispatch } from "react-redux";
@@ -102,6 +103,7 @@ const UploadGoogleTakeout = ({ setOpen, setLoading }) => {
 
   const onChangeHandler = async e => {
     dispatch(updatePlatformStatus("browsinghistory", "loading"));
+    dispatch(updatePlatformStatus("searchhistory", "loading"));
     dispatch(updatePlatformStatus("Youtube", "loading"));
 
     let failed = false;
@@ -119,6 +121,7 @@ const UploadGoogleTakeout = ({ setOpen, setLoading }) => {
         writeChromeHistory(chrome["Browser History"]);
       } catch (e) {
         failed = true;
+        dispatch(updatePlatformStatus("searchhistory", "failed"));
         dispatch(updatePlatformStatus("browsinghistory", "failed"));
       }
 
@@ -150,7 +153,7 @@ const UploadGoogleTakeout = ({ setOpen, setLoading }) => {
 
   return (
     <div style={{ textAlign: "center" }}>
-      <Button floated="center" primary onClick={() => ref.current.click()}>
+      <Button primary onClick={() => ref.current.click()}>
         Import Google Takeout
       </Button>
       <input
@@ -191,20 +194,37 @@ const parseYoutubeHtml = string => {
 };
 
 const writeChromeHistory = async history => {
-  let d = history.map(item => {
-    let domain = new URL(item.url);
+  let urls = [];
+  let queries = [];
 
-    return {
+  for (let item of history) {
+    let url = new URL(item.url);
+    if (url.hostname + url.pathname === "www.google.com/search") {
+      const query = item.title.replace("- Google Search", "").trim();
+      let words = tokenize(query);
+      queries.push({
+        query: query,
+        word: words,
+        date: convertTimestamp(item.time_usec),
+        platform: "Chrome",
+      });
+      continue;
+    }
+
+    urls.push({
       url: item.url,
       title: item.title,
-      domain: domain.hostname,
+      domain: url.hostname,
       platform: "Chrome",
       date: convertTimestamp(item.time_usec),
       page_transition: item.page_transition,
-    };
-  });
-  await db.addData(d, "browsinghistory");
+    });
+  }
+
+  await db.addData(queries, "searchhistory");
+  await db.addData(urls, "browsinghistory");
   await db.updatePlatform("browsinghistory", "finished");
+  await db.updatePlatform("searchhistory", "finished");
 };
 
 const writeYoutubeHistory = async history => {
