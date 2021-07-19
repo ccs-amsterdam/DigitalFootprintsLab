@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { ResponsiveCalendar, Calendar } from "@nivo/calendar";
+import { ResponsiveCalendar } from "@nivo/calendar";
 import createColors from "../util/createColors";
 
 import db from "../apis/dexie";
 import { Button, ButtonGroup, Dimmer, Grid, Header, Loader, Popup } from "semantic-ui-react";
+import { useLiveQuery } from "dexie-react-hooks";
 
 const COLORS = createColors(100, "white", "#0C1D35", "#954856");
 
@@ -14,17 +15,33 @@ const getSelection = async (table, field, dayRange, setSelection) => {
 
 const TimeLine = ({ table, field, selection, loading, setSelection }) => {
   const [data, setData] = useState(null);
+  const [days, setDays] = useState(null);
   const [dayRange, setDayRange] = useState([null, null]);
+  const [loadingData, setLoadingData] = useState(false);
 
   const [selectionStatus, setSelectionStatus] = useState("idle");
 
+  const n = useLiveQuery(() => db.idb.table(table).count());
+
   useEffect(() => {
-    prepareData(table, field, selection, setData);
-  }, [table, field, selection, setData]);
+    prepareData(table, field, selection, setData, setLoadingData);
+  }, [table, field, selection, setData, setLoadingData, n]);
 
-  if (data === null) return null;
+  useEffect(() => {
+    if (data === null) {
+      setDays(null);
+      return;
+    }
+    setDays(
+      data.day.data.filter((day) => {
+        if (dayRange[0] !== null && day.date < dayRange[0]) return false;
+        if (dayRange[1] !== null && day.date > dayRange[1]) return false;
+        return true;
+      })
+    );
+  }, [data, dayRange]);
 
-  console.log(dayRange);
+  if (data === null || days === null) return null;
 
   return (
     <Grid
@@ -63,19 +80,15 @@ const TimeLine = ({ table, field, selection, loading, setSelection }) => {
           width={16}
           style={{ height: "30em", width: "100%", padding: "0", margin: "0" }}
         >
-          <Dimmer active={loading}>
+          <Dimmer active={loading || loadingData}>
             <Loader />
           </Dimmer>
           <ResponsiveCalendar
-            data={data.day.data.filter((day) => {
-              if (dayRange[0] !== null && day.date < dayRange[0]) return false;
-              if (dayRange[1] !== null && day.date > dayRange[1]) return false;
-              return true;
-            })}
+            data={days}
             from={data.day.min}
             to={data.day.max}
             emptyColor="#ededed1f"
-            colors={COLORS}
+            colors={days.some((day) => day.value > 0) ? COLORS : ["white"]}
             margin={{ top: 0, right: 40, bottom: 20, left: 40 }}
             yearSpacing={35}
             monthSpacing={30}
@@ -98,11 +111,9 @@ const TimeLine = ({ table, field, selection, loading, setSelection }) => {
             onClick={(e) => {
               if (selectionStatus === "select_start") {
                 let midnightMorning = new Date(e.day);
-                console.log(midnightMorning);
                 if (dayRange[1] !== null && dayRange[1] < midnightMorning)
                   midnightMorning = new Date(dayRange[1]);
                 midnightMorning.setHours(0, 0, 0, 0);
-                console.log(midnightMorning);
                 setDayRange([midnightMorning, dayRange[1]]);
                 setSelectionStatus("idle");
               }
@@ -111,10 +122,7 @@ const TimeLine = ({ table, field, selection, loading, setSelection }) => {
                 let midnightEvening = new Date(e.day);
                 if (dayRange[0] !== null && dayRange[0] >= midnightEvening)
                   midnightEvening = new Date(dayRange[0]);
-                console.log(midnightEvening);
                 midnightEvening.setHours(23, 59, 59, 0);
-                console.log(midnightEvening);
-
                 setDayRange([dayRange[0], midnightEvening]);
                 setSelectionStatus("idle");
               }
@@ -127,7 +135,9 @@ const TimeLine = ({ table, field, selection, loading, setSelection }) => {
   );
 };
 
-const prepareData = async (table, field, selection, setData) => {
+const prepareData = async (table, field, selection, setData, setLoadingData) => {
+  setLoadingData(true);
+
   let dayTotalObj = {};
   let weekday = [0, 0, 0, 0, 0, 0, 0];
 
@@ -168,6 +178,7 @@ const prepareData = async (table, field, selection, setData) => {
     day: { min: formatDate(minDate), max: formatDate(maxDate), data: dayTotal },
     weekday: weekday,
   });
+  setLoadingData(false);
 };
 
 const addZ = (n) => {

@@ -3,6 +3,7 @@ import ReactWordcloud from "react-wordcloud";
 
 import db from "../apis/dexie";
 import { Dimmer, Dropdown, Grid, Header, Loader } from "semantic-ui-react";
+import { useLiveQuery } from "dexie-react-hooks";
 
 const wordcloudOptions = {
   rotations: 0,
@@ -23,10 +24,13 @@ const KeyCloud = ({ table, field, selection, nWords, loading, setSelection }) =>
   const [keys, setKeys] = useState(new Set([]));
   const [words, setWords] = useState([]);
   const [data, setData] = useState(null);
+  const [loadingData, setLoadingData] = useState(false);
+
+  const n = useLiveQuery(() => db.idb.table(table).count());
 
   useEffect(() => {
-    prepareData(table, field, selection, setData);
-  }, [table, field, selection, setData]);
+    prepareData(table, field, selection, setData, setLoadingData, setKeys);
+  }, [table, field, selection, setData, n, setLoadingData, setKeys]);
 
   useEffect(() => {
     if (!data) {
@@ -42,9 +46,10 @@ const KeyCloud = ({ table, field, selection, nWords, loading, setSelection }) =>
 
   useEffect(() => {
     let ignore = false; // use closure to 'cancel' promise. prevents slow old requests from overwriting new
-
+    console.log(keys);
     const getSelection = async () => {
       let selection = keys.size > 0 ? await db.getSelectionAny(table, field, [...keys]) : null;
+      console.log(selection);
       if (!ignore) setSelection(selection);
     };
 
@@ -85,7 +90,7 @@ const KeyCloud = ({ table, field, selection, nWords, loading, setSelection }) =>
       }}
     >
       <Grid.Column width={12} style={{ height: "100%", padding: "0", margin: "0" }}>
-        <Dimmer active={loading}>
+        <Dimmer active={loading || loadingData}>
           <Loader />
         </Dimmer>
         <Header as="h1" align={"center"} style={{ color: "white", padding: "0", margin: "0" }}>
@@ -112,7 +117,7 @@ const KeyCloud = ({ table, field, selection, nWords, loading, setSelection }) =>
           style={{
             width: "100%",
             color: "white",
-            minHeight: "20em",
+            minHeight: "22em",
             background: "#ffffff21",
           }}
           value={[...keys]}
@@ -132,7 +137,9 @@ const KeyCloud = ({ table, field, selection, nWords, loading, setSelection }) =>
   );
 };
 
-const prepareData = async (table, field, selection, setData) => {
+const prepareData = async (table, field, selection, setData, setLoadingData, setKeys) => {
+  setLoadingData(true);
+
   let keyTotalObj = {};
 
   let t = await db.idb.table(table);
@@ -152,6 +159,10 @@ const prepareData = async (table, field, selection, setData) => {
   });
   keyTotal.sort((a, b) => b.value - a.value); // sort from high to low value
   setData({ keys: keyTotal, uniqueKeys: uniqueKeys });
+  setLoadingData(false);
+
+  console.log(keyTotalObj);
+  setKeys((keys) => new Set([...keys].filter((key) => keyTotalObj[key] != null)));
 };
 
 export default React.memo(KeyCloud);

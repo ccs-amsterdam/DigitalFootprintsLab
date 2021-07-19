@@ -3,7 +3,7 @@ import ColoredBackgroundGrid from "./ColoredBackgroundGrid";
 import background from "../images/background.jpeg";
 import DataList from "./DataList";
 import db from "../apis/dexie";
-import { Divider, Grid } from "semantic-ui-react";
+import { Button, ButtonGroup, Divider, Grid, Icon } from "semantic-ui-react";
 
 import QueryTable from "./QueryTable";
 import KeyCloud from "./KeyCloud";
@@ -42,6 +42,8 @@ const BrowsingHistory = () => {
   const [timelineSelection, setTimelineSelection] = useState(null);
 
   useEffect(() => {
+    console.log(querySelection);
+    console.log(cloudSelection);
     setSelection(intersect([querySelection, cloudSelection]));
   }, [querySelection, cloudSelection]);
 
@@ -58,7 +60,7 @@ const BrowsingHistory = () => {
     <ColoredBackgroundGrid background={background} color={"#000000b0"}>
       <Grid divided={"vertically"} style={gridStyle}>
         <Grid.Column width={4} style={{ ...gridColumnStyle }}>
-          <Grid.Row centered style={{ padding: "2em" }}>
+          <Grid.Row centered style={{ padding: "2em", paddingRight: "0" }}>
             <QueryTable
               table={"browsing_history"}
               searchOn={SEARCHON}

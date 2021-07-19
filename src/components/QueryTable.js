@@ -1,6 +1,6 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import React, { useEffect, useState } from "react";
-import { Input } from "semantic-ui-react";
+import { Button, ButtonGroup, Grid, Icon, Input } from "semantic-ui-react";
 import db from "../apis/dexie";
 
 const QueryTable = ({ table, searchOn, setSelection, setLoading }) => {
@@ -29,7 +29,15 @@ const QueryTable = ({ table, searchOn, setSelection, setLoading }) => {
       label="Search data"
       loading={selectionStatus === "searching"}
       value={search}
-      icon="search"
+      icon={
+        <Button
+          compact
+          icon="window close"
+          onClick={() => setSearch("")}
+          size="huge"
+          style={{ color: "white", height: "1em", background: "#ffffff00" }}
+        />
+      }
       onChange={(e, d) => setSearch(d.value)}
     ></Input>
   );

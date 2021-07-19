@@ -23,7 +23,7 @@ const ITEMSTYLE = { color: "white" };
 const DataList = ({ table, layout, selection, loading }) => {
   const [data, setData] = useState([]);
   const [n, setN] = useState(1);
-  const [selectionN, setSelectionN] = useState(1);
+  const [selectionN, setSelectionN] = useState(0);
 
   const [confirm, setConfirm] = useState({ open: false, ask: true, itemIds: [] });
   useEffect(() => {
@@ -191,6 +191,7 @@ const ConfirmModal = ({ table, confirm, setConfirm }) => {
 
 const fetchFromDb = async (table, pageSize, setN, setSelectionN, setData, selection) => {
   let n = await db.getTableN(table);
+  console.log(selection);
   setSelectionN(selection === null ? n : selection.length);
   setN(n);
   let newdata = [];
@@ -202,6 +203,9 @@ const fetchFromDb = async (table, pageSize, setN, setSelectionN, setData, select
       newdata = await db.getTableFromIds(table, selection.slice(0, PAGESIZE));
     }
   }
+
+  // prevents delay after removing items while other filters are still resetting
+  if (newdata !== null && newdata.length === 0) setSelectionN(0);
 
   setData(newdata);
 };
