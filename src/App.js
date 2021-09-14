@@ -1,18 +1,17 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import HeaderMenu from "./components/HeaderMenu";
+import HeaderMenu from "./components/routing/HeaderMenu";
 import "./App.css";
 
 // login and authenticated route
-import Welcome from "./components/Welcome";
-import AuthRoute from "./components/AuthRoute";
+import Welcome from "./components/routing/Welcome";
+import AuthRoute from "./components/routing/AuthRoute";
 
 // Main pages. Use below in items to include in header menu
-import DataSquare from "./components/DataSquare";
-import BrowsingHistory from "./components/BrowsingHistory";
-import YoutubeHistory from "./components/YoutubeHistory";
-import SearchHistory from "./components/SearchHistory";
-import Survey from "./components/Survey";
+import DataSquare from "./components/home/DataSquare";
+import BrowsingHistory from "./components/explore/BrowsingHistory";
+import YoutubeHistory from "./components/explore/YoutubeHistory";
+import SearchHistory from "./components/explore/SearchHistory";
 
 // Change to add new components to the header
 // The first item will be the opening page after login
@@ -21,12 +20,11 @@ const items = [
   { label: "Browsing History", path: "/browsinghistory", Component: BrowsingHistory },
   { label: "Search", path: "/searchhistory", Component: SearchHistory },
   { label: "Youtube", path: "/youtube", Component: YoutubeHistory },
-  { label: "Survey", path: "/survey", Component: Survey },
 ];
 
 const App = () => {
-  const createNavigation = items => {
-    return items.map(item => {
+  const createNavigation = (items) => {
+    return items.map((item) => {
       return <AuthRoute key={item.path} path={item.path} Component={item.Component} />;
     });
   };

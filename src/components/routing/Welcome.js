@@ -1,10 +1,15 @@
 import React, { useEffect } from "react";
 
-import db from "../apis/dexie";
+import db from "apis/dexie";
 import { useHistory } from "react-router-dom";
 import { Grid, Button, Header, Segment } from "semantic-ui-react";
-import background from "../images/background.jpeg";
+import background from "images/background.jpeg";
 
+/**
+ * This component only appears the first time users visit,
+ * or if they are away so long that the indexedDB has been cleaned.
+ * In time, this page should clearly list the terms and conditions.
+ */
 const Welcome = ({ items }) => {
   const history = useHistory();
 

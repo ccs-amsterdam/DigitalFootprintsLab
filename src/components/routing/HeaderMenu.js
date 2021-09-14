@@ -6,6 +6,7 @@ const HeaderMenu = ({ items, children }) => {
   // This header menu is super sneaky.
   // It's actually not meant to be seen.
   // But it's nice to be able to turn it on (set visible to true) when developing
+  // (and it now handles the routing)
 
   const location = useLocation();
 

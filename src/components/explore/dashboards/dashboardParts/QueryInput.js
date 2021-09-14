@@ -1,12 +1,24 @@
-import { useLiveQuery } from "dexie-react-hooks";
 import React, { useEffect, useState } from "react";
-import { Button, ButtonGroup, Grid, Icon, Input } from "semantic-ui-react";
-import db from "../apis/dexie";
+import PropTypes from "prop-types";
+import { useLiveQuery } from "dexie-react-hooks";
+import { Button, Input } from "semantic-ui-react";
+import db from "apis/dexie";
 
-const QueryTable = ({ table, searchOn, setSelection, setLoading }) => {
-  // table: what table in db
-  // searchOn: what columns to search in
-  // setSelection: parent hook
+const propTypes = {
+  /** The name of the table */
+  table: PropTypes.string,
+  /** An array with names of the (text) columns in the table that should be used for the fulltext search */
+  searchOn: PropTypes.array,
+  /** A callback function for returning the row IDs that match the query */
+  setSelection: PropTypes.func,
+  /** A callback function for setting the loading status */
+  setLoading: PropTypes.func,
+};
+
+/**
+ * Create an input for full text search
+ */
+const QueryInput = ({ table, searchOn, setSelection, setLoading }) => {
   const [search, setSearch] = useState("");
   const [selectionStatus, setSelectionStatus] = useState("none");
 
@@ -56,7 +68,8 @@ const searchSelection = async (table, searchOn, search, setSelection, setSelecti
   setSelectionStatus("finished");
 };
 
-export default React.memo(QueryTable);
+QueryInput.propTypes = propTypes;
+export default React.memo(QueryInput);
 
 // just keeping this here so I wont forget how insanely usefull this is.
 // A second argument to React.memo lets you view the prev and next props

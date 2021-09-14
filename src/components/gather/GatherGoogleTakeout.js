@@ -1,15 +1,30 @@
 import React, { useRef, useState } from "react";
+import PropTypes from "prop-types";
 
 import { Button, Container, Grid, Header, List, Modal, Segment } from "semantic-ui-react";
-import gt1 from "../images/googleTakeout1.gif";
-import gt2 from "../images/googleTakeout2.gif";
-import db from "../apis/dexie";
-import tokenize from "../util/tokenize";
+import gt1 from "images/googleTakeout1.gif";
+import gt2 from "images/googleTakeout2.gif";
+import db from "apis/dexie";
+import tokenize from "util/tokenize";
 
 import JSZip from "jszip";
 import { useDispatch } from "react-redux";
-import { updatePlatformStatus } from "../actions";
+import { updateDataStatus } from "actions";
 
+// This script handles everything related to importing Google Takeout data
+// It should serve as an example for implementing other platforms
+// (and could probably do with a makeover)
+
+const propTypes = {
+  /** A <GatherCard/>, which then serves as the trigger for the modal when clicked on */
+  children: PropTypes.element,
+  /** callback function for setting the loading status */
+  setLoading: PropTypes.func,
+};
+
+/**
+ * The modal that opens when the Google Takeout Gather card is clicked.
+ */
 const GatherGoogleTakeout = ({ children, setLoading }) => {
   const [open, setOpen] = useState(false);
 
@@ -32,11 +47,6 @@ const GatherGoogleTakeout = ({ children, setLoading }) => {
             </a>{" "}
           </p>
           <br />
-          {/* <p>
-            By importing your takeout data in this tool, you can explore your own digital footprints
-            from the <b>Chrome browser</b> and <b>Youtube</b>. You can also create filtered and
-            anonymized packages of this data that you can donate for scientific research.
-          </p> */}
 
           <Grid stackable>
             <Grid.Column width={16}>
@@ -84,7 +94,7 @@ const GatherGoogleTakeout = ({ children, setLoading }) => {
                   </List.Item>
                 </List>
                 <br />
-                <UploadGoogleTakeout setOpen={setOpen} setLoading={setLoading} />
+                <WriteToDB setOpen={setOpen} setLoading={setLoading} />
               </Container>
             </Grid.Column>
           </Grid>
@@ -97,14 +107,14 @@ const GatherGoogleTakeout = ({ children, setLoading }) => {
   );
 };
 
-const UploadGoogleTakeout = ({ setOpen, setLoading }) => {
+const WriteToDB = ({ setOpen, setLoading }) => {
   const dispatch = useDispatch();
   const ref = useRef();
 
-  const onChangeHandler = async e => {
-    dispatch(updatePlatformStatus("browsinghistory", "loading"));
-    dispatch(updatePlatformStatus("searchhistory", "loading"));
-    dispatch(updatePlatformStatus("Youtube", "loading"));
+  const onChangeHandler = async (e) => {
+    dispatch(updateDataStatus("browsinghistory", "loading"));
+    dispatch(updateDataStatus("searchhistory", "loading"));
+    dispatch(updateDataStatus("youtube", "loading"));
 
     let failed = false;
     try {
@@ -121,8 +131,8 @@ const UploadGoogleTakeout = ({ setOpen, setLoading }) => {
         writeChromeHistory(chrome["Browser History"]);
       } catch (e) {
         failed = true;
-        dispatch(updatePlatformStatus("searchhistory", "failed"));
-        dispatch(updatePlatformStatus("browsinghistory", "failed"));
+        dispatch(updateDataStatus("searchhistory", "failed"));
+        dispatch(updateDataStatus("browsinghistory", "failed"));
       }
 
       try {
@@ -143,7 +153,7 @@ const UploadGoogleTakeout = ({ setOpen, setLoading }) => {
       } catch (e) {
         console.log(e);
         failed = true;
-        dispatch(updatePlatformStatus("youtube", "failed"));
+        dispatch(updateDataStatus("youtube", "failed"));
       }
     } catch (e) {
       setLoading("failed");
@@ -168,7 +178,7 @@ const UploadGoogleTakeout = ({ setOpen, setLoading }) => {
   );
 };
 
-const parseYoutubeHtml = string => {
+const parseYoutubeHtml = (string) => {
   const doc = new DOMParser().parseFromString(string, "text/html");
   const nodes = doc.querySelector(".mdl-grid").querySelectorAll(".mdl-grid");
 
@@ -193,7 +203,7 @@ const parseYoutubeHtml = string => {
   return items;
 };
 
-const writeChromeHistory = async history => {
+const writeChromeHistory = async (history) => {
   let urls = [];
   let queries = [];
 
@@ -223,12 +233,12 @@ const writeChromeHistory = async history => {
 
   await db.addData(queries, "searchhistory");
   await db.addData(urls, "browsinghistory");
-  await db.updatePlatform("browsinghistory", "finished");
-  await db.updatePlatform("searchhistory", "finished");
+  await db.updateDataStatus("browsinghistory", "finished");
+  await db.updateDataStatus("searchhistory", "finished");
 };
 
-const writeYoutubeHistory = async history => {
-  let d = history.map(item => {
+const writeYoutubeHistory = async (history) => {
+  let d = history.map((item) => {
     return {
       url: item.titleUrl,
       title: item.title,
@@ -243,12 +253,13 @@ const writeYoutubeHistory = async history => {
 
   // }
   await db.addData(d, "youtube");
-  await db.updatePlatform("youtube", "finished");
+  await db.updateDataStatus("youtube", "finished");
 };
 
-const convertTimestamp = time => {
+const convertTimestamp = (time) => {
   // seems to be in microseconds since epoch
   return new Date(Math.round(time / 1000));
 };
 
+GatherGoogleTakeout.propTypes = propTypes;
 export default GatherGoogleTakeout;

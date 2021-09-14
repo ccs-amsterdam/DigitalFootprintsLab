@@ -1,9 +1,9 @@
 import React from "react";
 import { Card, Grid, Header, Icon } from "semantic-ui-react";
-import logo from "../images/logo.png";
+import logo from "images/logo.png";
 
-import GatherCards from "./GatherCards";
-import PlatformCards from "./PlatformCards";
+import GatherCardColumn from "./GatherCardColumn";
+import ExploreCardColumn from "./ExploreCardColumn";
 
 const headerStyle = {
   color: "white",
@@ -33,7 +33,7 @@ const DataSquare = () => {
           </Header>
 
           <Card.Group style={cardGroupStyle}>
-            <GatherCards />
+            <GatherCardColumn />
           </Card.Group>
         </Grid.Column>
         <Grid.Column textAlign="center" width={5} style={columnStyle}>
@@ -43,7 +43,7 @@ const DataSquare = () => {
           </Header>
 
           <Card.Group style={cardGroupStyle}>
-            <PlatformCards />
+            <ExploreCardColumn />
           </Card.Group>
         </Grid.Column>
         <Grid.Column textAlign="center" width={5} style={columnStyle}>

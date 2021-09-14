@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
 import { ResponsiveCalendar } from "@nivo/calendar";
-import createColors from "../util/createColors";
-
-import db from "../apis/dexie";
-import { Button, ButtonGroup, Dimmer, Grid, Header, Loader, Popup } from "semantic-ui-react";
 import { useLiveQuery } from "dexie-react-hooks";
+import React, { useEffect, useState } from "react";
+import { Button, ButtonGroup, Dimmer, Grid, Loader } from "semantic-ui-react";
+import db from "apis/dexie";
+import createColors from "util/createColors";
 
 const COLORS = createColors(100, "white", "#0C1D35", "#954856");
 const ZEROCOLOR = ["white"];
@@ -23,12 +22,7 @@ const LEGENDS = [
 const MARGIN = { top: 0, right: 0, bottom: 0, left: 40 };
 const THEME = { textColor: "white", fontSize: 14 };
 
-const getSelection = async (table, field, dayRange, setSelection) => {
-  let selection = await db.getSelectionAny(table, field, dayRange);
-  setSelection(selection);
-};
-
-const TimeLine = ({ table, field, selection, loading, setSelection }) => {
+const TimeLine = ({ table, field, inSelection, loading, setOutSelection }) => {
   const [data, setData] = useState(null);
   const [days, setDays] = useState(null);
   const [dayRange, setDayRange] = useState([null, null]);
@@ -39,8 +33,8 @@ const TimeLine = ({ table, field, selection, loading, setSelection }) => {
   const n = useLiveQuery(() => db.idb.table(table).count());
 
   useEffect(() => {
-    prepareData(table, field, selection, setData, setLoadingData);
-  }, [table, field, selection, setData, setLoadingData, n]);
+    prepareData(table, field, inSelection, setData, setLoadingData);
+  }, [table, field, inSelection, setData, setLoadingData, n]);
 
   useEffect(() => {
     if (data === null) {
@@ -48,13 +42,29 @@ const TimeLine = ({ table, field, selection, loading, setSelection }) => {
       return;
     }
     setDays(
-      data.day.data.filter(day => {
+      data.day.data.filter((day) => {
         if (dayRange[0] !== null && day.date < dayRange[0]) return false;
         if (dayRange[1] !== null && day.date > dayRange[1]) return false;
         return true;
       })
     );
-  }, [data, dayRange]);
+  }, [data, dayRange, setDays]);
+
+  useEffect(() => {
+    let ignore = false;
+    const getSelection = async () => {
+      let selection = null;
+      if (dayRange[0] !== null || dayRange[1] !== null) {
+        selection = await db.getSelectionRange(table, field, dayRange[0], dayRange[1]);
+      }
+      if (!ignore) setOutSelection(selection);
+    };
+    getSelection();
+
+    return () => {
+      ignore = true; // use closure to 'cancel' promise. prevents delayed older requests from overwriting new
+    };
+  }, [dayRange, table, field, setOutSelection]);
 
   if (data === null || days === null) return null;
 
@@ -113,7 +123,7 @@ const TimeLine = ({ table, field, selection, loading, setSelection }) => {
             from={data.day.min}
             to={data.day.max}
             emptyColor="#ededed1f"
-            colors={days.some(day => day.value > 0) ? COLORS : ZEROCOLOR}
+            colors={days.some((day) => day.value > 0) ? COLORS : ZEROCOLOR}
             margin={MARGIN}
             yearSpacing={35}
             monthSpacing={30}
@@ -121,8 +131,8 @@ const TimeLine = ({ table, field, selection, loading, setSelection }) => {
             dayBorderWidth={2}
             dayBorderColor="#150a0a2e"
             legends={LEGENDS}
-            onContextMenu={e => console.log(e)}
-            onClick={e => {
+            onContextMenu={(e) => console.log(e)}
+            onClick={(e) => {
               if (selectionStatus === "select_start") {
                 let midnightMorning = new Date(e.day);
                 if (dayRange[1] !== null && dayRange[1] < midnightMorning)
@@ -166,7 +176,7 @@ const prepareData = async (table, field, selection, setData, setLoadingData) => 
   minDate = minDate.date;
   maxDate = maxDate.date;
 
-  await collection.each(url => {
+  await collection.each((url) => {
     if (url[field] !== "") {
       weekday[url[field].getDay()]++;
       const day = formatDate(url[field]);
@@ -182,7 +192,7 @@ const prepareData = async (table, field, selection, setData, setLoadingData) => 
     if (!dayTotalObj[day]) dayTotalObj[day] = 0;
   }
 
-  let dayTotal = Object.keys(dayTotalObj).map(day => {
+  let dayTotal = Object.keys(dayTotalObj).map((day) => {
     const date = new Date(day);
     date.setHours(0, 0, 0, 0);
     return { date: date, day: day, value: dayTotalObj[day] };
@@ -195,11 +205,11 @@ const prepareData = async (table, field, selection, setData, setLoadingData) => 
   setLoadingData(false);
 };
 
-const addZ = n => {
+const addZ = (n) => {
   return n < 10 ? "0" + n : "" + n;
 };
 
-const formatDate = date => {
+const formatDate = (date) => {
   return date.getFullYear() + "-" + addZ(date.getMonth() + 1) + "-" + addZ(date.getDate());
 };
 

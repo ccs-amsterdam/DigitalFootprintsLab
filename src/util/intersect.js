@@ -1,7 +1,11 @@
+/**
+ * Intersect ordered numbers across multiple arrays.
+ * Used in this app to quickly intersect the table row ids from different filters (e.g., text query, date, key)
+ *
+ * @param {array} arrays an array of arrays, where each array has sorted (!!!) integers
+ * @returns An array of integers
+ */
 const intersect = (arrays) => {
-  // intersect ordered numbers across multiple arrays
-  // arrays is an array of arrays, where each array has sorted (!!) table ids.
-  // (dexie doesn't do AND queries, so we search ids for different filters separately and intersect them)
   arrays = arrays.filter((array) => array !== null);
   if (arrays.length === 0) return null;
   if (arrays.length === 1) return arrays[0];

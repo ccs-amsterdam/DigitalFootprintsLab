@@ -1,11 +1,14 @@
 import React from "react";
 import { Grid } from "semantic-ui-react";
 
+/**
+ * Create a Grid with a background that has a color on top of it.
+ * This can be used with a transparent color to for instance darken a background
+ * (for deployment, probably better to eventually just use a darkened image)
+ * @returns
+ */
 const ColoredBackgroundGrid = ({ children, background, color }) => {
-  // create a Grid with a background that has a color on top of it
-  // this can be used with a transparent color to for instance darken a background
-  // (needs to be tested on some devices though, because this is pretty hacked together)
-
+  // just wrap the children in this component, pass an image path to background and a string to color
   return (
     <>
       <div

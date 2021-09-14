@@ -1,20 +1,20 @@
-export const setPlatformStatus = (platformStatus) => {
+export const setDataStatus = (dataStatus) => {
   return {
-    type: "SET_PLATFORM_STATUS",
-    platformStatus,
+    type: "SET_DATA_STATUS",
+    dataStatus,
   };
 };
 
-export const updatePlatformStatus = (name, status) => {
+export const updateDataStatus = (name, status) => {
   return (dispatch, getState) => {
-    const { platformStatus } = getState();
-    const newPlatformStatus = [...platformStatus];
-    const i = newPlatformStatus.findIndex((platform) => platform.name === name);
+    const { dataStatus } = getState();
+    const newDataStatus = [...dataStatus];
+    const i = newDataStatus.findIndex((data) => data.name === name);
     if (i < 0) {
-      newPlatformStatus.push({ name, date: null, status: status });
+      newDataStatus.push({ name, date: null, status: status });
     } else {
-      newPlatformStatus[i] = { ...newPlatformStatus[i], status: status };
+      newDataStatus[i] = { ...newDataStatus[i], status: status };
     }
-    dispatch(setPlatformStatus(newPlatformStatus));
+    dispatch(setDataStatus(newDataStatus));
   };
 };

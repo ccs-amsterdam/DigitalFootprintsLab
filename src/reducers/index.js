@@ -1,17 +1,17 @@
 import { combineReducers } from "redux";
 
-const platformStatus = (state = [], action) => {
+const dataStatus = (state = [], action) => {
   switch (action.type) {
-    case "SET_PLATFORM_STATUS":
+    case "SET_DATA_STATUS":
       // set whole status array
-      return action.platformStatus;
+      return action.dataStatus;
     default:
       return state;
   }
 };
 
 const rootReducer = combineReducers({
-  platformStatus,
+  dataStatus,
 });
 
 export default rootReducer;

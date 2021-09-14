@@ -1,13 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import {
-  Pagination,
-  Icon,
   Item,
   Container,
   Button,
   Visibility,
   Header,
-  Confirm,
   Modal,
   Checkbox,
   ButtonGroup,
@@ -15,11 +13,29 @@ import {
   Loader,
   Segment,
 } from "semantic-ui-react";
-import db from "../apis/dexie";
+import db from "apis/dexie";
 
 const PAGESIZE = 25;
 const ITEMSTYLE = { color: "white" };
 
+const propTypes = {
+  /** The name of the table in DB */
+  table: PropTypes.string,
+  /** An object with layout information.
+   * The keys should be columns in the table
+   * The values are objects with a "type" (header, meta or description) and a react inline style
+   * See BrowsingHistory.js or SearchHistory.js for examples
+   */
+  layout: PropTypes.objects,
+  /** An array with row IDs to filter on */
+  selection: PropTypes.array,
+  /** A string to indicate the loading status */
+  loading: PropTypes.string,
+};
+
+/**
+ * Creates a list of items for a given table in the indexedDB
+ */
 const DataList = ({ table, layout, selection, loading }) => {
   const [data, setData] = useState([]);
   const [n, setN] = useState(1);
@@ -47,14 +63,10 @@ const DataList = ({ table, layout, selection, loading }) => {
     setData([...data, ...newdata]);
   };
 
-  const createItem = item => {
-    return Object.keys(layout).map(field => {
+  const createItem = (item) => {
+    return Object.keys(layout).map((field, i) => {
       let content = item[field];
-      if (content instanceof Date)
-        content = content
-          .toISOString()
-          .slice(0, 19)
-          .replace(/T/g, " ");
+      if (content instanceof Date) content = content.toISOString().slice(0, 19).replace(/T/g, " ");
       if (field === "url") {
         let url = new URL(content);
         content = (
@@ -63,22 +75,32 @@ const DataList = ({ table, layout, selection, loading }) => {
             {url.pathname}
           </p>
         );
-        //content = content.split("?")[0];
-        // content = (
-        //     <a style={{ color: "#79a9ec" }} href={content} target="_blank" rel="noopener noreferrer">
-        //       {content.split("?")[0]}
-        //     </a>
-        //  );
       }
 
       if (layout[field].type === "header")
-        return <Item.Header style={layout[field].style}>{content}</Item.Header>;
+        return (
+          <Item.Header key={i} style={layout[field].style}>
+            {content}
+          </Item.Header>
+        );
       if (layout[field].type === "meta")
-        return <Item.Meta style={layout[field].style}>{content}</Item.Meta>;
+        return (
+          <Item.Meta key={i} style={layout[field].style}>
+            {content}
+          </Item.Meta>
+        );
       if (layout[field].type === "description")
-        return <Item.Description style={layout[field].style}>{content}</Item.Description>;
+        return (
+          <Item.Description key={i} style={layout[field].style}>
+            {content}
+          </Item.Description>
+        );
       if (layout[field].type === "extra")
-        return <Item.Extra style={layout[field].style}>{content}</Item.Extra>;
+        return (
+          <Item.Extra key={i} style={layout[field].style}>
+            {content}
+          </Item.Extra>
+        );
       return { content };
     });
   };
@@ -86,7 +108,7 @@ const DataList = ({ table, layout, selection, loading }) => {
   const createItems = () => {
     if (data === null || data.length === 0) return null;
 
-    const image = Object.keys(layout).find(field => layout[field].type === "image");
+    const image = Object.keys(layout).find((field) => layout[field].type === "image");
 
     return data.map((item, i) => {
       return (
@@ -212,4 +234,5 @@ const fetchFromDb = async (table, pageSize, setN, setSelectionN, setData, select
   setData(newdata);
 };
 
+DataList.propTypes = propTypes;
 export default React.memo(DataList);

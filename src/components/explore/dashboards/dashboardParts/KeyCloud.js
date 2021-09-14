@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { PropTypes } from "prop-types";
 import ReactWordcloud from "react-wordcloud";
 
-import db from "../apis/dexie";
+import db from "apis/dexie";
 import { Dimmer, Dropdown, Grid, Header, Loader } from "semantic-ui-react";
 import { useLiveQuery } from "dexie-react-hooks";
 
@@ -17,10 +18,25 @@ const wordcloudOptions = {
 };
 const wordcloudSize = undefined;
 
-const KeyCloud = ({ table, field, selection, nWords, loading, setSelection }) => {
-  // makes a wordcloud for keys in a table:field in db
-  // selection is an array of primary key ids in table:field
-  // nWords is an integer, loading is a bool, setSelection is a setState callback for an array of table ids
+const propTypes = {
+  /** The name of the table in db */
+  table: PropTypes.string,
+  /** The name of the field in db */
+  field: PropTypes.string,
+  /** An array with a selection of row ids in table */
+  inSelection: PropTypes.array,
+  /** An integer specifying the number of words in the cloud*/
+  nWords: PropTypes.number,
+  /** A boolean for whether data is loading */
+  loading: PropTypes.bool,
+  /** A callback for setting the selection state */
+  setOutSelection: PropTypes.func,
+};
+
+/**
+ * Makes a wordcloud for keys, for a given table:field in db
+ */
+const KeyCloud = ({ table, field, inSelection, nWords, loading, setOutSelection }) => {
   const [keys, setKeys] = useState(new Set([]));
   const [words, setWords] = useState([]);
   const [data, setData] = useState(null);
@@ -29,15 +45,15 @@ const KeyCloud = ({ table, field, selection, nWords, loading, setSelection }) =>
   const n = useLiveQuery(() => db.idb.table(table).count());
 
   useEffect(() => {
-    prepareData(table, field, selection, setData, setLoadingData, setKeys);
-  }, [table, field, selection, setData, n, setLoadingData, setKeys]);
+    prepareData(table, field, inSelection, setData, setLoadingData, setKeys);
+  }, [table, field, inSelection, setData, n, setLoadingData, setKeys]);
 
   useEffect(() => {
     if (!data) {
       setWords([]);
       return null;
     }
-    const words = data.keys.slice(0, nWords).map(word => {
+    const words = data.keys.slice(0, nWords).map((word) => {
       const text = word.text.replace("www.", "");
       return { text: text, domain: word.text, value: word.value };
     });
@@ -45,24 +61,21 @@ const KeyCloud = ({ table, field, selection, nWords, loading, setSelection }) =>
   }, [data, nWords]);
 
   useEffect(() => {
-    let ignore = false; // use closure to 'cancel' promise. prevents slow old requests from overwriting new
-    console.log(keys);
+    let ignore = false;
     const getSelection = async () => {
       let selection = keys.size > 0 ? await db.getSelectionAny(table, field, [...keys]) : null;
-      console.log(selection);
-      if (!ignore) setSelection(selection);
+      if (!ignore) setOutSelection(selection);
     };
-
     getSelection();
     return () => {
-      ignore = true;
+      ignore = true; // use closure to 'cancel' promise. prevents delayed older requests from overwriting new
     };
-  }, [keys, setSelection, table, field]);
+  }, [keys, setOutSelection, table, field]);
 
   const callbacks = React.useCallback(() => {
     return {
-      onWordClick: word => {
-        setKeys(old => {
+      onWordClick: (word) => {
+        setKeys((old) => {
           const newkeys = new Set([...old]);
           if (newkeys.has(word.domain)) {
             newkeys.delete(word.domain);
@@ -72,7 +85,7 @@ const KeyCloud = ({ table, field, selection, nWords, loading, setSelection }) =>
           return newkeys;
         });
       },
-      getWordColor: word => {
+      getWordColor: (word) => {
         if (keys.size === 0) return "white";
         return keys.has(word.domain) ? "white" : "grey";
       },
@@ -129,7 +142,7 @@ const KeyCloud = ({ table, field, selection, nWords, loading, setSelection }) =>
           onChange={(e, d) => setKeys(new Set(d.value))}
           options={
             data
-              ? data.uniqueKeys.map(e => ({
+              ? data.uniqueKeys.map((e) => ({
                   value: e,
                   text: e.replace("www.", ""),
                   key: e,
@@ -154,7 +167,7 @@ const prepareData = async (table, field, selection, setData, setLoadingData, set
   let collection =
     selection === null ? await t.toCollection() : await t.where("id").anyOf(selection);
 
-  await collection.each(url => {
+  await collection.each((url) => {
     let keys = Array.isArray(url[field]) ? url[field] : [url[field]];
     for (let key of keys) {
       if (key !== "") {
@@ -162,14 +175,15 @@ const prepareData = async (table, field, selection, setData, setLoadingData, set
       }
     }
   });
-  let keyTotal = Object.keys(keyTotalObj).map(key => {
+  let keyTotal = Object.keys(keyTotalObj).map((key) => {
     return { text: key, value: keyTotalObj[key] };
   });
   keyTotal.sort((a, b) => b.value - a.value); // sort from high to low value
   setData({ keys: keyTotal, uniqueKeys: uniqueKeys });
   setLoadingData(false);
 
-  setKeys(keys => new Set([...keys].filter(key => keyTotalObj[key] != null)));
+  setKeys((keys) => new Set([...keys].filter((key) => keyTotalObj[key] != null)));
 };
 
+KeyCloud.propTypes = propTypes;
 export default React.memo(KeyCloud);
