@@ -5,9 +5,7 @@ import { useHistory } from "react-router";
 import CardTemplate from "./CardTemplate";
 
 const propTypes = {
-  /** The name of the type of data to explore. This should't just be any name, but should match the name
-   * used in the datastatus db table, that is also in the react router, and has its own db table.
-   */
+  /** The name of the type of data to explore. */
   name: PropTypes.string.isRequired,
   /** A subname, for extra info */
   subname: PropTypes.string.isRequired,
