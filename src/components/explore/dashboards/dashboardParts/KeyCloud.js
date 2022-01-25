@@ -4,7 +4,6 @@ import ReactWordcloud from "react-wordcloud";
 
 import db from "apis/dexie";
 import { Dimmer, Dropdown, Grid, Header, Loader } from "semantic-ui-react";
-import { useLiveQuery } from "dexie-react-hooks";
 
 const wordcloudOptions = {
   rotations: 0,
@@ -36,26 +35,37 @@ const propTypes = {
 /**
  * Makes a wordcloud for keys, for a given table:field in db
  */
-const KeyCloud = ({ table, field, inSelection, nWords, loading, setOutSelection }) => {
+const KeyCloud = ({ table, field, dashData, inSelection, nWords, loading, setOutSelection }) => {
   const [keys, setKeys] = useState(new Set([]));
   const [words, setWords] = useState([]);
   const [data, setData] = useState(null);
   const [loadingData, setLoadingData] = useState(false);
 
-  const n = useLiveQuery(() => db.idb.table(table).count());
-
   useEffect(() => {
-    prepareData(table, field, inSelection, setData, setLoadingData, setKeys);
-  }, [table, field, inSelection, setData, n, setLoadingData, setKeys]);
+    //prepareData(dashData, field, setData, setLoadingData, setKeys);
+    if (!dashData) {
+      setData(null);
+      setKeys(new Set([]));
+      return;
+    }
+    console.log(dashData);
+    const counts = dashData.count(field);
+    let countsArray = Object.keys(counts).map((key) => {
+      return { value: key, n: counts[key] };
+    });
+    countsArray.sort((a, b) => b.n - a.n); // sort from high to low value
+    setData(countsArray);
+    setKeys((keys) => new Set([...keys].filter((key) => counts[key] != null)));
+  }, [dashData, field, setData, setLoadingData, setKeys]);
 
   useEffect(() => {
     if (!data) {
       setWords([]);
       return null;
     }
-    const words = data.keys.slice(0, nWords).map((word) => {
-      const text = word.text.replace("www.", "");
-      return { text: text, domain: word.text, value: word.value };
+    const words = data.slice(0, nWords).map((word) => {
+      const text = word.value.replace("www.", "");
+      return { text: text, key: word.value, value: word.n };
     });
     setWords(words);
   }, [data, nWords]);
@@ -77,17 +87,17 @@ const KeyCloud = ({ table, field, inSelection, nWords, loading, setOutSelection 
       onWordClick: (word) => {
         setKeys((old) => {
           const newkeys = new Set([...old]);
-          if (newkeys.has(word.domain)) {
-            newkeys.delete(word.domain);
+          if (newkeys.has(word.key)) {
+            newkeys.delete(word.key);
           } else {
-            newkeys.add(word.domain);
+            newkeys.add(word.key);
           }
           return newkeys;
         });
       },
       getWordColor: (word) => {
         if (keys.size === 0) return "white";
-        return keys.has(word.domain) ? "white" : "grey";
+        return keys.has(word.key) ? "white" : "grey";
       },
     };
   }, [keys]);
@@ -142,10 +152,10 @@ const KeyCloud = ({ table, field, inSelection, nWords, loading, setOutSelection 
           onChange={(e, d) => setKeys(new Set(d.value))}
           options={
             data
-              ? data.uniqueKeys.map((e) => ({
-                  value: e,
-                  text: e.replace("www.", ""),
-                  key: e,
+              ? data.map((e) => ({
+                  value: e.value,
+                  text: e.value.replace("www.", ""),
+                  key: e.value,
                 }))
               : []
           }
@@ -153,36 +163,6 @@ const KeyCloud = ({ table, field, inSelection, nWords, loading, setOutSelection 
       </Grid.Column>
     </Grid>
   );
-};
-
-const prepareData = async (table, field, selection, setData, setLoadingData, setKeys) => {
-  setLoadingData(true);
-
-  let keyTotalObj = {};
-
-  let t = await db.idb.table(table);
-
-  let uniqueKeys = await t.orderBy(field).uniqueKeys();
-
-  let collection =
-    selection === null ? await t.toCollection() : await t.where("id").anyOf(selection);
-
-  await collection.each((url) => {
-    let keys = Array.isArray(url[field]) ? url[field] : [url[field]];
-    for (let key of keys) {
-      if (key !== "") {
-        keyTotalObj[key] = (keyTotalObj[key] || 0) + 1;
-      }
-    }
-  });
-  let keyTotal = Object.keys(keyTotalObj).map((key) => {
-    return { text: key, value: keyTotalObj[key] };
-  });
-  keyTotal.sort((a, b) => b.value - a.value); // sort from high to low value
-  setData({ keys: keyTotal, uniqueKeys: uniqueKeys });
-  setLoadingData(false);
-
-  setKeys((keys) => new Set([...keys].filter((key) => keyTotalObj[key] != null)));
 };
 
 KeyCloud.propTypes = propTypes;

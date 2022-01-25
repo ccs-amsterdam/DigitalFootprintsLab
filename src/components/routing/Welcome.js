@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import db from "apis/dexie";
+import db from "apis/db";
 import { useHistory } from "react-router-dom";
 import { Grid, Button, Header, Segment } from "semantic-ui-react";
 import background from "images/background.jpeg";

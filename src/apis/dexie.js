@@ -1,4 +1,5 @@
 import Dexie from "dexie";
+import { DataFrame } from "dataframe-js";
 //import hash from "object-hash";
 
 /**
@@ -12,8 +13,8 @@ class AnnotationDB {
 
     // the following 2 lines are only for developing
     // if enabled (i.e. not commented), the db resets every time the app is started (also when refreshing)
-    this.idb.delete();
-    this.idb = new Dexie("DataDonationsLab");
+    // this.idb.delete();
+    // this.idb = new Dexie("DataDonationsLab");
 
     this.idb.version(2).stores({
       meta: "welcome", // this just serves to keep track of whether db was 'created' via the welcome component. Eventually, this would be a good place to add authentication / token validation
@@ -56,43 +57,7 @@ class AnnotationDB {
 
   async deleteTableIds(table, ids) {
     if (ids.length === 0) return [];
-    await this.idb.table(table).where("id").anyOf(ids).delete();
-  }
-
-  /**
-   * text search data in table
-   * @param {string} table  Name of a table
-   * @param {array} fields  Names of the fields to search
-   * @param {string} query  A string to search for
-   * @param {string} key    Optionally, filter on an indexed 'key' before performing the fulltext search.
-   * @param {array} any     If key is used, any should be an array of values
-   * @returns
-   */
-  async getSelectionQuery(table, fields, query, key, any) {
-    // table: what table to search
-    // fields: what columns to search
-    // query: direct text match
-    // key, any: optionally, filter on an indexed key, where any is an array of values
-    let regex = null;
-    if (query !== "") regex = new RegExp(query.replace(/[-/\\^$*+?.()|[\]{}]/, "\\$&"), "i");
-    let rows = await this.idb.table(table);
-
-    let selection = [];
-    let collection = any == null ? await rows.toCollection() : await rows.where(key).anyOf(any);
-
-    await collection.each((row) => {
-      for (let field of fields) {
-        if (regex === null) {
-          selection.push(row.id);
-          return;
-        }
-        if (regex.test(row[field])) {
-          selection.push(row.id);
-          return;
-        }
-      }
-    });
-    return selection;
+    await this.idb.table(table).bulkDelete(ids);
   }
 
   async getSelectionAny(table, key, any) {
@@ -143,6 +108,45 @@ class AnnotationDB {
       .catch(Dexie.BulkError, (e) => {
         console.log(`Failed to upload ${e.failures.length} data items`);
       });
+  }
+
+  async getDataFrame(selection) {
+    let browserdata = [];
+
+    if (selection !== null) {
+      browserdata = await db.getTableFromIds("browsinghistory", selection);
+    } else {
+      browserdata = await this.idb.table("browsinghistory").toArray();
+    }
+
+    let stats = new DataFrame(browserdata);
+    stats = stats.withColumn("dateOnly", (row) => {
+      const date = row.get("date");
+      return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    });
+    stats = stats.withColumn("time", (row) => {
+      const date = row.get("date");
+      return new Date(0, 0, 0, date.getHours(), date.getMinutes(), 0);
+    });
+    stats = stats.withColumn("day", (row) => row.get("date").getDay());
+    stats = stats.sortBy("date");
+
+    return stats;
+  }
+
+  async createDashboardData(table, searchFields, fields) {
+    if (!Array.isArray(fields)) fields = [fields];
+    let data = { arrayNames: ["searchText", ...fields], index: {} };
+
+    await this.idb
+      .table(table)
+      .toCollection()
+      .each((row) => {
+        const searchText = searchFields.map((sf) => row[sf]).join(" ");
+        const fieldValues = fields.map((f) => row[f]);
+        data.index[row.id] = [searchText, fieldValues];
+      });
+    return data;
   }
 }
 

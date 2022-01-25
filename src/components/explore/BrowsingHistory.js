@@ -3,11 +3,12 @@ import HistoryDashboard from "./dashboards/HistoryDashboard";
 
 const SEARCHON = ["url", "title"];
 
-const LAYOUT = {
-  url: { type: "header", style: { color: "white" } },
-  title: { type: "description", style: { color: "white" } },
-  date: { type: "meta", style: { color: "white", fontStyle: "italic" } },
-};
+const LAYOUT = ["date", "title", "url"];
+// const LAYOUT = {
+//   url: { type: "header", style: { color: "white" } },
+//   title: { type: "description", style: { color: "white" } },
+//   date: { type: "meta", style: { color: "white", fontStyle: "italic" } },
+// };
 
 /**
  * Renders a HistoryDashboard for the browsing history data.
@@ -18,7 +19,7 @@ const BrowsingHistory = () => {
   return (
     <HistoryDashboard
       searchOn={SEARCHON}
-      layout={LAYOUT}
+      columns={LAYOUT}
       table={"browsinghistory"}
       cloudKey={"domain"}
     />

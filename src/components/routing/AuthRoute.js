@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Route, Redirect } from "react-router";
-import db from "apis/dexie";
+import db from "apis/db";
 
 /**
  * Handles authentication (which at the moment is just accepting the welcome message)
@@ -32,7 +32,7 @@ const AuthRoute = ({ Component, ...componentProps }) => {
         ) : hasdb ? (
           <Component {...componentProps} {...props} />
         ) : (
-          <Redirect to={"/"} />
+          <Redirect to={`${process.env.PUBLIC_URL}/`} />
         )
       }
     />

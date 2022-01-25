@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { useLiveQuery } from "dexie-react-hooks";
 import { Button, Input } from "semantic-ui-react";
-import db from "apis/dexie";
 
 const propTypes = {
   /** The name of the table */
@@ -18,11 +16,9 @@ const propTypes = {
 /**
  * Create an input for full text search
  */
-const QueryInput = ({ table, searchOn, setSelection, setLoading }) => {
+const QueryInput = ({ dashData, searchOn, setSelection, setLoading }) => {
   const [search, setSearch] = useState("");
   const [selectionStatus, setSelectionStatus] = useState("none");
-
-  const n = useLiveQuery(() => db.idb.table(table).count());
 
   useEffect(() => {
     setLoading(selectionStatus === "searching");
@@ -30,10 +26,14 @@ const QueryInput = ({ table, searchOn, setSelection, setLoading }) => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      searchSelection(table, searchOn, search, setSelection, setSelectionStatus);
+      if (dashData && search) {
+        setSelection(dashData.search(search, searchOn));
+      } else {
+        setSelection(null);
+      }
     }, 500);
     return () => clearTimeout(timer);
-  }, [table, search, setSelectionStatus, searchOn, setSelection, n]);
+  }, [dashData, search, searchOn, setSelectionStatus, setSelection]);
 
   return (
     <Input
@@ -53,19 +53,6 @@ const QueryInput = ({ table, searchOn, setSelection, setLoading }) => {
       onChange={(e, d) => setSearch(d.value)}
     ></Input>
   );
-};
-
-const searchSelection = async (table, searchOn, search, setSelection, setSelectionStatus) => {
-  if (search === "") {
-    setSelection(null);
-    setSelectionStatus("none");
-    return;
-  }
-  setSelectionStatus("searching");
-
-  const selection = await db.getSelectionQuery(table, searchOn, search);
-  setSelection(selection);
-  setSelectionStatus("finished");
 };
 
 QueryInput.propTypes = propTypes;

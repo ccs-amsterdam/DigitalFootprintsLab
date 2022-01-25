@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { Button, Container, Grid, Header, List, Modal, Segment } from "semantic-ui-react";
 import gt1 from "images/googleTakeout1.gif";
 import gt2 from "images/googleTakeout2.gif";
-import db from "apis/dexie";
+import db from "apis/db";
 import tokenize from "util/tokenize";
 
 import JSZip from "jszip";
@@ -128,7 +128,9 @@ const WriteToDB = ({ setOpen, setLoading }) => {
       try {
         let chrome = await zipped.file("Takeout/Chrome/BrowserHistory.json").async("text");
         chrome = JSON.parse(chrome);
-        writeChromeHistory(chrome["Browser History"]);
+        await writeChromeHistory(chrome["Browser History"]);
+        dispatch(updateDataStatus("browsinghistory", "finished"));
+        dispatch(updateDataStatus("searchhistory", "finished"));
       } catch (e) {
         failed = true;
         dispatch(updateDataStatus("searchhistory", "failed"));
@@ -149,7 +151,8 @@ const WriteToDB = ({ setOpen, setLoading }) => {
             .async("text");
           youtube = parseYoutubeHtml(youtube);
         }
-        writeYoutubeHistory(youtube);
+        await writeYoutubeHistory(youtube);
+        dispatch(updateDataStatus("youtube", "finished"));
       } catch (e) {
         console.log(e);
         failed = true;
@@ -158,6 +161,7 @@ const WriteToDB = ({ setOpen, setLoading }) => {
     } catch (e) {
       setLoading("failed");
     }
+
     setLoading(failed ? "failed" : "finished");
   };
 
@@ -233,8 +237,8 @@ const writeChromeHistory = async (history) => {
 
   await db.addData(queries, "searchhistory");
   await db.addData(urls, "browsinghistory");
-  await db.updateDataStatus("browsinghistory", "finished");
-  await db.updateDataStatus("searchhistory", "finished");
+  // await db.updateDataStatus("browsinghistory", "finished");
+  // await db.updateDataStatus("searchhistory", "finished");
 };
 
 const writeYoutubeHistory = async (history) => {
@@ -252,8 +256,9 @@ const writeYoutubeHistory = async (history) => {
   //   await db.addData([d[i]], "youtube");
 
   // }
+  console.log(d);
   await db.addData(d, "youtube");
-  await db.updateDataStatus("youtube", "finished");
+  // await db.updateDataStatus("youtube", "finished");
 };
 
 const convertTimestamp = (time) => {

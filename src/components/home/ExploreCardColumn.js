@@ -1,8 +1,7 @@
-import { useLiveQuery } from "dexie-react-hooks";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setDataStatus } from "actions";
-import db from "apis/dexie";
+import db from "apis/db";
 import ExploreCard from "./ExploreCard";
 
 /**
@@ -13,10 +12,17 @@ const ExploreCardColumn = () => {
 
   // useLiveQuery monitors IndexedDb and sends updates to the redux store
   // this is used to display the status of the cards
-  useLiveQuery(async () => {
-    const dataStatus = await db.idb.datastatus.toArray();
-    dispatch(setDataStatus(dataStatus));
-  });
+  // useLiveQuery(async () => {
+  //   const dataStatus = await db.idb.datastatus.toArray();
+  //   dispatch(setDataStatus(dataStatus));
+  // });
+
+  useEffect(() => {
+    db.idb.dataStatus
+      .toArray()
+      .then((ds) => dispatch(setDataStatus(ds)))
+      .catch((e) => console.log(e));
+  }, [dispatch]);
 
   return (
     <>

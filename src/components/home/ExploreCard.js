@@ -24,6 +24,8 @@ const ExploreCard = ({ name, subname, icon, table }) => {
   const dataStatus = useSelector((state) => {
     return state.dataStatus.find((data) => data.name === table);
   });
+
+  console.log(dataStatus);
   if (!dataStatus) return null;
   if (dataStatus.status === "failed" && !dataStatus.date) return null;
 
