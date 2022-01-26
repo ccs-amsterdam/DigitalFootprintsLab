@@ -11,7 +11,7 @@ import JSZip from "jszip";
 import { useDispatch } from "react-redux";
 import { updateDataStatus } from "actions";
 
-// This script handles everything related to importing Google Takeout data
+// This script handles everything related to importing Google_Takeout data
 // It should serve as an example for implementing other platforms
 // (and could probably do with a makeover)
 
@@ -23,7 +23,7 @@ const propTypes = {
 };
 
 /**
- * The modal that opens when the Google Takeout Gather card is clicked.
+ * The modal that opens when the Google_Takeout Gather card is clicked.
  */
 const GatherGoogleTakeout = ({ children, setLoading }) => {
   const [open, setOpen] = useState(false);
@@ -112,11 +112,12 @@ const WriteToDB = ({ setOpen, setLoading }) => {
   const ref = useRef();
 
   const onChangeHandler = async (e) => {
-    dispatch(updateDataStatus("browsinghistory", "loading"));
-    dispatch(updateDataStatus("searchhistory", "loading"));
-    dispatch(updateDataStatus("youtube", "loading"));
+    dispatch(updateDataStatus("Browsing_history", "Google_Takeout", "loading"));
+    dispatch(updateDataStatus("Search_history", "Google_Takeout", "loading"));
+    dispatch(updateDataStatus("Youtube", "Google_Takeout", "loading"));
 
     let failed = false;
+
     try {
       setLoading("loading");
       setOpen(false);
@@ -129,12 +130,12 @@ const WriteToDB = ({ setOpen, setLoading }) => {
         let chrome = await zipped.file("Takeout/Chrome/BrowserHistory.json").async("text");
         chrome = JSON.parse(chrome);
         await writeChromeHistory(chrome["Browser History"]);
-        dispatch(updateDataStatus("browsinghistory", "finished"));
-        dispatch(updateDataStatus("searchhistory", "finished"));
+        dispatch(updateDataStatus("Browsing_history", "Google_Takeout", "finished"));
+        dispatch(updateDataStatus("Search_history", "Google_Takeout", "finished"));
       } catch (e) {
         failed = true;
-        dispatch(updateDataStatus("searchhistory", "failed"));
-        dispatch(updateDataStatus("browsinghistory", "failed"));
+        dispatch(updateDataStatus("Browsing_history", "Google_Takeout", "failed"));
+        dispatch(updateDataStatus("Search_history", "Google_Takeout", "failed"));
       }
 
       try {
@@ -152,11 +153,11 @@ const WriteToDB = ({ setOpen, setLoading }) => {
           youtube = parseYoutubeHtml(youtube);
         }
         await writeYoutubeHistory(youtube);
-        dispatch(updateDataStatus("youtube", "finished"));
+        dispatch(updateDataStatus("Youtube", "Google_Takeout", "finished"));
       } catch (e) {
         console.log(e);
         failed = true;
-        dispatch(updateDataStatus("youtube", "failed"));
+        dispatch(updateDataStatus("Youtube", "Google_Takeout", "failed"));
       }
     } catch (e) {
       setLoading("failed");
@@ -168,7 +169,7 @@ const WriteToDB = ({ setOpen, setLoading }) => {
   return (
     <div style={{ textAlign: "center" }}>
       <Button primary onClick={() => ref.current.click()}>
-        Import Google Takeout
+        Import Google_Takeout
       </Button>
       <input
         ref={ref}
@@ -220,7 +221,7 @@ const writeChromeHistory = async (history) => {
         query: query,
         word: words,
         date: convertTimestamp(item.time_usec),
-        platform: "Chrome",
+        browser: "Chrome",
       });
       continue;
     }
@@ -229,16 +230,14 @@ const writeChromeHistory = async (history) => {
       url: item.url,
       title: item.title,
       domain: url.hostname,
-      platform: "Chrome",
+      browser: "Chrome",
       date: convertTimestamp(item.time_usec),
       page_transition: item.page_transition,
     });
   }
 
-  await db.addData(queries, "searchhistory");
-  await db.addData(urls, "browsinghistory");
-  // await db.updateDataStatus("browsinghistory", "finished");
-  // await db.updateDataStatus("searchhistory", "finished");
+  await db.addData(queries, "Search_history", "Google_Takeout", ["url", "date"]);
+  await db.addData(urls, "Browsing_history", "Google_Takeout", ["query", "date"]);
 };
 
 const writeYoutubeHistory = async (history) => {
@@ -251,14 +250,9 @@ const writeYoutubeHistory = async (history) => {
       channel_url: item.subtitles ? item.subtitles.url : "channel removed",
     };
   });
-  // for (let i = 0; i < d.length; i++) {
-  //   console.log(d[i]);
-  //   await db.addData([d[i]], "youtube");
 
-  // }
   console.log(d);
-  await db.addData(d, "youtube");
-  // await db.updateDataStatus("youtube", "finished");
+  await db.addData(d, "Youtube", "Google_Takeout", ["url", "date"]);
 };
 
 const convertTimestamp = (time) => {

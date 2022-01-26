@@ -12,9 +12,9 @@ const columns = ["channel", "title", "date"];
 const YoutubeHistory = () => {
   return (
     <HistoryDashboard
+      dataName={"Youtube"}
       searchOn={SEARCHON}
       columns={columns}
-      table={"youtube"}
       cloudKey={"channel"}
     />
   );

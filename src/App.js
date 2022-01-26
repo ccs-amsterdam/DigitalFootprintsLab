@@ -17,8 +17,8 @@ import SearchHistory from "./components/explore/SearchHistory";
 // The first item will be the opening page after login
 const items = [
   { label: "Data square", path: "/datasquare", Component: DataSquare },
-  { label: "Browsing History", path: "/browsinghistory", Component: BrowsingHistory },
-  { label: "Search", path: "/searchhistory", Component: SearchHistory },
+  { label: "Browsing History", path: "/Browsing_history", Component: BrowsingHistory },
+  { label: "Search", path: "/Search_history", Component: SearchHistory },
   { label: "Youtube", path: "/youtube", Component: YoutubeHistory },
 ];
 

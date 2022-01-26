@@ -1,29 +1,11 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { setDataStatus } from "actions";
-import db from "apis/db";
+import React from "react";
+
 import ExploreCard from "./ExploreCard";
 
 /**
  * Returns all explore cards to be rendered on the home page.
  */
 const ExploreCardColumn = () => {
-  const dispatch = useDispatch();
-
-  // useLiveQuery monitors IndexedDb and sends updates to the redux store
-  // this is used to display the status of the cards
-  // useLiveQuery(async () => {
-  //   const dataStatus = await db.idb.datastatus.toArray();
-  //   dispatch(setDataStatus(dataStatus));
-  // });
-
-  useEffect(() => {
-    db.idb.dataStatus
-      .toArray()
-      .then((ds) => dispatch(setDataStatus(ds)))
-      .catch((e) => console.log(e));
-  }, [dispatch]);
-
   return (
     <>
       <Browsing />
@@ -35,35 +17,18 @@ const ExploreCardColumn = () => {
 
 const Browsing = () => {
   return (
-    <ExploreCard
-      name={"Browsing history"}
-      subname={"What pages did you visit?"}
-      icon={"history"}
-      table={"browsinghistory"}
-    />
+    <ExploreCard name={"Browsing_history"} subname={"What pages did you visit?"} icon={"history"} />
   );
 };
 
 const Search = () => {
   return (
-    <ExploreCard
-      name={"Google searches"}
-      subname={"What did you search for?"}
-      icon={"search"}
-      table={"searchhistory"}
-    />
+    <ExploreCard name={"Search_history"} subname={"What did you search for?"} icon={"search"} />
   );
 };
 
 const Youtube = () => {
-  return (
-    <ExploreCard
-      name={"Youtube"}
-      subname={"Channels and videos"}
-      icon={"youtube"}
-      table={"youtube"}
-    />
-  );
+  return <ExploreCard name={"Youtube"} subname={"Channels and videos"} icon={"youtube"} />;
 };
 
 export default ExploreCardColumn;

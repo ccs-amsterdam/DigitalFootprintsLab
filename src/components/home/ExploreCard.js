@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import CardTemplate from "./CardTemplate";
+import { List } from "semantic-ui-react";
 
 const propTypes = {
   /** The name of the type of data to explore. */
@@ -11,52 +12,50 @@ const propTypes = {
   subname: PropTypes.string.isRequired,
   /** The name of an Icon from semantic ui, see https://semantic-ui.com/elements/icon.html  */
   icon: PropTypes.string.isRequired,
-  /** The name of the table used for this data type in indexedDB */
-  table: PropTypes.string.isRequired,
 };
 
 /**
  * The template for generating ExploreCards.
  * These are the cards in the Explore column on the home page.
  */
-const ExploreCard = ({ name, subname, icon, table }) => {
+const ExploreCard = ({ name, subname, icon }) => {
   const history = useHistory();
-  const dataStatus = useSelector((state) => {
-    return state.dataStatus.find((data) => data.name === table);
+  const statuses = useSelector((state) => {
+    return state.dataStatus.filter((data) => data.name === name && data.status === "finished");
   });
 
-  console.log(dataStatus);
-  if (!dataStatus) return null;
-  if (dataStatus.status === "failed" && !dataStatus.date) return null;
+  if (!statuses || statuses.length === 0) return null;
+  console.log(statuses);
 
   const onClick = () => {
-    history.push(table);
+    history.push(name);
   };
 
   return (
-    <CardTemplate
-      name={name}
-      subname={subname}
-      icon={icon}
-      onClick={onClick}
-      loading={dataStatus.status}
-    >
-      <i>{lastUpdated(dataStatus.date)}</i>
+    <CardTemplate name={name} subname={subname} icon={icon} onClick={onClick}>
+      <List>{statuses.map(statusMessage)}</List>
     </CardTemplate>
   );
 };
 
-const lastUpdated = (date) => {
-  if (!date) return "Data not yet gathered";
+const statusMessage = (status) => {
+  const date = status.date;
+  if (!date) return "Data not yet gathered"; // this shouldn't happen (card should only be shown if data available)
+
   const oldTime = date.toISOString();
   const currentTime = new Date().toISOString();
 
   // if different day, show day
-  if (oldTime.slice(0, 10) !== currentTime.slice(0, 10))
-    return `Data imported on ${oldTime.slice(0, 10)}`;
+  const today = oldTime.slice(0, 10) === currentTime.slice(0, 10);
+  const onDate = today ? "today" : `on ${oldTime.slice(0, 10)}`;
 
-  // otherwise show time
-  return "Data imported today";
+  return (
+    <List.Item>
+      <List.Content>
+        Gathered {onDate} from <b>{status.source.replace("_", " ")}</b>
+      </List.Content>
+    </List.Item>
+  );
 };
 
 ExploreCard.propTypes = propTypes;

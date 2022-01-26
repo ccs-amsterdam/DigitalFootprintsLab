@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import db from "apis/dexie";
 import { useLiveQuery } from "dexie-react-hooks";
-import { useDomainInfo } from "./DomainInfo";
+import { useDomainInfo } from "./useDomainInfo";
 
 const useRawEntries = (table) => {
   const [entries, setEntries] = useState([]);

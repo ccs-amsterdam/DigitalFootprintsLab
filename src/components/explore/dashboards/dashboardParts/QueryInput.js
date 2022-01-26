@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Button, Input } from "semantic-ui-react";
+import { Button, Input, Icon } from "semantic-ui-react";
 
 const propTypes = {
   /** The name of the table */
@@ -9,49 +9,55 @@ const propTypes = {
   searchOn: PropTypes.array,
   /** A callback function for returning the row IDs that match the query */
   setSelection: PropTypes.func,
-  /** A callback function for setting the loading status */
-  setLoading: PropTypes.func,
 };
 
 /**
  * Create an input for full text search
  */
-const QueryInput = ({ dashData, searchOn, setSelection, setLoading }) => {
+const QueryInput = ({ dashData, searchOn, setSelection }) => {
   const [search, setSearch] = useState("");
-  const [selectionStatus, setSelectionStatus] = useState("none");
+  const [searching, setSearching] = useState(false);
 
   useEffect(() => {
-    setLoading(selectionStatus === "searching");
-  }, [selectionStatus, setLoading]);
-
-  useEffect(() => {
+    setSearching(true);
     const timer = setTimeout(() => {
       if (dashData && search) {
         setSelection(dashData.search(search, searchOn));
       } else {
         setSelection(null);
       }
+      setSearching(false);
     }, 500);
     return () => clearTimeout(timer);
-  }, [dashData, search, searchOn, setSelectionStatus, setSelection]);
+  }, [dashData, search, searchOn, setSearching, setSelection]);
 
   return (
-    <Input
-      fluid
-      label="Search data"
-      loading={selectionStatus === "searching"}
-      value={search}
-      icon={
-        <Button
-          compact
-          icon="window close"
-          onClick={() => setSearch("")}
-          size="huge"
-          style={{ color: "white", height: "1em", background: "#ffffff00" }}
+    <div style={{ display: "flex", margin: "0" }}>
+      <div class="dimmable" style={{ width: "50px" }}>
+        <Icon
+          size="big"
+          name={searching ? "compass" : "search"}
+          loading={searching}
+          style={{ paddingTop: "9px", paddingLeft: "13fpx", color: "white" }}
         />
-      }
-      onChange={(e, d) => setSearch(d.value)}
-    ></Input>
+      </div>
+      <div style={{ flex: "1 1 auto" }}>
+        <Input
+          fluid
+          value={search}
+          icon={
+            <Button
+              compact
+              icon="window close"
+              onClick={() => setSearch("")}
+              size="huge"
+              style={{ color: "white", height: "1em", background: "#ffffff00" }}
+            />
+          }
+          onChange={(e, d) => setSearch(d.value)}
+        ></Input>
+      </div>
+    </div>
   );
 };
 

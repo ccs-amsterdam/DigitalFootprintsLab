@@ -1,7 +1,7 @@
 import Dexie from "dexie";
 
 // Simplified alternative to previous use of indexedDB, motivated by:
-// - less complexity
+// - less dependencies
 // - avoiding dexie live hooks, which might not be supported on all devices
 // - we will now read full data (in a specific visualization) in memory anyway, so indexing is just a waste of time
 // - without indexing we can also encrypt entries. For instance linked to encryption keys in temporary cookies
@@ -21,10 +21,16 @@ class FootprintDB {
     this.idb.version(2).stores({
       meta: "welcome", // this just serves to keep track of whether db was 'created' via the welcome component. Eventually,
       //  this would be a good place to add authentication / token validation
-      dataStatus: "&name, status, date, n",
-      data: "&name, deleted", // unindexed fields: "data". "data" is an array with all the data, and deleted a bool array
-      // of the lenght of data telling if an item has been delete. This way deleted can be quickly updated without overwriting all data.
+      dataStatus: "&name, source, status, date",
+      data: "&name, deleted", // unindexed fields: "data". "data" is an array with all the data. "deleted" requires some explanation.
+      // data items can be deleted by users, but for speed we don't overwrite the data immediately,
+      // and instead store the indices values of the deleted items. The format is a boolean array of same length as data
     });
+  }
+
+  async destroyEverything() {
+    // reset database
+    await this.idb.delete();
   }
 
   // META
@@ -41,25 +47,23 @@ class FootprintDB {
     try {
       let data = await this.idb.data.get({ name });
       // For speed and efficiency, data items are not immediately deleted from the database when they are removed
-      // in the client. Instead, this.setDeleted adds a boolean vector indicating which items have been deleted,
-      // and this will be processed every time before getData is used.
+      // in the client but a lookup object for deleted indices is used (see note above in the IDB table declaration).
       if (data?.deleted) {
-        data.data = data.deleted.reduce((d, is_deleted, i) => {
-          if (!is_deleted) d.push(data.data[i]);
-          return d;
-        }, []);
+        data.data = data.data.filter((d, i) => !data.deleted[i]);
         await this.idb.data.put({ name, deleted: null, data: data.data }, [name]);
       }
-      if (!fields) return data.data;
 
-      return data.data.map((d) => {
-        return fields.reduce((item, f) => {
-          item[f] = d[f];
-          return item;
-        }, {});
-      });
+      if (fields) {
+        for (let i = 0; i < data.data.length; i++) {
+          const item = {};
+          for (let f of fields) item[f] = data.data[i][f];
+          data.data[i] = item;
+        }
+      }
+
+      for (let i = 0; i < data.data.length; i++) data.data[i]._INDEX = i;
+      return data.data;
     } catch (e) {
-      console.log(e);
       return null;
     }
   }
@@ -68,9 +72,9 @@ class FootprintDB {
     await this.idb.data.where("name").equals(name).modify({ deleted });
   }
 
-  // add data given name of data type (e.g., browsingHistory). idFields is an array of fields in data objects used to check for duplicates.
+  // add data given name of data type (e.g., Browsing_history). idFields is an array of fields in data objects used to check for duplicates.
   // e.g. ['url','date']
-  async addData(data, name, idFields = null) {
+  async addData(data, name, source, idFields = null) {
     let fulldata = await this.getData(name);
 
     if (fulldata && fulldata.data.length > 0) {
@@ -91,23 +95,23 @@ class FootprintDB {
     }
 
     await this.idb.data.put({ name, deleted: null, data }, [name]);
-    await this.updateDataStatus(name, data.length);
+    await this.updateDataStatus(name, source);
   }
 
   async getDataStatus(name) {
     return this.idb.datastatus.get({ name });
   }
 
-  async updateDataStatus(name, n) {
+  async updateDataStatus(name, source) {
     // note that status is always set to finished.
     // whenever the datastatus table is updated, it its written to the dataStatus state (redux)
     // This way the 'loading' status can be triggered via dispatch, and is set to finished when the update is finished
     const current = await this.idb.dataStatus.get({ name });
     const date = new Date();
     if (current) {
-      this.idb.dataStatus.where("name").equals(name).modify({ date, status: "finished", n });
+      this.idb.dataStatus.where("name").equals(name).modify({ date, source, status: "finished" });
     } else {
-      this.idb.dataStatus.add({ name, date, status: "finished", n });
+      this.idb.dataStatus.add({ name, date, source, status: "finished" });
     }
   }
 }

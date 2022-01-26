@@ -1,15 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import {
-  Container,
-  Button,
-  Visibility,
-  Header,
-  Dimmer,
-  Loader,
-  Segment,
-  Table,
-} from "semantic-ui-react";
+import { Container, Button, Visibility, Header, Segment, Table } from "semantic-ui-react";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 
 const PAGESIZE = 25;
@@ -31,7 +22,7 @@ const propTypes = {
 /**
  * Creates a table for a given table in the indexedDB
  */
-const DataTable = ({ dashData, columns, selection, loading }) => {
+const DataTable = ({ dashData, columns, selection }) => {
   const [n, setN] = useState(0);
   const [data, setData] = useState([]);
   const [selectionN, setSelectionN] = useState(0);
@@ -63,9 +54,6 @@ const DataTable = ({ dashData, columns, selection, loading }) => {
     >
       <Segment style={{ background: "#00000000", height: "50px", margin: "0" }}>
         <Header textAlign="center" as="h2" style={{ color: "white" }}>
-          <Dimmer active={loading}>
-            <Loader />
-          </Dimmer>
           {selectionN === n ? null : (
             <Button
               onClick={() => setDeleteIds(selection)}
@@ -139,7 +127,7 @@ const ScrollingTable = ({ dashData, data, columns }) => {
           <Table.Cell key="0">
             <Button
               style={{ padding: "5px", background: "red", color: "black" }}
-              onClick={() => setDeleteIds([row._ID])}
+              onClick={() => setDeleteIds([row._INDEX])}
               icon="trash alternate"
             />
           </Table.Cell>

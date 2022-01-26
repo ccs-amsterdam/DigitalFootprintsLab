@@ -1,14 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 
-const generateToken = async (key, urls) => {
-  var message = [key].concat(urls).join("|");
-  const msgBuffer = new TextEncoder().encode(message);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
-};
-
-export const useDomainInfo = (domains) => {
+export default function useDomainInfo(domains) {
   const cacheRef = useRef({});
   const [status, setStatus] = useState("idle");
   const [data, setData] = useState([]);
@@ -50,9 +42,11 @@ export const useDomainInfo = (domains) => {
 
       // Merge result with cache
       const data = await response.json();
-      for (const [key, value] of Object.entries(data)) {
-        cache[key] = value;
-      }
+
+      for (let d of data)
+        for (const [key, value] of Object.entries(data)) {
+          cache[key] = value;
+        }
       setData(cache);
       setStatus("fetched");
     };
@@ -61,4 +55,12 @@ export const useDomainInfo = (domains) => {
   }, [domains]);
 
   return [status, data];
+}
+
+const generateToken = async (key, urls) => {
+  var message = [key].concat(urls).join("|");
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
 };

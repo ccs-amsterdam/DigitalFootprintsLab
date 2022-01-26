@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { PropTypes } from "prop-types";
 import ReactWordcloud from "react-wordcloud";
 
-import db from "apis/dexie";
 import { Dimmer, Dropdown, Grid, Header, Loader } from "semantic-ui-react";
 
 const wordcloudOptions = {
@@ -35,28 +34,26 @@ const propTypes = {
 /**
  * Makes a wordcloud for keys, for a given table:field in db
  */
-const KeyCloud = ({ table, field, dashData, inSelection, nWords, loading, setOutSelection }) => {
+const KeyCloud = ({ dashData, field, inSelection, nWords, setOutSelection }) => {
   const [keys, setKeys] = useState(new Set([]));
   const [words, setWords] = useState([]);
   const [data, setData] = useState(null);
-  const [loadingData, setLoadingData] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    //prepareData(dashData, field, setData, setLoadingData, setKeys);
     if (!dashData) {
       setData(null);
       setKeys(new Set([]));
       return;
     }
-    console.log(dashData);
-    const counts = dashData.count(field);
+    const counts = dashData.count(field, inSelection);
     let countsArray = Object.keys(counts).map((key) => {
       return { value: key, n: counts[key] };
     });
     countsArray.sort((a, b) => b.n - a.n); // sort from high to low value
     setData(countsArray);
     setKeys((keys) => new Set([...keys].filter((key) => counts[key] != null)));
-  }, [dashData, field, setData, setLoadingData, setKeys]);
+  }, [dashData, inSelection, field, setData, setLoading, setKeys]);
 
   useEffect(() => {
     if (!data) {
@@ -73,14 +70,14 @@ const KeyCloud = ({ table, field, dashData, inSelection, nWords, loading, setOut
   useEffect(() => {
     let ignore = false;
     const getSelection = async () => {
-      let selection = keys.size > 0 ? await db.getSelectionAny(table, field, [...keys]) : null;
+      let selection = keys.size > 0 ? await dashData.searchValues([...keys], field) : null;
       if (!ignore) setOutSelection(selection);
     };
     getSelection();
     return () => {
       ignore = true; // use closure to 'cancel' promise. prevents delayed older requests from overwriting new
     };
-  }, [keys, setOutSelection, table, field]);
+  }, [keys, setOutSelection, dashData, field]);
 
   const callbacks = React.useCallback(() => {
     return {
@@ -114,7 +111,7 @@ const KeyCloud = ({ table, field, dashData, inSelection, nWords, loading, setOut
       }}
     >
       <Grid.Column width={12} style={{ padding: "0", margin: "0" }}>
-        <Dimmer active={loading || loadingData}>
+        <Dimmer active={loading}>
           <Loader />
         </Dimmer>
         <Header as="h1" align={"center"} style={{ color: "white", padding: "0", margin: "0" }}>

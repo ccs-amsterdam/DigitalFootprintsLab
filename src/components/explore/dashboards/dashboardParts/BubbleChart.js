@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { PropTypes } from "prop-types";
 import BubbleChartSpec from "./BubbleChartSpec";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
-import { useDatabaseEntries } from "./DatabaseEntries";
+import { useDatabaseEntries } from "../../dashboardData/DatabaseEntries";
 import { Card, Button, Image, Dimmer, Loader } from "semantic-ui-react";
 
 const propTypes = {
