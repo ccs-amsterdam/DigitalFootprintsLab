@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/DigitalFootprintsLab/static/css/main.9f24bd7f.chunk.css",
-    "main.js": "/DigitalFootprintsLab/static/js/main.84e3c460.chunk.js",
-    "main.js.map": "/DigitalFootprintsLab/static/js/main.84e3c460.chunk.js.map",
+    "main.js": "/DigitalFootprintsLab/static/js/main.7791745d.chunk.js",
+    "main.js.map": "/DigitalFootprintsLab/static/js/main.7791745d.chunk.js.map",
     "runtime-main.js": "/DigitalFootprintsLab/static/js/runtime-main.da46466a.js",
     "runtime-main.js.map": "/DigitalFootprintsLab/static/js/runtime-main.da46466a.js.map",
     "static/css/2.3a7f92e6.chunk.css": "/DigitalFootprintsLab/static/css/2.3a7f92e6.chunk.css",
@@ -23,6 +23,6 @@
     "static/css/2.3a7f92e6.chunk.css",
     "static/js/2.f8519fb9.chunk.js",
     "static/css/main.9f24bd7f.chunk.css",
-    "static/js/main.84e3c460.chunk.js"
+    "static/js/main.7791745d.chunk.js"
   ]
 }
