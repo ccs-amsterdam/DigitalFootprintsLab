@@ -42,26 +42,24 @@ export const updateDomainInfo = async (domains) => {
   }
 
   // Create empty entries in cache to prevent refetching if domain is not available in service
-  for (let domain of domainsToFetch) cache[domain] = {};
+  // If retrying, do keep logo64
+  for (let domain of domainsToFetch) {
+    cache[domain] = cache?.[domain]?.logo64 ? { logo64: cache[domain].logo64 } : {};
+  }
 
   const data = await fetchData(domainsToFetch);
 
-  // Get images
-  console.log("---------------------");
-  const domain = Object.keys(data)[0];
-  const logo = data?.[domain]?.logo ? data[domain].logo : `http://${domain}/favicon.ico`;
-
-  const url = "http://9gag.com";
-  const googlefav = `https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${url}&size=128`;
-
-  toDataURL(googlefav, function (dataUrl) {
-    console.log("RESULT:", dataUrl);
-  });
-
-  console.log(logo);
+  // add base64 encoding of logos
+  // const test = Object.keys(data).reduce((obj, d, i) => {
+  //   if (i > 10) return obj;
+  //   obj[d] = data[d];
+  //   return obj;
+  // }, {});
+  // addLogo64(test);
+  // console.log(test);
 
   // Store results and return results including cached
-  db.addDomainInfo(data);
+  //db.addDomainInfo(data);
 
   for (const [key, value] of Object.entries(data)) {
     cache[key] = value;
@@ -107,16 +105,32 @@ const generateToken = async (key, urls) => {
   return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
 };
 
-function toDataURL(url, callback) {
-  var xhr = new XMLHttpRequest();
-  xhr.onload = function () {
-    var reader = new FileReader();
-    reader.onloadend = function () {
-      callback(reader.result);
-    };
-    reader.readAsDataURL(xhr.response);
-  };
-  xhr.open("GET", url);
-  xhr.responseType = "blob";
-  xhr.send();
-}
+const addLogo64 = async (data) => {
+  for (let domain of Object.keys(data)) {
+    if (data[domain].logo64) continue;
+
+    const logoUrl = data[domain].logo || `http://${domain}`;
+    let googlefav = `http://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${logoUrl}&size=128`;
+
+    // just for dev. Note that you have to visit this proxy website to enable it
+    // if (window.location.host === "localhost:3000")
+    //   googlefav = "https://cors-anywhere.herokuapp.com/" + googlefav;
+    console.log(googlefav);
+    data[domain].logo64 = await toDataURL(googlefav);
+  }
+};
+
+const toDataURL = (url) => {
+  // https://stackoverflow.com/a/20285053
+  fetch(url, { mode: "no-cors" })
+    .then((response) => response.blob())
+    .then(
+      (blob) =>
+        new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        })
+    );
+};

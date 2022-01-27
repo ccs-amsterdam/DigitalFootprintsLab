@@ -50,7 +50,7 @@ const statusMessage = (status) => {
   const onDate = today ? "today" : `on ${oldTime.slice(0, 10)}`;
 
   return (
-    <List.Item>
+    <List.Item key={status.source}>
       <List.Content>
         Gathered {onDate} from <b>{status.source.replace("_", " ")}</b>
       </List.Content>

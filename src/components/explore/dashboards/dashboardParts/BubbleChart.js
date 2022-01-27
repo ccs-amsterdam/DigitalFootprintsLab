@@ -60,7 +60,6 @@ const BubbleChart = ({ dashData, field, inSelection, setOutSelection }) => {
     top: selectedDatum ? selectedDatum.y : 0,
   };
 
-  return null;
   return (
     <div style={{ position: "relative" }}>
       <Dimmer active={loading}>
@@ -104,15 +103,17 @@ const BubbleChart = ({ dashData, field, inSelection, setOutSelection }) => {
   );
 };
 
+const logosize = 128;
+
 const createTreeData = (dashData, field, selection, domainInfo) => {
   const domains = dashData.count(field, selection);
   const nodes = [];
   let categories = {};
   for (let domain of Object.keys(domains)) {
-    const category = domainInfo?.[domain] || domain.slice(0, 2);
-    const logo = domainInfo?.[domain]?.logo
-      ? domainInfo[domain].logo
-      : `http://${domain}/favicon.ico`;
+    const category =
+      domainInfo?.[domain]?.category || "." + domain.split(".").slice(-1)[0] || "other";
+    let logo = domainInfo?.[domain]?.logo ? domainInfo[domain].logo : `http://${domain}`;
+    logo = `http://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${logo}&size=${logosize}`;
 
     if (!categories[category])
       categories[category] = {
@@ -133,7 +134,6 @@ const createTreeData = (dashData, field, selection, domainInfo) => {
       logo,
     });
   }
-
   categories = Object.values(categories);
   return { tree: [{ name: "root", type: "root" }, ...categories, ...nodes] };
 };

@@ -1,6 +1,10 @@
 {
-  "name": "digitalfootprints",
-  "homepage": "http://ccs-amsterdam.github.io/digitalfootprints",
+  "name": "DigitalFootprintsLab",
+  "homepage": "https://ccs-amsterdam.github.io/DigitalFootprintsLab",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ccs-amsterdam/DigitalFootprintsLab"
+  },
   "version": "0.1.0",
   "private": true,
   "dependencies": {
