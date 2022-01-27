@@ -7,8 +7,8 @@ export default createClassFromSpec({
     height: 500,
     padding: 0,
     autosize: {
-      type: "no",
-      resize: false,
+      type: "fit",
+      resize: true,
     },
 
     data: [

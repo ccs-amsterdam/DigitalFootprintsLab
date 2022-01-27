@@ -42,24 +42,12 @@ export const updateDomainInfo = async (domains) => {
   }
 
   // Create empty entries in cache to prevent refetching if domain is not available in service
-  // If retrying, do keep logo64
-  for (let domain of domainsToFetch) {
-    cache[domain] = cache?.[domain]?.logo64 ? { logo64: cache[domain].logo64 } : {};
-  }
+  for (let domain of domainsToFetch) cache[domain] = {};
 
   const data = await fetchData(domainsToFetch);
 
-  // add base64 encoding of logos
-  // const test = Object.keys(data).reduce((obj, d, i) => {
-  //   if (i > 10) return obj;
-  //   obj[d] = data[d];
-  //   return obj;
-  // }, {});
-  // addLogo64(test);
-  // console.log(test);
-
   // Store results and return results including cached
-  //db.addDomainInfo(data);
+  db.addDomainInfo(data);
 
   for (const [key, value] of Object.entries(data)) {
     cache[key] = value;
@@ -103,34 +91,4 @@ const generateToken = async (key, urls) => {
   const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
-};
-
-const addLogo64 = async (data) => {
-  for (let domain of Object.keys(data)) {
-    if (data[domain].logo64) continue;
-
-    const logoUrl = data[domain].logo || `http://${domain}`;
-    let googlefav = `http://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${logoUrl}&size=128`;
-
-    // just for dev. Note that you have to visit this proxy website to enable it
-    // if (window.location.host === "localhost:3000")
-    //   googlefav = "https://cors-anywhere.herokuapp.com/" + googlefav;
-    console.log(googlefav);
-    data[domain].logo64 = await toDataURL(googlefav);
-  }
-};
-
-const toDataURL = (url) => {
-  // https://stackoverflow.com/a/20285053
-  fetch(url, { mode: "no-cors" })
-    .then((response) => response.blob())
-    .then(
-      (blob) =>
-        new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onloadend = () => resolve(reader.result);
-          reader.onerror = reject;
-          reader.readAsDataURL(blob);
-        })
-    );
 };

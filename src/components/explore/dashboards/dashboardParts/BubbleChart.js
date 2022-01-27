@@ -65,7 +65,12 @@ const BubbleChart = ({ dashData, field, inSelection, setOutSelection }) => {
       <Dimmer active={loading}>
         <Loader />
       </Dimmer>
-      <BubbleChartSpec data={data} signalListeners={signalListeners} actions={false} />
+      <BubbleChartSpec
+        data={data}
+        signalListeners={signalListeners}
+        actions={false}
+        renderer={"svg"}
+      />
       {selectedDatum && (
         <div style={popupStyle}>
           <Card>
@@ -103,7 +108,7 @@ const BubbleChart = ({ dashData, field, inSelection, setOutSelection }) => {
   );
 };
 
-const logosize = 128;
+const logosize = 256;
 
 const createTreeData = (dashData, field, selection, domainInfo) => {
   const domains = dashData.count(field, selection);
@@ -112,8 +117,13 @@ const createTreeData = (dashData, field, selection, domainInfo) => {
   for (let domain of Object.keys(domains)) {
     const category =
       domainInfo?.[domain]?.category || "." + domain.split(".").slice(-1)[0] || "other";
-    let logo = domainInfo?.[domain]?.logo ? domainInfo[domain].logo : `http://${domain}`;
-    logo = `http://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${logo}&size=${logosize}`;
+    let logo = domainInfo?.[domain]?.logo
+      ? domainInfo[domain].logo
+      : `https://icons.duckduckgo.com/ip3/${domain}.ico`;
+
+    // Google has better quality, but not privacy friendly, and also misses quite a lot
+    // We could use this to get good quality favicons and provide those as base64 from the amcat server
+    //  logo = `https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${logo}&size=${logosize}`;
 
     if (!categories[category])
       categories[category] = {
