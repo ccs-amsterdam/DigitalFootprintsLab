@@ -21,11 +21,11 @@ const CardTemplate = ({ children, name, subname, icon, onClick, loading, done })
       {done ? (
         <Icon
           size="massive"
-          name="check circle"
+          name="checkmark"
           style={{
             position: "absolute",
-            color: "#68c851ad",
-            top: "10%",
+            color: "#57b92d8c",
+            top: "20%",
             left: "60%",
           }}
         />

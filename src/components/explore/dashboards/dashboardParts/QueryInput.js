@@ -63,14 +63,3 @@ const QueryInput = ({ dashData, searchOn, setSelection }) => {
 
 QueryInput.propTypes = propTypes;
 export default React.memo(QueryInput);
-
-// just keeping this here so I wont forget how insanely usefull this is.
-// A second argument to React.memo lets you view the prev and next props
-// to see which bastard rerenders the living hell out of a component
-// export default React.memo(QueryTable, (prevprops, nextprops) => {
-//   console.log(prevprops);
-//   console.log(nextprops);
-//   console.log(prevprops.selection === nextprops.selection);
-//   console.log(prevprops.setSelection === nextprops.setSelection);
-//   console.log(prevprops.searchOn === nextprops.searchOn);
-// });

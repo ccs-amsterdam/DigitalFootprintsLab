@@ -1,3 +1,4 @@
+import { updateDomainInfo } from "components/explore/dashboardData/useDomainInfo";
 import Dexie from "dexie";
 
 // Simplified alternative to previous use of indexedDB, motivated by:
@@ -25,6 +26,7 @@ class FootprintDB {
       data: "&name, deleted", // unindexed fields: "data". "data" is an array with all the data. "deleted" requires some explanation.
       // data items can be deleted by users, but for speed we don't overwrite the data immediately,
       // and instead store the indices values of the deleted items. The format is a boolean array of same length as data
+      domainInfo: "&domain", // unindexed: info
     });
   }
 
@@ -42,6 +44,8 @@ class FootprintDB {
   async isWelcome() {
     return this.idb.meta.get(1);
   }
+
+  /////// DATA
 
   async getData(name, fields) {
     try {
@@ -72,20 +76,23 @@ class FootprintDB {
     await this.idb.data.where("name").equals(name).modify({ deleted });
   }
 
-  // add data given name of data type (e.g., Browsing_history). idFields is an array of fields in data objects used to check for duplicates.
+  // add data given name of data type (e.g., Browsing). idFields is an array of fields in data objects used to check for duplicates.
   // e.g. ['url','date']
   async addData(data, name, source, idFields = null) {
     let fulldata = await this.getData(name);
 
+    const newDomains = {}; // also check for new domains, to immediately call backend for getting domaininfo
     if (fulldata && fulldata.data.length > 0) {
       const existing = {};
       if (idFields) {
         for (let d of data) {
+          if (d.domain && !newDomains[d.domain]) newDomains[d.domain] = true;
           const id = JSON.stringify(idFields.map((f) => d[f]));
           existing[id] = true;
         }
       }
       for (let d of fulldata.data) {
+        if (d.domain && newDomains[d.domain]) newDomains[d.domain] = false;
         if (idFields) {
           const id = JSON.stringify(idFields.map((f) => d[f]));
           if (existing[id]) continue;
@@ -96,7 +103,12 @@ class FootprintDB {
 
     await this.idb.data.put({ name, deleted: null, data }, [name]);
     await this.updateDataStatus(name, source);
+
+    const addDomainInfo = Object.keys(newDomains).filter((domain) => newDomains[domain]);
+    if (addDomainInfo.length > 0) updateDomainInfo(addDomainInfo);
   }
+
+  /////// DATA STATUS
 
   async getDataStatus(name) {
     return this.idb.datastatus.get({ name });
@@ -113,6 +125,27 @@ class FootprintDB {
     } else {
       this.idb.dataStatus.add({ name, date, source, status: "finished" });
     }
+  }
+
+  /////// DOMAIN INFO
+
+  async getDomainInfo(domains) {
+    // returns an object where keys are domains and values are info
+    const table = await this.idb.domainInfo.where("domain").anyOf(domains).toArray();
+    return table.reduce((obj, row) => {
+      obj[row.url] = row.info;
+      return obj;
+    }, {});
+  }
+
+  async addDomainInfo(domainInfo) {
+    const data = Object.keys(domainInfo).map((key) => ({ domain: key, info: domainInfo[key] }));
+    this.idb.domainInfo
+      .bulkPut(data)
+      .then()
+      .catch(Dexie.BulkError, (e) => {
+        console.log("ignored some duplicates in writeDomainInfo");
+      });
   }
 }
 

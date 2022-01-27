@@ -9,51 +9,53 @@ import background from "images/background.jpeg";
 import DataTable from "./dashboardParts/DataTable";
 import QueryInput from "./dashboardParts/QueryInput";
 import intersect from "util/intersect";
+import useDashboardData from "../dashboardData/useDashboardData";
+import PropTypes from "prop-types";
 
-const topRowHeight = "700px";
-const gridStyle = { paddingTop: "0em", marginTop: "0em" };
+const propTypes = {
+  /** The name of the type of data to explore. */
+  dataName: PropTypes.string.isRequired,
+  /** an Array indicating which fields in table should be used in the fulltext search */
+  searchOn: PropTypes.array.isRequired,
+  /** an array that conveys which fields in the table are shown in the DataTable. See DataTable for details */
+  columns: PropTypes.array.isRequired,
+  /** A react component that produces a visualization. Gets the properties dashData, inSelection and setOutSelection */
+  VisComponent: PropTypes.func.isRequired,
+  /** A function to produce the statistics. Gets arguments dashData and selection, and needs to return an array of objects
+   *  with keys 'label' and 'value'.
+   */
+  calcStatistics: PropTypes.func.isRequired,
+};
 
 /**
- * Re-usable component for making a dashboard.
+ * Re-usable component for making a dashboard. See e.g., BrowsingHistory.js for an example of how to use
  */
-const DashboardTemplate = ({
-  children,
-  dashData,
-  searchOn,
-  columns,
-  querySelection,
-  setQuerySelection,
-  altSelection,
-  selection,
-  statistics,
-}) => {
-  const history = useHistory();
+const DashboardTemplate = ({ dataName, searchOn, columns, VisComponent, calcStatistics }) => {
+  const dashData = useDashboardData(dataName);
+  const [statistics, setStatistics] = useState([]);
+  const [altSelection, setAltSelection] = useState(null);
+  const [querySelection, setQuerySelection] = useState(null);
+  const [selection, setSelection] = useState(null);
 
-  // The selection states are arrays of row ids
-  // the intersection of these arrays is used to combine selections
-  // this is ok-ish fast, since the id indices are ordered, and intersect is plenty smart
+  useEffect(() => {
+    setSelection(intersect([querySelection, altSelection]));
+  }, [querySelection, altSelection]);
+
+  useEffect(() => {
+    setStatistics(calcStatistics(dashData, selection));
+  }, [dashData, selection, calcStatistics]);
 
   return (
     <ColoredBackgroundGrid background={background} color={"#000000b0"}>
-      <Grid divided={"vertically"} style={gridStyle}>
-        <Grid.Row style={{ height: topRowHeight }}>
-          <Grid.Column width={12}>
-            <Button
-              style={{ background: "#ffffff", margin: "0", marginLeft: "5px", marginTop: "0.5em" }}
-              onClick={() => history.push("/datasquare")}
-            >
-              <Icon name="backward" />
-              Go back
-            </Button>
-
-            {children}
-          </Grid.Column>
+      <Grid stackable>
+        <Grid.Row style={{}}>
           <Grid.Column width={4}>
+            <BackButton />
             <Container
               style={{
                 margin: "50px",
+                marginTop: "100px",
                 padding: "20px",
-                height: "80%",
               }}
             >
               <div style={{ marginBottom: "1em" }}>
@@ -67,10 +69,15 @@ const DashboardTemplate = ({
               <Statistics statistics={statistics} />
             </Container>
           </Grid.Column>
+          <Grid.Column width={12}>
+            <VisComponent
+              dashData={dashData}
+              inSelection={querySelection}
+              setOutSelection={setAltSelection}
+            />
+          </Grid.Column>
         </Grid.Row>
-        <Grid.Row
-          style={{ maxHeight: `calc(100vh - ${topRowHeight})`, minHeight: "500px", width: "100%" }}
-        >
+        <Grid.Row style={{ height: "500px", width: "100%" }}>
           <DataTable dashData={dashData} columns={columns} selection={selection} />
         </Grid.Row>
       </Grid>
@@ -96,7 +103,7 @@ const Statistics = ({ statistics }) => {
       <Item.Group>
         {statistics.map((statistic) => {
           return (
-            <Item>
+            <Item key={statistic.label}>
               <Item.Content>
                 <Item.Header style={{ color: "white" }}>{statistic.label}</Item.Header>
                 <Item.Description style={{ color: "white" }}>{statistic.value}</Item.Description>
@@ -109,4 +116,27 @@ const Statistics = ({ statistics }) => {
   );
 };
 
-export default DashboardTemplate;
+const BackButton = () => {
+  const history = useHistory();
+
+  return (
+    <Button
+      style={{
+        position: "absolute",
+        left: "0",
+        background: "#00000000",
+        color: "white",
+        border: "1px solid white",
+        marginLeft: "20px",
+        marginTop: "20px",
+      }}
+      onClick={() => history.push("/datasquare")}
+    >
+      <Icon name="backward" />
+      Go back
+    </Button>
+  );
+};
+
+DashboardTemplate.propTypes = propTypes;
+export default React.memo(DashboardTemplate);

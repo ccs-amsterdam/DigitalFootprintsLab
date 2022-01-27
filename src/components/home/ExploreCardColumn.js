@@ -16,15 +16,11 @@ const ExploreCardColumn = () => {
 };
 
 const Browsing = () => {
-  return (
-    <ExploreCard name={"Browsing_history"} subname={"What pages did you visit?"} icon={"history"} />
-  );
+  return <ExploreCard name={"Browsing"} subname={"What pages did you visit?"} icon={"history"} />;
 };
 
 const Search = () => {
-  return (
-    <ExploreCard name={"Search_history"} subname={"What did you search for?"} icon={"search"} />
-  );
+  return <ExploreCard name={"Search"} subname={"What did you search for?"} icon={"search"} />;
 };
 
 const Youtube = () => {

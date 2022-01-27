@@ -1,67 +1,57 @@
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import intersect from "util/intersect";
-
+import React from "react";
 import DashboardTemplate from "./dashboards/DashboardTemplate";
-import useDashboardData from "./dashboardData/useDashboardData";
 import KeyCloud from "./dashboards/dashboardParts/KeyCloud";
+import BubbleChart from "./dashboards/dashboardParts/BubbleChart";
 
-const propTypes = {
-  /** The name of the type of data to explore. */
-  dataName: PropTypes.string.isRequired,
-  /** an Array indicating which fields in table should be used in the fulltext search */
-  searchOn: PropTypes.array.isRequired,
-  /** an array that conveys which fields in the table are shown in the DataTable. See DataTable for details */
-  columns: PropTypes.array.isRequired,
-};
-
+const FIELD = "domain";
 const SEARCHON = ["url", "title"];
 const COLUMNS = ["date", "title", "url"];
 
 /**
  * A dashboard for the browsing history data.
  * Note that this component is reached via the react router.
- * When the card on the home page is clicked, it navigates to /Browsing_history
  */
-const BrowsingHistory = () => {
-  const dashData = useDashboardData("Browsing_history");
-  const [statistics, setStatistics] = useState([]);
-  const [altSelection, setAltSelection] = useState(null);
-  const [querySelection, setQuerySelection] = useState(null);
-  const [selection, setSelection] = useState(null);
-
-  useEffect(() => {
-    setSelection(intersect([querySelection, "domain", altSelection]));
-  }, [querySelection, altSelection]);
-
-  useEffect(() => {
-    setStatistics(getStatistics(dashData, selection));
-  }, [dashData, selection]);
-
+export default function BrowsingHistory() {
   return (
     <DashboardTemplate
-      dashData={dashData}
+      dataName="Browsing"
       searchOn={SEARCHON}
       columns={COLUMNS}
-      querySelection={querySelection}
-      setQuerySelection={setQuerySelection}
-      altSelection={altSelection}
-      statistics={statistics}
-    >
-      <KeyCloud
+      VisComponent={VisComponent}
+      calcStatistics={calcStatistics}
+    />
+  );
+}
+
+const VisComponent = ({ dashData, inSelection, setOutSelection }) => {
+  if (!dashData) return null;
+  return (
+    <div style={{ width: "20vw", height: "vh" }}>
+      <BubbleChart
         dashData={dashData}
-        field={"domain"}
-        inSelection={querySelection}
-        nWords={50}
-        setOutSelection={setAltSelection}
+        field={FIELD}
+        inSelection={inSelection}
+        setOutSelection={setOutSelection}
       />
-    </DashboardTemplate>
+    </div>
   );
 };
 
-const getStatistics = (dashData, field, selection) => {
+const VisComponent2 = ({ dashData, inSelection, setOutSelection }) => {
+  return (
+    <KeyCloud
+      dashData={dashData}
+      field={FIELD}
+      inSelection={inSelection}
+      nWords={50}
+      setOutSelection={setOutSelection}
+    />
+  );
+};
+
+const calcStatistics = (dashData, selection) => {
   if (!dashData) return [];
-  const counts = dashData.count(field, selection);
+  const counts = dashData.count(FIELD, selection);
 
   const stats = {};
   stats["Total visits"] = 0;
@@ -69,12 +59,9 @@ const getStatistics = (dashData, field, selection) => {
   stats["Unique websites"] = 0;
   for (let key of Object.keys(counts)) {
     stats["Total visits"] += counts[key];
-    stats["Unique website"]++;
+    stats["Unique websites"]++;
     if (counts[key] > stats["Most visited"][1]) stats["Most visited"] = [key, counts[key]];
   }
 
   return Object.keys(stats).map((label) => ({ label, value: stats[label] }));
 };
-
-BrowsingHistory.propTypes = propTypes;
-export default BrowsingHistory;

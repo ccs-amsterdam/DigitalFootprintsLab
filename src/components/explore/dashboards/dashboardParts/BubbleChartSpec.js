@@ -3,15 +3,22 @@ import { createClassFromSpec } from "react-vega";
 export default createClassFromSpec({
   spec: {
     $schema: "https://vega.github.io/schema/vega/v5.json",
-    width: 700,
-    height: 650,
+    width: 500,
+    height: 500,
     padding: 0,
-    autosize: "none",
+    autosize: {
+      type: "no",
+      resize: false,
+    },
 
     data: [
       {
         name: "tree",
         transform: [
+          {
+            type: "filter",
+            expr: "if(selectedDatum === null, datum.name == selectedDatum.name, true)",
+          },
           {
             type: "stratify",
             key: "name",
@@ -23,9 +30,10 @@ export default createClassFromSpec({
             sort: { field: "count" },
             size: [{ signal: "width" }, { signal: "height" }],
           },
+
           {
             type: "filter",
-            expr: "datum.name != 'root' && datum.type != 'category'",
+            expr: "datum.type != 'root' && datum.type != 'category'",
           },
         ],
       },
@@ -34,13 +42,8 @@ export default createClassFromSpec({
     signals: [
       {
         name: "selectedDatum",
-        value: {},
+        value: "null",
         on: [{ events: "click", update: "datum", force: "true" }],
-      },
-      {
-        name: "filterDatum",
-        value: {},
-        on: [{ events: "*:dblclick", update: "datum", force: "true" }],
       },
     ],
 
@@ -78,6 +81,7 @@ export default createClassFromSpec({
       },
       {
         type: "image",
+        name: "images",
         from: { data: "tree" },
         encode: {
           enter: {

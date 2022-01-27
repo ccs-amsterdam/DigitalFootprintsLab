@@ -21,11 +21,10 @@ const useRawEntries = (table) => {
   return [entries];
 };
 
-export const useDatabaseEntries = (table, field) => {
+export const useDatabaseEntries = (dashData, field) => {
   //TODO: I guess this only applies for field === 'domain'
   const [loadingData, setLoadingData] = useState(false);
   const [keyTotalObj, setKeyTotalObj] = useState({});
-  const [entries] = useRawEntries(table);
   const [allDomains, setAllDomains] = useState([]);
   const [, domainInfo] = useDomainInfo(allDomains);
 
@@ -33,11 +32,11 @@ export const useDatabaseEntries = (table, field) => {
   useEffect(() => {
     const domains = [
       ...new Set(
-        entries.map((e) => e["domain"]).filter((e) => e !== "localhost" && e !== "newtab")
+        dashData.data.map((e) => e["domain"]).filter((e) => e !== "localhost" && e !== "newtab")
       ),
     ];
     setAllDomains(domains);
-  }, [entries]);
+  }, [dashData]);
 
   // Process raw entries and domain info into object tree for Vega
   useEffect(() => {
@@ -45,7 +44,7 @@ export const useDatabaseEntries = (table, field) => {
 
     const keyTotalObj = {};
 
-    for (let entry of entries) {
+    for (let entry of dashData.data) {
       let keys = Array.isArray(entry[field]) ? entry[field] : [entry[field]];
       for (let key of keys) {
         if (key !== "") {

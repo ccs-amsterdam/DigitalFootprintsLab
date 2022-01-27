@@ -17,8 +17,8 @@ import SearchHistory from "./components/explore/SearchHistory";
 // The first item will be the opening page after login
 const items = [
   { label: "Data square", path: "/datasquare", Component: DataSquare },
-  { label: "Browsing History", path: "/Browsing_history", Component: BrowsingHistory },
-  { label: "Search", path: "/Search_history", Component: SearchHistory },
+  { label: "Browsing History", path: "/browsing", Component: BrowsingHistory },
+  { label: "Search", path: "/search", Component: SearchHistory },
   { label: "Youtube", path: "/youtube", Component: YoutubeHistory },
 ];
 
@@ -31,7 +31,7 @@ const App = () => {
 
   return (
     <div style={{ background: "#0C1D35", height: "100%" }}>
-      <BrowserRouter>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
         <HeaderMenu items={items}>
           <Switch>
             <Route exact path={"/"} render={() => <Welcome items={items} />} />

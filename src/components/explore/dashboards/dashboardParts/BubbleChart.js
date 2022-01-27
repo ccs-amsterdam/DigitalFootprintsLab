@@ -1,68 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { PropTypes } from "prop-types";
 import BubbleChartSpec from "./BubbleChartSpec";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
-import { useDatabaseEntries } from "../../dashboardData/DatabaseEntries";
 import { Card, Button, Image, Dimmer, Loader } from "semantic-ui-react";
-
-const propTypes = {
-  /** The name of the table in db */
-  table: PropTypes.string,
-  /** The name of the field in db */
-  field: PropTypes.string,
-  /** An array with a selection of row ids in table */
-  inSelection: PropTypes.array,
-  /** An integer specifying the number of words in the cloud*/
-  nWords: PropTypes.number,
-  /** A boolean for whether data is loading */
-  loading: PropTypes.bool,
-  /** A callback for setting the selection state */
-  setOutSelection: PropTypes.func,
-};
-
+import useDomainInfo from "components/explore/dashboardData/useDomainInfo";
 /**
  * Makes a wordcloud for keys, for a given table:field in db
  */
-const BubbleChart = ({ table, field, inSelection, nWords, loading, setOutSelection }) => {
+const BubbleChart = ({ dashData, field, inSelection, setOutSelection }) => {
   const [data, setData] = useState({ tree: [] }); // input for vega visualization
-  //  const [loadingData, setLoadingData] = useState(false);
   const [selectedDatum, setSelectedDatum] = useState(null);
-  const [confirm, setConfirm] = useState({ open: false, ask: true, itemIds: [] });
+  const [deleteIds, setDeleteIds] = useState([]);
   const [filteredDatum, setFilteredDatum] = useState(null);
-  const [loadingData, keyTotalObj] = useDatabaseEntries(table, field);
 
-  // Update selection
+  const domainInfo = useDomainInfo(dashData);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
-    setOutSelection(filteredDatum === null ? null : filteredDatum.ids);
-  }, [filteredDatum, setOutSelection]);
-
-  // Filter keyTotalObj for current selection and zoom level
-  useEffect(() => {
-    // Filter
-    let nodes = Object.values(keyTotalObj);
-    if (inSelection !== null) {
-      nodes = nodes.filter((obj) => inSelection.includes(obj.id));
-    }
-    if (filteredDatum === null) {
-      nodes = nodes.filter((obj) => obj.type !== "url");
-    }
-
-    // Only include used categories
-    const categories = [...new Set(Object.values(nodes).map((node) => node.category))];
-    const cats = [];
-    for (let category of categories) {
-      cats.push({
-        type: "category",
-        name: category,
-        count: 1,
-        parent: "root",
-      });
-    }
-
-    let keyTotal = [{ type: "root", name: "root" }, ...cats, ...nodes];
-
-    setData({ tree: keyTotal });
-  }, [keyTotalObj, inSelection, filteredDatum]); //no, we don't want filteredDatum as dependency
+    setData(createTreeData(dashData, field, inSelection, domainInfo));
+  }, [dashData, field, domainInfo, inSelection, setLoading]);
 
   // Vega signal handler
   const onSelectedDatum = (signal, datum) => {
@@ -71,33 +26,31 @@ const BubbleChart = ({ table, field, inSelection, nWords, loading, setOutSelecti
       setFilteredDatum(null);
       setSelectedDatum(null);
     } else {
-      if (datum.type === "domain" || datum.type === "url") {
+      if (datum.type === field) {
         setSelectedDatum(datum);
       }
     }
   };
 
   // Vega signal handler
-  const onFilterDatum = (signal, datum) => {
-    setFilteredDatum(datum);
+
+  // Popup button handler
+  const filterSelectedDatum = async () => {
+    let selection = await dashData.searchValues([selectedDatum.name], field);
+    setOutSelection(selection);
     setSelectedDatum(null);
   };
 
   // Popup button handler
-  const filterSelectedDatum = () => {
-    setFilteredDatum(selectedDatum);
-    setSelectedDatum(null);
-  };
-
-  // Popup button handler
-  const deleteSelectedDatum = () => {
-    setConfirm({ ...confirm, open: true, itemIds: selectedDatum.ids });
+  const deleteSelectedDatum = async () => {
+    let selection = await dashData.searchValues([selectedDatum.name], field);
+    console.log(selection);
+    setDeleteIds(selection);
     setSelectedDatum(null);
   };
 
   const signalListeners = {
     selectedDatum: onSelectedDatum,
-    filterDatum: onFilterDatum,
   };
 
   const popupStyle = {
@@ -107,9 +60,10 @@ const BubbleChart = ({ table, field, inSelection, nWords, loading, setOutSelecti
     top: selectedDatum ? selectedDatum.y : 0,
   };
 
+  return null;
   return (
     <div style={{ position: "relative" }}>
-      <Dimmer active={loading || loadingData}>
+      <Dimmer active={loading}>
         <Loader />
       </Dimmer>
       <BubbleChartSpec data={data} signalListeners={signalListeners} actions={false} />
@@ -145,10 +99,43 @@ const BubbleChart = ({ table, field, inSelection, nWords, loading, setOutSelecti
           </Card>
         </div>
       )}
-      <ConfirmDeleteModal table={table} confirm={confirm} setConfirm={setConfirm} />
+      <ConfirmDeleteModal dashData={dashData} deleteIds={deleteIds} setDeleteIds={setDeleteIds} />
     </div>
   );
 };
 
-BubbleChart.propTypes = propTypes;
+const createTreeData = (dashData, field, selection, domainInfo) => {
+  const domains = dashData.count(field, selection);
+  const nodes = [];
+  let categories = {};
+  for (let domain of Object.keys(domains)) {
+    const category = domainInfo?.[domain] || domain.slice(0, 2);
+    const logo = domainInfo?.[domain]?.logo
+      ? domainInfo[domain].logo
+      : `http://${domain}/favicon.ico`;
+
+    if (!categories[category])
+      categories[category] = {
+        type: "category",
+        name: category,
+        count: 0,
+        parent: "root",
+        category,
+      };
+    categories[category].count++;
+
+    nodes.push({
+      type: field,
+      name: domain,
+      parent: category,
+      count: domains[domain],
+      category,
+      logo,
+    });
+  }
+
+  categories = Object.values(categories);
+  return { tree: [{ name: "root", type: "root" }, ...categories, ...nodes] };
+};
+
 export default React.memo(BubbleChart);

@@ -112,8 +112,8 @@ const WriteToDB = ({ setOpen, setLoading }) => {
   const ref = useRef();
 
   const onChangeHandler = async (e) => {
-    dispatch(updateDataStatus("Browsing_history", "Google_Takeout", "loading"));
-    dispatch(updateDataStatus("Search_history", "Google_Takeout", "loading"));
+    dispatch(updateDataStatus("Browsing", "Google_Takeout", "loading"));
+    dispatch(updateDataStatus("Search", "Google_Takeout", "loading"));
     dispatch(updateDataStatus("Youtube", "Google_Takeout", "loading"));
 
     let failed = false;
@@ -130,12 +130,12 @@ const WriteToDB = ({ setOpen, setLoading }) => {
         let chrome = await zipped.file("Takeout/Chrome/BrowserHistory.json").async("text");
         chrome = JSON.parse(chrome);
         await writeChromeHistory(chrome["Browser History"]);
-        dispatch(updateDataStatus("Browsing_history", "Google_Takeout", "finished"));
-        dispatch(updateDataStatus("Search_history", "Google_Takeout", "finished"));
+        dispatch(updateDataStatus("Browsing", "Google_Takeout", "finished"));
+        dispatch(updateDataStatus("Search", "Google_Takeout", "finished"));
       } catch (e) {
         failed = true;
-        dispatch(updateDataStatus("Browsing_history", "Google_Takeout", "failed"));
-        dispatch(updateDataStatus("Search_history", "Google_Takeout", "failed"));
+        dispatch(updateDataStatus("Browsing", "Google_Takeout", "failed"));
+        dispatch(updateDataStatus("Search", "Google_Takeout", "failed"));
       }
 
       try {
@@ -236,8 +236,8 @@ const writeChromeHistory = async (history) => {
     });
   }
 
-  await db.addData(queries, "Search_history", "Google_Takeout", ["url", "date"]);
-  await db.addData(urls, "Browsing_history", "Google_Takeout", ["query", "date"]);
+  await db.addData(queries, "Search", "Google_Takeout", ["url", "date"]);
+  await db.addData(urls, "Browsing", "Google_Takeout", ["query", "date"]);
 };
 
 const writeYoutubeHistory = async (history) => {
