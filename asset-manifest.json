@@ -1,28 +1,28 @@
 {
   "files": {
-    "main.css": "/digitalfootprints/static/css/main.9f24bd7f.chunk.css",
-    "main.js": "/digitalfootprints/static/js/main.da858149.chunk.js",
-    "main.js.map": "/digitalfootprints/static/js/main.da858149.chunk.js.map",
-    "runtime-main.js": "/digitalfootprints/static/js/runtime-main.de2ee22a.js",
-    "runtime-main.js.map": "/digitalfootprints/static/js/runtime-main.de2ee22a.js.map",
-    "static/css/2.8e9caf69.chunk.css": "/digitalfootprints/static/css/2.8e9caf69.chunk.css",
-    "static/js/2.8c547e82.chunk.js": "/digitalfootprints/static/js/2.8c547e82.chunk.js",
-    "static/js/2.8c547e82.chunk.js.map": "/digitalfootprints/static/js/2.8c547e82.chunk.js.map",
-    "index.html": "/digitalfootprints/index.html",
-    "static/css/2.8e9caf69.chunk.css.map": "/digitalfootprints/static/css/2.8e9caf69.chunk.css.map",
-    "static/css/main.9f24bd7f.chunk.css.map": "/digitalfootprints/static/css/main.9f24bd7f.chunk.css.map",
-    "static/js/2.8c547e82.chunk.js.LICENSE.txt": "/digitalfootprints/static/js/2.8c547e82.chunk.js.LICENSE.txt",
-    "static/media/background.eb5e36bf.jpeg": "/digitalfootprints/static/media/background.eb5e36bf.jpeg",
-    "static/media/semantic.min.css": "/digitalfootprints/static/media/outline-icons.ddae9b1b.woff",
-    "static/media/googleTakeout1.d43cb755.gif": "/digitalfootprints/static/media/googleTakeout1.d43cb755.gif",
-    "static/media/googleTakeout2.97152dfa.gif": "/digitalfootprints/static/media/googleTakeout2.97152dfa.gif",
-    "static/media/logo.fc0d5b24.png": "/digitalfootprints/static/media/logo.fc0d5b24.png"
+    "main.css": "/DigitalFootprintsLab/static/css/main.9f24bd7f.chunk.css",
+    "main.js": "/DigitalFootprintsLab/static/js/main.84e3c460.chunk.js",
+    "main.js.map": "/DigitalFootprintsLab/static/js/main.84e3c460.chunk.js.map",
+    "runtime-main.js": "/DigitalFootprintsLab/static/js/runtime-main.da46466a.js",
+    "runtime-main.js.map": "/DigitalFootprintsLab/static/js/runtime-main.da46466a.js.map",
+    "static/css/2.3a7f92e6.chunk.css": "/DigitalFootprintsLab/static/css/2.3a7f92e6.chunk.css",
+    "static/js/2.f8519fb9.chunk.js": "/DigitalFootprintsLab/static/js/2.f8519fb9.chunk.js",
+    "static/js/2.f8519fb9.chunk.js.map": "/DigitalFootprintsLab/static/js/2.f8519fb9.chunk.js.map",
+    "index.html": "/DigitalFootprintsLab/index.html",
+    "static/css/2.3a7f92e6.chunk.css.map": "/DigitalFootprintsLab/static/css/2.3a7f92e6.chunk.css.map",
+    "static/css/main.9f24bd7f.chunk.css.map": "/DigitalFootprintsLab/static/css/main.9f24bd7f.chunk.css.map",
+    "static/js/2.f8519fb9.chunk.js.LICENSE.txt": "/DigitalFootprintsLab/static/js/2.f8519fb9.chunk.js.LICENSE.txt",
+    "static/media/background.eb5e36bf.jpeg": "/DigitalFootprintsLab/static/media/background.eb5e36bf.jpeg",
+    "static/media/semantic.min.css": "/DigitalFootprintsLab/static/media/outline-icons.ddae9b1b.woff",
+    "static/media/googleTakeout1.d43cb755.gif": "/DigitalFootprintsLab/static/media/googleTakeout1.d43cb755.gif",
+    "static/media/googleTakeout2.97152dfa.gif": "/DigitalFootprintsLab/static/media/googleTakeout2.97152dfa.gif",
+    "static/media/logo.fc0d5b24.png": "/DigitalFootprintsLab/static/media/logo.fc0d5b24.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.de2ee22a.js",
-    "static/css/2.8e9caf69.chunk.css",
-    "static/js/2.8c547e82.chunk.js",
+    "static/js/runtime-main.da46466a.js",
+    "static/css/2.3a7f92e6.chunk.css",
+    "static/js/2.f8519fb9.chunk.js",
     "static/css/main.9f24bd7f.chunk.css",
-    "static/js/main.da858149.chunk.js"
+    "static/js/main.84e3c460.chunk.js"
   ]
 }
