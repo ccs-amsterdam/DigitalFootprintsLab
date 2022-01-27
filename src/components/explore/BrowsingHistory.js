@@ -60,7 +60,7 @@ const calcStatistics = (dashData, selection) => {
   for (let key of Object.keys(counts)) {
     stats["Total visits"] += counts[key];
     stats["Unique websites"]++;
-    if (counts[key] > stats["Most visited"][1]) stats["Most visited"] = [key, counts[key]];
+    if (counts[key] > stats["Most visited"][1]) stats["Most visited"] = `${key} (${counts[key]})`;
   }
 
   return Object.keys(stats).map((label) => ({ label, value: stats[label] }));

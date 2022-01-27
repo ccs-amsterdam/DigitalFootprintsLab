@@ -58,23 +58,23 @@ export default class DashboardData {
   searchValues(values, field) {
     if (values === null || values.length === 0) return null;
 
+    const valueMap = values.reduce((obj, value) => {
+      obj[value] = true;
+      return obj;
+    }, {});
+
     const selection = [];
     for (let i = 0; i < this.data.length; i++) {
       if (this.data[i]._DELETED) continue;
-      value_loop: for (let value of values) {
-        if (Array.isArray(this.data[i][field])) {
-          for (let datavalue of this.data[i][field]) {
-            if (datavalue === value) {
-              selection.push(i);
-              break value_loop;
-            }
-          }
-        } else {
-          if (value === this.data[i][field]) {
+      if (Array.isArray(this.data[i][field])) {
+        for (let datavalue of this.data[i][field]) {
+          if (valueMap[datavalue]) {
             selection.push(i);
             break;
           }
         }
+      } else {
+        if (valueMap[this.data[i][field]]) selection.push(i);
       }
     }
     return selection;
