@@ -32,7 +32,8 @@ export default function useDomainInfo(dashData) {
 }
 
 export const updateDomainInfo = async (domains) => {
-  let cache = await db.getDomainInfo(domains);
+  //let cache = await db.getDomainInfo(domains);
+  let cache = {};
 
   // Check which domains are in the cache
   const domainsToFetch = domains.filter((domain) => !cache[domain] || !cache[domain].retry);
@@ -52,6 +53,7 @@ export const updateDomainInfo = async (domains) => {
   for (const [key, value] of Object.entries(data)) {
     cache[key] = value;
   }
+  console.log(cache);
 
   return cache;
 };

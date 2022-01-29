@@ -1,6 +1,5 @@
 import React from "react";
 import DashboardTemplate from "./dashboards/DashboardTemplate";
-import KeyCloud from "./dashboards/dashboardParts/KeyCloud";
 import BubbleChart from "./dashboards/dashboardParts/BubbleChart";
 
 const FIELD = "domain";
@@ -34,18 +33,6 @@ const VisComponent = ({ dashData, inSelection, setOutSelection }) => {
         setOutSelection={setOutSelection}
       />
     </div>
-  );
-};
-
-const VisComponent2 = ({ dashData, inSelection, setOutSelection }) => {
-  return (
-    <KeyCloud
-      dashData={dashData}
-      field={FIELD}
-      inSelection={inSelection}
-      nWords={50}
-      setOutSelection={setOutSelection}
-    />
   );
 };
 
