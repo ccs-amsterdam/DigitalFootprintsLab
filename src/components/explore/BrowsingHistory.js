@@ -1,8 +1,8 @@
 import React from "react";
 import DashboardTemplate from "./dashboards/DashboardTemplate";
-import BubbleChart from "./dashboards/dashboardParts/BubbleChart";
+import CirclePack from "./dashboards/dashboardParts/CirclePack";
 
-const FIELD = "domain";
+const GROUP = "domain";
 const SEARCHON = ["url", "title"];
 const COLUMNS = ["date", "title", "url"];
 
@@ -26,9 +26,9 @@ const VisComponent = ({ dashData, inSelection, setOutSelection }) => {
   if (!dashData) return null;
   return (
     <div style={{ width: "20vw", height: "vh" }}>
-      <BubbleChart
+      <CirclePack
         dashData={dashData}
-        field={FIELD}
+        group={GROUP}
         inSelection={inSelection}
         setOutSelection={setOutSelection}
       />
@@ -38,7 +38,7 @@ const VisComponent = ({ dashData, inSelection, setOutSelection }) => {
 
 const calcStatistics = (dashData, selection) => {
   if (!dashData) return [];
-  const counts = dashData.count(FIELD, selection);
+  const counts = dashData.count(GROUP, selection);
 
   const stats = {};
   stats["Total visits"] = 0;

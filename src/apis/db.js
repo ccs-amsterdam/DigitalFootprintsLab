@@ -1,5 +1,7 @@
-import { updateDomainInfo } from "components/explore/dashboardData/useDomainInfo";
+import { updateGroupInfo } from "components/explore/dashboardData/useGroupInfo";
 import Dexie from "dexie";
+const indexedDB = require("fake-indexeddb");
+const IDBKeyRange = require("fake-indexeddb/lib/FDBKeyRange");
 
 // Simplified alternative to previous use of indexedDB, motivated by:
 // - less dependencies
@@ -9,10 +11,15 @@ import Dexie from "dexie";
 // - DB data type agnostic (not using different tables for types. components can figure that stuff out)
 
 class FootprintDB {
-  constructor() {
+  constructor(useFake = false) {
     // Dexie automatically checks whether a db with this name exists. If it does,
     // it opens the existing one, if it doesn't, it creates a new one.
-    this.idb = new Dexie("FootprintDB"); // idb = indexedDB
+
+    if (!useFake) {
+      this.idb = new Dexie("FootprintDB");
+    } else {
+      this.idb = new Dexie("FootprintDB", { indexedDB: indexedDB, IDBKeyRange: IDBKeyRange });
+    }
 
     // the following 2 lines are only for developing
     // if enabled (i.e. not commented), the db resets every time the app is started (also when refreshing)
@@ -26,7 +33,7 @@ class FootprintDB {
       data: "&name, deleted", // unindexed fields: "data". "data" is an array with all the data. "deleted" requires some explanation.
       // data items can be deleted by users, but for speed we don't overwrite the data immediately,
       // and instead store the indices values of the deleted items. The format is a boolean array of same length as data
-      domainInfo: "&domain", // unindexed: info
+      groupInfo: "&group", // unindexed: info
     });
   }
 
@@ -81,18 +88,18 @@ class FootprintDB {
   async addData(data, name, source, idFields = null) {
     let fulldata = await this.getData(name);
 
-    const newDomains = {}; // also check for new domains, to immediately call backend for getting domaininfo
+    const newGroups = {}; // also check for new groups, to immediately call backend for getting groupinfo
     if (fulldata && fulldata.data.length > 0) {
       const existing = {};
       if (idFields) {
         for (let d of data) {
-          if (d.domain && !newDomains[d.domain]) newDomains[d.domain] = true;
+          if (d.group && !newGroups[d.group]) newGroups[d.group] = true;
           const id = JSON.stringify(idFields.map((f) => d[f]));
           existing[id] = true;
         }
       }
       for (let d of fulldata.data) {
-        if (d.domain && newDomains[d.domain]) newDomains[d.domain] = false;
+        if (d.group && newGroups[d.group]) newGroups[d.group] = false;
         if (idFields) {
           const id = JSON.stringify(idFields.map((f) => d[f]));
           if (existing[id]) continue;
@@ -104,8 +111,8 @@ class FootprintDB {
     await this.idb.data.put({ name, deleted: null, data }, [name]);
     await this.updateDataStatus(name, source);
 
-    const addDomainInfo = Object.keys(newDomains).filter((domain) => newDomains[domain]);
-    if (addDomainInfo.length > 0) updateDomainInfo(addDomainInfo);
+    const addGroupInfo = Object.keys(newGroups).filter((group) => newGroups[group]);
+    if (addGroupInfo.length > 0) updateGroupInfo(addGroupInfo);
   }
 
   /////// DATA STATUS
@@ -127,24 +134,24 @@ class FootprintDB {
     }
   }
 
-  /////// DOMAIN INFO
+  /////// Group INFO
 
-  async getDomainInfo(domains) {
-    // returns an object where keys are domains and values are info
-    const table = await this.idb.domainInfo.where("domain").anyOf(domains).toArray();
+  async getGroupInfo(groups) {
+    // returns an object where keys are groups and values are info
+    const table = await this.idb.groupInfo.where("group").anyOf(groups).toArray();
     return table.reduce((obj, row) => {
       obj[row.url] = row.info;
       return obj;
     }, {});
   }
 
-  async addDomainInfo(domainInfo) {
-    const data = Object.keys(domainInfo).map((key) => ({ domain: key, info: domainInfo[key] }));
-    this.idb.domainInfo
+  async addGroupInfo(groupInfo) {
+    const data = Object.keys(groupInfo).map((key) => ({ group: key, info: groupInfo[key] }));
+    this.idb.groupInfo
       .bulkPut(data)
       .then()
       .catch(Dexie.BulkError, (e) => {
-        console.log("ignored some duplicates in writeDomainInfo");
+        console.log("ignored some duplicates in writeGroupInfo");
       });
   }
 }

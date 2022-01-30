@@ -2,53 +2,53 @@ import db from "apis/db";
 import { useState, useEffect } from "react";
 
 /**
- * Get domain info for given dashData instance.
+ * Get group (e.g., domain, channel) info for given dashData instance.
  * assumes dashData.data.columns exists
  * @param {*} dashData
  * @returns
  */
-export default function useDomainInfo(dashData) {
+export default function useGroupInfo(dashData, group) {
   const [data, setData] = useState([]);
-  const [domains, setDomains] = useState(null);
+  const [groups, setGroups] = useState(null);
 
   useEffect(() => {
     if (!dashData?.data) return;
-    const domains = {};
-    for (let d of dashData.data) if (d?.domain && !domains[d.domain]) domains[d.domain] = true;
-    setDomains(Object.keys(domains));
-  }, [dashData?.data]);
+    const groups = {};
+    for (let d of dashData.data) if (d?.[group] && !groups[d[group]]) groups[d[group]] = true;
+    setGroups(Object.keys(groups));
+  }, [dashData?.data, group]);
 
   useEffect(() => {
-    if (!domains || domains.length === 0) return;
+    if (!groups || groups.length === 0) return;
     const fetchData = async () => {
-      const data = await updateDomainInfo(domains);
+      const data = await updateGroupInfo(groups);
       setData(data);
     };
 
     fetchData();
-  }, [domains]);
+  }, [groups]);
 
   return data;
 }
 
-export const updateDomainInfo = async (domains) => {
-  //let cache = await db.getDomainInfo(domains);
+export const updateGroupInfo = async (groups) => {
+  //let cache = await db.getGroupInfo(groups);
   let cache = {};
 
-  // Check which domains are in the cache
-  const domainsToFetch = domains.filter((domain) => !cache[domain] || !cache[domain].retry);
+  // Check which groups are in the cache
+  const groupsToFetch = groups.filter((group) => !cache[group] || !cache[group].retry);
 
-  if (domainsToFetch.length === 0) {
+  if (groupsToFetch.length === 0) {
     return cache;
   }
 
-  // Create empty entries in cache to prevent refetching if domain is not available in service
-  for (let domain of domainsToFetch) cache[domain] = {};
+  // Create empty entries in cache to prevent refetching if group is not available in service
+  for (let group of groupsToFetch) cache[group] = {};
 
-  const data = await fetchData(domainsToFetch);
+  const data = await fetchData(groupsToFetch);
 
   // Store results and return results including cached
-  db.addDomainInfo(data);
+  db.addGroupInfo(data);
 
   for (const [key, value] of Object.entries(data)) {
     cache[key] = value;
@@ -58,14 +58,14 @@ export const updateDomainInfo = async (domains) => {
   return cache;
 };
 
-const fetchData = async (domainsToFetch) => {
+const fetchData = async (groupsToFetch) => {
   // try fetching data from amcat. If failed, return empty data with .retry = true to trigger
   // retry on next call
   try {
-    const token = await generateToken("1234", domainsToFetch);
+    const token = await generateToken("1234", groupsToFetch);
     const body = {
       token,
-      urls: domainsToFetch,
+      urls: groupsToFetch,
     };
 
     // Make request
@@ -79,8 +79,8 @@ const fetchData = async (domainsToFetch) => {
     const data = await response.json();
     return data;
   } catch (e) {
-    const empty = domainsToFetch.reduce((obj, domain) => {
-      obj[domain] = { retry: true };
+    const empty = groupsToFetch.reduce((obj, group) => {
+      obj[group] = { retry: true };
       return obj;
     }, {});
     return empty;

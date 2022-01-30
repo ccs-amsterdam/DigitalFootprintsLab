@@ -1,8 +1,8 @@
 import React from "react";
 import DashboardTemplate from "./dashboards/DashboardTemplate";
-import KeyCloud from "./dashboards/dashboardParts/KeyCloud";
+import Wordcloud from "./dashboards/dashboardParts/Wordcloud";
 
-const FIELD = "word";
+const GROUP = "word";
 const SEARCHON = ["word"];
 const COLUMNS = ["query", "date"];
 
@@ -22,20 +22,22 @@ export default function SearchHistory() {
 }
 
 const VisComponent = ({ dashData, inSelection, setOutSelection }) => {
+  if (!dashData) return null;
   return (
-    <KeyCloud
-      dashData={dashData}
-      field={FIELD}
-      inSelection={inSelection}
-      nWords={50}
-      setOutSelection={setOutSelection}
-    />
+    <div style={{ width: "20vw", height: "vh" }}>
+      <Wordcloud
+        dashData={dashData}
+        group={GROUP}
+        inSelection={inSelection}
+        setOutSelection={setOutSelection}
+      />
+    </div>
   );
 };
 
 const calcStatistics = (dashData, selection) => {
   if (!dashData) return [];
-  const counts = dashData.count(FIELD, selection);
+  const counts = dashData.count(GROUP, selection);
 
   const stats = {};
   stats["Total visits"] = 0;

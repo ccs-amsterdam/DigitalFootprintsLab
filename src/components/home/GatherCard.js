@@ -48,11 +48,11 @@ const GatherCard = ({ source, subname, produces, icon, onClick, loading }) => {
   );
 };
 
-const statusMessage = (produced) => {
+const statusMessage = (produced, i) => {
   const name = produced.name.replace("_", " ");
   if (produced.status === "failed")
     return (
-      <List.Item>
+      <List.Item key={i}>
         <List.Icon name="close" color="red" />
         <List.Content>
           Failed to get <b>{name}</b>
@@ -61,7 +61,7 @@ const statusMessage = (produced) => {
     );
   if (produced.status === "finished")
     return (
-      <List.Item>
+      <List.Item key={i}>
         <List.Icon name="check circle outline" color="green" />
         <List.Content>
           Gathered <b>{name}</b>
@@ -70,7 +70,7 @@ const statusMessage = (produced) => {
     );
 
   return (
-    <List.Item>
+    <List.Item key={i}>
       <List.Icon name="circle outline" />
       <List.Content>
         Click to gather <b>{name}</b>

@@ -13,15 +13,15 @@ export default createClassFromSpec({
         transform: [
           {
             type: "filter",
-            expr: "selectedCategory != '' ? datum.type != 'domain' || selectedCategory == datum.category : datum.type != 'domain'",
+            expr: "selectedCategory != '' ? datum.type != 'group' || selectedCategory == datum.category : datum.type != 'group'",
           },
-          { type: "window", groupby: ["type"], ops: ["count"] }, // note that tree (input data) needs to be sorted from most to least frequent domain
-          { type: "filter", expr: "datum.type != 'domain' || datum.count < 200" },
+          { type: "window", groupby: ["type"], ops: ["count"] }, // note that tree (input data) needs to be sorted from most to least frequent group
+          { type: "filter", expr: "datum.type != 'group' || datum.count < 200" },
           { type: "stratify", key: "id", parentKey: "parent" },
           {
             type: "formula",
             as: "scaledsize",
-            expr: "datum.category === selectedCategory && datum.type === 'domain' ?  (datum.size * (0.8/(datum.categorySize))) : datum.size",
+            expr: "datum.category === selectedCategory && datum.type === 'group' ?  (datum.size * (0.8/(datum.categorySize))) : datum.size",
           },
           { type: "formula", as: "scaledsize", expr: "pow(datum.scaledsize*1000, 0.8)" },
 
@@ -66,7 +66,7 @@ export default createClassFromSpec({
           {
             events: "click",
             update:
-              "datum && datum.type == 'domain' && (isValid(selectedDatum) ? selectedDatum.id !== datum.id : true) ? datum : ''",
+              "datum && datum.type == 'group' && (isValid(selectedDatum) ? selectedDatum.id !== datum.id : true) ? datum : ''",
             force: false,
           },
         ],
@@ -146,7 +146,7 @@ export default createClassFromSpec({
           update: {
             text: {
               signal:
-                "(datum.type === 'category' && (selectedCategory !== datum.category )) || (datum.type === 'domain' && datum.count > 15) ? datum.label : null",
+                "(datum.type === 'category' && (selectedCategory !== datum.category )) || (datum.type === 'group' && (datum.count > 15 || !datum.icon)) ? datum.label : null",
             },
             xc: { field: "x" },
             yc: { field: "y" },

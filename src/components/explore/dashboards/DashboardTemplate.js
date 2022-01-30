@@ -47,8 +47,8 @@ const DashboardTemplate = ({ dataName, searchOn, columns, VisComponent, calcStat
 
   return (
     <ColoredBackgroundGrid background={background} color={"#000000b0"}>
-      <Grid stackable>
-        <Grid.Row style={{}}>
+      <Grid stackable style={{ height: "100vh" }}>
+        <Grid.Row style={{ minHeight: "600px" }}>
           <Grid.Column width={4}>
             <BackButton />
             <Container
@@ -77,7 +77,7 @@ const DashboardTemplate = ({ dataName, searchOn, columns, VisComponent, calcStat
             />
           </Grid.Column>
         </Grid.Row>
-        <Grid.Row style={{ height: "500px", width: "100%" }}>
+        <Grid.Row style={{ minHeight: "500px", maxHeight: "50vh", width: "100%" }}>
           <DataTable dashData={dashData} columns={columns} selection={selection} />
         </Grid.Row>
       </Grid>

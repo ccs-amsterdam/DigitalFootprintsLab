@@ -107,7 +107,11 @@ const DeleteDataButton = () => {
       <Button
         negative
         fluid
-        onClick={() => db.destroyEverything().then(() => window.location.reload())}
+        onClick={() =>
+          db.destroyEverything().then(() => {
+            window.location.reload("/");
+          })
+        }
       >
         Delete data
       </Button>

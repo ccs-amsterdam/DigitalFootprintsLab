@@ -1,6 +1,6 @@
 import React from "react";
 import DashboardTemplate from "./dashboards/DashboardTemplate";
-import KeyCloud from "./dashboards/dashboardParts/KeyCloud";
+import CirclePack from "./dashboards/dashboardParts/CirclePack";
 
 const FIELD = "channel";
 const SEARCHON = ["channel", "title"];
@@ -24,14 +24,16 @@ export default function Youtube() {
 }
 
 const VisComponent = ({ dashData, inSelection, setOutSelection }) => {
+  if (!dashData) return null;
   return (
-    <KeyCloud
-      dashData={dashData}
-      field={FIELD}
-      inSelection={inSelection}
-      nWords={50}
-      setOutSelection={setOutSelection}
-    />
+    <div style={{ width: "20vw", height: "vh" }}>
+      <CirclePack
+        dashData={dashData}
+        field={FIELD}
+        inSelection={inSelection}
+        setOutSelection={setOutSelection}
+      />
+    </div>
   );
 };
 
