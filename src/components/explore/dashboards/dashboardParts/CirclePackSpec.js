@@ -87,7 +87,7 @@ export default createClassFromSpec({
         from: { data: "tree" },
         encode: {
           enter: {
-            path: { value: "M-1,0, A1,1 0 1,1 -1,0.01 z" }, // ellipse shape
+            path: { value: "M-1 0 A1 1 0 1 1 -1 0.01 z" }, // ellipse shape
 
             tooltip: { signal: "datum.name" },
           },

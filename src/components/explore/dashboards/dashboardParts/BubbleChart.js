@@ -70,6 +70,7 @@ const BubbleChart = ({ dashData, inSelection, setOutSelection }) => {
   //   top: selectedDatum ? selectedDatum.y : 0,
   // };
 
+  console.log(data);
   return (
     <div style={{ position: "relative" }}>
       <Dimmer active={loading}>

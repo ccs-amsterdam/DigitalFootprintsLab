@@ -5,7 +5,7 @@
     "type": "git",
     "url": "https://github.com/ccs-amsterdam/DigitalFootprintsLab"
   },
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "dependencies": {
     "@nivo/calendar": "^0.72.0",
@@ -35,7 +35,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "predeploy": "npm run build",
+    "predeploy": "react-scripts build && cp build/index.html build/404.html",
     "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",

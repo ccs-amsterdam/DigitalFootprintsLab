@@ -134,6 +134,8 @@ const WriteToDB = ({ setOpen, setLoading }) => {
         dispatch(updateDataStatus("Search", "Google_Takeout", "finished"));
       } catch (e) {
         failed = true;
+        console.log("chrome error");
+        console.log(e);
         dispatch(updateDataStatus("Browsing", "Google_Takeout", "failed"));
         dispatch(updateDataStatus("Search", "Google_Takeout", "failed"));
       }
@@ -212,8 +214,14 @@ const writeChromeHistory = async (history) => {
   let urls = [];
   let queries = [];
 
+  let url;
   for (let item of history) {
-    let url = new URL(item.url);
+    try {
+      url = new URL(item.url);
+    } catch (e) {
+      console.log("could not parse url");
+      continue;
+    }
     if (url.hostname + url.pathname === "www.google.com/search") {
       const query = item.title.replace("- Google Search", "").trim();
       let words = tokenize(query);
