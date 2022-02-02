@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router-dom";
 import CardTemplate from "./CardTemplate";
 import { List } from "semantic-ui-react";
 
@@ -19,16 +19,16 @@ const propTypes = {
  * These are the cards in the Explore column on the home page.
  */
 const ExploreCard = ({ name, subname, icon }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const statuses = useSelector((state) => {
     return state.dataStatus.filter((data) => data.name === name && data.status === "finished");
   });
 
   if (!statuses || statuses.length === 0) return null;
-  console.log(statuses);
 
   const onClick = () => {
-    history.push(name);
+    console.log(name);
+    navigate("/" + name);
   };
 
   return (

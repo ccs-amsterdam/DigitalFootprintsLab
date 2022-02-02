@@ -32,8 +32,8 @@ export default function useGroupInfo(dashData, group) {
 }
 
 export const updateGroupInfo = async (groups) => {
-  //let cache = await db.getGroupInfo(groups);
-  let cache = {};
+  let cache = await db.getGroupInfo(groups);
+  //let cache = {};    // use this for dev when dutch domains has updated
 
   // Check which groups are in the cache
   const groupsToFetch = groups.filter((group) => !cache[group] || !cache[group].retry);

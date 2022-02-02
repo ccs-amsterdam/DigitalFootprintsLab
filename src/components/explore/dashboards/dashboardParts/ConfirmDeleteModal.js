@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Button, ButtonGroup, Checkbox, Modal } from "semantic-ui-react";
 
 const propTypes = {
@@ -14,14 +14,19 @@ const propTypes = {
 
 const ConfirmDeleteModal = ({ dashData, deleteIds, setDeleteIds }) => {
   const [ask, setAsk] = useState(true);
+  const deleteImmediately = useRef(false);
 
   const handleDelete = async () => {
+    deleteImmediately.current = !ask;
     await dashData.rmID(deleteIds);
     setDeleteIds([]);
   };
 
   const n = deleteIds?.length || 0;
-  if (!ask && n === 1) handleDelete();
+  if (deleteImmediately.current && n === 1) {
+    handleDelete();
+    return null;
+  }
 
   return (
     <Modal style={{ backgroundColor: "#00000054" }} open={n > 0} onClose={() => setDeleteIds([])}>
@@ -42,7 +47,7 @@ const ConfirmDeleteModal = ({ dashData, deleteIds, setDeleteIds }) => {
           {n > 1 ? null : (
             <Checkbox
               style={{ float: "right" }}
-              onChange={(e, d) => setAsk(!d.value)}
+              onChange={(e, d) => setAsk(!d.checked)}
               label="Do not ask again. Next time, delete immediately when clicking the trash icon"
             />
           )}

@@ -8,11 +8,10 @@
   "version": "0.1.1",
   "private": true,
   "dependencies": {
-    "@nivo/calendar": "^0.72.0",
-    "@nivo/core": "^0.72.0",
+    "@semantic-ui-react/css-patch": "^1.0.0",
     "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
+    "@testing-library/react": "^12.1.2",
+    "@testing-library/user-event": "^13.5.0",
     "dexie": "^3.2.0",
     "fake-indexeddb": "^3.1.7",
     "jszip": "^3.6.0",
@@ -22,15 +21,14 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.4",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
+    "react-router-dom": "^6.2.1",
+    "react-scripts": "^5.0.0",
     "react-vega": "^7.4.4",
-    "react-wordcloud": "^1.2.7",
     "redux": "^4.1.0",
     "redux-thunk": "^2.3.0",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^2.0.3",
-    "web-vitals": "^1.0.1"
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -38,7 +36,8 @@
     "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "postinstall": "semantic-ui-css-patch"
   },
   "eslintConfig": {
     "extends": [
@@ -59,7 +58,6 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^3.2.3",
-    "react-styleguidist": "^11.1.7"
+    "gh-pages": "^3.2.3"
   }
 }

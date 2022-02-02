@@ -12,7 +12,7 @@ export default createClassFromSpec({
       {
         name: "table",
         transform: [
-          { type: "window", groupby: ["type"], ops: ["count"] }, // note that tree (input data) needs to be sorted from most to least frequent group
+          { type: "window", groupby: ["type"], ops: ["count"] },
           { type: "filter", expr: "datum.count < 100" },
         ],
       },

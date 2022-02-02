@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Icon, Button, Container, Header, Item } from "semantic-ui-react";
 
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 import ColoredBackgroundGrid from "./dashboardParts/ColoredBackgroundGrid";
 import background from "images/background.jpeg";
@@ -105,7 +105,9 @@ const Statistics = ({ statistics }) => {
           return (
             <Item key={statistic.label}>
               <Item.Content>
-                <Item.Header style={{ color: "white" }}>{statistic.label}</Item.Header>
+                <Item.Header style={{ color: "white" }}>
+                  {statistic.label.replace("_", " ")}
+                </Item.Header>
                 <Item.Description style={{ color: "white" }}>{statistic.value}</Item.Description>
               </Item.Content>
             </Item>
@@ -117,7 +119,7 @@ const Statistics = ({ statistics }) => {
 };
 
 const BackButton = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <Button
@@ -130,7 +132,7 @@ const BackButton = () => {
         marginLeft: "20px",
         marginTop: "20px",
       }}
-      onClick={() => history.push("/datasquare")}
+      onClick={() => navigate("/datasquare")}
     >
       <Icon name="backward" />
       Go back

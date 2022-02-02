@@ -40,6 +40,11 @@ export default createClassFromSpec({
           { type: "filter", expr: "datum.type != 'root'" },
         ],
       },
+      {
+        name: "with_image",
+        source: "tree",
+        transform: [{ type: "filter", expr: "datum.type === 'group' && datum.count < 15" }],
+      },
     ],
 
     signals: [
@@ -85,13 +90,16 @@ export default createClassFromSpec({
         type: "path",
 
         from: { data: "tree" },
+
         encode: {
           enter: {
             path: { value: "M-1 0 A1 1 0 1 1 -1 0.01 z" }, // ellipse shape
-
-            tooltip: { signal: "datum.name" },
           },
           update: {
+            tooltip: {
+              signal:
+                "datum.type === 'category' && datum.category === selectedCategory ? null : datum.name",
+            },
             xc: { field: "x" },
             yc: { field: "y" },
             scaleX: { signal: "datum.width" },
@@ -116,21 +124,14 @@ export default createClassFromSpec({
       {
         type: "image",
         name: "icon",
-        from: { data: "tree" },
+        from: { data: "with_image" },
         encode: {
-          enter: {
-            url: { signal: "datum.count > 15 ? null : datum.icon" },
-            tooltip: { signal: "datum.name" },
-          },
+          enter: { url: { field: "icon" }, tooltip: { signal: "datum.name" } },
           update: {
             xc: { field: "x" },
             yc: { field: "y" },
             width: { signal: "min(datum.width,32)" },
             height: { signal: "min(datum.height,32)" },
-            // x: { signal: "datum.x - min(datum.r, 32) / 2" },
-            // y: { signal: "datum.y - min(datum.r, 32) / 2" },
-            // width: { signal: "min(datum.r, 32)" },
-            // height: { signal: "min(datum.r, 32)" },
           },
           hover: { stroke: { value: "red" }, strokeWidth: { value: 2 } },
         },
@@ -141,7 +142,7 @@ export default createClassFromSpec({
         from: { data: "tree" },
         encode: {
           enter: {
-            tooltip: { signal: "datum.name" },
+            tooltip: { field: "name" },
           },
           update: {
             text: {

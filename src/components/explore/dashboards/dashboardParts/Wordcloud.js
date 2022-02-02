@@ -9,7 +9,7 @@ import { Dimmer, Loader } from "semantic-ui-react";
  * for getting icons and categories
  */
 const Wordcloud = ({ dashData, group, inSelection, setOutSelection }) => {
-  const [data, setData] = useState({ tree: [] }); // input for vega visualization
+  const [data, setData] = useState({ table: [] }); // input for vega visualization
   const [deleteIds, setDeleteIds] = useState([]);
 
   const [loading, setLoading] = useState(false);
@@ -66,7 +66,6 @@ const createWordcloudData = (dashData, group, selection, groupInfo) => {
   }));
   groups.sort((a, b) => b.count - a.count); // sort from high to low value
 
-  console.log(groups);
   return { table: groups };
 };
 

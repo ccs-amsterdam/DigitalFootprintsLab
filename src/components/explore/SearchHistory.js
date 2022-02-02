@@ -1,6 +1,7 @@
 import React from "react";
 import DashboardTemplate from "./dashboards/DashboardTemplate";
 import Wordcloud from "./dashboards/dashboardParts/Wordcloud";
+import { List } from "semantic-ui-react";
 
 const GROUP = "word";
 const SEARCHON = ["word"];
@@ -37,17 +38,36 @@ const VisComponent = ({ dashData, inSelection, setOutSelection }) => {
 
 const calcStatistics = (dashData, selection) => {
   if (!dashData) return [];
-  const counts = dashData.count(GROUP, selection);
+  const counts = dashData.count(GROUP, selection, " ");
 
-  const stats = {};
-  stats["Total visits"] = 0;
-  stats["Most visited"] = ["none", 0]; // array of [0] key and [1] count
-  stats["Unique websites"] = 0;
+  let searches = dashData.N(selection);
+  let top_queries = [];
+  const n_top_queries = 5;
+
   for (let key of Object.keys(counts)) {
-    stats["Total visits"] += counts[key];
-    stats["Unique websites"]++;
-    if (counts[key] > stats["Most visited"][1]) stats["Most visited"] = [key, counts[key]];
+    let insert = top_queries.findIndex((mv) => mv.count < counts[key]);
+    if (insert < 0) insert = top_queries.length;
+    if (insert < n_top_queries) {
+      const value = { key, count: counts[key] };
+      top_queries.splice(insert, 0, value);
+    }
   }
 
-  return Object.keys(stats).map((label) => ({ label, value: stats[label] }));
+  top_queries = top_queries.slice(0, n_top_queries);
+  top_queries = (
+    <List>
+      {top_queries.map((mv) => {
+        return (
+          <List.Item>
+            <List.Content>{`${mv.key.replace(/www[^.]*\./, "")} (${mv.count})`}</List.Content>
+          </List.Item>
+        );
+      })}
+    </List>
+  );
+
+  return [
+    { label: "Total searches", value: searches },
+    { label: "Top queries", value: top_queries },
+  ];
 };

@@ -27,9 +27,10 @@ const GatherCard = ({ source, subname, produces, icon, onClick, loading }) => {
   const statuses = useSelector((state) => {
     return state.dataStatus.filter((data) => data.source === source);
   });
+
   let done = true;
   const produced = produces.map((p) => {
-    const status = statuses.find((s) => s.name === p);
+    const status = statuses.find((s) => s.name === p && s.status === "finished");
     if (!status) done = false;
     return status ? status : { name: p, status: "empty" };
   });
@@ -43,7 +44,7 @@ const GatherCard = ({ source, subname, produces, icon, onClick, loading }) => {
       loading={loading}
       done={done}
     >
-      <List style={{ textAlign: "left" }}>{produced.map(statusMessage)}</List>
+      <List style={{ textAlign: "left", paddingTop: "10px" }}>{produced.map(statusMessage)}</List>
     </CardTemplate>
   );
 };
@@ -55,7 +56,7 @@ const statusMessage = (produced, i) => {
       <List.Item key={i}>
         <List.Icon name="close" color="red" />
         <List.Content>
-          Failed to get <b>{name}</b>
+          Failed to get <b>{name}</b> data
         </List.Content>
       </List.Item>
     );
@@ -64,7 +65,7 @@ const statusMessage = (produced, i) => {
       <List.Item key={i}>
         <List.Icon name="check circle outline" color="green" />
         <List.Content>
-          Gathered <b>{name}</b>
+          Gathered <b>{name}</b> data
         </List.Content>
       </List.Item>
     );
@@ -73,7 +74,7 @@ const statusMessage = (produced, i) => {
     <List.Item key={i}>
       <List.Icon name="circle outline" />
       <List.Content>
-        Click to gather <b>{name}</b>
+        Click to gather <b>{name}</b> data
       </List.Content>
     </List.Item>
   );

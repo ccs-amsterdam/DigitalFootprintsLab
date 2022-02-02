@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CirclePackSpec from "./CirclePackSpec";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
-import { Dimmer, Loader, Card, Image, Button } from "semantic-ui-react";
+import { Dimmer, Loader } from "semantic-ui-react";
 import useGroupInfo from "components/explore/dashboardData/useGroupInfo";
 
 /**
@@ -11,7 +11,6 @@ import useGroupInfo from "components/explore/dashboardData/useGroupInfo";
  */
 const CirclePack = ({ dashData, group, inSelection, setOutSelection }) => {
   const [data, setData] = useState({ tree: [] }); // input for vega visualization
-  const [selectedDatum, setSelectedDatum] = useState(null);
   const [deleteIds, setDeleteIds] = useState([]);
 
   const groupInfo = useGroupInfo(dashData, group);
@@ -19,7 +18,7 @@ const CirclePack = ({ dashData, group, inSelection, setOutSelection }) => {
 
   useEffect(() => {
     setData(createTreeData(dashData, group, inSelection, groupInfo));
-    setOutSelection(null);
+    //setOutSelection(null);
   }, [dashData, group, groupInfo, inSelection, setOutSelection, setLoading]);
 
   // Vega signal handler
@@ -27,10 +26,8 @@ const CirclePack = ({ dashData, group, inSelection, setOutSelection }) => {
     console.log(datum);
     if (!datum) {
       setOutSelection(null);
-      setSelectedDatum(null);
     } else {
       filterSelectedDatum(datum);
-      setSelectedDatum(datum);
     }
   };
 
@@ -40,15 +37,6 @@ const CirclePack = ({ dashData, group, inSelection, setOutSelection }) => {
   const filterSelectedDatum = async (selectedDatum) => {
     let selection = await dashData.searchValues([selectedDatum.name], group);
     setOutSelection(selection);
-    //setSelectedDatum(null);
-  };
-
-  // Popup button handler
-  const deleteSelectedDatum = async () => {
-    let selection = await dashData.searchValues([selectedDatum.name], group);
-    console.log(selection);
-    setDeleteIds(selection);
-    setSelectedDatum(null);
   };
 
   const onSelectCategory = (s, d) => console.log(d);
@@ -58,14 +46,6 @@ const CirclePack = ({ dashData, group, inSelection, setOutSelection }) => {
     selectedCategory: onSelectCategory,
   };
 
-  const popupStyle = {
-    zIndex: 1,
-    position: "absolute",
-    left: selectedDatum ? selectedDatum.x : 0,
-    top: selectedDatum ? selectedDatum.y : 0,
-  };
-
-  console.log(data);
   return (
     <div style={{ position: "relative" }}>
       <Dimmer active={loading}>
@@ -77,38 +57,6 @@ const CirclePack = ({ dashData, group, inSelection, setOutSelection }) => {
         actions={false}
         renderer={"svg"}
       />
-      {selectedDatum && (
-        <div style={popupStyle}>
-          <Card>
-            <Card.Content>
-              {selectedDatum.icon && <Image floated="left" size="mini" src={selectedDatum.icon} />}
-              <Button
-                basic
-                floated="right"
-                size="mini"
-                icon="close"
-                onClick={() => setSelectedDatum(null)}
-              />
-              <Card.Header>{selectedDatum.name}</Card.Header>
-              <Card.Meta>{`${selectedDatum.visits} visits`}</Card.Meta>
-              <Card.Description>
-                <p>{selectedDatum.title && selectedDatum.title}</p>
-                <p>Category: {selectedDatum.category ? selectedDatum.category : "unknown"}</p>
-              </Card.Description>
-            </Card.Content>
-            <Card.Content extra>
-              <div className="ui two buttons">
-                {/* <Button basic color="blue" onClick={filterSelectedDatum}>
-                  Select
-                </Button> */}
-                <Button basic color="red" onClick={deleteSelectedDatum}>
-                  Delete
-                </Button>
-              </div>
-            </Card.Content>
-          </Card>
-        </div>
-      )}
       <ConfirmDeleteModal dashData={dashData} deleteIds={deleteIds} setDeleteIds={setDeleteIds} />
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import db from "apis/db";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Grid, Button, Header, Segment } from "semantic-ui-react";
 import background from "images/background.jpeg";
 
@@ -11,7 +11,7 @@ import background from "images/background.jpeg";
  * In time, this page should clearly list the terms and conditions.
  */
 const Welcome = ({ items }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const beWelcomed = async (checkWelcome) => {
     if (checkWelcome) {
@@ -20,7 +20,7 @@ const Welcome = ({ items }) => {
     }
     try {
       await db.welcome();
-      history.push(items[0].path);
+      navigate(items[0].path);
     } catch (e) {}
   };
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HeaderMenu from "./components/routing/HeaderMenu";
 import "./App.css";
 
@@ -23,9 +23,19 @@ const items = [
 ];
 
 const App = () => {
-  const createNavigation = (items) => {
+  const authRoutes = () => {
     return items.map((item) => {
-      return <AuthRoute key={item.path} path={item.path} Component={item.Component} />;
+      return (
+        <Route
+          key={item.label}
+          path={item.path}
+          element={
+            <AuthRoute>
+              <item.Component />
+            </AuthRoute>
+          }
+        />
+      );
     });
   };
 
@@ -33,10 +43,10 @@ const App = () => {
     <div style={{ background: "#0C1D35", height: "100%" }}>
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <HeaderMenu items={items}>
-          <Switch>
-            <Route exact path={"/"} render={() => <Welcome items={items} />} />
-            {createNavigation(items)}
-          </Switch>
+          <Routes>
+            <Route exact path={"/"} element={<Welcome items={items} />} />
+            {authRoutes()}
+          </Routes>
         </HeaderMenu>
       </BrowserRouter>
     </div>

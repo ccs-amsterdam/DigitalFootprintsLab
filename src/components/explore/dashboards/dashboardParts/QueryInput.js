@@ -33,7 +33,7 @@ const QueryInput = ({ dashData, searchOn, setSelection }) => {
 
   return (
     <div style={{ display: "flex", margin: "0" }}>
-      <div class="dimmable" style={{ width: "50px" }}>
+      <div className="dimmable" style={{ width: "50px" }}>
         <Icon
           size="big"
           name={searching ? "compass" : "search"}

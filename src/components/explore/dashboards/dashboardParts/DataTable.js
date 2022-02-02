@@ -52,7 +52,7 @@ const DataTable = ({ dashData, columns, selection }) => {
         padding: "0",
       }}
     >
-      <Segment style={{ background: "#00000000", height: "50px", margin: "0" }}>
+      <Segment style={{ background: "#00000000", height: "55px", margin: "0" }}>
         <Header textAlign="center" as="h2" style={{ color: "white" }}>
           {selectionN === n ? null : (
             <Button
@@ -61,6 +61,7 @@ const DataTable = ({ dashData, columns, selection }) => {
               style={{
                 color: "#b23434bd",
                 padding: "0",
+                marginBottom: "10px",
                 background: "#ffffff00",
               }}
             />
@@ -70,7 +71,7 @@ const DataTable = ({ dashData, columns, selection }) => {
       </Segment>
       <Container
         style={{
-          height: "calc(100% - 50px)",
+          height: "calc(100% - 55px)",
           width: "100%",
           overflow: "auto",
           paddingLeft: "20px",

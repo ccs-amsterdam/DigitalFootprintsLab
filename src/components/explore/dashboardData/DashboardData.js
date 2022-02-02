@@ -90,8 +90,10 @@ export default class DashboardData {
     return selection;
   }
 
-  count(field, selection) {
+  count(field, selection, joinArray = null) {
     // count unique values in field, return as {[value]: n, [value]: n}
+    // if field is an array, individual items will be counted, unless
+    // joinArray is not null, in which case the items are joined (.join) with the given separator
     let counts = {};
 
     let index;
@@ -104,6 +106,7 @@ export default class DashboardData {
       if (this.deleted[index]) continue;
       let values = this.data[index][field];
       if (!Array.isArray(values)) values = [values];
+      if (joinArray) values = [values.join(joinArray)];
       for (let value of values) {
         if (value === "") continue;
         if (!counts[value]) counts[value] = 0;
