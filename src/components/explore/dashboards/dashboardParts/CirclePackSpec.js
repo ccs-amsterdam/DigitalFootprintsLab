@@ -105,7 +105,7 @@ export default createClassFromSpec({
             scaleX: { signal: "datum.width" },
             scaleY: { signal: "datum.height" },
             stroke: { value: "white" },
-            strokeWidth: [{ value: 0.8 }],
+            strokeWidth: [{ test: "datum.type == 'category'", value: 2 }, { value: "0.8" }],
             fill: [
               {
                 test: "datum.type === 'category' && datum.category === selectedCategory",
@@ -115,10 +115,10 @@ export default createClassFromSpec({
               { scale: "color", field: "category" },
             ],
           },
-          hover: {
-            stroke: { value: "white" },
-            strokeWidth: [{ test: "datum.type == 'category'", value: 5 }, { value: 2 }],
-          },
+          // hover: {
+          //   stroke: { value: "white" },
+          //   strokeWidth: [{ test: "datum.type == 'category'", value: 5 }, { value: 2 }],
+          // },
         },
       },
       {
@@ -133,7 +133,6 @@ export default createClassFromSpec({
             width: { signal: "min(datum.width,32)" },
             height: { signal: "min(datum.height,32)" },
           },
-          hover: { stroke: { value: "red" }, strokeWidth: { value: 2 } },
         },
       },
       {
