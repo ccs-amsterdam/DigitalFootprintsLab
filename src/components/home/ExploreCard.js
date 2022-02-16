@@ -21,7 +21,7 @@ const propTypes = {
 const ExploreCard = ({ name, subname, icon }) => {
   const navigate = useNavigate();
   const statuses = useSelector((state) => {
-    return state.dataStatus.filter((data) => data.name === name && data.status === "finished");
+    return state.dataStatus.filter((data) => data.name === name && data.date);
   });
 
   if (!statuses || statuses.length === 0) return null;

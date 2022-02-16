@@ -89,7 +89,7 @@ class FootprintDB {
     let fulldata = await this.getData(name);
 
     const newGroups = {}; // also check for new groups, to immediately call backend for getting groupinfo
-    if (fulldata && fulldata.data.length > 0) {
+    if (fulldata && fulldata.length > 0) {
       const existing = {};
       if (idFields) {
         for (let d of data) {
@@ -98,7 +98,7 @@ class FootprintDB {
           existing[id] = true;
         }
       }
-      for (let d of fulldata.data) {
+      for (let d of fulldata) {
         if (d.group && newGroups[d.group]) newGroups[d.group] = false;
         if (idFields) {
           const id = JSON.stringify(idFields.map((f) => d[f]));

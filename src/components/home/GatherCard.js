@@ -30,8 +30,8 @@ const GatherCard = ({ source, subname, produces, icon, onClick, loading }) => {
 
   let done = true;
   const produced = produces.map((p) => {
-    const status = statuses.find((s) => s.name === p && s.status === "finished");
-    if (!status) done = false;
+    const status = statuses.find((s) => s.name === p);
+    if (!status?.date) done = false;
     return status ? status : { name: p, status: "empty" };
   });
 
@@ -51,15 +51,28 @@ const GatherCard = ({ source, subname, produces, icon, onClick, loading }) => {
 
 const statusMessage = (produced, i) => {
   const name = produced.name.replace("_", " ");
-  if (produced.status === "failed")
-    return (
-      <List.Item key={i}>
-        <List.Icon name="close" color="red" />
-        <List.Content>
-          Failed to get <b>{name}</b> data
-        </List.Content>
-      </List.Item>
-    );
+  if (produced.status === "failed") {
+    if (produced.date) {
+      return (
+        <List.Item key={i}>
+          <List.Icon name="exclamation circle" color="red" />
+          <List.Content>
+            Failed to update <b>{name}</b> data.
+          </List.Content>
+        </List.Item>
+      );
+    } else {
+      return (
+        <List.Item key={i}>
+          <List.Icon name="close" color="red" />
+          <List.Content>
+            Failed to get <b>{name}</b> data
+          </List.Content>
+        </List.Item>
+      );
+    }
+  }
+
   if (produced.status === "finished")
     return (
       <List.Item key={i}>

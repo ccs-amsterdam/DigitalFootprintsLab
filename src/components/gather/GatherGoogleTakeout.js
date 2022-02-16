@@ -1,15 +1,16 @@
 import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 
-import { Button, Container, Grid, Header, List, Modal, Segment } from "semantic-ui-react";
-import gt1 from "images/googleTakeout1.gif";
-import gt2 from "images/googleTakeout2.gif";
+import { Button, Modal } from "semantic-ui-react";
+
 import db from "apis/db";
 import tokenize from "util/tokenize";
 
 import JSZip from "jszip";
 import { useDispatch } from "react-redux";
 import { updateDataStatus } from "actions";
+import StepwiseInstructions from "./StepwiseInstructions";
+import { googleTakeoutInstruction } from "./googleTakeoutInstruction.js";
 
 // This script handles everything related to importing Google_Takeout data
 // It should serve as an example for implementing other platforms
@@ -34,80 +35,70 @@ const GatherGoogleTakeout = ({ children, setLoading }) => {
       onOpen={() => setOpen(true)}
       open={open}
       trigger={children}
+      style={{ height: "90vh", maxHeight: "800px" }}
     >
-      <Modal.Header>Google Takeout</Modal.Header>
-      <Modal.Content>
+      <Modal.Content style={{ height: "90%", overflow: "auto" }}>
         <Modal.Description>
-          <p>
-            As you can imagine, Google has a lot of data about many people, and probably about you
-            as well. A lesser known fact is that the data is still yours, and Google is legally
-            required to give you access to it. You can obtain this data via{" "}
-            <a href="https://takeout.google.com/" target="_blank" rel="noopener noreferrer">
-              Google Takeout.
-            </a>{" "}
-          </p>
-          <br />
-
-          <Grid stackable>
-            <Grid.Column width={16}>
-              <Container>
-                <Header>How do I order takeout from Google?</Header>
-
-                <List ordered>
-                  <List.Item>
-                    First, open the{" "}
-                    <a href="https://takeout.google.com/" target="_blank" rel="noopener noreferrer">
-                      Google Takeout
-                    </a>{" "}
-                    website (the link opens in a new tab or window).
-                  </List.Item>
-                  <List.Item>
-                    Find the list under <b>Create a new export</b>. Unselect everything, and then
-                    only select <b>Chrome</b> and <b>Youtube</b>
-                  </List.Item>
-
-                  <List.Item>
-                    For Youtube we also filter out some content. Click on{" "}
-                    <b>All Youtube data included</b>, and make sure to select only <b>History</b>.
-                    Then click on <b>Multiple formats</b> and for <b>History</b> change <b>HTML</b>{" "}
-                    to <b>JSON</b>
-                  </List.Item>
-                  <Grid stackable style={{ marginTop: "1em", marginBottom: "1em" }}>
-                    <Grid.Column width={8}>
-                      <Header textAlign="center">Step 2</Header>
-                      <Segment style={{ padding: 0 }}>
-                        <img width="100%" src={gt1} alt="loading..." />
-                      </Segment>
-                    </Grid.Column>
-                    <Grid.Column width={8}>
-                      <Header textAlign="center">Step 3</Header>
-                      <Segment style={{ padding: 0 }}>
-                        <img width="100%" src={gt2} alt="loading..." />
-                      </Segment>
-                    </Grid.Column>
-                  </Grid>
-                  <List.Item>
-                    Finally, click <b>Next step</b>. Here you can click <b>Create export</b> (the
-                    default settings are good). If you followed the selection steps, this will only
-                    be a few megabytes, and Google will send you the download link in a few minutes.
-                    This link will give you a <b>zip</b> file, that you can upload here:
-                  </List.Item>
-                </List>
-                <br />
-                <WriteToDB setOpen={setOpen} setLoading={setLoading} />
-              </Container>
-            </Grid.Column>
-          </Grid>
+          <StepwiseInstructions instruction={googleTakeoutInstruction} />
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>
+        <ImportGoogleTakeout setOpen={setOpen} setLoading={setLoading} />
         <Button onClick={() => setOpen(false)}>Cancel</Button>
       </Modal.Actions>
     </Modal>
   );
 };
 
-const WriteToDB = ({ setOpen, setLoading }) => {
+const googleTakeoutBrowsingJSON = (data) => {
+  return data;
+};
+
+const googleTakeoutSearchJSON = (data) => {
+  return data;
+};
+
+const googleTakeoutYoutubeJSON = (data) => {
+  return data;
+};
+
+const googleTakeoutYoutubeHTML = (dom) => {
+  return dom;
+};
+
+const importRecipes = [
+  {
+    name: "Browsing",
+    script: googleTakeoutBrowsingJSON,
+    filenames: ["BrowserHistory.json"],
+    zippaths: ["Takeout/Chrome"],
+  },
+  {
+    name: "Search",
+    script: googleTakeoutSearchJSON,
+    filenames: ["BrowserHistory.json"],
+    zippath: ["Takeout/Chrome"],
+  },
+  {
+    name: "Youtube",
+    script: googleTakeoutYoutubeJSON,
+    filenames: ["watch-history.json"],
+    zippath: ["Takeout/Youtube and Youtube Music/history"],
+  },
+  {
+    name: "Youtube",
+    script: googleTakeoutYoutubeHTML,
+    filenames: ["watch-history.html"],
+    zippath: ["Takeout/Youtube and Youtube Music/history"],
+  },
+];
+
+const importData = (source, updateDataStatus) => {
+  const names = importRecipes.reduce((set, ir) => set.add(ir.name), new Set([]));
+  for (let name of names) updateDataStatus(name, source, "loading");
+};
+
+const ImportGoogleTakeout = ({ setOpen, setLoading }) => {
   const dispatch = useDispatch();
   const ref = useRef();
 
@@ -169,9 +160,9 @@ const WriteToDB = ({ setOpen, setLoading }) => {
   };
 
   return (
-    <div style={{ textAlign: "center" }}>
+    <>
       <Button primary onClick={() => ref.current.click()}>
-        Import Google_Takeout
+        Import Google Takeout
       </Button>
       <input
         ref={ref}
@@ -181,13 +172,13 @@ const WriteToDB = ({ setOpen, setLoading }) => {
         onChange={onChangeHandler}
         accept="application/zip"
       />
-    </div>
+    </>
   );
 };
 
 const parseYoutubeHtml = (string) => {
-  const doc = new DOMParser().parseFromString(string, "text/html");
-  const nodes = doc.querySelector(".mdl-grid").querySelectorAll(".mdl-grid");
+  const dom = new DOMParser().parseFromString(string, "text/html");
+  const nodes = dom.querySelector(".mdl-grid").querySelectorAll(".mdl-grid");
 
   const items = [];
   for (let i = 0; i < nodes.length; i++) {

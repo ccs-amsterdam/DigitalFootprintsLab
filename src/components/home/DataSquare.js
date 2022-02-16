@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Card, Grid, Header, Icon, Button, Popup } from "semantic-ui-react";
-import logo from "images/logo.png";
+import logo from "images/background.jpeg";
 import db from "apis/db";
 
 import GatherCardColumn from "./GatherCardColumn";
@@ -12,7 +12,7 @@ const headerStyle = {
   color: "white",
   fontSize: "20px",
   filter: "none",
-  background: "#00000078",
+  background: "#00000094",
   paddingBottom: "0.3em",
   paddingTop: "0.4em",
 };

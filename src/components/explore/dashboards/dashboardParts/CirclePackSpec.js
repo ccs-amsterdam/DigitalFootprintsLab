@@ -13,7 +13,7 @@ export default createClassFromSpec({
         transform: [
           {
             type: "filter",
-            expr: "selectedCategory != '' ? datum.type != 'group' || selectedCategory == datum.category : datum.type != 'group'",
+            expr: "selectedCategory != '' ? datum.type != 'group' || selectedCategory == datum.category : true",
           },
           { type: "window", groupby: ["type"], ops: ["count"] }, // note that tree (input data) needs to be sorted from most to least frequent group
           { type: "filter", expr: "datum.type != 'group' || datum.count < 200" },
@@ -93,7 +93,22 @@ export default createClassFromSpec({
 
         encode: {
           enter: {
-            path: { value: "M-1 0 A1 1 0 1 1 -1 0.01 z" }, // ellipse shape
+            path: [
+              { test: "true", value: "M-1 0 A1 1 0 1 1 -1 0.01 z" },
+              {
+                // now not used, but maybe use alternative shape for groups (set test to datum.type === 'category')
+                value: `M-1 -0.2 
+                        A0.5 0.5 0 0 1 -0.5 -0.7 
+                        L0.5 -0.7 
+                        A0.5 0.5 0 0 1 1 -0.2
+                        L1 0.2 
+                        A0.5 0.5 0 0 1 0.5 0.7
+                        L-0.5 0.7
+                        A0.5 0.5 0 0 1 -1 0.2
+                        z
+                        `,
+              },
+            ], // ellipse shape
           },
           update: {
             tooltip: {
@@ -146,7 +161,8 @@ export default createClassFromSpec({
           update: {
             text: {
               signal:
-                "(datum.type === 'category' && (selectedCategory !== datum.category )) || (datum.type === 'group' && (datum.count > 15 || !datum.icon)) ? datum.label : null",
+                //"(datum.type === 'category' && (selectedCategory !== datum.category )) || (datum.type === 'group' && (datum.count > 15 || !datum.icon)) ? datum.label : null",
+                "(datum.type === 'group' && (datum.count > 15 || !datum.icon)) ? datum.label : null",
             },
             xc: { field: "x" },
             yc: { field: "y" },
