@@ -15,13 +15,18 @@ export default createClassFromSpec({
             type: "filter",
             expr: "selectedCategory != '' ? datum.type != 'group' || selectedCategory == datum.category : true",
           },
-          { type: "window", groupby: ["type"], ops: ["count"] }, // note that tree (input data) needs to be sorted from most to least frequent group
-          { type: "filter", expr: "datum.type != 'group' || datum.count < 200" },
+          {
+            type: "window",
+            sort: { field: "visits", order: "descending" },
+            groupby: ["type"],
+            ops: ["count"],
+          }, // note that tree (input data) needs to be sorted from most to least frequent group
+          { type: "filter", expr: "datum.type != 'group' || datum.count < 500" },
           { type: "stratify", key: "id", parentKey: "parent" },
           {
             type: "formula",
             as: "scaledsize",
-            expr: "datum.category === selectedCategory && datum.type === 'group' ?  (datum.size * (0.8/(datum.categorySize))) : datum.size",
+            expr: "datum.category === selectedCategory && datum.type === 'group' ?  (datum.size * (1/(datum.categorySize))) : datum.size",
           },
           { type: "formula", as: "scaledsize", expr: "pow(datum.scaledsize*1000, 0.8)" },
 
@@ -51,22 +56,19 @@ export default createClassFromSpec({
       {
         name: "selectedCategory",
         value: "",
-        on: [
-          {
-            events: "click",
-            update: "datum && datum.type == 'category' ? datum.category : selectedCategory",
-            force: false,
-          },
-          {
-            events: "click",
-            update: "!datum || datum.type == 'root' ? '' : selectedCategory",
-            force: false,
-          },
-        ],
+        // on: [
+        //   {
+        //     events: "click",
+        //     update:
+        //       "datum && datum.type == 'group' && (isValid(selectedDatum) ? selectedDatum.id !== datum.id : true) ? datum.category : ''",
+        //     force: false,
+        //   },
+        // ],
       },
       {
         name: "selectedDatum",
         value: null,
+        update: "data('tree') ? '' : ''", // stupid, but this way it resets on rerender
         on: [
           {
             events: "click",
@@ -82,7 +84,7 @@ export default createClassFromSpec({
         name: "color",
         type: "ordinal",
         domain: { data: "tree", field: "category" },
-        range: { scheme: "category20b" },
+        range: { scheme: "category20" },
       },
     ],
     marks: [
@@ -119,11 +121,11 @@ export default createClassFromSpec({
             yc: { field: "y" },
             scaleX: { signal: "datum.width" },
             scaleY: { signal: "datum.height" },
-            stroke: [{ test: 'datum.type === "category"', value: "white" }, { value: "grey" }],
-            strokeWidth: [{ test: "datum.type == 'category'", value: 2 }, { value: "0.8" }],
+            stroke: { value: "white" },
+            strokeWidth: [{ test: "datum.type == 'category'", value: 2 }, { value: "0" }],
             fill: [
               {
-                test: "datum.type === 'category' && datum.category === selectedCategory",
+                test: "datum.type === 'category' && (datum.category === selectedCategory || selectedCategory === '')",
                 value: "transparent",
               },
               { test: "isValid(selectedDatum) && selectedDatum.id === datum.id", value: "white" },

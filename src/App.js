@@ -12,6 +12,7 @@ import DataSquare from "./components/home/DataSquare";
 import BrowsingHistory from "./components/explore/BrowsingHistory";
 import YoutubeHistory from "./components/explore/YoutubeHistory";
 import SearchHistory from "./components/explore/SearchHistory";
+import RemoveData from "./components/donate/RemoveData";
 
 // Change to add new components to the header
 // The first item will be the opening page after login
@@ -20,6 +21,7 @@ const items = [
   { label: "Browsing History", path: "/browsing", Component: BrowsingHistory },
   { label: "Search", path: "/search", Component: SearchHistory },
   { label: "Youtube", path: "/youtube", Component: YoutubeHistory },
+  { label: "Remove", path: "/remove", Component: RemoveData },
 ];
 
 const App = () => {

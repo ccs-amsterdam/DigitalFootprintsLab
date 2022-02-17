@@ -3,22 +3,26 @@ import db from "apis/db";
 // move as much of the common data wrangling stuff here
 
 export default class DashboardData {
-  constructor(name, data, setData, deleted = null) {
+  constructor(name, data, setData, deleted = null, is_subset = false) {
     this.name = name;
     this.data = data;
     this.setData = setData;
     this.deleted = deleted ? deleted : new Array(data.length).fill(false);
+    this.is_subset = is_subset;
   }
 
   triggerUpdate() {
     // need to deep copy class to trigger state update, and just recreating it seems fastest
-    this.setData(new DashboardData(this.name, this.data, this.setData, this.deleted));
+    this.setData(
+      new DashboardData(this.name, this.data, this.setData, this.deleted, this.is_subset)
+    );
   }
 
   async rmID(indices) {
-    // remove data by index. Note that data has a ._INDEX field to be certain the right indices are used
+    // remove data by index. It isn't actcually immediately deleted. The deleted bool vector
+    // is written to the DB, and will be applied on the next getData call. In the current
+    // DashData object the
     const deleted = [...this.deleted];
-    console.log(indices);
     for (let i of indices) deleted[i] = true;
     try {
       await db.setDeleted(this.name, deleted);
@@ -27,6 +31,14 @@ export default class DashboardData {
     } catch (e) {
       console.log("could not delete data");
     }
+  }
+
+  subset(indices) {
+    // take a subset of the dashdata
+    // this disables the posibility to use a selection, but lets us remove data rows to limit memory use.
+    // Specifically designed for the RemoveData step where multiple datasets are queried back-to-back
+    this.data = indices.map((i) => this.data[i]);
+    this.is_subset = true;
   }
 
   search(query, fields = null) {
@@ -40,13 +52,14 @@ export default class DashboardData {
     const regexes = [];
     for (let q of queries) regexes.push(new RegExp(q.replace(/[-/\\^$*+?.()|[\]{}]/, "\\$&"), "i"));
 
-    for (let i = 0; i < this.data.length; i++) {
-      if (this.deleted[i]) continue;
-      const searchIn = fields ? fields : Object.keys(this.data[i]);
+    for (let item of this.data) {
+      const index = item._INDEX;
+      if (this.deleted[index]) continue;
+      const searchIn = fields ? fields : Object.keys(item);
       field_loop: for (let field of searchIn) {
         for (let regex of regexes) {
-          if (regex.test(this.data[i][field])) {
-            selection.push(i);
+          if (regex.test(item[field])) {
+            selection.push(index);
             break field_loop;
           }
         }
@@ -64,28 +77,19 @@ export default class DashboardData {
     }, {});
 
     const selection = [];
-    for (let i = 0; i < this.data.length; i++) {
-      if (this.data[i]._DELETED) continue;
-      if (Array.isArray(this.data[i][field])) {
-        for (let datavalue of this.data[i][field]) {
+    for (let item of this.data) {
+      const index = item._INDEX;
+      if (this.deleted[index]) continue;
+      if (Array.isArray(item[field])) {
+        for (let datavalue of item[field]) {
           if (valueMap[datavalue]) {
-            selection.push(i);
+            selection.push(index);
             break;
           }
         }
       } else {
-        if (valueMap[this.data[i][field]]) selection.push(i);
+        if (valueMap[item[field]]) selection.push(index);
       }
-    }
-    return selection;
-  }
-
-  findIndices(filterFunction) {
-    // argument is a function. Takes data item as argument and should return bool
-    const selection = [];
-    for (let i = 0; i < this.data.length; i++) {
-      if (this.deleted[i]) continue;
-      if (filterFunction(this.data[i])) selection.push(i);
     }
     return selection;
   }
@@ -94,6 +98,8 @@ export default class DashboardData {
     // count unique values in field, return as {[value]: n, [value]: n}
     // if field is an array, individual items will be counted, unless
     // joinArray is not null, in which case the items are joined (.join) with the given separator
+    if (selection && this.is_subset)
+      throw new Error("cannot use selection if dashdata is a subset");
     let counts = {};
 
     let index;
@@ -102,8 +108,8 @@ export default class DashboardData {
         if (i >= selection.length) break;
         index = selection[i];
       } else index = i;
+      if (this.deleted[this.data[index]._INDEX]) continue; // use _INDEX in case data is_subset
 
-      if (this.deleted[index]) continue;
       let values = this.data[index][field];
       if (!Array.isArray(values)) values = [values];
       if (joinArray) values = [values.join(joinArray)];
@@ -117,6 +123,8 @@ export default class DashboardData {
   }
 
   N(selection) {
+    if (selection && this.is_subset)
+      throw new Error("cannot use selection if dashdata is a subset");
     let n = 0;
     let index;
     for (let i = 0; i < this.data.length; i++) {
@@ -124,15 +132,18 @@ export default class DashboardData {
         if (i >= selection.length) break;
         index = selection[i];
       } else index = i;
+      if (this.deleted[this.data[index]._INDEX]) continue; // use _INDEX in case data is_subset
 
-      if (this.deleted[index]) continue;
       n++;
     }
     return n;
   }
 
   listData(n, selection) {
+    if (selection && this.is_subset)
+      throw new Error("cannot use selection if dashdata is a subset");
     let list = [];
+
     let index;
     for (let i = 0; i < this.data.length; i++) {
       if (list.length === n) break;
@@ -141,7 +152,8 @@ export default class DashboardData {
         index = selection[i];
       } else index = i;
 
-      if (this.deleted[index]) continue;
+      if (this.deleted[this.data[index]._INDEX]) continue; // use _INDEX in case data is_subset
+
       list.push(this.data[index]);
     }
     return list;

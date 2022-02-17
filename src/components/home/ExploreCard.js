@@ -27,7 +27,6 @@ const ExploreCard = ({ name, subname, icon }) => {
   if (!statuses || statuses.length === 0) return null;
 
   const onClick = () => {
-    console.log(name);
     navigate("/" + name);
   };
 

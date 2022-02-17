@@ -60,12 +60,11 @@ const createWordcloudData = (dashData, group, selection, groupInfo) => {
   let groups = dashData.count(group, selection);
   groups = Object.keys(groups).map((word) => ({
     text: word,
-    count: groups[word],
+    visits: groups[word],
     angle: [-45, 0, 45][~~(Math.random() * 3)],
-    weight: 300,
   }));
-  groups.sort((a, b) => b.count - a.count); // sort from high to low value
-
+  //groups = groups.sort((a, b) => a.count - b.count); // sort from high to low value
+  console.log(groups);
   return { table: groups };
 };
 

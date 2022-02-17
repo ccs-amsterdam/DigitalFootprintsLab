@@ -8,7 +8,7 @@ const SEARCHON = ["word"];
 const COLUMNS = ["query", "date"];
 
 /**
- * A dashboard for the browsing history data.
+ * A dashboard for the search history data.
  */
 export default function SearchHistory() {
   return (
@@ -25,14 +25,12 @@ export default function SearchHistory() {
 const VisComponent = ({ dashData, inSelection, setOutSelection }) => {
   if (!dashData) return null;
   return (
-    <div style={{ width: "20vw", height: "vh" }}>
-      <Wordcloud
-        dashData={dashData}
-        group={GROUP}
-        inSelection={inSelection}
-        setOutSelection={setOutSelection}
-      />
-    </div>
+    <Wordcloud
+      dashData={dashData}
+      group={GROUP}
+      inSelection={inSelection}
+      setOutSelection={setOutSelection}
+    />
   );
 };
 
@@ -58,7 +56,7 @@ const calcStatistics = (dashData, selection) => {
     <List>
       {top_queries.map((mv) => {
         return (
-          <List.Item>
+          <List.Item key={mv.key}>
             <List.Content>{`${mv.key.replace(/www[^.]*\./, "")} (${mv.count})`}</List.Content>
           </List.Item>
         );

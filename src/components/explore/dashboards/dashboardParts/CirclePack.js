@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import CirclePackSpec from "./CirclePackSpec";
+import CirclePackSpec from "./CirclePackSpecAlt";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import { Dimmer, Loader } from "semantic-ui-react";
 import useGroupInfo from "components/explore/dashboardData/useGroupInfo";
@@ -9,11 +9,11 @@ import useGroupInfo from "components/explore/dashboardData/useGroupInfo";
  * Can extend to other applications (like youtube channels), but will need to add alternative fallback
  * for getting icons and categories
  */
-const CirclePack = ({ dashData, group, inSelection, setOutSelection }) => {
+const CirclePack = ({ dashData, group, grouptype, inSelection, setOutSelection }) => {
   const [data, setData] = useState({ tree: [] }); // input for vega visualization
   const [deleteIds, setDeleteIds] = useState([]);
 
-  const groupInfo = useGroupInfo(dashData, group);
+  const groupInfo = useGroupInfo(dashData, group, grouptype);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -23,7 +23,6 @@ const CirclePack = ({ dashData, group, inSelection, setOutSelection }) => {
 
   // Vega signal handler
   const onSelectDatum = (signal, datum) => {
-    console.log(datum);
     if (!datum) {
       setOutSelection(null);
     } else {
@@ -75,12 +74,8 @@ const createTreeData = (dashData, group, selection, groupInfo) => {
 
   for (let group of groups) {
     root.size += group.count;
-    const category =
-      groupInfo?.[group.name]?.category || group.name.split(".").slice(-1)[0] || "other";
-
-    let icon = groupInfo?.[group.name]?.icon
-      ? groupInfo[group.name].icon
-      : `https://icons.duckduckgo.com/ip3/${group.name}.ico`; // pretty ok fallback
+    const category = groupInfo[group.name]?.category;
+    const icon = groupInfo[group.name]?.icon;
 
     if (!categories[category])
       categories[category] = {

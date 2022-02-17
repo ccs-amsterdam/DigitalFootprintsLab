@@ -26,10 +26,11 @@ export default function BrowsingHistory() {
 const VisComponent = ({ dashData, inSelection, setOutSelection }) => {
   if (!dashData) return null;
   return (
-    <div style={{ width: "20vw", height: "vh" }}>
+    <div>
       <CirclePack
         dashData={dashData}
         group={GROUP}
+        grouptype="domain"
         inSelection={inSelection}
         setOutSelection={setOutSelection}
       />
@@ -68,7 +69,7 @@ const calcStatistics = (dashData, selection) => {
     <List>
       {top_domains.map((mv) => {
         return (
-          <List.Item>
+          <List.Item key={mv.key}>
             <Image style={{ height: "20px", width: "20px" }} src={mv.image} />
             <List.Content>{`${mv.key.replace(/www[^.]*\./, "")} (${mv.count})`}</List.Content>
           </List.Item>

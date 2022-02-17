@@ -3,11 +3,12 @@ import { useState, useEffect } from "react";
 
 /**
  * Get group (e.g., domain, channel) info for given dashData instance.
- * assumes dashData.data.columns exists
+ * assumes dashData.data exists
  * @param {*} dashData
- * @returns
+ * @param {*} group   the name of the column in dashData.data that will be grouped
+ * @param {*} type    The type of the group. Currently supports 'domain'
  */
-export default function useGroupInfo(dashData, group) {
+export default function useGroupInfo(dashData, group, type = "domain") {
   const [data, setData] = useState([]);
   const [groups, setGroups] = useState(null);
 
@@ -21,17 +22,17 @@ export default function useGroupInfo(dashData, group) {
   useEffect(() => {
     if (!groups || groups.length === 0) return;
     const fetchData = async () => {
-      const data = await updateGroupInfo(groups);
+      const data = await updateGroupInfo(groups, type);
       setData(data);
     };
 
     fetchData();
-  }, [groups]);
+  }, [groups, type]);
 
   return data;
 }
 
-export const updateGroupInfo = async (groups) => {
+export const updateGroupInfo = async (groups, type) => {
   let cache = await db.getGroupInfo(groups);
   //let cache = {};    // use this for dev when dutch domains has updated
 
@@ -45,20 +46,24 @@ export const updateGroupInfo = async (groups) => {
   // Create empty entries in cache to prevent refetching if group is not available in service
   for (let group of groupsToFetch) cache[group] = {};
 
-  const data = await fetchData(groupsToFetch);
+  let data = {};
+  if (type === "domain") data = await fetchDomainData(groupsToFetch);
 
-  // Store results and return results including cached
+  // Store results and add to cache
   db.addGroupInfo(data);
+  for (let [group, info] of Object.entries(data)) cache[group] = info;
 
-  for (const [key, value] of Object.entries(data)) {
-    cache[key] = value;
+  // for every group input, grep info from (updated) cache, and use fallback
+  for (let group of groups) {
+    let info = cache[group] || {};
+    if (type === "domain") info = fallbackDomainInfo(group, info);
+    cache[group] = info;
   }
-  console.log(cache);
 
   return cache;
 };
 
-const fetchData = async (groupsToFetch) => {
+const fetchDomainData = async (groupsToFetch) => {
   // try fetching data from amcat. If failed, return empty data with .retry = true to trigger
   // retry on next call
   try {
@@ -85,6 +90,13 @@ const fetchData = async (groupsToFetch) => {
     }, {});
     return empty;
   }
+};
+
+const fallbackDomainInfo = (domain, info) => {
+  info.url = info.url || domain;
+  info.category = info.category || info.url.split(".").slice(-1)[0] || "other";
+  info.icon = info.icon || `https://icons.duckduckgo.com/ip3/${info.url}.ico`;
+  return info;
 };
 
 const generateToken = async (key, urls) => {

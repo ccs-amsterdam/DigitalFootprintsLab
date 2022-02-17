@@ -12,6 +12,7 @@ const CardTemplate = ({ children, name, subname, icon, onClick, loading, done })
         marginRight: "2em",
         background: "#ffffff00",
         position: "relative",
+        fontSize: "min(max(1vw, 1em),1.2em)",
       }}
       onClick={onClick}
     >

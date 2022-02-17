@@ -12,8 +12,13 @@ export default createClassFromSpec({
       {
         name: "table",
         transform: [
-          { type: "window", groupby: ["type"], ops: ["count"] },
-          { type: "filter", expr: "datum.count < 100" },
+          {
+            type: "window",
+            sort: { field: "visits", order: "descending" },
+            groupby: ["type"],
+            ops: ["count"],
+          },
+          { type: "filter", expr: "datum.count < 200" },
         ],
       },
     ],
@@ -30,7 +35,7 @@ export default createClassFromSpec({
     signals: [
       {
         name: "selectedWord",
-        value: "",
+        update: "data('table') ? '' : ''", // stupid, but this way it resets on rerender
         on: [
           {
             events: "click",
@@ -65,12 +70,11 @@ export default createClassFromSpec({
         transform: [
           {
             type: "wordcloud",
-            size: [900, 500],
+            size: [1000, 500],
             text: { field: "text" },
             rotate: { field: "datum.angle" },
             font: "Helvetica Neue, Arial",
-            fontSize: { field: "datum.count" },
-            fontWeight: { field: "datum.weight" },
+            fontSize: { field: "datum.visits" },
             fontSizeRange: [12, 56],
             padding: 2,
           },

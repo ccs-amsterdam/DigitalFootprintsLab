@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Icon, Button, Container, Header, Item } from "semantic-ui-react";
-
-import { useNavigate } from "react-router-dom";
+import { Grid, Container, Header, Item } from "semantic-ui-react";
 
 import ColoredBackgroundGrid from "./dashboardParts/ColoredBackgroundGrid";
 import background from "images/background.jpeg";
@@ -11,6 +9,7 @@ import QueryInput from "./dashboardParts/QueryInput";
 import intersect from "util/intersect";
 import useDashboardData from "../dashboardData/useDashboardData";
 import PropTypes from "prop-types";
+import BackButton from "components/routing/BackButton";
 
 const propTypes = {
   /** The name of the type of data to explore. */
@@ -48,7 +47,7 @@ const DashboardTemplate = ({ dataName, searchOn, columns, VisComponent, calcStat
   return (
     <ColoredBackgroundGrid background={background} color={"#000000b0"}>
       <Grid stackable style={{ height: "100vh" }}>
-        <Grid.Row style={{ minHeight: "600px" }}>
+        <Grid.Row style={{ minHeight: "500px" }}>
           <Grid.Column width={4}>
             <BackButton />
             <Container
@@ -77,7 +76,7 @@ const DashboardTemplate = ({ dataName, searchOn, columns, VisComponent, calcStat
             />
           </Grid.Column>
         </Grid.Row>
-        <Grid.Row style={{ minHeight: "500px", maxHeight: "50vh", width: "100%" }}>
+        <Grid.Row style={{ minHeight: "500px", maxHeight: "calc(100vh - 500px)", width: "100%" }}>
           <DataTable dashData={dashData} columns={columns} selection={selection} />
         </Grid.Row>
       </Grid>
@@ -115,28 +114,6 @@ const Statistics = ({ statistics }) => {
         })}
       </Item.Group>
     </Container>
-  );
-};
-
-const BackButton = () => {
-  const navigate = useNavigate();
-
-  return (
-    <Button
-      style={{
-        position: "absolute",
-        left: "0",
-        background: "#00000000",
-        color: "white",
-        border: "1px solid white",
-        marginLeft: "20px",
-        marginTop: "20px",
-      }}
-      onClick={() => navigate("/datasquare")}
-    >
-      <Icon name="backward" />
-      Go back
-    </Button>
   );
 };
 

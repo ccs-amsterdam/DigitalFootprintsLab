@@ -1,15 +1,15 @@
 import React from "react";
 import DashboardTemplate from "./dashboards/DashboardTemplate";
-import CirclePack from "./dashboards/dashboardParts/CirclePack";
+import Wordcloud from "./dashboards/dashboardParts/Wordcloud";
+import { List } from "semantic-ui-react";
 
-const FIELD = "channel";
+const GROUP = "channel";
 const SEARCHON = ["channel", "title"];
 const COLUMNS = ["channel", "title", "date"];
 
 /**
- * A dashboard for the browsing history data.
+ * A dashboard for the youtube history data.
  * Note that this component is reached via the react router.
- * When the card on the home page is clicked, it navigates to /Browsing
  */
 export default function Youtube() {
   return (
@@ -26,10 +26,10 @@ export default function Youtube() {
 const VisComponent = ({ dashData, inSelection, setOutSelection }) => {
   if (!dashData) return null;
   return (
-    <div style={{ width: "20vw", height: "vh" }}>
-      <CirclePack
+    <div>
+      <Wordcloud
         dashData={dashData}
-        field={FIELD}
+        group={GROUP}
         inSelection={inSelection}
         setOutSelection={setOutSelection}
       />
@@ -39,17 +39,37 @@ const VisComponent = ({ dashData, inSelection, setOutSelection }) => {
 
 const calcStatistics = (dashData, selection) => {
   if (!dashData) return [];
-  const counts = dashData.count(FIELD, selection);
+  const counts = dashData.count(GROUP, selection, " ");
 
-  const stats = {};
-  stats["Total visits"] = 0;
-  stats["Most visited"] = ["none", 0]; // array of [0] key and [1] count
-  stats["Unique websites"] = 0;
+  let searches = dashData.N(selection);
+  let top_queries = [];
+  const n_top_queries = 5;
+
   for (let key of Object.keys(counts)) {
-    stats["Total visits"] += counts[key];
-    stats["Unique websites"]++;
-    if (counts[key] > stats["Most visited"][1]) stats["Most visited"] = [key, counts[key]];
+    let insert = top_queries.findIndex((mv) => mv.count < counts[key]);
+    if (insert < 0) insert = top_queries.length;
+    if (insert < n_top_queries) {
+      const value = { key, count: counts[key] };
+      top_queries.splice(insert, 0, value);
+    }
   }
 
-  return Object.keys(stats).map((label) => ({ label, value: stats[label] }));
+  top_queries = top_queries.slice(0, n_top_queries);
+  const top_queries_label = `Top channel${top_queries.length === 1 ? "" : "s"}`;
+  top_queries = (
+    <List>
+      {top_queries.map((mv) => {
+        return (
+          <List.Item key={mv.key}>
+            <List.Content>{`${mv.key.replace(/www[^.]*\./, "")} (${mv.count})`}</List.Content>
+          </List.Item>
+        );
+      })}
+    </List>
+  );
+
+  return [
+    { label: "Total views", value: searches },
+    { label: top_queries_label, value: top_queries },
+  ];
 };

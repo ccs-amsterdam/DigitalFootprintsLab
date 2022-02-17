@@ -12,13 +12,13 @@ const propTypes = {
 // Then add ConfirmDeleteModal to the return JSX, pass on deleteIds and setDeleteIds,
 // and set table ids to deleteIds to trigger the confirm delete modal
 
-const ConfirmDeleteModal = ({ dashData, deleteIds, setDeleteIds }) => {
+const ConfirmDeleteModal = ({ processDelete, deleteIds, setDeleteIds }) => {
   const [ask, setAsk] = useState(true);
   const deleteImmediately = useRef(false);
 
   const handleDelete = async () => {
     deleteImmediately.current = !ask;
-    await dashData.rmID(deleteIds);
+    await processDelete(deleteIds);
     setDeleteIds([]);
   };
 

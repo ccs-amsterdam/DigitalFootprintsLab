@@ -21,27 +21,44 @@ const propTypes = {
 
 /**
  * Creates a table for a given table in the indexedDB
+ * @param {*} dashData a dashData object
+ * @param {*} columns array of columns to show
+ * @param {*} selection array of ids in case of selections. Cannot be used if dashData.is_subset
  */
 const DataTable = ({ dashData, columns, selection }) => {
   const [n, setN] = useState(0);
   const [data, setData] = useState([]);
   const [selectionN, setSelectionN] = useState(0);
   const [deleteIds, setDeleteIds] = useState([]);
+  const [bulkDelete, setBulkDelete] = useState(null);
 
   useEffect(() => {
     if (!dashData) {
       setData([]);
       return null;
     }
-    setSelectionN(dashData.N(selection));
-    setData(dashData.listData(PAGESIZE, selection));
-    setN(dashData.N());
+    if (dashData.is_subset) {
+      if (selection) throw new Error("cannot use selection if dashData is a subset");
+      setSelectionN(dashData.N());
+      setData(dashData.listData(PAGESIZE));
+      setN(dashData.deleted.length);
+      setBulkDelete(dashData.data.map((d) => d._INDEX));
+    } else {
+      setSelectionN(dashData.N(selection));
+      setData(dashData.listData(PAGESIZE, selection));
+      setN(dashData.N());
+      setBulkDelete(selection);
+    }
   }, [dashData, selection]);
 
   const onBottomVisible = async () => {
-    // infinite scroll
-    // <Visibility> checks whether bottom of (invisible) div is visible, and if so adds more data
+    if (selectionN === data.length) return;
+    console.log("go");
     setData(dashData.listData(data.length + PAGESIZE, selection));
+  };
+
+  const processDelete = async (ids) => {
+    await dashData.rmID(ids);
   };
 
   return (
@@ -54,9 +71,9 @@ const DataTable = ({ dashData, columns, selection }) => {
     >
       <Segment style={{ background: "#00000000", height: "55px", margin: "0" }}>
         <Header textAlign="center" as="h2" style={{ color: "white" }}>
-          {selectionN === n ? null : (
+          {bulkDelete ? (
             <Button
-              onClick={() => setDeleteIds(selection)}
+              onClick={() => setDeleteIds(bulkDelete)}
               icon="trash alternate"
               style={{
                 color: "#b23434bd",
@@ -65,7 +82,7 @@ const DataTable = ({ dashData, columns, selection }) => {
                 background: "#ffffff00",
               }}
             />
-          )}
+          ) : null}
           {selectionN === n ? n : `${selectionN} / ${n}`} items
         </Header>
       </Segment>
@@ -78,19 +95,23 @@ const DataTable = ({ dashData, columns, selection }) => {
         }}
       >
         <Visibility continuous onBottomVisible={onBottomVisible}>
-          <ScrollingTable dashData={dashData} data={data} columns={columns} />
+          <ScrollingTable data={data} columns={columns} processDelete={processDelete} />
         </Visibility>
       </Container>
 
-      <ConfirmDeleteModal dashData={dashData} deleteIds={deleteIds} setDeleteIds={setDeleteIds} />
+      <ConfirmDeleteModal
+        processDelete={processDelete}
+        deleteIds={deleteIds}
+        setDeleteIds={setDeleteIds}
+      />
     </Container>
   );
 };
 
-const ScrollingTable = ({ dashData, data, columns }) => {
+const ScrollingTable = ({ data, columns, processDelete }) => {
   const [deleteIds, setDeleteIds] = useState([]);
 
-  const createHeader = () => {
+  const createHeader = (columns) => {
     const columnsWithTrash = [{ name: "delete", width: 1 }, ...columns];
     const cells = columnsWithTrash.map((column) => {
       const name = typeof column === "object" ? column.name : column;
@@ -111,7 +132,7 @@ const ScrollingTable = ({ dashData, data, columns }) => {
     );
   };
 
-  const createBody = () => {
+  const createBody = (columns) => {
     const rows = data.map((row, i) => {
       const cells = columns.map((column) => {
         const name = typeof column === "object" ? column.name : column;
@@ -139,7 +160,8 @@ const ScrollingTable = ({ dashData, data, columns }) => {
     return <Table.Body>{rows}</Table.Body>;
   };
 
-  if (data === null || data.length === 0 || !columns) return null;
+  if (data === null || data.length === 0) return null;
+  if (!columns) columns = Object.keys(data[0]).filter((c) => c !== "_INDEX");
 
   return (
     <Table
@@ -148,9 +170,13 @@ const ScrollingTable = ({ dashData, data, columns }) => {
       singleLine
       style={{ width: "100%", color: "white", background: "#00000099" }}
     >
-      {createHeader()}
-      {createBody()}
-      <ConfirmDeleteModal dashData={dashData} deleteIds={deleteIds} setDeleteIds={setDeleteIds} />
+      {createHeader(columns)}
+      {createBody(columns)}
+      <ConfirmDeleteModal
+        processDelete={processDelete}
+        deleteIds={deleteIds}
+        setDeleteIds={setDeleteIds}
+      />
     </Table>
   );
 };

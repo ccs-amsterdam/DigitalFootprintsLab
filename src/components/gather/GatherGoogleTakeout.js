@@ -1,33 +1,32 @@
-import React, { useRef, useState } from "react";
-import PropTypes from "prop-types";
+import React, { useState, useEffect } from "react";
 
-import { Button, Modal } from "semantic-ui-react";
+import { Header, List, Modal } from "semantic-ui-react";
 
 import db from "apis/db";
 import tokenize from "util/tokenize";
 
-import JSZip from "jszip";
 import { useDispatch } from "react-redux";
 import { updateDataStatus } from "actions";
 import StepwiseInstructions from "./StepwiseInstructions";
 import { googleTakeoutInstruction } from "./googleTakeoutInstruction.js";
 
-// This script handles everything related to importing Google_Takeout data
-// It should serve as an example for implementing other platforms
-// (and could probably do with a makeover)
-
-const propTypes = {
-  /** A <GatherCard/>, which then serves as the trigger for the modal when clicked on */
-  children: PropTypes.element,
-  /** callback function for setting the loading status */
-  setLoading: PropTypes.func,
-};
+import { DropZone, miseEnPlace } from "data-donation-importers";
+import cookbook from "./googleTakeoutCookbook";
 
 /**
  * The modal that opens when the Google_Takeout Gather card is clicked.
  */
 const GatherGoogleTakeout = ({ children, setLoading }) => {
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
+  const [files, setFiles] = useState([]);
+
+  useEffect(() => {
+    if (files.length === 0) return;
+    setLoading("loading");
+    setOpen(false);
+    importGT(files, dispatch).finally(() => setLoading("idle"));
+  }, [files, setLoading, dispatch]);
 
   return (
     <Modal
@@ -35,178 +34,72 @@ const GatherGoogleTakeout = ({ children, setLoading }) => {
       onOpen={() => setOpen(true)}
       open={open}
       trigger={children}
-      style={{ height: "90vh", maxHeight: "800px" }}
+      style={{ height: "90vh", maxHeight: "700px" }}
+      closeIcon
     >
       <Modal.Content style={{ height: "90%", overflow: "auto" }}>
         <Modal.Description>
           <StepwiseInstructions instruction={googleTakeoutInstruction} />
         </Modal.Description>
       </Modal.Content>
-      <Modal.Actions>
-        <ImportGoogleTakeout setOpen={setOpen} setLoading={setLoading} />
-        <Button onClick={() => setOpen(false)}>Cancel</Button>
+      <Modal.Actions style={{ textAlign: "center" }}>
+        <Header as="h2">Final step</Header>
+
+        <List>
+          <List.Item>
+            Open your <b>downloads folder</b>
+          </List.Item>
+          <List.Item>
+            Find the <b>Google Takeout folder or zip file</b>
+          </List.Item>
+          <List.Item>
+            <b>Click and hold</b> the folder/file, and <b>drag</b> it into the blue field below
+          </List.Item>
+        </List>
+
+        <DropZone allowedFiles={cookbook.files} setAcceptedFiles={setFiles} />
       </Modal.Actions>
     </Modal>
   );
 };
 
-const googleTakeoutBrowsingJSON = (data) => {
-  return data;
-};
+const importGT = async (files, dispatch) => {
+  const meps = miseEnPlace(cookbook, files);
+  const status = { Search: "failed", Browsing: "failed", Youtube: "failed" };
 
-const googleTakeoutSearchJSON = (data) => {
-  return data;
-};
+  for (let name of Object.keys(status))
+    dispatch(updateDataStatus(name, "Google_Takeout", "loading"));
 
-const googleTakeoutYoutubeJSON = (data) => {
-  return data;
-};
+  for (let mep of meps) {
+    const result = await mep.cook(); // returns array of objects with data, or null if can't find
+    if (result.status !== "success") continue;
 
-const googleTakeoutYoutubeHTML = (dom) => {
-  return dom;
-};
-
-const importRecipes = [
-  {
-    name: "Browsing",
-    script: googleTakeoutBrowsingJSON,
-    filenames: ["BrowserHistory.json"],
-    zippaths: ["Takeout/Chrome"],
-  },
-  {
-    name: "Search",
-    script: googleTakeoutSearchJSON,
-    filenames: ["BrowserHistory.json"],
-    zippath: ["Takeout/Chrome"],
-  },
-  {
-    name: "Youtube",
-    script: googleTakeoutYoutubeJSON,
-    filenames: ["watch-history.json"],
-    zippath: ["Takeout/Youtube and Youtube Music/history"],
-  },
-  {
-    name: "Youtube",
-    script: googleTakeoutYoutubeHTML,
-    filenames: ["watch-history.html"],
-    zippath: ["Takeout/Youtube and Youtube Music/history"],
-  },
-];
-
-const importData = (source, updateDataStatus) => {
-  const names = importRecipes.reduce((set, ir) => set.add(ir.name), new Set([]));
-  for (let name of names) updateDataStatus(name, source, "loading");
-};
-
-const ImportGoogleTakeout = ({ setOpen, setLoading }) => {
-  const dispatch = useDispatch();
-  const ref = useRef();
-
-  const onChangeHandler = async (e) => {
-    dispatch(updateDataStatus("Browsing", "Google_Takeout", "loading"));
-    dispatch(updateDataStatus("Search", "Google_Takeout", "loading"));
-    dispatch(updateDataStatus("Youtube", "Google_Takeout", "loading"));
-
-    let failed = false;
-
-    try {
-      setLoading("loading");
-      setOpen(false);
-      let newZip = new JSZip();
-      let fileblob = e.target.files[0];
-
-      const zipped = await newZip.loadAsync(fileblob);
-
-      try {
-        let chrome = await zipped.file("Takeout/Chrome/BrowserHistory.json").async("text");
-        chrome = JSON.parse(chrome);
-        await writeChromeHistory(chrome["Browser History"]);
-        dispatch(updateDataStatus("Browsing", "Google_Takeout", "finished"));
-        dispatch(updateDataStatus("Search", "Google_Takeout", "finished"));
-      } catch (e) {
-        failed = true;
-        console.log("chrome error");
-        console.log(e);
-        dispatch(updateDataStatus("Browsing", "Google_Takeout", "failed"));
-        dispatch(updateDataStatus("Search", "Google_Takeout", "failed"));
-      }
-
-      try {
-        let youtube;
-        const isJSON = zipped.file("Takeout/YouTube and YouTube Music/history/watch-history.json");
-        if (isJSON) {
-          youtube = await zipped
-            .file("Takeout/YouTube and YouTube Music/history/watch-history.json")
-            .async("text");
-          youtube = JSON.parse(youtube);
-        } else {
-          youtube = await zipped
-            .file("Takeout/YouTube and YouTube Music/history/watch-history.html")
-            .async("text");
-          youtube = parseYoutubeHtml(youtube);
-        }
-        await writeYoutubeHistory(youtube);
-        dispatch(updateDataStatus("Youtube", "Google_Takeout", "finished"));
-      } catch (e) {
-        console.log(e);
-        failed = true;
-        dispatch(updateDataStatus("Youtube", "Google_Takeout", "failed"));
-      }
-    } catch (e) {
-      setLoading("failed");
+    if (mep.recipe.name === "browsing") {
+      const [browsing, search] = prepareBrowsingHistory(result.data);
+      if (browsing.length > 0)
+        await db.addData(browsing, "Browsing", "Google_Takeout", ["url", "date"]);
+      if (search.length > 0)
+        await db.addData(search, "Search", "Google_Takeout", ["query", "date"]);
+      status.Search = "finished";
+      status.Browsing = "finished";
     }
 
-    setLoading(failed ? "failed" : "finished");
-  };
-
-  return (
-    <>
-      <Button primary onClick={() => ref.current.click()}>
-        Import Google Takeout
-      </Button>
-      <input
-        ref={ref}
-        type="file"
-        name="file"
-        hidden
-        onChange={onChangeHandler}
-        accept="application/zip"
-      />
-    </>
-  );
-};
-
-const parseYoutubeHtml = (string) => {
-  const dom = new DOMParser().parseFromString(string, "text/html");
-  const nodes = dom.querySelector(".mdl-grid").querySelectorAll(".mdl-grid");
-
-  const items = [];
-  for (let i = 0; i < nodes.length; i++) {
-    const node = nodes[i];
-    const aList = node.querySelectorAll("a");
-
-    const item = {};
-    if (aList.length === 2) {
-      item.subtitles = { name: aList[1].textContent, url: aList[1].attributes.href.textContent };
+    if (mep.recipe.name === "youtube") {
+      if (result.data.length > 0)
+        await db.addData(result.data, "Youtube", "Google_Takeout", ["url", "date"]);
+      status.Youtube = "finished";
     }
-    item.titleUrl = aList[0].attributes.href.textContent;
-    item.title = aList[0].textContent;
-
-    const br = node.children[1].querySelectorAll("br");
-    const datestring = br[br.length - 1].nextSibling.textContent;
-    const date = new Date(Date.parse(datestring.replace("CEST", "GMT+0200")));
-    item.time = date.toISOString();
-    items.push(item);
   }
-  return items;
+  for (let name of Object.keys(status))
+    dispatch(updateDataStatus(name, "Google_Takeout", status[name]));
 };
 
-const writeChromeHistory = async (history) => {
-  let urls = [];
-  let queries = [];
+const prepareBrowsingHistory = (data) => {
+  const browsing = [];
+  const search = [];
 
-  let url;
-  for (let item of history) {
+  for (let item of data) {
+    let url;
     try {
       url = new URL(item.url);
     } catch (e) {
@@ -216,48 +109,25 @@ const writeChromeHistory = async (history) => {
     if (url.hostname + url.pathname === "www.google.com/search") {
       const query = item.title.replace("- Google Search", "").trim();
       let words = tokenize(query);
-      queries.push({
+      search.push({
         query: query,
         word: words,
-        date: convertTimestamp(item.time_usec),
+        date: item.date,
         browser: "Chrome",
       });
       continue;
     }
 
-    urls.push({
+    browsing.push({
       url: item.url,
       title: item.title,
       domain: url.hostname,
       browser: "Chrome",
-      date: convertTimestamp(item.time_usec),
+      date: item.date,
       page_transition: item.page_transition,
     });
   }
-
-  await db.addData(queries, "Search", "Google_Takeout", ["url", "date"]);
-  await db.addData(urls, "Browsing", "Google_Takeout", ["query", "date"]);
+  return [browsing, search];
 };
 
-const writeYoutubeHistory = async (history) => {
-  let d = history.map((item) => {
-    return {
-      url: item.titleUrl,
-      title: item.title,
-      date: new Date(item.time),
-      channel: item.subtitles ? item.subtitles.name : "channel removed",
-      channel_url: item.subtitles ? item.subtitles.url : "channel removed",
-    };
-  });
-
-  console.log(d);
-  await db.addData(d, "Youtube", "Google_Takeout", ["url", "date"]);
-};
-
-const convertTimestamp = (time) => {
-  // seems to be in microseconds since epoch
-  return new Date(Math.round(time / 1000));
-};
-
-GatherGoogleTakeout.propTypes = propTypes;
 export default GatherGoogleTakeout;

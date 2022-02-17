@@ -35,7 +35,7 @@ export const googleTakeoutInstruction = {
           image_style: { objectFit: "cover", objectPosition: "0 90%", height: "120px" },
         },
         {
-          text: "It should now say that 0 are selected, and all boxes are un-checked",
+          text: "It should now say that 0 items are selected, and all boxes should be un-checked",
           image: GoogleTakeout_unselected,
         },
       ],
@@ -45,7 +45,7 @@ export const googleTakeoutInstruction = {
       description: "Select Chrome",
       items: [
         {
-          text: "Scroll down to Chrome and check the box. (Items are sorted by alphabet)",
+          text: "Scroll down to Chrome (items are sorted by alphabet) and click on the box to check it",
           image: GoogleTakeout_chrome,
         },
       ],
