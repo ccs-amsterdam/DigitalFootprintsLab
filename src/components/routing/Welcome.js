@@ -84,12 +84,10 @@ const notPersistentMessage = () => {
       </h4>
       <p>
         This application works best in recent versions of Chrome, Safari, Edge, Firefox and Opera.
-        For some browsers, like Firefox, it works better when not in private mode.
-      </p>
-      <p>
-        You can still use the application with your current browser, but your data won't be stored
-        if you leave. Don't worry though! you'll get a warning when you try to refresh or leave the
-        page so this doesn't easily happen by accident.
+        For some browsers, like Firefox, it works better when not in private mode. You can still use
+        the application with your current browser, but your data won't be stored if you leave. Don't
+        worry though! you'll get a warning when you try to refresh or leave the page so this doesn't
+        easily happen by accident.
       </p>
     </>
   );

@@ -44,8 +44,6 @@ const DashboardTemplate = ({ dataName, searchOn, columns, VisComponent, calcStat
     setStatistics(calcStatistics(dashData, selection));
   }, [dashData, selection, calcStatistics]);
 
-  console.log(dashData);
-
   return (
     <ColoredBackgroundGrid background={background} color={"#000000b0"}>
       <Dimmer active={!dashData}>

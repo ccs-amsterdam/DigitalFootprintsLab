@@ -15,7 +15,6 @@ const intersect = (arrays) => {
 
   while (!anyDone(arrays, cursors)) {
     if (allEqual(arrays, cursors)) {
-      console.log(cursors[0]);
       res.push(arrays[0][cursors[0]]);
       for (let i = 0; i < cursors.length; i++) cursors[i]++;
     }
@@ -37,10 +36,6 @@ const anyDone = (arrays, cursors) => {
 const allEqual = (arrays, cursors) => {
   for (let i = 1; i < arrays.length; i++) {
     if (arrays[i][cursors[i]] !== arrays[0][cursors[0]]) return false;
-  }
-  console.log("-------------");
-  for (let i = 0; i < arrays.length; i++) {
-    console.log(arrays[i][cursors[i]]);
   }
   return true;
 };

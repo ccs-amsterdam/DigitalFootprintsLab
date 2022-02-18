@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import CirclePackSpec from "./CirclePackSpecAlt";
+import CirclePackSpec from "./CirclePackSpec";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import { Dimmer, Loader } from "semantic-ui-react";
 import useGroupInfo from "components/explore/dashboardData/useGroupInfo";
@@ -34,7 +34,7 @@ const CirclePack = ({ dashData, group, grouptype, inSelection, setOutSelection }
 
   // Popup button handler
   const filterSelectedDatum = async (selectedDatum) => {
-    let selection = await dashData.searchValues([selectedDatum.name], group);
+    let selection = await dashData.searchValues(selectedDatum.values, group);
     setOutSelection(selection);
   };
 
@@ -66,10 +66,10 @@ const createTreeData = (dashData, group, selection, groupInfo) => {
   groups = Object.keys(groups).map((name) => ({ name, count: groups[name] }));
   groups.sort((a, b) => b.count - a.count); // sort from high to low value
 
-  let nodes = [];
+  let nodes = {};
   let categories = {};
 
-  const root = { name: "root", type: "root", id: 0, size: 0 };
+  const root = { label: "root", type: "root", id: 0, size: 0 };
   let id = 1; // root gets id = 0
 
   for (let group of groups) {
@@ -80,7 +80,6 @@ const createTreeData = (dashData, group, selection, groupInfo) => {
     if (!categories[category])
       categories[category] = {
         id: id++,
-        name: category,
         type: "category",
         label: category,
         size: 0,
@@ -89,26 +88,43 @@ const createTreeData = (dashData, group, selection, groupInfo) => {
       };
     categories[category].size += group.count;
 
-    nodes.push({
-      type: "group",
-      name: group.name,
-      label: group.name.replace("www.", ""),
-      parent: categories[category].id,
-      size: group.count,
-      visits: group.count,
-      category,
-      icon,
-    });
+    // for the visualization we'll ignore www and the mobile versions m.
+    let label = group.name.replace(/www[0-9]*\./, "");
+    label = label.replace(/^m\./, "");
+
+    // cant get rid of cors errors
+    //const image = new Image();
+    //image.src = icon;
+    //image.crossOrigin = "Anonymous";
+
+    if (!nodes[label]) {
+      nodes[label] = {
+        label,
+        type: "group",
+        values: [],
+        parent: categories[category].id,
+        size: 0,
+        visits: 0,
+        category,
+        icon,
+      };
+    }
+    const node = nodes[label];
+    node.size += group.count;
+    node.visits += group.count;
+    node.values.push(group.name);
   }
 
-  for (let node of nodes) node.id = id++;
-
   // also add category size, because needed to resize within vega (somehow can't efficiently refer to parent in tree in a vega signal)
-  nodes = nodes.map((node, i) => ({
-    ...node,
-    size: node.size / root.size,
-    categorySize: categories[node.category].size / root.size,
-  }));
+  nodes = Object.keys(nodes).map((key, i) => {
+    const node = nodes[key];
+    return {
+      ...node,
+      id: id++,
+      size: node.size / root.size,
+      categorySize: categories[node.category].size / root.size,
+    };
+  });
   categories = Object.values(categories).map((cat, i) => ({ ...cat, size: cat.size / root.size }));
   root.size = 1;
   return { tree: [root, ...categories, ...nodes] };

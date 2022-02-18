@@ -1,6 +1,6 @@
 import { createClassFromSpec } from "react-vega";
 
-const MAXNODES = 200;
+const MAXNODES = 500;
 const WITHIMAGE = 25;
 
 export default createClassFromSpec({
@@ -18,13 +18,18 @@ export default createClassFromSpec({
             type: "filter",
             expr: "selectedCategory != '' ? datum.type != 'group' || selectedCategory == datum.category : true",
           },
-          { type: "window", groupby: ["type"], ops: ["count"] }, // note that tree (input data) needs to be sorted from most to least frequent group
+          {
+            type: "window",
+            sort: { field: "visits", order: "descending" },
+            groupby: ["type"],
+            ops: ["count"],
+          }, // note that tree (input data) needs to be sorted from most to least frequent group
           { type: "filter", expr: `datum.type != 'group' || datum.count < ${MAXNODES}` },
           { type: "stratify", key: "id", parentKey: "parent" },
           {
             type: "formula",
             as: "scaledsize",
-            expr: "datum.category === selectedCategory && datum.type === 'group' ?  (datum.size * (0.8/(datum.categorySize))) : datum.size",
+            expr: "datum.category === selectedCategory && datum.type === 'group' ?  (datum.size * (1/(datum.categorySize))) : datum.size",
           },
           { type: "formula", as: "scaledsize", expr: "pow(datum.scaledsize*1000, 0.8)" },
 
@@ -56,22 +61,19 @@ export default createClassFromSpec({
       {
         name: "selectedCategory",
         value: "",
-        on: [
-          {
-            events: "click",
-            update: "datum && datum.type == 'category' ? datum.category : selectedCategory",
-            force: false,
-          },
-          {
-            events: "click",
-            update: "!datum || datum.type == 'root' ? '' : selectedCategory",
-            force: false,
-          },
-        ],
+        // on: [
+        //   {
+        //     events: "click",
+        //     update:
+        //       "datum && datum.type == 'group' && (isValid(selectedDatum) ? selectedDatum.id !== datum.id : true) ? datum.category : ''",
+        //     force: false,
+        //   },
+        // ],
       },
       {
         name: "selectedDatum",
         value: null,
+        update: "data('tree') ? '' : ''", // stupid, but this way it resets on rerender
         on: [
           {
             events: "click",
@@ -87,7 +89,7 @@ export default createClassFromSpec({
         name: "color",
         type: "ordinal",
         domain: { data: "tree", field: "category" },
-        range: { scheme: "category20b" },
+        range: { scheme: "category20" },
       },
     ],
     marks: [
@@ -117,18 +119,17 @@ export default createClassFromSpec({
           },
           update: {
             tooltip: {
-              signal:
-                "datum.type === 'category' && datum.category === selectedCategory ? null : datum.name",
+              signal: "datum.type === 'category' ? null : datum.label",
             },
             xc: { field: "x" },
             yc: { field: "y" },
             scaleX: { signal: "datum.width" },
             scaleY: { signal: "datum.height" },
-            stroke: [{ test: 'datum.type === "category"', value: "white" }, { value: "grey" }],
-            strokeWidth: [{ test: "datum.type == 'category'", value: 2 }, { value: "0.8" }],
+            stroke: { value: "#ffffff55" },
+            strokeWidth: [{ test: "datum.type == 'category'", value: 2 }, { value: 0.5 }],
             fill: [
               {
-                test: "datum.type === 'category' && datum.category === selectedCategory",
+                test: "datum.type === 'category' && (datum.category === selectedCategory || selectedCategory === '')",
                 value: "transparent",
               },
               { test: "isValid(selectedDatum) && selectedDatum.id === datum.id", value: "white" },
@@ -146,7 +147,9 @@ export default createClassFromSpec({
         name: "icon",
         from: { data: "with_image" },
         encode: {
-          enter: { url: { field: "icon" }, tooltip: { signal: "datum.name" } },
+          //enter: { image: { field: "image" }, tooltip: { signal: "datum.label" } },
+          enter: { url: { field: "icon" }, tooltip: { signal: "datum.label" } },
+
           update: {
             xc: { field: "x" },
             yc: { field: "y" },
@@ -161,7 +164,7 @@ export default createClassFromSpec({
         from: { data: "tree" },
         encode: {
           enter: {
-            tooltip: { field: "name" },
+            tooltip: { field: "label" },
           },
           update: {
             text: {
@@ -172,7 +175,7 @@ export default createClassFromSpec({
             xc: { field: "x" },
             yc: { field: "y" },
             fontSize: {
-              signal: "max(10,(datum.width/10)*(10/length(datum.name)))",
+              signal: "max(10,(datum.width/10)*(10/length(datum.label || '')))",
             },
             ellipsis: { value: "-" },
             align: { value: "center" },
