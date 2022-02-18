@@ -19,9 +19,12 @@ class FootprintDB {
     // Dexie automatically checks whether a db with this name exists. If it does,
     // it opens the existing one, if it doesn't, it creates a new one.
     if (!useFake) {
-      this.idb = new Dexie("FootprintDB");
+      this.idb = new Dexie("DigitalFootprintDB");
     } else {
-      this.idb = new Dexie("FootprintDB", { indexedDB: indexedDB, IDBKeyRange: IDBKeyRange });
+      this.idb = new Dexie("DigitalFootprintDB", {
+        indexedDB: indexedDB,
+        IDBKeyRange: IDBKeyRange,
+      });
     }
 
     // the following 2 lines are only for developing
@@ -173,12 +176,5 @@ class FootprintDB {
   }
 }
 
-let db;
-try {
-  db = new FootprintDB();
-  console.log("normal");
-} catch (e) {
-  db = new FootprintDB(true);
-  console.log("fake");
-}
+let db = new FootprintDB();
 export default db;

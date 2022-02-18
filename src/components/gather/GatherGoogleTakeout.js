@@ -34,10 +34,10 @@ const GatherGoogleTakeout = ({ children, setLoading }) => {
       onOpen={() => setOpen(true)}
       open={open}
       trigger={children}
-      style={{ height: "90vh", maxHeight: "700px" }}
+      style={{ overflow: "auto" }}
       closeIcon
     >
-      <Modal.Content style={{ height: "90%", overflow: "auto" }}>
+      <Modal.Content style={{ minHeight: "700px" }}>
         <Modal.Description>
           <StepwiseInstructions instruction={googleTakeoutInstruction} />
         </Modal.Description>
