@@ -118,10 +118,14 @@ const prepareBrowsingHistory = (data) => {
       continue;
     }
 
+    let domain = url.hostname;
+    domain = domain.replace(/www[0-9]*\./, "");
+    domain = domain.replace(/^m\./, "");
+
     browsing.push({
       url: item.url,
       title: item.title,
-      domain: url.hostname,
+      domain,
       browser: "Chrome",
       date: item.date,
       page_transition: item.page_transition,

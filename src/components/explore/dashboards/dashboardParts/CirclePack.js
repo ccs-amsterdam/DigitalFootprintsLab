@@ -34,7 +34,7 @@ const CirclePack = ({ dashData, group, grouptype, inSelection, setOutSelection }
 
   // Popup button handler
   const filterSelectedDatum = async (selectedDatum) => {
-    let selection = await dashData.searchValues(selectedDatum.values, group);
+    let selection = await dashData.searchValues([selectedDatum.label], group);
     setOutSelection(selection);
   };
 
@@ -66,7 +66,7 @@ const createTreeData = (dashData, group, selection, groupInfo) => {
   groups = Object.keys(groups).map((name) => ({ name, count: groups[name] }));
   groups.sort((a, b) => b.count - a.count); // sort from high to low value
 
-  let nodes = {};
+  let nodes = [];
   let categories = {};
 
   const root = { label: "root", type: "root", id: 0, size: 0 };
@@ -88,36 +88,23 @@ const createTreeData = (dashData, group, selection, groupInfo) => {
       };
     categories[category].size += group.count;
 
-    // for the visualization we'll ignore www and the mobile versions m.
-    let label = group.name.replace(/www[0-9]*\./, "");
-    label = label.replace(/^m\./, "");
-
-    // cant get rid of cors errors
+    // cant get rid of cors errors. maybe try again later
     //const image = new Image();
     //image.src = icon;
     //image.crossOrigin = "Anonymous";
-
-    if (!nodes[label]) {
-      nodes[label] = {
-        label,
-        type: "group",
-        values: [],
-        parent: categories[category].id,
-        size: 0,
-        visits: 0,
-        category,
-        icon,
-      };
-    }
-    const node = nodes[label];
-    node.size += group.count;
-    node.visits += group.count;
-    node.values.push(group.name);
+    nodes.push({
+      label: group.name,
+      type: "group",
+      parent: categories[category].id,
+      size: group.count,
+      visits: group.count,
+      category,
+      icon,
+    });
   }
 
   // also add category size, because needed to resize within vega (somehow can't efficiently refer to parent in tree in a vega signal)
-  nodes = Object.keys(nodes).map((key, i) => {
-    const node = nodes[key];
+  nodes = nodes.map((node, i) => {
     return {
       ...node,
       id: id++,
