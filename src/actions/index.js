@@ -21,3 +21,10 @@ export const updateDataStatus = (name, source, status) => {
     dispatch(setDataStatus(newDataStatus));
   };
 };
+
+export const setPersistent = (persistent) => {
+  return {
+    type: "SET_PERSISTENT",
+    persistent,
+  };
+};

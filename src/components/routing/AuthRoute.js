@@ -12,7 +12,9 @@ const AuthRoute = ({ children }) => {
 
   useEffect(() => {
     const connect = async () => {
-      if (await db.isWelcome()) {
+      const welcome = await db.isWelcome();
+      console.log(welcome);
+      if (welcome?.welcome) {
         setHasdb(true);
       } else {
         setHasdb(false);

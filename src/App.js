@@ -13,6 +13,7 @@ import BrowsingHistory from "./components/explore/BrowsingHistory";
 import YoutubeHistory from "./components/explore/YoutubeHistory";
 import SearchHistory from "./components/explore/SearchHistory";
 import RemoveData from "./components/donate/RemoveData";
+import usePersistance from "components/routing/usePersistence";
 
 // Change to add new components to the header
 // The first item will be the opening page after login
@@ -25,6 +26,10 @@ const items = [
 ];
 
 const App = () => {
+  // The usePersistance hook checks if the redux 'persistant' state is false, and if so warn
+  // users if they try to refresh, leave or close the browser that their data will be gone
+  usePersistance();
+
   const authRoutes = () => {
     return items.map((item) => {
       return (

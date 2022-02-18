@@ -11,10 +11,13 @@ const IDBKeyRange = require("fake-indexeddb/lib/FDBKeyRange");
 // - DB data type agnostic (not using different tables for types. components can figure that stuff out)
 
 class FootprintDB {
-  constructor(useFake = false) {
+  constructor() {
+    this.setIDB();
+  }
+
+  setIDB(useFake = false) {
     // Dexie automatically checks whether a db with this name exists. If it does,
     // it opens the existing one, if it doesn't, it creates a new one.
-
     if (!useFake) {
       this.idb = new Dexie("FootprintDB");
     } else {
@@ -23,12 +26,11 @@ class FootprintDB {
 
     // the following 2 lines are only for developing
     // if enabled (i.e. not commented), the db resets every time the app is started (also when refreshing)
-    // this.idb.delete();
-    // this.idb = new Dexie("FootprintDB");
+    //this.idb.delete();
+    //this.idb = new Dexie("FootprintDB");
 
     this.idb.version(2).stores({
-      meta: "welcome", // this just serves to keep track of whether db was 'created' via the welcome component. Eventually,
-      //  this would be a good place to add authentication / token validation
+      meta: "welcome", // this just serves to keep track of whether db was 'created' via the welcome component.
       dataStatus: "&name, source, status, date",
       data: "&name, deleted", // unindexed fields: "data". "data" is an array with all the data. "deleted" requires some explanation.
       // data items can be deleted by users, but for speed we don't overwrite the data immediately,
@@ -45,11 +47,26 @@ class FootprintDB {
   // META
   /** just serves to indicate that user has accepted conditions at welcome screen */
   async welcome() {
-    if (!(await this.isWelcome())) this.idb.meta.add({ welcome: 1 });
-    return null;
+    let persistent;
+    try {
+      await this.idb.meta.put({ welcome: 1 });
+      persistent = true;
+    } catch (e) {
+      this.setIDB(true);
+      await this.idb.meta.put({ welcome: 1 });
+      persistent = false;
+    }
+    return persistent;
   }
   async isWelcome() {
-    return this.idb.meta.get(1);
+    try {
+      const welcome = await this.idb.meta.get(1);
+      console.log(welcome);
+      return { welcome: !!welcome, persistent: true };
+    } catch (e) {
+      // can throw error if browser can't handle IDB
+      return { welcome: false, persistent: false };
+    }
   }
 
   /////// DATA
@@ -156,5 +173,12 @@ class FootprintDB {
   }
 }
 
-const db = new FootprintDB();
+let db;
+try {
+  db = new FootprintDB();
+  console.log("normal");
+} catch (e) {
+  db = new FootprintDB(true);
+  console.log("fake");
+}
 export default db;

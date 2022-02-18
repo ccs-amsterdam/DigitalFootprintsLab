@@ -41,8 +41,15 @@ const FilterCard = () => {
 const DonateCard = ({ requestedData }) => {
   const statuses = useSelector((state) => state.dataStatus);
 
+  let any = false;
+  let all = true;
   const gathered = requestedData.map((name) => {
     const status = statuses.find((s) => s.name === name);
+    if (status.status === "finished") {
+      any = true;
+    } else {
+      all = false;
+    }
     return status ? status : { name, status: "empty" };
   });
 
@@ -52,16 +59,37 @@ const DonateCard = ({ requestedData }) => {
     navigate("/remove");
   };
 
+  const donateStatusSubname = (any, all) => {
+    if (all) return null;
+    if (any)
+      return (
+        <p>
+          Some of the data types are not yet (successfully) gathered. You can donate the current
+          data if you are not able to add the rest
+        </p>
+      );
+    return (
+      <p>
+        Please go to the <b>Gather</b> column for instructions on how to gather your digital
+        footprints
+      </p>
+    );
+  };
+
   return (
     <CardTemplate
       name={"Go to donation screen"}
-      subname={"If you have gathered all the data that you can"}
+      subname={
+        "Here you can learn more about what your data will be used for, and safely donate it"
+      }
       icon={"flag checkered"}
       onClick={onClick}
+      disabled={!any}
     >
       <List style={{ textAlign: "left", paddingTop: "10px" }}>
         {gathered.map((g, i) => statusMessage(g, i))}
       </List>
+      <span style={{ fontSize: "0.9em", color: "#ff7b00" }}>{donateStatusSubname(any, all)}</span>
     </CardTemplate>
   );
 };

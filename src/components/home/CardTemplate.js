@@ -1,20 +1,21 @@
 import React from "react";
 import { Card, Dimmer, Icon, Loader } from "semantic-ui-react";
 
-const CardTemplate = ({ children, name, subname, icon, onClick, loading, done }) => {
+const CardTemplate = ({ children, name, subname, icon, onClick, loading, done, disabled }) => {
   return (
     <Card
       centered
       style={{
-        cursor: "pointer",
+        cursor: disabled ? null : "pointer",
         width: "100%",
         marginLeft: "2em",
         marginRight: "2em",
-        background: "#ffffff00",
         position: "relative",
+        color: "green",
+        background: "#0f0f0f82",
         fontSize: "min(max(1vw, 1em),1.2em)",
       }}
-      onClick={onClick}
+      onClick={disabled ? null : onClick}
     >
       <Dimmer active={loading === "loading"}>
         <Loader />
@@ -31,8 +32,8 @@ const CardTemplate = ({ children, name, subname, icon, onClick, loading, done })
           }}
         />
       ) : null}
-      <Card.Content style={{ background: "#ffffff" }}>
-        <Icon size="huge" name={icon} style={{ float: "left" }} />
+      <Card.Content style={{ background: disabled ? "#ffffffcc" : "#ffffff" }}>
+        <Icon size="huge" name={icon} style={{ float: "left", color: "#4183c4" }} />
         <Card.Header content={name.replace("_", " ")} />
         <Card.Meta content={subname} />
 

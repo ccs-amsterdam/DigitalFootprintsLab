@@ -85,7 +85,7 @@ const KeywordInput = ({ setData }) => {
           <span style={{ color: "yellow" }}>secret</span> will also match{" "}
           <span style={{ color: "yellow" }}>www.supersecret.com</span>
         </li>
-        <li>Term needs to be at least 3 characters long</li>
+        <li>Terms needs to be at least 3 characters long</li>
       </ul>
       <Form>
         <Dimmer active={status === "loading"}>

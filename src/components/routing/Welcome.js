@@ -4,6 +4,8 @@ import db from "apis/db";
 import { useNavigate } from "react-router-dom";
 import { Grid, Button, Header, Segment } from "semantic-ui-react";
 import background from "images/background.jpeg";
+import { useDispatch, useSelector } from "react-redux";
+import { setPersistent } from "actions";
 
 /**
  * This component only appears the first time users visit,
@@ -12,16 +14,23 @@ import background from "images/background.jpeg";
  */
 const Welcome = ({ items }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const persistent = useSelector((state) => state.persistent);
 
   const beWelcomed = async (checkWelcome) => {
     if (checkWelcome) {
       const iswelcome = await db.isWelcome();
-      if (!iswelcome) return null;
+      if (!iswelcome?.persistent) dispatch(setPersistent(false));
+      if (!iswelcome?.welcome) return null;
     }
     try {
-      await db.welcome();
+      const persistent = await db.welcome();
+      console.log(persistent);
+      dispatch(setPersistent(persistent));
       navigate(items[0].path);
-    } catch (e) {}
+    } catch (e) {
+      console.log("whut");
+    }
   };
 
   useEffect(() => {
@@ -42,23 +51,46 @@ const Welcome = ({ items }) => {
       <Grid.Column style={{ maxWidth: 600 }}>
         <Segment style={{ border: 0 }}>
           <Header as="h2">Welcome to the Digital Footprints Lab!</Header>
-          <p align="justified">
-            This application let's you collect and explore your own digital traces. All the data is
-            stored and processed on your own device, and cannot be seen by anyone, so that you are
-            free to contemplate your life choices in solitude.
-          </p>
-          <p align="justified">
-            We do, however, kindly ask you to anonymously donate some parts of this data for
-            scientific research. Specifically, we are interested in how you seek, consume and share
-            news articles. The data will be used for non-commercial research by a select group of
-            researchers at Dutch Universities.
-          </p>
+          <div
+            align="justified"
+            style={{ textAlign: "left", marginTop: "20px", marginBottom: "20px" }}
+          >
+            <h4 style={{ marginBottom: "8px" }}>Gather and explore your digital footprints</h4>
+            <p>
+              This application let's you collect and explore your own digital traces. All the data
+              is stored and processed on your own device, so it <b>doesn't touch the internet</b>.
+            </p>
+            <h4 style={{ marginBottom: "8px" }}>Donate data to support academic research</h4>
+            <p>
+              You can also donate (parts) of this data for scientific research. This data will only
+              be used for non-commercial research by a select group of academics, for research that
+              is approved by the ethical board of their university.
+            </p>
+            {persistent ? null : notPersistentMessage()}
+          </div>
           <Button primary onClick={() => beWelcomed(false)}>
             Great, let's get started!
           </Button>
         </Segment>
       </Grid.Column>
     </Grid>
+  );
+};
+
+const notPersistentMessage = () => {
+  return (
+    <>
+      <h4 style={{ marginBottom: "8px" }}>
+        <span style={{ color: "Chocolate" }}>Warning!</span> Your browser does not let you store
+        data
+      </h4>
+      <p>
+        Some browser do not let you store data (especially older versions and if private mode is
+        enabled). You can still use the application, but if you leave the page any progress you made
+        will be gone. Don't worry though! you'll get a warning when you try to refresh or leave the
+        page so this doesn't happen by accident.
+      </p>
+    </>
   );
 };
 

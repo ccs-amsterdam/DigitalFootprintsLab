@@ -1,5 +1,8 @@
 import { createClassFromSpec } from "react-vega";
 
+const MAXNODES = 200;
+const WITHIMAGE = 25;
+
 export default createClassFromSpec({
   spec: {
     $schema: "https://vega.github.io/schema/vega/v5.json",
@@ -16,7 +19,7 @@ export default createClassFromSpec({
             expr: "selectedCategory != '' ? datum.type != 'group' || selectedCategory == datum.category : true",
           },
           { type: "window", groupby: ["type"], ops: ["count"] }, // note that tree (input data) needs to be sorted from most to least frequent group
-          { type: "filter", expr: "datum.type != 'group' || datum.count < 200" },
+          { type: "filter", expr: `datum.type != 'group' || datum.count < ${MAXNODES}` },
           { type: "stratify", key: "id", parentKey: "parent" },
           {
             type: "formula",
@@ -43,7 +46,9 @@ export default createClassFromSpec({
       {
         name: "with_image",
         source: "tree",
-        transform: [{ type: "filter", expr: "datum.type === 'group' && datum.count < 15" }],
+        transform: [
+          { type: "filter", expr: `datum.type === 'group' && datum.count < ${WITHIMAGE}` },
+        ],
       },
     ],
 
@@ -161,8 +166,8 @@ export default createClassFromSpec({
           update: {
             text: {
               signal:
-                //"(datum.type === 'category' && (selectedCategory !== datum.category )) || (datum.type === 'group' && (datum.count > 15 || !datum.icon)) ? datum.label : null",
-                "(datum.type === 'group' && (datum.count > 15 || !datum.icon)) ? datum.label : null",
+                //`(datum.type === 'category' && (selectedCategory !== datum.category )) || (datum.type === 'group' && (datum.count > ${WITHIMAGE} || !datum.icon)) ? datum.label : null`,
+                `(datum.type === 'group' && (datum.count > ${WITHIMAGE} || !datum.icon)) ? datum.label : null`,
             },
             xc: { field: "x" },
             yc: { field: "y" },

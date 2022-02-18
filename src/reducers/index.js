@@ -10,8 +10,17 @@ const dataStatus = (state = [], action) => {
   }
 };
 
+const persistent = (state = true, action) => {
+  switch (action.type) {
+    case "SET_PERSISTENT":
+      return action.persistent;
+    default:
+      return state;
+  }
+};
+
 const rootReducer = combineReducers({
   dataStatus,
+  persistent,
 });
-
 export default rootReducer;
