@@ -41,11 +41,12 @@ const FilterCard = () => {
 const DonateCard = ({ requestedData }) => {
   const statuses = useSelector((state) => state.dataStatus);
 
+  console.log(statuses);
   let any = false;
   let all = true;
   const gathered = requestedData.map((name) => {
     const status = statuses.find((s) => s.name === name);
-    if (status.status === "finished") {
+    if (status?.status === "finished") {
       any = true;
     } else {
       all = false;
