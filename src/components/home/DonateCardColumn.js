@@ -41,7 +41,6 @@ const FilterCard = () => {
 const DonateCard = ({ requestedData }) => {
   const statuses = useSelector((state) => state.dataStatus);
 
-  console.log(statuses);
   let any = false;
   let all = true;
   const gathered = requestedData.map((name) => {
@@ -96,7 +95,6 @@ const DonateCard = ({ requestedData }) => {
 };
 
 const statusMessage = (gathered, i) => {
-  console.log(gathered);
   const name = gathered.name.replace("_", " ");
 
   if (gathered.status === "finished")

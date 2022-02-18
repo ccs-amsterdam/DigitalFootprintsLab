@@ -64,7 +64,6 @@ class FootprintDB {
   async isWelcome() {
     try {
       const welcome = await this.idb.meta.get(1);
-      console.log(welcome);
       return { welcome: !!welcome, persistent: true };
     } catch (e) {
       // can throw error if browser can't handle IDB

@@ -61,6 +61,8 @@ const DataTable = ({ dashData, columns, selection }) => {
     await dashData.rmID(ids);
   };
 
+  if (!dashData) return null;
+
   return (
     <Container
       style={{
@@ -168,6 +170,7 @@ const ScrollingTable = ({ data, columns, processDelete }) => {
       unstackable
       fixed
       singleLine
+      compact
       style={{ width: "100%", color: "white", background: "#00000099" }}
     >
       {createHeader(columns)}

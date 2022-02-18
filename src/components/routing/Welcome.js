@@ -25,7 +25,6 @@ const Welcome = ({ items }) => {
     }
     try {
       const persistent = await db.welcome();
-      console.log(persistent);
       dispatch(setPersistent(persistent));
       navigate(items[0].path);
     } catch (e) {
@@ -62,9 +61,9 @@ const Welcome = ({ items }) => {
             </p>
             <h4 style={{ marginBottom: "8px" }}>Donate data to support academic research</h4>
             <p>
-              You can also donate (parts) of this data for scientific research. This data will only
-              be used for non-commercial research by a select group of academics, for research that
-              is approved by the ethical board of their university.
+              You can also donate a selection of this data for scientific research. This data will
+              only be used for <b>non-commercial research</b> by a select group of academics, for
+              research that is approved by the ethical board of their university.
             </p>
             {persistent ? null : notPersistentMessage()}
           </div>
@@ -81,14 +80,16 @@ const notPersistentMessage = () => {
   return (
     <>
       <h4 style={{ marginBottom: "8px" }}>
-        <span style={{ color: "Chocolate" }}>Warning!</span> Your browser does not let you store
-        data
+        <span style={{ color: "Chocolate" }}>Warning!</span> If possible, use different browser
       </h4>
       <p>
-        Some browser do not let you store data (especially older versions and if private mode is
-        enabled). You can still use the application, but if you leave the page any progress you made
-        will be gone. Don't worry though! you'll get a warning when you try to refresh or leave the
-        page so this doesn't happen by accident.
+        This application works best in recent versions of Chrome, Safari, Edge, Firefox and Opera.
+        For some browsers, like Firefox, make sure not to use private mode.
+      </p>
+      <p>
+        You can probably still use the application with your current browser, but it can be slower,
+        and your data won't be stored if you leave. Don't worry though! you'll get a warning when
+        you try to refresh or leave the page so this doesn't happen by accident.
       </p>
     </>
   );

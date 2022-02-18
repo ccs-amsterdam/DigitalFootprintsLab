@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Container, Header, Item } from "semantic-ui-react";
+import { Grid, Container, Header, Item, Dimmer, Loader } from "semantic-ui-react";
 
 import ColoredBackgroundGrid from "./dashboardParts/ColoredBackgroundGrid";
 import background from "images/background.jpeg";
@@ -44,8 +44,13 @@ const DashboardTemplate = ({ dataName, searchOn, columns, VisComponent, calcStat
     setStatistics(calcStatistics(dashData, selection));
   }, [dashData, selection, calcStatistics]);
 
+  console.log(dashData);
+
   return (
     <ColoredBackgroundGrid background={background} color={"#000000b0"}>
+      <Dimmer active={!dashData}>
+        <Loader />
+      </Dimmer>
       <Grid stackable style={{ height: "100vh" }}>
         <Grid.Row style={{ minHeight: "500px" }}>
           <Grid.Column width={4}>

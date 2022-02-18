@@ -23,7 +23,7 @@ const RemoveData = () => {
 
   return (
     <ColoredBackgroundGrid background={background} color={"#000000b0"}>
-      <Grid stackable style={{ height: "100vh" }}>
+      <Grid stackable style={{ height: "100vh", width: "100vw" }}>
         <Grid.Column width={6}>
           <BackButton />
 
@@ -75,6 +75,7 @@ const KeywordInput = ({ setData }) => {
         marginTop: "100px",
         padding: "20px",
         height: "100%",
+        width: "25em",
       }}
     >
       <Header style={{ color: "white" }}>Filter Terms</Header>
@@ -137,7 +138,7 @@ const ResultsTable = ({ title, dashData }) => {
         //maxHeight: "calc(100vh - 500px)",
         //width: "100%",
         minHeight: "70px",
-        maxHeight: "400px",
+        maxHeight: "340px",
         border: "5px solid #ffffff3f",
         marginTop: "10px",
         position: "relative",
