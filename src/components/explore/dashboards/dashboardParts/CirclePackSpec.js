@@ -1,7 +1,7 @@
 import { createClassFromSpec } from "react-vega";
 
 const MAXNODES = 500;
-const WITHIMAGE = 25;
+const WITHIMAGE = 30;
 
 export default createClassFromSpec({
   spec: {
