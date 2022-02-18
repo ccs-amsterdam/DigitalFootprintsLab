@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 import db from "apis/db";
 import { useNavigate } from "react-router-dom";
-import { Grid, Button, Header, Segment } from "semantic-ui-react";
+import { Grid, Button, Header, Segment, Icon } from "semantic-ui-react";
 import background from "images/background.jpeg";
 import { useDispatch, useSelector } from "react-redux";
 import { setPersistent } from "actions";
@@ -80,16 +80,16 @@ const notPersistentMessage = () => {
   return (
     <>
       <h4 style={{ marginBottom: "8px" }}>
-        <span style={{ color: "Chocolate" }}>Warning!</span> If possible, use different browser
+        <Icon color="orange" name="warning sign" /> If possible, use a different browser
       </h4>
       <p>
         This application works best in recent versions of Chrome, Safari, Edge, Firefox and Opera.
-        For some browsers, like Firefox, make sure not to use private mode.
+        For some browsers, like Firefox, it works better when not in private mode.
       </p>
       <p>
-        You can probably still use the application with your current browser, but it can be slower,
-        and your data won't be stored if you leave. Don't worry though! you'll get a warning when
-        you try to refresh or leave the page so this doesn't happen by accident.
+        You can still use the application with your current browser, but your data won't be stored
+        if you leave. Don't worry though! you'll get a warning when you try to refresh or leave the
+        page so this doesn't easily happen by accident.
       </p>
     </>
   );

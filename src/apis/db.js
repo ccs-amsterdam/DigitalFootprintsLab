@@ -76,11 +76,12 @@ class FootprintDB {
   async getData(name, fields) {
     try {
       let data = await this.idb.data.get({ name });
+      data.data = JSON.parse(data.data);
       // For speed and efficiency, data items are not immediately deleted from the database when they are removed
       // in the client but a lookup object for deleted indices is used (see note above in the IDB table declaration).
       if (data?.deleted) {
         data.data = data.data.filter((d, i) => !data.deleted[i]);
-        await this.idb.data.put({ name, deleted: null, data: data.data }, [name]);
+        await this.idb.data.put({ name, deleted: null, data: JSON.stringify(data.data) }, [name]);
       }
 
       if (fields) {
@@ -127,7 +128,7 @@ class FootprintDB {
       }
     }
 
-    await this.idb.data.put({ name, deleted: null, data }, [name]);
+    await this.idb.data.put({ name, deleted: null, data: JSON.stringify(data) }, [name]);
     await this.updateDataStatus(name, source);
 
     const addGroupInfo = Object.keys(newGroups).filter((group) => newGroups[group]);
