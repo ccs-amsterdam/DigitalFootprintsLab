@@ -135,6 +135,16 @@ class FootprintDB {
     if (addGroupInfo.length > 0) updateGroupInfo(addGroupInfo);
   }
 
+  async setDataAnnotations(annotations, name) {
+    await this.idb.data.update(name, { annotations: JSON.stringify(annotations) });
+  }
+
+  async getDataAnnotations(name) {
+    let data = await this.idb.data.get({ name });
+    if (data?.annotations) return JSON.parse(data.annotations);
+    return {};
+  }
+
   /////// DATA STATUS
 
   async getDataStatus(name) {

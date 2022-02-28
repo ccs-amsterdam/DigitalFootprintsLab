@@ -13,7 +13,7 @@ const CirclePack = ({ dashData, group, grouptype, inSelection, setOutSelection }
   const [data, setData] = useState({ tree: [] }); // input for vega visualization
   const [deleteIds, setDeleteIds] = useState([]);
 
-  const groupInfo = useGroupInfo(dashData, group, grouptype);
+  const [groupInfo, groupInfoReady] = useGroupInfo(dashData, group, grouptype);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const CirclePack = ({ dashData, group, grouptype, inSelection, setOutSelection }
 
   return (
     <div style={{ position: "relative" }}>
-      <Dimmer active={loading}>
+      <Dimmer active={loading || !groupInfoReady}>
         <Loader />
       </Dimmer>
       <CirclePackSpec

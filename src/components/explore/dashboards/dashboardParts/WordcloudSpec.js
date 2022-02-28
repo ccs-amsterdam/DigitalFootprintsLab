@@ -28,7 +28,7 @@ export default createClassFromSpec({
         name: "color",
         type: "ordinal",
         domain: { data: "table", field: "text" },
-        range: ["#d5a928", "#652c90", "#939597"],
+        range: ["#e0ca8a", "#8acce0", "#bea5e9"],
       },
     ],
 

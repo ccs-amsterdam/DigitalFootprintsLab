@@ -13,6 +13,7 @@ import BrowsingHistory from "./components/explore/BrowsingHistory";
 import YoutubeHistory from "./components/explore/YoutubeHistory";
 import SearchHistory from "./components/explore/SearchHistory";
 import RemoveData from "./components/donate/RemoveData";
+import DonationScreen from "components/donate/DonationScreen";
 import usePersistance from "components/routing/usePersistence";
 
 // Change to add new components to the header
@@ -23,6 +24,7 @@ const items = [
   { label: "Search", path: "/search", Component: SearchHistory },
   { label: "Youtube", path: "/youtube", Component: YoutubeHistory },
   { label: "Remove", path: "/remove", Component: RemoveData },
+  { label: "Donate", path: "/donate", Component: DonationScreen },
 ];
 
 const App = () => {

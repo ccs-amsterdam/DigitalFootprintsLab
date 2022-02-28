@@ -11,6 +11,7 @@ import { useState, useEffect } from "react";
 export default function useGroupInfo(dashData, group, type = "domain") {
   const [data, setData] = useState([]);
   const [groups, setGroups] = useState(null);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     if (!dashData?.data) return;
@@ -21,15 +22,17 @@ export default function useGroupInfo(dashData, group, type = "domain") {
 
   useEffect(() => {
     if (!groups || groups.length === 0) return;
+    setReady(false);
     const fetchData = async () => {
       const data = await updateGroupInfo(groups, type);
       setData(data);
+      setReady(true);
     };
 
     fetchData();
   }, [groups, type]);
 
-  return data;
+  return [data, ready];
 }
 
 export const updateGroupInfo = async (groups, type) => {

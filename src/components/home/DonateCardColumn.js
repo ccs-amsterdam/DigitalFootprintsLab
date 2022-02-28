@@ -56,7 +56,7 @@ const DonateCard = ({ requestedData }) => {
   const navigate = useNavigate();
 
   const onClick = () => {
-    navigate("/remove");
+    navigate("/donate");
   };
 
   const donateStatusSubname = (any, all) => {
