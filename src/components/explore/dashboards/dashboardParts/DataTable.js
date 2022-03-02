@@ -78,7 +78,7 @@ const DataTable = ({ dashData, columns, selection }) => {
               onClick={() => setDeleteIds(bulkDelete)}
               icon="trash alternate"
               style={{
-                color: "#b23434bd",
+                color: "red",
                 padding: "0",
                 marginBottom: "10px",
                 background: "#ffffff00",
@@ -150,6 +150,7 @@ const ScrollingTable = ({ data, columns, processDelete }) => {
         <Table.Row key={i}>
           <Table.Cell key="0">
             <Button
+              size="mini"
               style={{ padding: "5px", background: "red", color: "black" }}
               onClick={() => setDeleteIds([row._INDEX])}
               icon="trash alternate"
@@ -170,7 +171,7 @@ const ScrollingTable = ({ data, columns, processDelete }) => {
       unstackable
       fixed
       singleLine
-      compact
+      compact="very"
       style={{ width: "100%", color: "white", background: "#00000099" }}
     >
       {createHeader(columns)}

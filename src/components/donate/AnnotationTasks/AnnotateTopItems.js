@@ -122,7 +122,7 @@ const ItemForm = ({ data, setData, field, value, question }) => {
   const answer = data.annotations[field][value].news_score;
 
   return (
-    <Grid.Row>
+    <Grid.Row style={{ paddingTop: "7px", paddingBottom: "0px" }}>
       <Grid.Column width={7}>
         <Header as="h4">{item.name} </Header>
       </Grid.Column>
