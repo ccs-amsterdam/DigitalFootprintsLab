@@ -64,7 +64,7 @@ const createWordcloudData = (dashData, group, selection, groupInfo) => {
     angle: [-45, 0, 45][~~(Math.random() * 3)],
   }));
   //groups = groups.sort((a, b) => a.count - b.count); // sort from high to low value
-  console.log(groups);
+
   return { table: groups };
 };
 

@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Button, Checkbox, Form, Grid, Header, Segment } from "semantic-ui-react";
+import { Button, Checkbox, Form, Grid, Header, List, Segment } from "semantic-ui-react";
+import submitData from "./submitData";
 
 const ConfirmDonation = () => {
   const [consent, setConsent] = useState(false);
+  const [status, setStatus] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const onClick = async () => {
+    setLoading(true);
+    await submitData(setStatus);
+    setLoading(false);
+  };
 
   return (
     <Segment
@@ -23,9 +32,22 @@ const ConfirmDonation = () => {
           <ConsentForm setConsent={setConsent} />
           <br />
           <br />
-          <Button primary disabled={!consent}>
+          <Button loading={loading} primary disabled={!consent} onClick={onClick}>
             Donate your data
           </Button>
+          <List style={{ marginLeft: "15%" }}>
+            {status.map((file) => {
+              return (
+                <List.Item key={file.filename}>
+                  <List.Icon
+                    name={file.success ? "check circle outline" : "times circle outline"}
+                    color={file.success ? "green" : "red"}
+                  />
+                  <List.Content>{file.filename}</List.Content>
+                </List.Item>
+              );
+            })}
+          </List>
         </Grid.Column>
       </Grid>
     </Segment>

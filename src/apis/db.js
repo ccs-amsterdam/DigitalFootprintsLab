@@ -28,12 +28,12 @@ class FootprintDB {
     }
 
     // the following 2 lines are only for developing
-    // if enabled (i.e. not commented), the db resets every time the app is started (also when refreshing)
+    // if enabled the db resets every time the app is started (also when refreshing)
     //this.idb.delete();
     //this.idb = new Dexie("FootprintDB");
 
     this.idb.version(2).stores({
-      meta: "welcome", // this just serves to keep track of whether db was 'created' via the welcome component.
+      meta: "welcome", // Keep track of whether user logged in before, and remember userId (if passed as URL parameter)
       dataStatus: "&name, source, status, date",
       data: "&name, deleted", // unindexed fields: "data". "data" is an array with all the data. "deleted" requires some explanation.
       // data items can be deleted by users, but for speed we don't overwrite the data immediately,
@@ -43,20 +43,22 @@ class FootprintDB {
   }
 
   async destroyEverything() {
-    // reset database
+    // reset database. Returns userId so that it can be included in redirect
+    const meta = await db.idb.meta.get(1);
     await this.idb.delete();
+    return meta.userId;
   }
 
   // META
   /** just serves to indicate that user has accepted conditions at welcome screen */
-  async welcome() {
+  async welcome(userId) {
     let persistent;
     try {
-      await this.idb.meta.put({ welcome: 1 });
+      await this.idb.meta.put({ welcome: 1, userId });
       persistent = true;
     } catch (e) {
-      this.setIDB(true);
-      await this.idb.meta.put({ welcome: 1 });
+      this.setIDB(true); // switch to fake idb
+      await this.idb.meta.put({ welcome: 1, userId });
       persistent = false;
     }
     return persistent;
@@ -64,10 +66,10 @@ class FootprintDB {
   async isWelcome() {
     try {
       const welcome = await this.idb.meta.get(1);
-      return { welcome: !!welcome, persistent: true };
+      return { welcome: !!welcome, persistent: true, userId: welcome?.userId };
     } catch (e) {
       // can throw error if browser can't handle IDB
-      return { welcome: false, persistent: false };
+      return { welcome: false, persistent: false, userId: null };
     }
   }
 
@@ -115,7 +117,7 @@ class FootprintDB {
     let fulldata = await this.getData(name);
 
     const newGroups = {}; // also check for new groups, to immediately call backend for getting groupinfo
-    if (fulldata.data && fulldata.data.length > 0) {
+    if (fulldata && fulldata.data.length > 0) {
       const existing = {};
       if (idFields) {
         for (let d of data) {
