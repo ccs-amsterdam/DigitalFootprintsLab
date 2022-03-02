@@ -12,8 +12,8 @@ const DonationInformation = ({ setStep }) => {
         overflow: "auto",
       }}
     >
-      <Grid centered stackable style={{ height: "100%" }}>
-        <Grid.Column width={8} stretched>
+      <Grid verticalAlign="middle" centered stackable style={{ height: "100%" }}>
+        <Grid.Column width={8}>
           <Header as="h2" style={{ textAlign: "center" }}>
             About donating your data
           </Header>
@@ -22,7 +22,7 @@ const DonationInformation = ({ setStep }) => {
             purpose we'll use their data. Before the actual donation (in the 'Complete donation')
             step people will then need to verify that they have seen this and give consent.
           </p>
-          <Button primary onClick={() => setStep(1)} style={{ maxHeight: "3em" }}>
+          <Button fluid primary onClick={() => setStep(1)} style={{ maxHeight: "3em" }}>
             Continue with donation
           </Button>
         </Grid.Column>

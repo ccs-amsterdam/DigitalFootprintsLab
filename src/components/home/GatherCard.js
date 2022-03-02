@@ -44,7 +44,16 @@ const GatherCard = ({ source, subname, produces, icon, onClick, loading }) => {
       loading={loading}
       done={done}
     >
-      <List style={{ textAlign: "left", paddingTop: "10px" }}>{produced.map(statusMessage)}</List>
+      <List style={{ textAlign: "left", paddingTop: "10px" }}>
+        {" "}
+        {done ? null : (
+          <p>
+            Click here to gather the data that Google has about your <b>browsing</b>, <b>search</b>{" "}
+            and <b>Youtube</b> history
+          </p>
+        )}
+        {produced.map(statusMessage)}
+      </List>
     </CardTemplate>
   );
 };
@@ -57,7 +66,7 @@ const statusMessage = (produced, i) => {
         <List.Item key={i}>
           <List.Icon name="exclamation circle" color="red" />
           <List.Content>
-            Failed to update <b>{name}</b> data.
+            Failed to update <b>{name}</b> history.
           </List.Content>
         </List.Item>
       );
@@ -66,7 +75,7 @@ const statusMessage = (produced, i) => {
         <List.Item key={i}>
           <List.Icon name="close" color="red" />
           <List.Content>
-            Failed to get <b>{name}</b> data
+            Failed to get <b>{name}</b> history
           </List.Content>
         </List.Item>
       );
@@ -78,7 +87,7 @@ const statusMessage = (produced, i) => {
       <List.Item key={i}>
         <List.Icon name="check circle outline" color="green" />
         <List.Content>
-          Gathered <b>{name}</b> data
+          Gathered <b>{name}</b> history
         </List.Content>
       </List.Item>
     );
@@ -87,7 +96,7 @@ const statusMessage = (produced, i) => {
     <List.Item key={i}>
       <List.Icon name="circle outline" />
       <List.Content>
-        Click to gather <b>{name}</b> data
+        <b>{name}</b> history
       </List.Content>
     </List.Item>
   );

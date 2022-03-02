@@ -54,8 +54,8 @@ const KeywordInput = ({ setData }) => {
     const results = {};
     for (let name of dataNames) {
       const data = await db.getData(name);
-      const dashData = new DashboardData(name, data, (dd) => {
-        const newdata = { ...data };
+      const dashData = new DashboardData(name, data.data, (dd) => {
+        const newdata = { ...data.data };
         newdata[name] = dd;
         setData(newdata);
       });

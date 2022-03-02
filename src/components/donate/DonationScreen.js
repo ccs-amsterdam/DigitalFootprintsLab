@@ -9,13 +9,14 @@ import ConfirmDonation from "./ConfirmDonation";
 
 const DonationScreen = () => {
   const [step, setStep] = useState(0);
+  const [doneRequest, setDoneRequest] = useState(false);
 
   const renderStep = () => {
     switch (step) {
       case 0:
         return <DonationInformation setStep={setStep} />;
       case 1:
-        return <BeforeYouDonate setStep={setStep} />;
+        return <BeforeYouDonate done={doneRequest} setDone={setDoneRequest} setStep={setStep} />;
       case 2:
         return <ConfirmDonation />;
       default:
@@ -38,7 +39,7 @@ const DonationScreen = () => {
               flexDirection: "column",
             }}
           >
-            <DonationSteps step={step} setStep={setStep} />
+            <DonationSteps step={step} setStep={setStep} doneRequest={doneRequest} />
             <div style={{ marginTop: "30px", height: "100%" }}>{renderStep()}</div>
           </Container>
         </Grid.Column>
@@ -47,7 +48,7 @@ const DonationScreen = () => {
   );
 };
 
-const DonationSteps = ({ step, setStep }) => {
+const DonationSteps = ({ step, setStep, doneRequest }) => {
   const maxStep = useRef(0);
   if (step > maxStep.current) maxStep.current = step;
 
@@ -73,7 +74,12 @@ const DonationSteps = ({ step, setStep }) => {
             <Step.Description>One final request from the researchers</Step.Description>
           </Step.Content>
         </Step>
-        <Step active={step === 2} completed={step > 2} onClick={() => onClick(2)}>
+        <Step
+          active={step === 2}
+          completed={step > 2}
+          disabled={!doneRequest}
+          onClick={() => onClick(2)}
+        >
           <Icon name="student" />
           <Step.Content>
             <Step.Title>Complete donation</Step.Title>

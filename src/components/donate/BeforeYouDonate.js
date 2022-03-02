@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, Grid, Header, Segment } from "semantic-ui-react";
 import AnnotateTopItems from "./AnnotationTasks/AnnotateTopItems";
 
-const BeforeYouDonate = ({ setStep }) => {
-  const [done, setDone] = useState(false);
-
+const BeforeYouDonate = ({ done, setDone, setStep }) => {
   return (
     <Segment
       style={{
@@ -15,7 +13,7 @@ const BeforeYouDonate = ({ setStep }) => {
         overflow: "auto",
       }}
     >
-      <Grid centered stackable style={{ height: "100%" }}>
+      <Grid verticalAlign="middle" centered stackable style={{ height: "100%" }}>
         <Grid.Row>
           <Grid.Column width={16}>
             <Header as="h1" style={{ textAlign: "center" }}>
@@ -23,15 +21,7 @@ const BeforeYouDonate = ({ setStep }) => {
             </Header>
           </Grid.Column>
         </Grid.Row>
-        <Grid.Row>
-          <Grid.Column width={8}>
-            <p>
-              Below you see <b>your top 10 YouTube channels</b>. To help us understand whether and
-              how YouTube is used as a news source, please let us know to what extent you yourself
-              consider these channels to be informative.
-            </p>
-          </Grid.Column>
-        </Grid.Row>
+
         <Grid.Row>
           <Grid.Column width={14}>
             <AnnotateTopItems setDone={setDone} />

@@ -22,7 +22,7 @@ export default function useDashboardData(name, fields) {
 const createDashData = async (name, fields, setData) => {
   try {
     let data = await db.getData(name, fields);
-    const dashData = new DashboardData(name, data, setData); // with setData, dashboard can trigger its own state update
+    const dashData = new DashboardData(name, data.data, setData); // with setData, dashboard can trigger its own state update
     setData(dashData);
   } catch (e) {
     console.log(e);

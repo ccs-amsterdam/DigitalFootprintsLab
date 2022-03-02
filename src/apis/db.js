@@ -80,8 +80,14 @@ class FootprintDB {
       // For speed and efficiency, data items are not immediately deleted from the database when they are removed
       // in the client but a lookup object for deleted indices is used (see note above in the IDB table declaration).
       if (data?.deleted) {
+        const n_before = data.data.length;
         data.data = data.data.filter((d, i) => !data.deleted[i]);
-        await this.idb.data.put({ name, deleted: null, data: JSON.stringify(data.data) }, [name]);
+        let n_deleted = data.data.n_deleted || 0;
+        n_deleted += n_before - data.data.length;
+        await this.idb.data.put(
+          { name, deleted: null, n_deleted, data: JSON.stringify(data.data) },
+          [name]
+        );
       }
 
       if (fields) {
@@ -93,7 +99,7 @@ class FootprintDB {
       }
 
       for (let i = 0; i < data.data.length; i++) data.data[i]._INDEX = i;
-      return data.data;
+      return data;
     } catch (e) {
       return null;
     }
@@ -109,7 +115,7 @@ class FootprintDB {
     let fulldata = await this.getData(name);
 
     const newGroups = {}; // also check for new groups, to immediately call backend for getting groupinfo
-    if (fulldata && fulldata.length > 0) {
+    if (fulldata.data && fulldata.data.length > 0) {
       const existing = {};
       if (idFields) {
         for (let d of data) {
@@ -118,7 +124,7 @@ class FootprintDB {
           existing[id] = true;
         }
       }
-      for (let d of fulldata) {
+      for (let d of fulldata.data) {
         if (d.group && newGroups[d.group]) newGroups[d.group] = false;
         if (idFields) {
           const id = JSON.stringify(idFields.map((f) => d[f]));
@@ -128,7 +134,9 @@ class FootprintDB {
       }
     }
 
-    await this.idb.data.put({ name, deleted: null, data: JSON.stringify(data) }, [name]);
+    await this.idb.data.put({ name, deleted: null, n_deleted: 0, data: JSON.stringify(data) }, [
+      name,
+    ]);
     await this.updateDataStatus(name, source);
 
     const addGroupInfo = Object.keys(newGroups).filter((group) => newGroups[group]);
