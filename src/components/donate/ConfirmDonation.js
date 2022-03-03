@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Button, Checkbox, Form, Grid, Header, List, Segment } from "semantic-ui-react";
+import {
+  Button,
+  Checkbox,
+  Form,
+  Grid,
+  Header,
+  List,
+  Loader,
+  Segment,
+  Dimmer,
+} from "semantic-ui-react";
 import submitData from "./submitData";
 
 const ConfirmDonation = () => {
@@ -32,21 +42,39 @@ const ConfirmDonation = () => {
           <ConsentForm setConsent={setConsent} />
           <br />
           <br />
-          <Button loading={loading} primary disabled={!consent} onClick={onClick}>
+          <Button primary disabled={!consent || loading} onClick={onClick}>
             Donate your data
           </Button>
-          <List style={{ marginLeft: "15%" }}>
+          <List>
             {status.map((file) => {
+              console.log(file);
               return (
-                <List.Item key={file.filename}>
+                <List.Item key={file.filename} style={{ marginLeft: "10%" }}>
                   <List.Icon
                     name={file.success ? "check circle outline" : "times circle outline"}
                     color={file.success ? "green" : "red"}
                   />
-                  <List.Content>{file.filename}</List.Content>
+                  {file.success ? (
+                    <List.Content>
+                      Donated {file.n} <b>{file.filename}</b> items{" "}
+                      <i style={{ color: "darkgrey" }}>
+                        {file.testUser ? "(fake test data)" : null}
+                      </i>
+                    </List.Content>
+                  ) : (
+                    <List.Content>
+                      Failed to submit <b>{file.filename} </b> data. Please try again, and contact
+                      the researchers or survey company if the problem persists
+                    </List.Content>
+                  )}
                 </List.Item>
               );
             })}
+            <Segment style={{ border: "0", boxShadow: "none", marginTop: "20px" }}>
+              <Dimmer inverted active={loading}>
+                <Loader>Uploading files</Loader>
+              </Dimmer>
+            </Segment>{" "}
           </List>
         </Grid.Column>
       </Grid>

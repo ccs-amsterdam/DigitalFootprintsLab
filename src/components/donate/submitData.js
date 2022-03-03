@@ -8,23 +8,12 @@ const submitData = async (setStatus) => {
   for (let name of dataNames) {
     const data = await db.getData(name);
     const testUser = meta.userId === "test_user";
-    if (testUser)
-      data.data = [{ test: "test submission. Only number of items", rows: data.data.length }];
-
-    await postBody(name, meta.userId, data.n_deleted, data.data, setStatus);
+    await postBody(name, meta.userId, data.n_deleted, data.data, setStatus, testUser);
 
     if (data.annotations) {
       data.annotations = JSON.parse(data.annotations);
       const annotationEntries = [];
       for (let field of Object.keys(data.annotations)) {
-        if (testUser) {
-          annotationEntries.push({
-            field,
-            value: "test submission. Only number of annotations",
-            annotation: `${Object.keys(data.annotations[field]).length} annotations`,
-          });
-          continue;
-        }
         for (let value of Object.keys(data.annotations[field])) {
           annotationEntries.push({ field, value, annotation: data.annotations[field][value] });
         }
@@ -34,27 +23,45 @@ const submitData = async (setStatus) => {
         meta.userId,
         data.n_deleted,
         annotationEntries,
-        setStatus
+        setStatus,
+        testUser
       );
     }
   }
 };
 
-const postBody = async (filename, submission_id, n_deleted, entries, setStatus) => {
+const postBody = async (filename, submission_id, n_deleted, entries, setStatus, testUser) => {
+  console.log(testUser);
   const body = { filename, submission_id, n_deleted, entries };
+  const n = body.entries.length;
+  if (testUser) body.entries = body.entries.map((e) => replaceWithFake(e));
+  console.log(body);
   const requestOptions = {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
+    mode: "no-cors", // ok for now, but need to set up CORS on server
+    //credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify([body]),
   };
   try {
-    const response = await fetch("https://digitale-voetsporen.nl/browsing/upload", requestOptions);
+    const response = await fetch("https://digitale-voetsporen.nl/youtube/upload", requestOptions);
     console.log(response);
-    setStatus((state) => [...state, { filename, success: true }]);
+    setStatus((state) => [...state, { filename, success: true, n, testUser }]);
   } catch (e) {
     console.log(e);
-    setStatus((state) => [...state, { filename, success: false }]);
+    setStatus((state) => [...state, { filename, success: false, n, testUser }]);
   }
+};
+
+const replaceWithFake = (obj) => {
+  const newobj = {};
+  for (let key of Object.keys(obj)) {
+    const len = JSON.stringify(obj[key]).length;
+    newobj[key] = "test ".repeat(Math.max(1, Math.floor(len / 5))).trim();
+  }
+  return newobj;
 };
 
 export default submitData;

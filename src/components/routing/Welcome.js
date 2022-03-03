@@ -115,9 +115,8 @@ const testUserMessage = () => {
         researchers or survey company.
       </p>
       <p>
-        As a test user your data will never be send to a server. If you complete the data donation
-        submission, the server will receive a dummy submission that only contains meta information
-        (time of submission, number of items, number of deleted items)
+        As a test user your <i>real</i> data will not be send to a server. If you complete the data
+        donation steps, the server will receive a dummy submission with fake data.
       </p>
     </>
   );
