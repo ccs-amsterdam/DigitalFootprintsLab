@@ -35,7 +35,7 @@ const postBody = async (filename, submission_id, n_deleted, entries, setStatus, 
   const body = { filename, submission_id, n_deleted, entries };
   const n = body.entries.length;
   if (testUser) body.entries = body.entries.map((e) => replaceWithFake(e));
-  console.log(body);
+
   const requestOptions = {
     method: "POST",
     mode: "no-cors", // ok for now, but need to set up CORS on server
@@ -48,10 +48,10 @@ const postBody = async (filename, submission_id, n_deleted, entries, setStatus, 
   try {
     const response = await fetch("https://digitale-voetsporen.nl/youtube/upload", requestOptions);
     console.log(response);
-    setStatus((state) => [...state, { filename, success: true, n, testUser }]);
+    setStatus((state) => [...state, { filename, success: true, n }]);
   } catch (e) {
     console.log(e);
-    setStatus((state) => [...state, { filename, success: false, n, testUser }]);
+    setStatus((state) => [...state, { filename, success: false, n }]);
   }
 };
 

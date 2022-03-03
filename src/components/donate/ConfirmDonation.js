@@ -1,3 +1,4 @@
+import db from "apis/db";
 import React, { useState, useEffect } from "react";
 import {
   Button,
@@ -16,12 +17,25 @@ const ConfirmDonation = () => {
   const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [testUser, setTestUser] = useState(null);
 
   const onClick = async () => {
     setLoading(true);
     await submitData(setStatus);
     setLoading(false);
   };
+
+  useEffect(() => {
+    db.isWelcome()
+      .then((welcome) => {
+        setTestUser(welcome?.userId === "test_user");
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  });
+
+  if (testUser === null) return null;
 
   return (
     <Segment
@@ -41,7 +55,14 @@ const ConfirmDonation = () => {
           <br />
           <ConsentForm setConsent={setConsent} />
           <br />
-          <br />
+          {testUser ? (
+            <Header textAlign="center" color="orange">
+              You are logged in as a test user, so your real data won't be submitted. The server
+              will only see what types of data you submitted, and how many items
+            </Header>
+          ) : (
+            <br />
+          )}
           <Button primary disabled={!consent || loading} onClick={onClick}>
             Donate your data
           </Button>
@@ -57,9 +78,7 @@ const ConfirmDonation = () => {
                   {file.success ? (
                     <List.Content>
                       Donated {file.n} <b>{file.filename}</b> items{" "}
-                      <i style={{ color: "darkgrey" }}>
-                        {file.testUser ? "(fake test data)" : null}
-                      </i>
+                      <i style={{ color: "darkgrey" }}></i>
                     </List.Content>
                   ) : (
                     <List.Content>
