@@ -20,7 +20,7 @@ import usePersistance from "components/routing/usePersistence";
 // The first item will be the opening page after login
 const items = [
   { label: "Data square", path: "/datasquare", Component: DataSquare },
-  { label: "Browsing History", path: "/browsing", Component: BrowsingHistory },
+  { label: "Browsing", path: "/browsing", Component: BrowsingHistory },
   { label: "Search", path: "/search", Component: SearchHistory },
   { label: "Youtube", path: "/youtube", Component: YoutubeHistory },
   { label: "Remove", path: "/remove", Component: RemoveData },

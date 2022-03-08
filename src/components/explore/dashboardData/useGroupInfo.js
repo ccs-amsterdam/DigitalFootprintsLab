@@ -50,7 +50,7 @@ export const updateGroupInfo = async (groups, type) => {
   for (let group of groupsToFetch) cache[group] = {};
 
   let data = {};
-  if (type === "domain") data = await fetchDomainData(groupsToFetch);
+  if (type === "domain") data = await fetchDomainData(groupsToFetch, 5000); //
 
   // Store results and add to cache
   db.addGroupInfo(data);
@@ -66,7 +66,7 @@ export const updateGroupInfo = async (groups, type) => {
   return cache;
 };
 
-const fetchDomainData = async (groupsToFetch) => {
+const fetchDomainData = async (groupsToFetch, timeout) => {
   // try fetching data from amcat. If failed, return empty data with .retry = true to trigger
   // retry on next call
   try {
@@ -77,7 +77,8 @@ const fetchDomainData = async (groupsToFetch) => {
     };
 
     // Make request
-    const response = await fetch("https://dd.amcat.nl", {
+    const response = await fetchWithTimeout("https://dd.amcat.nl", {
+      timeout, // if backend slow, use fallback
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -94,6 +95,20 @@ const fetchDomainData = async (groupsToFetch) => {
     return empty;
   }
 };
+
+async function fetchWithTimeout(resource, options = {}) {
+  // https://dmitripavlutin.com/timeout-fetch-request/
+  const { timeout = 8000 } = options;
+
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+  const response = await fetch(resource, {
+    ...options,
+    signal: controller.signal,
+  });
+  clearTimeout(id);
+  return response;
+}
 
 const fallbackDomainInfo = (domain, info) => {
   info.url = info.url || domain;

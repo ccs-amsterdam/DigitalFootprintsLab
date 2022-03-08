@@ -46,8 +46,7 @@ const postBody = async (filename, submission_id, n_deleted, entries, setStatus, 
     body: JSON.stringify([body]),
   };
   try {
-    const response = await fetch("https://digitale-voetsporen.nl/youtube/upload", requestOptions);
-    console.log(response);
+    await fetch("https://digitale-voetsporen.nl/youtube/upload", requestOptions);
     setStatus((state) => [...state, { filename, success: true, n }]);
   } catch (e) {
     console.log(e);

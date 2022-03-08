@@ -53,7 +53,6 @@ const DataTable = ({ dashData, columns, selection }) => {
 
   const onBottomVisible = async () => {
     if (selectionN === data.length) return;
-    console.log("go");
     setData(dashData.listData(data.length + PAGESIZE, selection));
   };
 
@@ -62,6 +61,7 @@ const DataTable = ({ dashData, columns, selection }) => {
   };
 
   if (!dashData) return null;
+  if (!selectionN) return null;
 
   return (
     <Container

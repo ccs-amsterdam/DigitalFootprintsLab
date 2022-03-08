@@ -44,6 +44,17 @@ export default createClassFromSpec({
           },
         ],
       },
+      {
+        name: "cursor",
+        value: "default",
+        on: [
+          {
+            events: "text:mouseover",
+            update: "'pointer'",
+          },
+          { events: "text:mouseout", update: "'default'" },
+        ],
+      },
     ],
 
     marks: [

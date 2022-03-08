@@ -83,6 +83,21 @@ export default createClassFromSpec({
           },
         ],
       },
+      {
+        name: "cursor",
+        value: "default",
+        on: [
+          {
+            events: "path:mouseover",
+            update: "'pointer'",
+          },
+          {
+            events: "image:mouseover",
+            update: "'pointer'",
+          },
+          { events: "path:mouseout", update: "'default'" },
+        ],
+      },
     ],
     scales: [
       {

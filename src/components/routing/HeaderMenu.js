@@ -5,8 +5,8 @@ import { Link, useLocation } from "react-router-dom";
 const HeaderMenu = ({ items, children }) => {
   // This header menu is super sneaky.
   // It's actually not meant to be seen.
-  // But it's nice to be able to turn it on (set visible to true) when developing
-  // (and it now handles the routing)
+  // But it's nice to be able to turn it on when developing
+  const showHeader = false;
 
   const location = useLocation();
 
@@ -28,7 +28,14 @@ const HeaderMenu = ({ items, children }) => {
 
   return (
     <Sidebar.Pushable>
-      <Sidebar as={Menu} inverted animation="push" visible={false} direction={"top"} size="mini">
+      <Sidebar
+        as={Menu}
+        inverted
+        animation="push"
+        visible={showHeader}
+        direction={"top"}
+        size="mini"
+      >
         {menuItems}
       </Sidebar>
       <Sidebar.Pusher>{children}</Sidebar.Pusher>

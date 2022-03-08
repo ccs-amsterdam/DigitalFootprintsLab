@@ -4,9 +4,11 @@ import { Button, Icon } from "semantic-ui-react";
 
 const BackButton = () => {
   const navigate = useNavigate();
+  // make this a mini menu: home, explore dropdown, donate dropdown
 
   return (
     <Button
+      size="large"
       style={{
         position: "absolute",
         left: "0",
@@ -18,8 +20,8 @@ const BackButton = () => {
       }}
       onClick={() => navigate("/datasquare")}
     >
-      <Icon name="backward" />
-      Go back
+      <Icon name="home" />
+      Go to homepage
     </Button>
   );
 };
