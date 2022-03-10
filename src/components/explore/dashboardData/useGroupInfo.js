@@ -24,8 +24,12 @@ export default function useGroupInfo(dashData, group, type = "domain") {
     if (!groups || groups.length === 0) return;
     setReady(false);
     const fetchData = async () => {
-      const data = await updateGroupInfo(groups, type);
-      setData(data);
+      try {
+        const data = await updateGroupInfo(groups, type);
+        setData(data);
+      } catch (e) {
+        console.log(e);
+      }
       setReady(true);
     };
 
@@ -55,13 +59,6 @@ export const updateGroupInfo = async (groups, type) => {
   // Store results and add to cache
   db.addGroupInfo(data);
   for (let [group, info] of Object.entries(data)) cache[group] = info;
-
-  // for every group input, grep info from (updated) cache, and use fallback
-  for (let group of groups) {
-    let info = cache[group] || {};
-    if (type === "domain") info = fallbackDomainInfo(group, info);
-    cache[group] = info;
-  }
 
   return cache;
 };
@@ -109,13 +106,6 @@ async function fetchWithTimeout(resource, options = {}) {
   clearTimeout(id);
   return response;
 }
-
-const fallbackDomainInfo = (domain, info) => {
-  info.url = info.url || domain;
-  info.category = info.category || info.url.split(".").slice(-1)[0] || "other";
-  info.icon = info.icon || `https://icons.duckduckgo.com/ip3/${info.url}.ico`;
-  return info;
-};
 
 const generateToken = async (key, urls) => {
   var message = [key].concat(urls).join("|");

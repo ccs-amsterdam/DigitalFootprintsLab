@@ -74,8 +74,10 @@ const createTreeData = (dashData, group, selection, groupInfo) => {
 
   for (let group of groups) {
     root.size += group.count;
-    const category = groupInfo[group.name]?.category;
-    const icon = groupInfo[group.name]?.icon;
+    const category =
+      groupInfo[group.name]?.category || group.name.split(".").slice(-1)[0] || "other";
+    const icon =
+      groupInfo[group.name]?.icon || `https://icons.duckduckgo.com/ip3/${group.name}.ico`;
 
     if (!categories[category])
       categories[category] = {
