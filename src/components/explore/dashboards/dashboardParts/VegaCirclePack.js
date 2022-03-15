@@ -1,14 +1,34 @@
-import { createClassFromSpec } from "react-vega";
+import React from "react";
+import { Vega } from "react-vega";
+import useResponsiveSize from "./useResponsiveSize";
 
-const MAXNODES = 500;
-const WITHIMAGE = 30;
+const VegaCirclePack = ({ data, signalListeners }) => {
+  const [size, box] = useResponsiveSize();
 
-export default createClassFromSpec({
-  spec: {
+  const spec = getSpec(500, size.width, 500, 30);
+  return (
+    <div ref={box} style={{ height: "100%", width: "100%", maxWidth: "100vw" }}>
+      <Vega
+        data={data}
+        spec={spec}
+        signalListeners={signalListeners}
+        renderer={"svg"}
+        actions={false}
+      />
+      ;
+    </div>
+  );
+};
+
+export default VegaCirclePack;
+
+const getSpec = (height, width, maxnodes, withimage) => {
+  const stretch = width / height;
+
+  return {
     $schema: "https://vega.github.io/schema/vega/v5.json",
-    width: 1000,
-    height: 500,
-    padding: 20,
+    width: width,
+    height: height,
     autosize: "none",
     data: [
       {
@@ -24,7 +44,7 @@ export default createClassFromSpec({
             groupby: ["type"],
             ops: ["count"],
           }, // note that tree (input data) needs to be sorted from most to least frequent group
-          { type: "filter", expr: `datum.type != 'group' || datum.count < ${MAXNODES}` },
+          { type: "filter", expr: `datum.type != 'group' || datum.count < ${maxnodes}` },
           { type: "stratify", key: "id", parentKey: "parent" },
           {
             type: "formula",
@@ -38,13 +58,13 @@ export default createClassFromSpec({
           {
             type: "pack",
             field: "scaledsize",
-            padding: 4,
+            padding: 2,
             as: ["x", "y", "r"],
-            size: [{ signal: "width" }, { signal: "height*2" }],
+            size: [{ signal: "width" }, { signal: `height*${stretch}` }],
           },
-          { type: "formula", as: "y", expr: "datum.y / 2" },
+          { type: "formula", as: "y", expr: `datum.y / ${stretch}` },
           { type: "formula", as: "width", expr: "datum.r" },
-          { type: "formula", as: "height", expr: "datum.r / 2" },
+          { type: "formula", as: "height", expr: `datum.r / ${stretch}` },
           { type: "filter", expr: "datum.type != 'root'" },
         ],
       },
@@ -52,7 +72,7 @@ export default createClassFromSpec({
         name: "with_image",
         source: "tree",
         transform: [
-          { type: "filter", expr: `datum.type === 'group' && datum.count < ${WITHIMAGE}` },
+          { type: "filter", expr: `datum.type === 'group' && datum.count < ${withimage}` },
         ],
       },
     ],
@@ -120,15 +140,15 @@ export default createClassFromSpec({
               {
                 // now not used, but maybe use alternative shape for groups (set test to datum.type === 'category')
                 value: `M-1 -0.2 
-                        A0.8 0.8 0 0 1 -0.5 -0.7 
-                        L0.5 -0.7 
-                        A0.8 0.8 0 0 1 1 -0.2
-                        L1 0.2 
-                        A0.8 0.8 0 0 1 0.5 0.7
-                        L-0.5 0.7
-                        A0.8 0.8 0 0 1 -1 0.2
-                        z
-                        `,
+                    A0.8 0.8 0 0 1 -0.5 -0.7 
+                    L0.5 -0.7 
+                    A0.8 0.8 0 0 1 1 -0.2
+                    L1 0.2 
+                    A0.8 0.8 0 0 1 0.5 0.7
+                    L-0.5 0.7
+                    A0.8 0.8 0 0 1 -1 0.2
+                    z
+                    `,
               },
             ], // ellipse shape
           },
@@ -185,14 +205,14 @@ export default createClassFromSpec({
             text: {
               signal:
                 //`(datum.type === 'category' && (selectedCategory !== datum.category )) || (datum.type === 'group' && (datum.count > ${WITHIMAGE} || !datum.icon)) ? datum.label : null`,
-                `(datum.type === 'group' && (datum.count > ${WITHIMAGE} || !datum.icon)) ? datum.label : null`,
+                `(datum.type === 'group' && (datum.count > ${withimage} || !datum.icon)) ? datum.label : null`,
             },
             xc: { field: "x" },
             yc: { field: "y" },
             fontSize: {
               signal: "max(10,(datum.width/10)*(10/length(datum.label || '')))",
             },
-            ellipsis: { value: "-" },
+            ellipsis: { value: ".." },
             align: { value: "center" },
             limit: { signal: "datum.width*1.8" },
             baseline: { value: "middle" },
@@ -204,5 +224,5 @@ export default createClassFromSpec({
         },
       },
     ],
-  },
-});
+  };
+};

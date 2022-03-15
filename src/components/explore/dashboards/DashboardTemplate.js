@@ -71,7 +71,7 @@ const DashboardTemplate = ({ dataName, searchOn, columns, VisComponent, calcStat
               <Statistics statistics={statistics} />
             </Container>
           </Grid.Column>
-          <Grid.Column width={12}>
+          <Grid.Column verticalAlign="middle" width={12} style={{ height: "100%", width: "100%" }}>
             <VisComponent
               dashData={dashData}
               inSelection={querySelection}

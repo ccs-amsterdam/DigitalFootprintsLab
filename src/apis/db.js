@@ -155,6 +155,16 @@ class FootprintDB {
     return {};
   }
 
+  async setDataValidation(validation, name) {
+    await this.idb.data.update(name, { validation: JSON.stringify(validation) });
+  }
+
+  async getDataValidation(name) {
+    let data = await this.idb.data.get({ name });
+    if (data?.validation) return JSON.parse(data.validation);
+    return {};
+  }
+
   /////// DATA STATUS
 
   async getDataStatus(name) {

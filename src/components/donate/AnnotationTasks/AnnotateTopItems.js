@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import db from "apis/db";
 import { Button, Grid, Header, Popup, List, Dropdown } from "semantic-ui-react";
 
+import ignoreIds from "data/youtube_ignore_ids.json";
+
 // For now we'll just make this a fixed task
 const top = 10;
 const dataName = "Youtube";
@@ -19,6 +21,10 @@ const question = {
     "Strongly Agree",
   ],
 };
+const ignoreIdsMap = ignoreIds.ids.reduce((obj, id) => {
+  obj[id] = true;
+  return obj;
+}, {});
 
 const AnnotateTopItems = ({ setDone }) => {
   const [data, setData] = useState(null);
@@ -187,13 +193,22 @@ const prepareData = async (top, dataName, field, detail, setData, setDone, setSt
     return;
   }
 
+  const ignored_channels = {};
   let items = data.data.reduce((items, item) => {
+    const id = item.channel_url?.split("/channel/").slice(-1)[0];
+    if (ignoreIdsMap[id]) {
+      if (!ignored_channels[item.channel]) ignored_channels[item.channel] = 0;
+      ignored_channels[item.channel]++;
+      return items;
+    }
     if (!item[field] || item[field] === "undefined") return items;
     if (!items[item[field]]) items[item[field]] = { count: 0, details: [] };
     items[item[field]].count++;
     items[item[field]].details.push(item[detail]);
     return items;
   }, {});
+
+  console.log("ignored channels", ignored_channels);
 
   items = Object.keys(items).map((name) => ({ name, ...items[name] }));
   items.sort((a, b) => b.count - a.count); // sort from high to low value

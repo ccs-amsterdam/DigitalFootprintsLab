@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import WordcloudSpec from "./WordcloudSpec";
+import React, { useEffect, useState, useRef } from "react";
+import VegaWordcloud from "./VegaWordcloud";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import { Dimmer, Loader } from "semantic-ui-react";
 
@@ -8,9 +8,10 @@ import { Dimmer, Loader } from "semantic-ui-react";
  * Can extend to other applications (like youtube channels), but will need to add alternative fallback
  * for getting icons and categories
  */
-const Wordcloud = ({ dashData, group, inSelection, setOutSelection }) => {
+const Wordcloud = ({ dashData, group, inSelection, setOutSelection, colors, unclickable }) => {
   const [data, setData] = useState({ table: [] }); // input for vega visualization
   const [deleteIds, setDeleteIds] = useState([]);
+  const box = useRef();
 
   const [loading, setLoading] = useState(false);
 
@@ -41,15 +42,19 @@ const Wordcloud = ({ dashData, group, inSelection, setOutSelection }) => {
   };
 
   return (
-    <div style={{ position: "relative" }}>
+    <div
+      ref={box}
+      style={{ position: "relative", width: "100%", height: "100%", paddingTop: "20px" }}
+    >
       <Dimmer active={loading}>
         <Loader />
       </Dimmer>
-      <WordcloudSpec
+
+      <VegaWordcloud
         data={data}
         signalListeners={signalListeners}
-        actions={false}
-        renderer={"svg"}
+        colors={colors}
+        unclickable={unclickable}
       />
       <ConfirmDeleteModal dashData={dashData} deleteIds={deleteIds} setDeleteIds={setDeleteIds} />
     </div>

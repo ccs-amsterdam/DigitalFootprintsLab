@@ -17,7 +17,7 @@ const BeforeYouDonate = ({ done, setDone, setStep }) => {
         <Grid.Row>
           <Grid.Column width={16}>
             <Header as="h1" style={{ textAlign: "center" }}>
-              Before submitting your data, we have one final request
+              Please answer the following questions
             </Header>
           </Grid.Column>
         </Grid.Row>

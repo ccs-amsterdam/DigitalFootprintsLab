@@ -1,0 +1,6 @@
+This is just a placeholder folder
+
+Eventually, it would be good to move all stuff related to a particlar data type to a separate file.
+For example, the Browsing data would be specified here, and it would include the stuff not in BrowsingHistyory.just
+
+This way, adding different data types will be much easier and clear

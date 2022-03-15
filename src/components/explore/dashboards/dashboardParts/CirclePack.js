@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import CirclePackSpec from "./CirclePackSpec";
+import VegaCirclePack from "./VegaCirclePack";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import { Dimmer, Loader } from "semantic-ui-react";
 import useGroupInfo from "components/explore/dashboardData/useGroupInfo";
@@ -50,12 +50,7 @@ const CirclePack = ({ dashData, group, grouptype, inSelection, setOutSelection }
       <Dimmer active={loading || !groupInfoReady}>
         <Loader />
       </Dimmer>
-      <CirclePackSpec
-        data={data}
-        signalListeners={signalListeners}
-        actions={false}
-        renderer={"svg"}
-      />
+      <VegaCirclePack data={data} signalListeners={signalListeners} />
       <ConfirmDeleteModal dashData={dashData} deleteIds={deleteIds} setDeleteIds={setDeleteIds} />
     </div>
   );
