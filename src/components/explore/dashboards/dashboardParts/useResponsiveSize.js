@@ -8,7 +8,7 @@ const useResponsiveSize = () => {
   const [size, setSize] = useState({ height: 500, width: 1000 });
   const [delayedSize, setDelayedSize] = useState(null);
   const box = useRef();
-  console.log(size);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       if (delayedSize) setSize(delayedSize);

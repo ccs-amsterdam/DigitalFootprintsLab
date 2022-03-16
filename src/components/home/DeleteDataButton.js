@@ -1,9 +1,12 @@
 import React from "react";
 import { Icon, Button, Popup } from "semantic-ui-react";
+import { useTranslation } from "react-i18next";
 
 import db from "apis/db";
 
 const DeleteDataButton = () => {
+  const { t } = useTranslation();
+
   const button = (
     <Button
       style={{
@@ -21,13 +24,10 @@ const DeleteDataButton = () => {
 
   return (
     <Popup on="click" trigger={button}>
-      <Popup.Header>Delete data from browser</Popup.Header>
+      <Popup.Header>{t("home.deleteButton.header")}</Popup.Header>
       <Popup.Content>
-        <p>Do you want to delete all the gathered data from the browser?</p>
-        <p>
-          Note that any data you downloaded will still be on your computer, so you might want to
-          delete that as well.
-        </p>
+        <p>{t("home.deleteButton.content1")}</p>
+        <p>{t("home.deleteButton.content2")}</p>
       </Popup.Content>
       <br />
       <Button

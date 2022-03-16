@@ -12,8 +12,8 @@ const VegaCirclePack = ({ data, signalListeners }) => {
         data={data}
         spec={spec}
         signalListeners={signalListeners}
-        renderer={"svg"}
         actions={false}
+        renderer={"svg"}
       />
       ;
     </div>
@@ -154,7 +154,7 @@ const getSpec = (height, width, maxnodes, withimage) => {
           },
           update: {
             tooltip: {
-              signal: "datum.type === 'category' ? null : datum.label",
+              signal: "datum.type === 'category' ? null : datum.label + ' (' + datum.visits + ')'",
             },
             xc: { field: "x" },
             yc: { field: "y" },
@@ -183,7 +183,10 @@ const getSpec = (height, width, maxnodes, withimage) => {
         from: { data: "with_image" },
         encode: {
           //enter: { image: { field: "image" }, tooltip: { signal: "datum.label" } },
-          enter: { url: { field: "icon" }, tooltip: { signal: "datum.label" } },
+          enter: {
+            url: { field: "icon" },
+            tooltip: { signal: "datum.label + ' (' + datum.visits + ')'" },
+          },
 
           update: {
             xc: { field: "x" },
@@ -199,7 +202,7 @@ const getSpec = (height, width, maxnodes, withimage) => {
         from: { data: "tree" },
         encode: {
           enter: {
-            tooltip: { field: "label" },
+            tooltip: { signal: "datum.label + ' (' + datum.visits + ')'" },
           },
           update: {
             text: {

@@ -25,7 +25,7 @@ const propTypes = {
  * @param {*} columns array of columns to show
  * @param {*} selection array of ids in case of selections. Cannot be used if dashData.is_subset
  */
-const DataTable = ({ dashData, columns, selection }) => {
+const DataTable = ({ dashData, columns, selection, log }) => {
   const [n, setN] = useState(0);
   const [data, setData] = useState([]);
   const [selectionN, setSelectionN] = useState(0);
@@ -57,6 +57,7 @@ const DataTable = ({ dashData, columns, selection }) => {
   };
 
   const processDelete = async (ids) => {
+    if (log) log(`Deleted ${ids.length} ${dashData.name} items`);
     await dashData.rmID(ids);
   };
 

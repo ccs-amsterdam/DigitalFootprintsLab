@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Grid, Header, Segment } from "semantic-ui-react";
 import AnnotateTopItems from "./AnnotationTasks/AnnotateTopItems";
 
-const BeforeYouDonate = ({ done, setDone, setStep }) => {
+const BeforeYouDonate = ({ setStep }) => {
+  const [done, setDone] = useState(false);
+
   return (
     <Segment
       style={{
@@ -33,7 +35,7 @@ const BeforeYouDonate = ({ done, setDone, setStep }) => {
               disabled={!done}
               fluid
               primary
-              onClick={() => setStep(2)}
+              onClick={() => setStep(3)}
               style={{ maxHeight: "3em" }}
             >
               {done ? `Continue with donation` : `Please answer all questions to continue`}

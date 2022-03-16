@@ -17,9 +17,11 @@ import DashboardData from "components/explore/dashboardData/DashboardData";
 
 import db from "apis/db";
 import DataTable from "components/explore/dashboards/dashboardParts/DataTable";
+import useLogger from "util/useLogger";
 
 const RemoveData = () => {
   const [data, setData] = useState({});
+  const log = useLogger("Remove data");
 
   return (
     <ColoredBackgroundGrid background={background} color={"#000000b0"}>
@@ -32,7 +34,7 @@ const RemoveData = () => {
         <Grid.Column width={10} style={{ height: "100%", marginTop: "30px" }}>
           <Grid>
             {Object.keys(data).map((key) => {
-              return <ResultsTable key={key} title={key} dashData={data[key]} />;
+              return <ResultsTable key={key} title={key} dashData={data[key]} log={log} />;
             })}
           </Grid>
         </Grid.Column>
@@ -117,7 +119,7 @@ const KeywordInput = ({ setData }) => {
   );
 };
 
-const ResultsTable = ({ title, dashData }) => {
+const ResultsTable = ({ title, dashData, log }) => {
   const [dashDataCopy, setDashDataCopy] = useState(null);
 
   useEffect(() => {
@@ -155,7 +157,7 @@ const ResultsTable = ({ title, dashData }) => {
       >
         {title}
       </Header>
-      <DataTable dashData={dashDataCopy} />
+      <DataTable dashData={dashDataCopy} log={log} />
     </Grid.Row>
   );
 };

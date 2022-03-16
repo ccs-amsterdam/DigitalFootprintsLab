@@ -12,12 +12,14 @@ import { googleTakeoutInstruction } from "./googleTakeoutInstruction.js";
 
 import { DropZone, miseEnPlace } from "data-donation-importers";
 import cookbook from "./googleTakeoutCookbook";
+import useLogger from "util/useLogger";
 
 /**
  * The modal that opens when the Google_Takeout Gather card is clicked.
  */
 const GatherGoogleTakeout = ({ children, setLoading }) => {
   const dispatch = useDispatch();
+  const log = useLogger("Gather GoogleTakeout");
   const [open, setOpen] = useState(false);
   const [files, setFiles] = useState([]);
 
@@ -25,8 +27,8 @@ const GatherGoogleTakeout = ({ children, setLoading }) => {
     if (files.length === 0) return;
     setLoading("loading");
     setOpen(false);
-    importGT(files, dispatch).finally(() => setLoading("idle"));
-  }, [files, setLoading, dispatch]);
+    importGT(files, log, dispatch).finally(() => setLoading("idle"));
+  }, [files, setLoading, log, dispatch]);
 
   return (
     <Modal
@@ -63,9 +65,10 @@ const GatherGoogleTakeout = ({ children, setLoading }) => {
   );
 };
 
-const importGT = async (files, dispatch) => {
+const importGT = async (files, log, dispatch) => {
   const meps = miseEnPlace(cookbook, files);
   const status = { Search: "failed", Browsing: "failed", Youtube: "failed" };
+  log("Import start");
 
   for (let name of Object.keys(status))
     dispatch(updateDataStatus(name, "Google_Takeout", "loading"));
@@ -90,8 +93,10 @@ const importGT = async (files, dispatch) => {
       status.Youtube = "finished";
     }
   }
-  for (let name of Object.keys(status))
+  for (let name of Object.keys(status)) {
+    log(`Import ${name} ${status[name]}`);
     dispatch(updateDataStatus(name, "Google_Takeout", status[name]));
+  }
 };
 
 const prepareBrowsingHistory = (data) => {

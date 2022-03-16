@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Button, Input, Icon } from "semantic-ui-react";
+import { Button, Input, Icon, Loader } from "semantic-ui-react";
 
 const propTypes = {
   /** The name of the table */
@@ -14,7 +14,7 @@ const propTypes = {
 /**
  * Create an input for full text search
  */
-const QueryInput = ({ dashData, searchOn, setSelection }) => {
+const QueryInput = ({ dashData, searchOn, setSelection, iconColor = "white" }) => {
   const [search, setSearch] = useState("");
   const [searching, setSearching] = useState(false);
 
@@ -34,11 +34,11 @@ const QueryInput = ({ dashData, searchOn, setSelection }) => {
   return (
     <div style={{ display: "flex", margin: "0" }}>
       <div className="dimmable" style={{ width: "50px" }}>
+        <Loader active={searching} />
         <Icon
           size="big"
-          name={searching ? "compass" : "search"}
-          loading={searching}
-          style={{ paddingTop: "9px", paddingLeft: "13fpx", color: "white" }}
+          name={searching ? null : "search"}
+          style={{ paddingTop: "9px", paddingLeft: "10px", color: iconColor }}
         />
       </div>
       <div style={{ flex: "1 1 auto" }}>
@@ -51,7 +51,7 @@ const QueryInput = ({ dashData, searchOn, setSelection }) => {
               icon="window close"
               onClick={() => setSearch("")}
               size="huge"
-              style={{ color: "white", height: "1em", background: "#ffffff00" }}
+              style={{ color: iconColor, height: "1em", background: "#ffffff00" }}
             />
           }
           onChange={(e, d) => setSearch(d.value)}

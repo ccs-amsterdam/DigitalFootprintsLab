@@ -10,6 +10,7 @@ import intersect from "util/intersect";
 import useDashboardData from "../dashboardData/useDashboardData";
 import PropTypes from "prop-types";
 import BackButton from "components/routing/BackButton";
+import useLogger from "util/useLogger";
 
 const propTypes = {
   /** The name of the type of data to explore. */
@@ -35,6 +36,7 @@ const DashboardTemplate = ({ dataName, searchOn, columns, VisComponent, calcStat
   const [altSelection, setAltSelection] = useState(null);
   const [querySelection, setQuerySelection] = useState(null);
   const [selection, setSelection] = useState(null);
+  const log = useLogger("Explore " + dataName);
 
   useEffect(() => {
     setSelection(intersect([querySelection, altSelection]));
@@ -80,7 +82,7 @@ const DashboardTemplate = ({ dataName, searchOn, columns, VisComponent, calcStat
           </Grid.Column>
         </Grid.Row>
         <Grid.Row style={{ minHeight: "500px", maxHeight: "calc(100vh - 500px)", width: "100%" }}>
-          <DataTable dashData={dashData} columns={columns} selection={selection} />
+          <DataTable dashData={dashData} columns={columns} selection={selection} log={log} />
         </Grid.Row>
       </Grid>
     </ColoredBackgroundGrid>

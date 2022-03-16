@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Card, Grid, Header, Icon } from "semantic-ui-react";
+import { useTranslation } from "react-i18next";
 import background from "images/background.jpeg";
 import db from "apis/db";
 
@@ -9,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { setDataStatus } from "actions";
 import DonateCardColumn from "./DonateCardColumn";
 import DeleteDataButton from "./DeleteDataButton";
+import useLogger from "util/useLogger";
 
 const headerStyle = {
   color: "white",
@@ -28,6 +30,8 @@ const cardGroupStyle = {
 };
 
 const DataSquare = () => {
+  useLogger("Home");
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -56,9 +60,9 @@ const DataSquare = () => {
         <Grid.Row>
           <Grid.Column textAlign="center" width={5} style={columnStyle}>
             <ColumnHeader
-              title="Gather"
+              title={t("home.gather.title")}
               icon="cloud download"
-              description="Click a card to gather your data"
+              description={t("home.gather.description")}
             />
 
             <Card.Group style={cardGroupStyle}>
@@ -67,9 +71,9 @@ const DataSquare = () => {
           </Grid.Column>
           <Grid.Column textAlign="center" width={5} style={columnStyle}>
             <ColumnHeader
-              title="Explore"
+              title={t("home.explore.title")}
               icon="search"
-              description="This step is optional, but aren't you curious?"
+              description={t("home.explore.description")}
             />
 
             <Card.Group style={cardGroupStyle}>
@@ -78,9 +82,9 @@ const DataSquare = () => {
           </Grid.Column>
           <Grid.Column textAlign="center" width={5} style={columnStyle}>
             <ColumnHeader
-              title="Donate"
+              title={t("home.donate.title")}
               icon="student"
-              description="Support academic research by sharing your data"
+              description={t("home.donate.description")}
             />
 
             <Card.Group style={cardGroupStyle}>

@@ -68,7 +68,6 @@ const ConfirmDonation = () => {
           </Button>
           <List>
             {status.map((file) => {
-              console.log(file);
               return (
                 <List.Item key={file.filename} style={{ marginLeft: "10%" }}>
                   <List.Icon

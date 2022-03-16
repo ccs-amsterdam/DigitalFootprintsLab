@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import ColoredBackgroundGrid from "components/explore/dashboards/dashboardParts/ColoredBackgroundGrid";
 import { Container, Grid, Icon, Step } from "semantic-ui-react";
 import background from "images/background.jpeg";
@@ -7,21 +7,25 @@ import DonationInformation from "./DonationInformation";
 import BeforeYouDonate from "./BeforeYouDonate";
 import ConfirmDonation from "./ConfirmDonation";
 import ValidateData from "./ValidateData";
+import useLogger from "util/useLogger";
 
 const DonationScreen = () => {
   const [step, setStep] = useState(0);
-  const [doneValidation, setDoneValidation] = useState(false);
-  const [doneRequest, setDoneRequest] = useState(false);
+  const log = useLogger("Donationscreen", "open");
 
   const renderStep = () => {
     switch (step) {
       case 0:
+        log("consent information page");
         return <DonationInformation setStep={setStep} />;
       case 1:
-        return <ValidateData done={doneValidation} setDone={setDoneValidation} setStep={setStep} />;
+        log("validation page");
+        return <ValidateData setStep={setStep} />;
       case 2:
-        return <BeforeYouDonate done={doneRequest} setDone={setDoneRequest} setStep={setStep} />;
+        log("annotation page");
+        return <BeforeYouDonate setStep={setStep} />;
       case 3:
+        log("confirm page");
         return <ConfirmDonation />;
       default:
         return null;
@@ -43,12 +47,7 @@ const DonationScreen = () => {
               flexDirection: "column",
             }}
           >
-            <DonationSteps
-              step={step}
-              setStep={setStep}
-              doneValidation={doneValidation}
-              doneRequest={doneRequest}
-            />
+            <DonationSteps step={step} setStep={setStep} />
             <div style={{ marginTop: "30px", height: "100%", width: "100%" }}>{renderStep()}</div>
           </Container>
         </Grid.Column>
@@ -57,13 +56,12 @@ const DonationScreen = () => {
   );
 };
 
-const DonationSteps = ({ step, setStep, doneRequest }) => {
+const DonationSteps = ({ step, setStep }) => {
   const [maxStep, setMaxStep] = useState(0);
-  //const maxStep = useRef(0);
 
   useEffect(() => {
     if (step > maxStep) setMaxStep(step);
-  }, [step]);
+  }, [step, maxStep]);
 
   const onClick = (i) => {
     if (i > maxStep) return;
@@ -108,7 +106,7 @@ const DonationSteps = ({ step, setStep, doneRequest }) => {
         <Step
           active={step === 3}
           completed={step > 3}
-          disabled={!doneRequest}
+          disabled={maxStep < 3}
           onClick={() => onClick(3)}
         >
           <Icon name="student" />

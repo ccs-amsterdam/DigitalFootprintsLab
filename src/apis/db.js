@@ -34,6 +34,7 @@ class FootprintDB {
 
     this.idb.version(2).stores({
       meta: "welcome", // Keep track of whether user logged in before, and remember userId (if passed as URL parameter)
+      log: "++id", // unindexed: log. Which should just be an object with whatever loggin details seem relevant
       dataStatus: "&name, source, status, date",
       data: "&name, deleted", // unindexed fields: "data". "data" is an array with all the data. "deleted" requires some explanation.
       // data items can be deleted by users, but for speed we don't overwrite the data immediately,
@@ -71,6 +72,17 @@ class FootprintDB {
       // can throw error if browser can't handle IDB
       return { welcome: false, persistent: false, userId: null };
     }
+  }
+
+  /////// LOG
+  async log(where, what) {
+    const date = new Date();
+    console.log({ where, what, date: date.toISOString() });
+    await this.idb.log.add({ log: { where, what, date: date.toISOString() } });
+  }
+  async getLog() {
+    let data = await this.idb.log.toArray();
+    return data;
   }
 
   /////// DATA

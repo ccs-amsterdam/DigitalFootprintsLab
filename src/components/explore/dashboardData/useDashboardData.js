@@ -13,6 +13,10 @@ export default function useDashboardData(name, fields) {
   const [data, setData] = useState(null);
 
   useEffect(() => {
+    if (!name) {
+      setData(null);
+      return;
+    }
     createDashData(name, fields, setData);
   }, [name, fields]);
 

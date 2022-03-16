@@ -1,10 +1,11 @@
 import db from "apis/db";
 import useDashboardData from "components/explore/dashboardData/useDashboardData";
+import QueryInput from "components/explore/dashboards/dashboardParts/QueryInput";
 import Wordcloud from "components/explore/dashboards/dashboardParts/Wordcloud";
 import React, { useEffect, useState } from "react";
-import { Popup, Icon, Button, Grid, Header, Segment, Step, List } from "semantic-ui-react";
+import { Icon, Button, Grid, Header, Segment, Step, List } from "semantic-ui-react";
 
-const ValidateData = ({ done, setDone, setStep }) => {
+const ValidateData = ({ setStep }) => {
   return (
     <Segment
       style={{
@@ -15,40 +16,10 @@ const ValidateData = ({ done, setDone, setStep }) => {
         overflow: "auto",
       }}
     >
-      <Grid verticalAlign="middle" centered stackable style={{ height: "100%" }}>
+      <Grid centered stackable style={{ height: "100%" }}>
         <Grid.Row>
           <Grid.Column width={16}>
-            <Header as="h1" style={{ textAlign: "center" }}>
-              About this data
-            </Header>
-          </Grid.Column>
-        </Grid.Row>
-
-        <Grid.Row>
-          <Grid.Column width={10}>
-            <p>
-              To use your data for research, it's important to know how accurate it is. We ask you
-              to help us by answering a few questions about your data
-            </p>
-            <br />
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column width={16}>
-            <ValidateDataParts />
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column width={8}>
-            <Button
-              disabled={!done}
-              fluid
-              primary
-              onClick={() => setStep(2)}
-              style={{ maxHeight: "3em" }}
-            >
-              {done ? `Continue with donation` : `Please answer all questions to continue`}
-            </Button>
+            <ValidateDataParts setOuterStep={setStep} />
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -56,7 +27,7 @@ const ValidateData = ({ done, setDone, setStep }) => {
   );
 };
 
-const ValidateDataParts = () => {
+const ValidateDataParts = ({ setOuterStep }) => {
   const [dataNames, setDataNames] = useState([]);
   const [step, setStep] = useState(0);
   const [maxStep, setMaxStep] = useState(0);
@@ -74,7 +45,10 @@ const ValidateDataParts = () => {
 
   useEffect(() => {
     if (step > maxStep) setMaxStep(step);
-  }, [step, maxStep]);
+    if (dataNames.length && step >= dataNames.length) {
+      setOuterStep((outerstep) => outerstep + 1);
+    }
+  }, [step, maxStep, dataNames, setOuterStep]);
 
   return (
     <div>
@@ -90,29 +64,39 @@ const ValidateDataParts = () => {
           );
         })}
       </Step.Group>
-      <ValidateDataPart dataName={dataNames[step]} />
+      <Header textAlign="center" as="h4">
+        To use your data for research, it's important to know how accurate it is. Please help us by
+        answering a few questions about your data
+      </Header>
+      <ValidateDataPart dataName={dataNames[step]} setStep={setStep} />
     </div>
   );
 };
 
 const colors = ["#564615", "#1f6175", "#421f7f"];
-const validationQuestions = [
-  "This data appears accurate. The top items shown here are what I expected to find",
-  "This data appears complete. There are few items missing that I expected to find",
-  "This data is mostly mine. Not a friend or family member using my device",
-];
-const answerLabels = [
-  "Strongly Disagree",
-  "Disagree",
-  "Somewhat Disagree",
-  "Neither Agree nor Disagree",
-  "Somewhat Agree",
-  "Agree",
-  "Strongly Agree",
+const questions = [
+  {
+    question: "Do you feel that you recognize this digital footprint as your own?",
+    answers: ["not at all", "very little", "somewhat", "quite a bit", "a great deal"],
+  },
+  {
+    question: "Are the largest items indeed the items you often visit?",
+    answers: ["not at all", "very little", "somewhat", "quite a bit", "a great deal"],
+  },
+  {
+    question: "Are there any items that you know you visited often, but are not shown here?",
+    answers: ["none missing", "some missing", "quite a lot missing", "most missing"],
+  },
+  {
+    question: "Is this data only yours, or does someone else use your device or account?",
+    answers: ["Only me", "Mostly me", "Mostly someone else"],
+  },
 ];
 
-const ValidateDataPart = React.memo(({ dataName }) => {
+const ValidateDataPart = React.memo(({ dataName, setStep }) => {
   const [validation, setValidation] = useState({});
+  const [querySelection, setQuerySelection] = useState(null);
+  const [allAnswered, setAllAnswered] = useState(false);
 
   let field;
   if (dataName === "Browsing") field = "domain";
@@ -121,56 +105,87 @@ const ValidateDataPart = React.memo(({ dataName }) => {
   const dashData = useDashboardData(dataName);
 
   useEffect(() => {
+    if (!dataName) {
+      setValidation({});
+      return;
+    }
     db.getDataValidation(dataName)
-      .then((v) => setValidation(v || {}))
+      .then((v) => {
+        const newv = {};
+        for (let q of questions) {
+          newv[q.question] = v?.[q.question];
+        }
+        setValidation(newv);
+      })
       .catch((e) => {
         console.log(e);
         setValidation({});
       });
   }, [dataName]);
 
+  useEffect(() => {
+    let done = true;
+    for (let answer of Object.values(validation)) {
+      if (answer === null || answer == null) done = false;
+    }
+    setAllAnswered(done);
+  }, [validation, setAllAnswered]);
+
   if (!dashData) return null;
   return (
     <Grid style={{ width: "100%" }}>
       <Grid.Row>
-        <Grid.Column textAlign="center">
-          <Header as="h2" style={{ paddingTop: "5px" }}>
-            How strongly do you agree with the following statements about your <i>{dataName}</i>{" "}
-            data?
-          </Header>
-        </Grid.Column>
+        <Grid.Column textAlign="center"></Grid.Column>
       </Grid.Row>
       <Grid.Row>
         <Grid.Column textAlign="center" width={8} style={{ width: "100%", overflow: "auto" }}>
           <Header>
             <i>Top {field}s</i>
           </Header>
+          <QueryInput dashData={dashData} setSelection={setQuerySelection} iconColor="black" />
           <div>
             <Wordcloud
               dashData={dashData}
               group={field}
-              setOutSelection={(d) => console.log(d)}
+              inSelection={querySelection}
               colors={colors}
               unclickable={true}
             />
           </div>
         </Grid.Column>
-        <Grid.Column
-          textAlign="center"
-          width={8}
-          style={{ display: "flex", flexDirection: "column", justifyContent: "space-around" }}
-        >
-          <br />
-          <List>
-            {validationQuestions.map((q) => {
+        <Grid.Column textAlign="center" width={8}>
+          <Header as="h3" style={{ paddingTop: "5px" }}>
+            On the left you see the top items in your <i>{dataName}</i> data. Please answer the
+            following questions to help us understand how accurate this data.
+          </Header>
+          <List
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              height: "100%",
+            }}
+          >
+            <br />
+            {Object.keys(validation).map((q) => {
               return (
                 <ValidationQuestion
                   question={q}
                   validation={validation}
                   setValidation={setValidation}
+                  dataName={dataName}
                 />
               );
             })}
+            <br />
+            <List.Item>
+              <Button
+                fluid
+                primary
+                disabled={!allAnswered}
+                content="CONTINUE"
+                onClick={() => setStep((step) => step + 1)}
+              />
+            </List.Item>
           </List>
         </Grid.Column>
       </Grid.Row>
@@ -178,41 +193,34 @@ const ValidateDataPart = React.memo(({ dataName }) => {
   );
 });
 
-const buttonColors = ["#930b0b", "#933b0b", "#93580b", "#937f0b", "#81930b", "#68930b", "#3b930b"];
-
-const ValidationQuestion = ({ question, validation, setValidation }) => {
-  console.log(validation);
-  console.log(validation[question]);
+const ValidationQuestion = ({ question, validation, setValidation, dataName }) => {
+  const answers = questions.find((q) => q.question === question)?.answers || [];
 
   return (
-    <List.Item>
+    <List.Item key={dataName}>
       <br />
       <Header as="h4">{question}</Header>
-      <Button.Group fluid size="small" style={{ paddingTop: "4px" }}>
-        {answerLabels.map((a, i) => {
+      <Button.Group fluid size="small">
+        {answers.map((a, i) => {
           const selected = validation[question] === a;
           return (
-            <Popup
-              key={a + i}
-              trigger={
-                <Button
-                  key={a}
-                  onClick={() => {
-                    setValidation({ ...validation, [question]: a });
-                  }}
-                  style={{
-                    padding: "4px 10px",
-                    background: buttonColors[i],
-                    color: "white",
-                    border: selected ? "3px solid black" : "3px solid white",
-                  }}
-                >
-                  {i + 1}
-                </Button>
-              }
+            <Button
+              key={a}
+              onClick={() => {
+                const newValidation = { ...validation, [question]: a };
+                db.setDataValidation(newValidation, dataName);
+                setValidation(newValidation);
+              }}
+              style={{
+                padding: "4px 10px",
+                background: selected ? "white" : "#3b3a3a",
+                color: selected ? "#3b3a3a" : "white",
+                borderRadius: "5px",
+                border: selected ? "3px solid black" : "3px solid white",
+              }}
             >
               {a}
-            </Popup>
+            </Button>
           );
         })}
       </Button.Group>

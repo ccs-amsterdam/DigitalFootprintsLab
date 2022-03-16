@@ -76,22 +76,6 @@ const AnnotateTopItems = ({ setDone }) => {
             YouTube is sometimes used as a source of news, please let us know to what extent you
             yourself consider these channels to be informative.
           </p>
-          <p>
-            <b>Do any other news related channels come to mind that are not listed here?</b> If so,
-            please select them in the following search box. (you can also search for the name of a
-            video to find its channel)
-          </p>
-          <Dropdown
-            search
-            fluid
-            selection
-            multiple
-            options={data?.dropdownOptions || []}
-            renderLabel={(item) => ({ content: item.value })}
-            value={dropdownValues}
-            onChange={onDropdownChange}
-          />
-          <br />
         </Grid.Column>
       </Grid.Row>
       <Grid.Row style={{ background: "#737373", color: "white", borderRadius: "5px" }}>
@@ -107,6 +91,7 @@ const AnnotateTopItems = ({ setDone }) => {
           <b>{question.question.toUpperCase()}</b>
         </Grid.Column>
       </Grid.Row>
+
       {Object.keys(data.annotations[field]).map((fieldvalue, i) => {
         return (
           <ItemForm
@@ -119,6 +104,28 @@ const AnnotateTopItems = ({ setDone }) => {
           />
         );
       })}
+
+      <Grid.Row>
+        <Grid.Column width={10}>
+          <br />
+          <p>
+            <b>Do any other news related channels come to mind that are not listed here?</b> If so,
+            please select them in the following search box. Selected channels will be added to the
+            table above.
+          </p>
+          <Dropdown
+            search
+            fluid
+            selection
+            multiple
+            placeholder={"Search for a channel or the name of a video from this channel"}
+            options={data?.dropdownOptions || []}
+            renderLabel={(item) => ({ content: item.value })}
+            value={dropdownValues}
+            onChange={onDropdownChange}
+          />
+        </Grid.Column>
+      </Grid.Row>
     </Grid>
   );
 };

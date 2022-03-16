@@ -3,6 +3,7 @@ import CardTemplate from "./CardTemplate";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { List } from "semantic-ui-react";
+import { Trans, useTranslation } from "react-i18next";
 
 const requestedData = ["Browsing", "Search", "Youtube"];
 
@@ -22,6 +23,7 @@ const DonateCardColumn = () => {
 };
 
 const FilterCard = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const onClick = () => {
@@ -30,8 +32,8 @@ const FilterCard = () => {
 
   return (
     <CardTemplate
-      name={"Remove sensitive data"}
-      subname={"Use keywords to search and remove any data that you prefer not to share"}
+      name={t("home.donate.removeCard.name")}
+      subname={t("home.donate.removeCard.subname")}
       icon={"user secret"}
       onClick={onClick}
     ></CardTemplate>
@@ -39,6 +41,7 @@ const FilterCard = () => {
 };
 
 const DonateCard = ({ requestedData }) => {
+  const { t } = useTranslation();
   const statuses = useSelector((state) => state.dataStatus);
 
   let any = false;
@@ -61,17 +64,10 @@ const DonateCard = ({ requestedData }) => {
 
   const donateStatusSubname = (any, all) => {
     if (all) return null;
-    if (any)
-      return (
-        <p>
-          Some of the data types are not yet (successfully) gathered. You can donate the current
-          data if you are not able to add the rest
-        </p>
-      );
+    if (any) return <p>{t("home.donate.donateCard.status.any")}</p>;
     return (
       <p>
-        Please go to the <b>Gather</b> column for instructions on how to gather your digital
-        footprints
+        <Trans i18Key="home.donate.donateCard.status.none" components={{ b: <b /> }} />
       </p>
     );
   };
@@ -102,7 +98,11 @@ const statusMessage = (gathered, i) => {
       <List.Item key={i}>
         <List.Icon name="check circle outline" color="green" />
         <List.Content>
-          <b>{name}</b> data ready
+          <Trans
+            i18nKey="home.donate.donateCard.status.ready"
+            values={{ name: name }}
+            components={{ b: <b /> }}
+          />
         </List.Content>
       </List.Item>
     );
@@ -111,7 +111,11 @@ const statusMessage = (gathered, i) => {
     <List.Item key={i}>
       <List.Icon name="circle outline" />
       <List.Content>
-        <b>{name}</b>
+        <Trans
+          i18nKey="home.donate.donateCard.status.notReady"
+          values={{ name: name }}
+          components={{ b: <b /> }}
+        />
       </List.Content>
     </List.Item>
   );

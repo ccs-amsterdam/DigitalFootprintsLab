@@ -17,13 +17,13 @@ const Wordcloud = ({ dashData, group, inSelection, setOutSelection, colors, uncl
 
   useEffect(() => {
     setData(createWordcloudData(dashData, group, inSelection));
-    setOutSelection(null);
+    if (setOutSelection) setOutSelection(null);
   }, [dashData, group, inSelection, setOutSelection, setLoading]);
 
   // Vega signal handler
   const onSelectWord = (signal, word) => {
     if (!word) {
-      setOutSelection(null);
+      if (setOutSelection) setOutSelection(null);
     } else {
       filterSelectedDatum(word);
     }
@@ -34,7 +34,7 @@ const Wordcloud = ({ dashData, group, inSelection, setOutSelection, colors, uncl
   // Popup button handler
   const filterSelectedDatum = async (word) => {
     let selection = await dashData.searchValues([word], group);
-    setOutSelection(selection);
+    if (setOutSelection) setOutSelection(selection);
   };
 
   const signalListeners = {

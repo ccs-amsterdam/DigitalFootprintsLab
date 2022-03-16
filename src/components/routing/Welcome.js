@@ -11,7 +11,6 @@ import { useSearchParams } from "react-router-dom";
 /**
  * This component only appears the first time users visit,
  * or if they are away so long that the indexedDB has been cleaned.
- * In time, this page should clearly list the terms and conditions.
  */
 const Welcome = ({ items }) => {
   const navigate = useNavigate();
