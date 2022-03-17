@@ -21,7 +21,7 @@ export default function useGroupInfo(dashData, group, type = "domain") {
   }, [dashData?.data, group]);
 
   useEffect(() => {
-    if (!groups || groups.length === 0) return;
+    if (!groups) return;
     setReady(false);
     const fetchData = async () => {
       try {

@@ -79,10 +79,8 @@ const importGT = async (files, log, dispatch) => {
 
     if (mep.recipe.name === "browsing") {
       const [browsing, search] = prepareBrowsingHistory(result.data);
-      if (browsing.length > 0)
-        await db.addData(browsing, "Browsing", "Google_Takeout", ["url", "date"]);
-      if (search.length > 0)
-        await db.addData(search, "Search", "Google_Takeout", ["query", "date"]);
+      await db.addData(browsing, "Browsing", "Google_Takeout", ["url", "date"]);
+      await db.addData(search, "Search", "Google_Takeout", ["query", "date"]);
       status.Search = "finished";
       status.Browsing = "finished";
     }

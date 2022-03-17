@@ -14,12 +14,10 @@ const CirclePack = ({ dashData, group, grouptype, inSelection, setOutSelection }
   const [deleteIds, setDeleteIds] = useState([]);
 
   const [groupInfo, groupInfoReady] = useGroupInfo(dashData, group, grouptype);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setData(createTreeData(dashData, group, inSelection, groupInfo));
-    //setOutSelection(null);
-  }, [dashData, group, groupInfo, inSelection, setOutSelection, setLoading]);
+  }, [dashData, group, groupInfo, inSelection, setOutSelection]);
 
   // Vega signal handler
   const onSelectDatum = (signal, datum) => {
@@ -47,7 +45,7 @@ const CirclePack = ({ dashData, group, grouptype, inSelection, setOutSelection }
 
   return (
     <div style={{ position: "relative" }}>
-      <Dimmer active={loading || !groupInfoReady}>
+      <Dimmer active={!groupInfoReady}>
         <Loader />
       </Dimmer>
       <VegaCirclePack data={data} signalListeners={signalListeners} />
