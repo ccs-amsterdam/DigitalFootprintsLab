@@ -11,6 +11,7 @@ import { setDataStatus } from "actions";
 import DonateCardColumn from "./DonateCardColumn";
 import DeleteDataButton from "./DeleteDataButton";
 import useLogger from "util/useLogger";
+import Navi from "./Navi";
 
 const headerStyle = {
   color: "white",
@@ -52,8 +53,9 @@ const DataSquare = () => {
       }}
     >
       <Grid stackable divided centered>
-        <Grid.Row style={{ height: "60px" }}>
-          <Grid.Column>
+        <Grid.Row style={{ minHeight: "60px" }}>
+          <Grid.Column width={16}>
+            <Navi />
             <DeleteDataButton />
           </Grid.Column>
         </Grid.Row>

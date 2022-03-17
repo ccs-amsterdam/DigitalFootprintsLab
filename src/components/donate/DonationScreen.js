@@ -42,7 +42,8 @@ const DonationScreen = () => {
           style={{
             minHeight: "70px",
             display: "flex",
-            justifyContent: "space-evenly",
+            justifyContent: "space-between",
+            alignContent: "flex-start",
             flexWrap: "wrap",
           }}
         >

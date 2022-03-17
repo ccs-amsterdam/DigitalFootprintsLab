@@ -70,8 +70,4 @@ const createWordcloudData = (dashData, group, selection, groupInfo) => {
   return { table: groups };
 };
 
-const checkchange = (p, n) => {
-  console.log(p, n);
-  return p === n;
-};
-export default React.memo(Wordcloud, checkchange);
+export default React.memo(Wordcloud);

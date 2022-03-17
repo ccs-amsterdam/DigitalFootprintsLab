@@ -77,7 +77,7 @@ class FootprintDB {
   /////// LOG
   async log(where, what) {
     const date = new Date();
-    console.log({ where, what, date: date.toISOString() });
+    //console.log({ where, what, date: date.toISOString() });
     await this.idb.log.add({ log: { where, what, date: date.toISOString() } });
   }
   async getLog() {
