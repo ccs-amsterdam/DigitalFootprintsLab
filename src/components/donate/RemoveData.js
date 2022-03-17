@@ -18,6 +18,8 @@ import DashboardData from "components/explore/dashboardData/DashboardData";
 import db from "apis/db";
 import DataTable from "components/explore/dashboards/dashboardParts/DataTable";
 import useLogger from "util/useLogger";
+import ExploreButtons from "components/routing/ExploreButtons";
+import DonateButtons from "components/routing/DonateButtons";
 
 const RemoveData = () => {
   const [data, setData] = useState({});
@@ -26,18 +28,34 @@ const RemoveData = () => {
   return (
     <ColoredBackgroundGrid background={background} color={"#000000b0"}>
       <Grid stackable style={{ height: "100vh", width: "100vw" }}>
-        <Grid.Column width={6}>
-          <BackButton />
+        <Grid.Row style={{ paddingBottom: "0" }}>
+          <Grid.Column
+            width={16}
+            style={{
+              minHeight: "70px",
+              display: "flex",
+              justifyContent: "space-evenly",
+              flexWrap: "wrap",
+            }}
+          >
+            <BackButton />
+            <ExploreButtons />
 
-          <KeywordInput setData={setData} />
-        </Grid.Column>
-        <Grid.Column width={10} style={{ height: "100%", marginTop: "30px" }}>
-          <Grid>
-            {Object.keys(data).map((key) => {
-              return <ResultsTable key={key} title={key} dashData={data[key]} log={log} />;
-            })}
-          </Grid>
-        </Grid.Column>
+            <DonateButtons />
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column width={6}>
+            <KeywordInput setData={setData} />
+          </Grid.Column>
+          <Grid.Column width={10} style={{ height: "100%", marginTop: "30px" }}>
+            <Grid>
+              {Object.keys(data).map((key) => {
+                return <ResultsTable key={key} title={key} dashData={data[key]} log={log} />;
+              })}
+            </Grid>
+          </Grid.Column>
+        </Grid.Row>
       </Grid>
     </ColoredBackgroundGrid>
   );
@@ -74,7 +92,6 @@ const KeywordInput = ({ setData }) => {
     <Container
       style={{
         margin: "50px",
-        marginTop: "100px",
         padding: "20px",
         height: "100%",
         width: "25em",

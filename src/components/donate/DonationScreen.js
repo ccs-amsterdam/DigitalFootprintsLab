@@ -8,6 +8,8 @@ import BeforeYouDonate from "./BeforeYouDonate";
 import ConfirmDonation from "./ConfirmDonation";
 import ValidateData from "./ValidateData";
 import useLogger from "util/useLogger";
+import ExploreButtons from "components/routing/ExploreButtons";
+import DonateButtons from "components/routing/DonateButtons";
 
 const DonationScreen = () => {
   const [step, setStep] = useState(0);
@@ -35,12 +37,24 @@ const DonationScreen = () => {
   return (
     <ColoredBackgroundGrid background={background} color={"#000000b0"}>
       <Grid stackable style={{ height: "calc(100vh - 38px)", width: "100vw" }}>
-        <Grid.Column width={16}>
+        <Grid.Column
+          width={16}
+          style={{
+            minHeight: "70px",
+            display: "flex",
+            justifyContent: "space-evenly",
+            flexWrap: "wrap",
+          }}
+        >
           <BackButton />
+          <ExploreButtons />
+          <DonateButtons />
+        </Grid.Column>
+
+        <Grid.Column width={16} style={{ height: "100%" }}>
           <Container
             style={{
               height: "100%",
-              marginTop: "70px",
               color: "white",
               fontSize: "1.5em",
               display: "flex",

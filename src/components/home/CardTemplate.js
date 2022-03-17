@@ -13,6 +13,8 @@ const CardTemplate = ({ children, name, subname, icon, onClick, loading, done, d
         position: "relative",
         color: "green",
         background: "#0f0f0f82",
+        border: "2px solid grey",
+        boxShadow: "8px 10px #0f0f0f82",
         fontSize: "min(max(1vw, 1em),1.2em)",
       }}
       onClick={disabled ? null : onClick}

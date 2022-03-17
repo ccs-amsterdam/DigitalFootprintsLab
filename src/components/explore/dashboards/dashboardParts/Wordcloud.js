@@ -42,10 +42,7 @@ const Wordcloud = ({ dashData, group, inSelection, setOutSelection, colors, uncl
   };
 
   return (
-    <div
-      ref={box}
-      style={{ position: "relative", width: "100%", height: "100%", paddingTop: "20px" }}
-    >
+    <div ref={box} style={{ position: "relative", width: "100%", height: "100%" }}>
       <Dimmer active={loading}>
         <Loader />
       </Dimmer>
@@ -73,4 +70,8 @@ const createWordcloudData = (dashData, group, selection, groupInfo) => {
   return { table: groups };
 };
 
-export default React.memo(Wordcloud);
+const checkchange = (p, n) => {
+  console.log(p, n);
+  return p === n;
+};
+export default React.memo(Wordcloud, checkchange);

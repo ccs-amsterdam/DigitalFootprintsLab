@@ -34,7 +34,7 @@ const FilterCard = () => {
     <CardTemplate
       name={t("home.donate.removeCard.name")}
       subname={t("home.donate.removeCard.subname")}
-      icon={"user secret"}
+      icon={"eye slash"}
       onClick={onClick}
     ></CardTemplate>
   );
@@ -74,10 +74,8 @@ const DonateCard = ({ requestedData }) => {
 
   return (
     <CardTemplate
-      name={"Go to donation screen"}
-      subname={
-        "Here you can learn more about what your data will be used for, and safely donate it"
-      }
+      name={t("home.donate.donateCard.name")}
+      subname={t("home.donate.donateCard.subname")}
       icon={"flag checkered"}
       onClick={onClick}
       disabled={!any}

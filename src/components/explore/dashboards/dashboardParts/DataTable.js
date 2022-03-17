@@ -115,21 +115,21 @@ const ScrollingTable = ({ data, columns, processDelete }) => {
   const [deleteIds, setDeleteIds] = useState([]);
 
   const createHeader = (columns) => {
-    const columnsWithTrash = [{ name: "delete", width: 1 }, ...columns];
+    const columnsWithTrash = [{ name: "", width: 1 }, ...columns];
     const cells = columnsWithTrash.map((column) => {
       const name = typeof column === "object" ? column.name : column;
       return (
         <Table.HeaderCell
           key={column}
           width={column?.width}
-          style={{ top: "0px", position: "sticky", zIndex: "2" }}
+          style={{ top: "0px", position: "sticky", zIndex: "2", background: "white" }}
         >
           {name}
         </Table.HeaderCell>
       );
     });
     return (
-      <Table.Header>
+      <Table.Header style={{ background: "white" }}>
         <Table.Row>{cells}</Table.Row>
       </Table.Header>
     );
@@ -169,7 +169,6 @@ const ScrollingTable = ({ data, columns, processDelete }) => {
 
   return (
     <Table
-      unstackable
       fixed
       singleLine
       compact="very"

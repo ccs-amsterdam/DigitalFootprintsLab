@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Container, Header, Item, Dimmer, Loader } from "semantic-ui-react";
+import { Grid, Container, Header, Item } from "semantic-ui-react";
 
 import ColoredBackgroundGrid from "./dashboardParts/ColoredBackgroundGrid";
 import background from "images/background.jpeg";
@@ -11,6 +11,8 @@ import useDashboardData from "../dashboardData/useDashboardData";
 import PropTypes from "prop-types";
 import BackButton from "components/routing/BackButton";
 import useLogger from "util/useLogger";
+import ExploreButtons from "components/routing/ExploreButtons";
+import DonateButtons from "components/routing/DonateButtons";
 
 const propTypes = {
   /** The name of the type of data to explore. */
@@ -48,17 +50,28 @@ const DashboardTemplate = ({ dataName, searchOn, columns, VisComponent, calcStat
 
   return (
     <ColoredBackgroundGrid background={background} color={"#000000b0"}>
-      <Dimmer active={!dashData}>
-        <Loader />
-      </Dimmer>
-      <Grid stackable style={{ height: "100vh" }}>
-        <Grid.Row style={{ minHeight: "500px" }}>
-          <Grid.Column width={4}>
+      <Grid stackable style={{ height: "100vh", width: "100vw" }}>
+        <Grid.Row style={{ paddingBottom: "0" }}>
+          <Grid.Column
+            width={16}
+            style={{
+              minHeight: "70px",
+              display: "flex",
+              justifyContent: "space-evenly",
+              flexWrap: "wrap",
+            }}
+          >
             <BackButton />
+            <ExploreButtons />
+            <DonateButtons />
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row style={{ padding: "0", minHeight: "500px" }}>
+          <Grid.Column width={4}>
             <Container
               style={{
                 margin: "50px",
-                marginTop: "100px",
+                marginTop: "50px",
                 padding: "20px",
               }}
             >
@@ -69,7 +82,6 @@ const DashboardTemplate = ({ dataName, searchOn, columns, VisComponent, calcStat
                   setSelection={setQuerySelection}
                 />
               </div>
-
               <Statistics statistics={statistics} />
             </Container>
           </Grid.Column>
@@ -81,7 +93,14 @@ const DashboardTemplate = ({ dataName, searchOn, columns, VisComponent, calcStat
             />
           </Grid.Column>
         </Grid.Row>
-        <Grid.Row style={{ minHeight: "500px", maxHeight: "calc(100vh - 500px)", width: "100%" }}>
+        <Grid.Row
+          style={{
+            minHeight: "500px",
+            maxHeight: "calc(100vh - 500px)",
+            width: "100%",
+            padding: "0",
+          }}
+        >
           <DataTable dashData={dashData} columns={columns} selection={selection} log={log} />
         </Grid.Row>
       </Grid>

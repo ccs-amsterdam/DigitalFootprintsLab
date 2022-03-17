@@ -10,18 +10,17 @@ const BackButton = () => {
     <Button
       size="large"
       style={{
-        position: "absolute",
-        left: "0",
         background: "#00000000",
         color: "white",
         border: "1px solid white",
         marginLeft: "20px",
         marginTop: "20px",
+        height: "50px",
       }}
       onClick={() => navigate("/datasquare")}
     >
       <Icon name="home" />
-      Go to homepage
+      Back to overview
     </Button>
   );
 };

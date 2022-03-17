@@ -21,12 +21,12 @@ export const TRANSLATIONS_EN = {
       description: "Support academic research by sharing your data",
 
       removeCard: {
-        name: "Remove sensitive data",
+        name: "Exclude data",
         subname: "Use keywords to search and remove any data that you prefer not to share",
       },
 
       donateCard: {
-        name: "Go to donation screen",
+        name: "Donate",
         subname:
           "Here you can learn more about what your data will be used for, and safely donate it",
         status: {
