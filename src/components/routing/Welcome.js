@@ -54,6 +54,7 @@ const Welcome = ({ items }) => {
         height: "100vh",
         backgroundImage: `url(${background})`,
         backgroundSize: "100% 100%",
+        overflow: "auto",
       }}
       verticalAlign="middle"
     >

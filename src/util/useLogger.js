@@ -1,5 +1,5 @@
 import db from "apis/db";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 
 /**
  * A hook for the logger. Should be used in top level components.
@@ -9,9 +9,12 @@ import { useEffect } from "react";
  * @returns
  */
 const useLogger = (where, what = "open") => {
-  const log = (what) => {
-    db.log(where, what);
-  };
+  const log = useCallback(
+    (what) => {
+      db.log(where, what);
+    },
+    [where]
+  );
 
   useEffect(() => {
     db.log(where, what);
