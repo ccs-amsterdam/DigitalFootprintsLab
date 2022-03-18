@@ -12,7 +12,11 @@ import GatherGoogleTakeout from "components/gather/GatherGoogleTakeout";
  */
 const GatherCardColumn = () => {
   // Currently only uses google takeout, so it looks silly
-  return <GoogleTakeout />;
+  return (
+    <>
+      <GoogleTakeout />
+    </>
+  );
 };
 
 /**
@@ -20,7 +24,6 @@ const GatherCardColumn = () => {
  */
 const GoogleTakeout = () => {
   const [loading, setLoading] = useState("idle");
-
   // yes, it looks weird that the GatherCard is a child of the GatherGoogleTakeout
   // the reason is that GatherGoogleTakeout is a popup, and the GatherCard is the trigger
   return (

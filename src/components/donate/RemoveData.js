@@ -27,7 +27,7 @@ const RemoveData = () => {
 
   return (
     <ColoredBackgroundGrid background={background} color={"#000000b0"}>
-      <Grid stackable style={{ height: "100vh", width: "100vw" }}>
+      <Grid stackable style={{ height: "calc(100vh - 38px)", width: "100vw" }}>
         <Grid.Row style={{ paddingBottom: "0" }}>
           <Grid.Column
             width={16}
@@ -49,7 +49,7 @@ const RemoveData = () => {
           <Grid.Column width={6}>
             <KeywordInput setData={setData} />
           </Grid.Column>
-          <Grid.Column width={10} style={{ height: "100%", marginTop: "30px" }}>
+          <Grid.Column width={10} style={{ height: "calc(100% - 50px)", marginTop: "30px" }}>
             <Grid>
               {Object.keys(data).map((key) => {
                 return <ResultsTable key={key} title={key} dashData={data[key]} log={log} />;
@@ -118,7 +118,7 @@ const KeywordInput = ({ setData }) => {
             setStatus("ready");
             setText(d.value);
           }}
-          rows={25}
+          rows={10}
           style={{ width: "100%" }}
         />
         ;
@@ -158,9 +158,10 @@ const ResultsTable = ({ title, dashData, log }) => {
         //maxHeight: "calc(100vh - 500px)",
         //width: "100%",
         minHeight: "70px",
-        maxHeight: "340px",
+
         border: "5px solid #ffffff3f",
         marginTop: "10px",
+        marginLeft: "15px",
         position: "relative",
       }}
     >
@@ -175,7 +176,7 @@ const ResultsTable = ({ title, dashData, log }) => {
       >
         {title}
       </Header>
-      <DataTable dashData={dashDataCopy} log={log} />
+      <DataTable dashData={dashDataCopy} log={log} pagesize={5} />
     </Grid.Row>
   );
 };

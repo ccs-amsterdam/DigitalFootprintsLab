@@ -139,7 +139,7 @@ export default class DashboardData {
     return n;
   }
 
-  listData(n, selection) {
+  listData(n, selection, offset) {
     if (selection && this.is_subset)
       throw new Error("cannot use selection if dashdata is a subset");
     let list = [];
@@ -147,6 +147,7 @@ export default class DashboardData {
     let index;
     for (let i = 0; i < this.data.length; i++) {
       if (list.length === n) break;
+      if (offset && i < offset) continue;
       if (selection) {
         if (i >= selection.length) break;
         index = selection[i];

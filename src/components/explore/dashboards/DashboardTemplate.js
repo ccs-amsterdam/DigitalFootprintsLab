@@ -96,13 +96,13 @@ const DashboardTemplate = ({ dataName, searchOn, columns, VisComponent, calcStat
         </Grid.Row>
         <Grid.Row
           style={{
-            minHeight: "500px",
-            maxHeight: "calc(100vh - 500px)",
             width: "100%",
             padding: "0",
           }}
         >
-          <DataTable dashData={dashData} columns={columns} selection={selection} log={log} />
+          <Grid.Column>
+            <DataTable dashData={dashData} columns={columns} selection={selection} log={log} />
+          </Grid.Column>
         </Grid.Row>
       </Grid>
     </ColoredBackgroundGrid>

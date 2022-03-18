@@ -74,6 +74,25 @@ class FootprintDB {
     }
   }
 
+  async setDonationStep(step) {
+    // for keeping track of the step in the dontation screen.
+    // note that this needs to be reset whenever data is modified
+    // - when data is added, step can max be 1
+    // - when data is deleted, step can max be 2
+    await this.idb.meta.where("welcome").equals(1).modify({ donationStep: step });
+  }
+
+  async getDonationStep() {
+    const meta = await this.idb.meta.get(1);
+    return meta.donationStep || 0;
+  }
+
+  async setMaxDonationStep(maxStep) {
+    let step = await this.getDonationStep();
+    if (step > maxStep) step = maxStep;
+    await this.setDonationStep(step);
+  }
+
   /////// LOG
   async log(where, what) {
     const date = new Date();
@@ -121,6 +140,7 @@ class FootprintDB {
 
   async setDeleted(name, deleted) {
     await this.idb.data.where("name").equals(name).modify({ deleted });
+    await this.setMaxDonationStep(2);
   }
 
   // add data given name of data type (e.g., Browsing). idFields is an array of fields in data objects used to check for duplicates.
@@ -152,6 +172,7 @@ class FootprintDB {
       name,
     ]);
     await this.updateDataStatus(name, source);
+    await this.setMaxDonationStep(1);
 
     const addGroupInfo = Object.keys(newGroups).filter((group) => newGroups[group]);
     if (addGroupInfo.length > 0) updateGroupInfo(addGroupInfo);

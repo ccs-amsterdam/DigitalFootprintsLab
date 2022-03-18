@@ -27,31 +27,38 @@ const ExploreButtons = () => {
 
   if (!statuses || statuses.length === 0) return null;
   return (
-    <Button.Group style={{ marginLeft: "20px" }}>
-      {statuses.map((status) => {
-        const [label, icon] = getLabelAndIcon(status.name);
-        const path = "/" + status.name;
-        const selected = path === location.pathname;
-        return (
-          <Button
-            size="large"
-            active={path === location.pathname}
-            style={{
-              background: selected ? "white" : "#00000000",
-              color: selected ? "#3b3a3a" : "white",
-              border: "1px solid white",
-              height: "50px",
-              marginTop: "20px",
-            }}
-            onClick={() => navigate("/" + status.name)}
-          >
-            <Icon name={icon} />
+    <div style={{ display: "flex" }}>
+      <Icon
+        name="search"
+        size="big"
+        style={{ marginLeft: "20px", marginTop: "30px", color: "white" }}
+      />
+      <Button.Group style={{ marginLeft: "12px" }}>
+        {statuses.map((status) => {
+          const [label, icon] = getLabelAndIcon(status.name);
+          const path = "/" + status.name;
+          const selected = path === location.pathname;
+          return (
+            <Button
+              size="large"
+              active={path === location.pathname}
+              style={{
+                background: selected ? "white" : "#00000000",
+                color: selected ? "#3b3a3a" : "white",
+                border: "1px solid white",
+                marginTop: "20px",
+                height: "50px",
+              }}
+              onClick={() => navigate("/" + status.name)}
+            >
+              <Icon name={icon} />
 
-            {t(label)}
-          </Button>
-        );
-      })}
-    </Button.Group>
+              {t(label)}
+            </Button>
+          );
+        })}
+      </Button.Group>
+    </div>
   );
 };
 

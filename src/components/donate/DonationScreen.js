@@ -10,6 +10,7 @@ import ValidateData from "./ValidateData";
 import useLogger from "util/useLogger";
 import ExploreButtons from "components/routing/ExploreButtons";
 import DonateButtons from "components/routing/DonateButtons";
+import db from "apis/db";
 
 const DonationScreen = () => {
   const [step, setStep] = useState(0);
@@ -52,7 +53,7 @@ const DonationScreen = () => {
           <DonateButtons />
         </Grid.Column>
 
-        <Grid.Column width={16} style={{ height: "100%" }}>
+        <Grid.Column width={16} style={{ height: "calc(100% - 50px)" }}>
           <Container
             style={{
               height: "100%",
@@ -75,8 +76,17 @@ const DonationSteps = ({ step, setStep }) => {
   const [maxStep, setMaxStep] = useState(0);
 
   useEffect(() => {
-    if (step > maxStep) setMaxStep(step);
+    if (step > maxStep) {
+      setMaxStep(step);
+      db.setDonationStep(step);
+    }
   }, [step, maxStep]);
+
+  useEffect(() => {
+    db.getDonationStep()
+      .then(setStep)
+      .catch((e) => console.log(e));
+  }, [setStep]);
 
   const onClick = (i) => {
     if (i > maxStep) return;

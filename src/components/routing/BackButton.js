@@ -7,21 +7,27 @@ const BackButton = () => {
   // make this a mini menu: home, explore dropdown, donate dropdown
 
   return (
-    <Button
-      size="large"
-      style={{
-        background: "#00000000",
-        color: "white",
-        border: "1px solid white",
-        marginLeft: "20px",
-        marginTop: "20px",
-        height: "50px",
-      }}
-      onClick={() => navigate("/datasquare")}
-    >
-      <Icon name="home" />
-      Back to overview
-    </Button>
+    <div style={{ display: "flex" }}>
+      <Icon
+        name="home"
+        size="big"
+        style={{ marginLeft: "20px", marginTop: "30px", color: "white" }}
+      />
+      <Button
+        size="large"
+        style={{
+          background: "#00000000",
+          color: "white",
+          border: "1px solid white",
+          marginLeft: "12px",
+          marginTop: "20px",
+          height: "50px",
+        }}
+        onClick={() => navigate("/datasquare")}
+      >
+        Back to overview
+      </Button>
+    </div>
   );
 };
 

@@ -200,7 +200,7 @@ const ValidationQuestion = ({ question, validation, setValidation, dataName }) =
     <List.Item key={dataName}>
       <br />
       <Header as="h4">{question}</Header>
-      <Button.Group fluid size="small">
+      <Button.Group fluid size="small" style={{ marginTop: "5px" }}>
         {answers.map((a, i) => {
           const selected = validation[question] === a;
           return (
@@ -213,7 +213,7 @@ const ValidationQuestion = ({ question, validation, setValidation, dataName }) =
               }}
               style={{
                 padding: "4px 10px",
-                background: selected ? "white" : "#3b3a3a",
+                background: selected ? "white" : "#555555",
                 color: selected ? "#3b3a3a" : "white",
                 borderRadius: "5px",
                 border: selected ? "3px solid black" : "3px solid white",

@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Container, Button, Visibility, Header, Segment, Table } from "semantic-ui-react";
+import { Container, Button, Header, Segment, Table, Icon, Pagination } from "semantic-ui-react";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
-
-const PAGESIZE = 25;
 
 const propTypes = {
   /** The name of the table in DB */
@@ -25,7 +23,7 @@ const propTypes = {
  * @param {*} columns array of columns to show
  * @param {*} selection array of ids in case of selections. Cannot be used if dashData.is_subset
  */
-const DataTable = ({ dashData, columns, selection, log }) => {
+const DataTable = ({ dashData, columns, selection, log, pagesize = 10 }) => {
   const [n, setN] = useState(0);
   const [data, setData] = useState([]);
   const [selectionN, setSelectionN] = useState(0);
@@ -40,20 +38,25 @@ const DataTable = ({ dashData, columns, selection, log }) => {
     if (dashData.is_subset) {
       if (selection) throw new Error("cannot use selection if dashData is a subset");
       setSelectionN(dashData.N());
-      setData(dashData.listData(PAGESIZE));
+      setData(dashData.listData(pagesize));
       setN(dashData.deleted.length);
       setBulkDelete(dashData.data.map((d) => d._INDEX));
     } else {
       setSelectionN(dashData.N(selection));
-      setData(dashData.listData(PAGESIZE, selection));
+      setData(dashData.listData(pagesize, selection));
       setN(dashData.N());
       setBulkDelete(selection);
     }
-  }, [dashData, selection]);
+  }, [dashData, selection, pagesize]);
 
-  const onBottomVisible = async () => {
+  // const onBottomVisible = async () => {
+  //   if (selectionN === data.length) return;
+  //   setData(dashData.listData(data.length + pagesize, selection));
+  // };
+
+  const pageChange = async (page) => {
     if (selectionN === data.length) return;
-    setData(dashData.listData(data.length + PAGESIZE, selection));
+    setData(dashData.listData(pagesize, selection, pagesize * page));
   };
 
   const processDelete = async (ids) => {
@@ -93,13 +96,16 @@ const DataTable = ({ dashData, columns, selection, log }) => {
         style={{
           height: "calc(100% - 55px)",
           width: "100%",
-          overflow: "auto",
           paddingLeft: "20px",
         }}
       >
-        <Visibility continuous onBottomVisible={onBottomVisible}>
-          <ScrollingTable data={data} columns={columns} processDelete={processDelete} />
-        </Visibility>
+        <PaginationTable
+          data={data}
+          columns={columns}
+          pages={Math.floor(selectionN / pagesize)}
+          pageChange={pageChange}
+          processDelete={processDelete}
+        />
       </Container>
 
       <ConfirmDeleteModal
@@ -111,7 +117,7 @@ const DataTable = ({ dashData, columns, selection, log }) => {
   );
 };
 
-const ScrollingTable = ({ data, columns, processDelete }) => {
+const PaginationTable = ({ data, columns, pages, pageChange, processDelete }) => {
   const [deleteIds, setDeleteIds] = useState([]);
 
   const createHeader = (columns) => {
@@ -164,8 +170,8 @@ const ScrollingTable = ({ data, columns, processDelete }) => {
     return <Table.Body>{rows}</Table.Body>;
   };
 
-  if (data === null || data.length === 0) return null;
-  if (!columns) columns = Object.keys(data[0]).filter((c) => c !== "_INDEX");
+  //if (data === null || data.length === 0) return null;
+  if (!columns) columns = Object.keys(data[0] || {}).filter((c) => c !== "_INDEX") || [];
 
   return (
     <Table
@@ -181,6 +187,45 @@ const ScrollingTable = ({ data, columns, processDelete }) => {
         deleteIds={deleteIds}
         setDeleteIds={setDeleteIds}
       />
+      <Table.Footer fullWidth>
+        <Table.Row>
+          <Table.HeaderCell
+            colSpan={columns.length + 1}
+            style={{ paddingTop: "0px", background: "white" }}
+          >
+            {pages > 1 ? (
+              <Pagination
+                size="mini"
+                floated="left"
+                boundaryRange={1}
+                siblingRange={1}
+                ellipsisItem={{
+                  content: <Icon name="ellipsis horizontal" />,
+                  icon: true,
+                }}
+                firstItem={{
+                  content: <Icon name="angle double left" />,
+                  icon: true,
+                }}
+                lastItem={{
+                  content: <Icon name="angle double right" />,
+                  icon: true,
+                }}
+                prevItem={{ content: <Icon name="angle left" />, icon: true }}
+                nextItem={{
+                  content: <Icon name="angle right" />,
+                  icon: true,
+                }}
+                pointing
+                secondary
+                defaultActivePage={1}
+                totalPages={pages}
+                onPageChange={(e, d) => pageChange(d.activePage)}
+              ></Pagination>
+            ) : null}
+          </Table.HeaderCell>
+        </Table.Row>
+      </Table.Footer>
     </Table>
   );
 };

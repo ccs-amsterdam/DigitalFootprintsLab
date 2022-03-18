@@ -12,38 +12,45 @@ const DonateButtons = () => {
   const selectedDonate = "/donate" === location.pathname;
 
   return (
-    <Button.Group style={{ marginLeft: "20px" }}>
-      <Button
-        size="large"
-        style={{
-          background: selectedRemove ? "white" : "#00000000",
-          color: selectedRemove ? "#3b3a3a" : "white",
-          border: "1px solid white",
-          height: "50px",
-          marginTop: "20px",
-        }}
-        onClick={() => navigate("/remove")}
-      >
-        <Icon name={"eye slash"} />
+    <div style={{ display: "flex" }}>
+      <Icon
+        name="student"
+        size="big"
+        style={{ marginLeft: "20px", marginTop: "30px", color: "white" }}
+      />
+      <Button.Group style={{ marginLeft: "12px" }}>
+        <Button
+          size="large"
+          style={{
+            background: selectedRemove ? "white" : "#00000000",
+            color: selectedRemove ? "#3b3a3a" : "white",
+            border: "1px solid white",
+            marginTop: "20px",
+            height: "50px",
+          }}
+          onClick={() => navigate("/remove")}
+        >
+          <Icon name={"eye slash"} />
 
-        {t("home.donate.removeCard.name")}
-      </Button>
-      <Button
-        size="large"
-        style={{
-          background: selectedDonate ? "white" : "#00000000",
-          color: selectedDonate ? "#3b3a3a" : "white",
-          border: "1px solid white",
-          height: "50px",
-          marginTop: "20px",
-        }}
-        onClick={() => navigate("/donate")}
-      >
-        <Icon name={"flag checkered"} />
+          {t("home.donate.removeCard.name")}
+        </Button>
+        <Button
+          size="large"
+          style={{
+            background: selectedDonate ? "white" : "#00000000",
+            color: selectedDonate ? "#3b3a3a" : "white",
+            marginTop: "20px",
+            border: "1px solid white",
+            height: "50px",
+          }}
+          onClick={() => navigate("/donate")}
+        >
+          <Icon name={"flag checkered"} />
 
-        {t("home.donate.donateCard.name")}
-      </Button>
-    </Button.Group>
+          {t("home.donate.donateCard.name")}
+        </Button>
+      </Button.Group>
+    </div>
   );
 };
 

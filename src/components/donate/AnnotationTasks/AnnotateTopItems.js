@@ -145,19 +145,24 @@ const ItemForm = ({ data, setData, field, value, question }) => {
       <Grid.Column width={7}>
         <Button.Group fluid size="small">
           {question.answers.map((a, i) => {
+            const active = answer === a;
             return (
               <Popup
                 key={a + i}
                 trigger={
                   <Button
                     key={a}
-                    active={answer === a}
+                    active={active}
                     onClick={() => {
                       const newData = { ...data };
                       newData.annotations[field][item.name].news_score = a;
                       setData(newData);
                     }}
-                    style={{ padding: "8px 12px" }}
+                    style={{
+                      padding: "8px 12px",
+                      color: active ? "white" : "black",
+                      background: active ? "blue" : "#bbbbbb",
+                    }}
                   >
                     {i + 1}
                   </Button>
