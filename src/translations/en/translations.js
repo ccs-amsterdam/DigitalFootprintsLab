@@ -3,6 +3,15 @@ export const TRANSLATIONS_EN = {
     gather: {
       title: "Gather",
       description: "Click a card to gather your data",
+
+      gatherCard: {
+        click:
+          "Click here to gather the data that Google has about your <b>browsing</b>, <b>search</b> and <b>Youtube</b> history",
+        failedUpdated: "Failed to update <b>{{name}}</b> history",
+        failedGet: "Failed to get <b>{{name}}</b> history",
+        success: "Gathered <b>{{name}}</b> history",
+        empty: "<b>{{name}}</b> history",
+      },
     },
 
     explore: {
@@ -11,8 +20,7 @@ export const TRANSLATIONS_EN = {
 
       exploreCard: {
         missing: "Data not yet gathered",
-        today: "today",
-        onDate: "on {{date}}",
+        status: "Gathered <b>{{date}}</b> from <b>{{source}}</b>",
       },
     },
 
@@ -43,6 +51,7 @@ export const TRANSLATIONS_EN = {
       content1: "Do you want to delete all the gathered data from the browser?",
       content2:
         "Note that any data you downloaded will still be on your computer, so you might want to delete that as well",
+      buttonLabel: "Delete data",
     },
   },
 

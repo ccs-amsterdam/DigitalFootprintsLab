@@ -54,7 +54,7 @@ const DataSquare = () => {
     >
       <Grid stackable divided centered>
         <Grid.Row style={{ minHeight: "60px" }}>
-          <Grid.Column width={16}>
+          <Grid.Column width={15} textAlign="right">
             <Navi />
             <DeleteDataButton />
           </Grid.Column>

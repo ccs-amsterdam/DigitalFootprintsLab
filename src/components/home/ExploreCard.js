@@ -1,19 +1,9 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import CardTemplate from "./CardTemplate";
 import { List } from "semantic-ui-react";
 import { Trans, useTranslation } from "react-i18next";
-
-const propTypes = {
-  /** The name of the type of data to explore. */
-  name: PropTypes.string.isRequired,
-  /** A subname, for extra info */
-  subname: PropTypes.string.isRequired,
-  /** The name of an Icon from semantic ui, see https://semantic-ui.com/elements/icon.html  */
-  icon: PropTypes.string.isRequired,
-};
 
 /**
  * The template for generating ExploreCards.
@@ -48,20 +38,21 @@ const statusMessage = (status, t) => {
 
   // if different day, show day
   const today = oldTime.slice(0, 10) === currentTime.slice(0, 10);
-  const onDate = today ? (
-    t("home.explore.exploreCard.today")
-  ) : (
-    <Trans i18nKey="home.explore.exploreCard.onDate" values={{ date: oldTime.slice(0, 10) }} />
-  );
 
   return (
     <List.Item key={status.source}>
       <List.Content>
-        Gathered {onDate} from <b>{status.source.replace("_", " ")}</b>
+        <Trans
+          i18nKey={"home.explore.exploreCard.status"}
+          values={{
+            date: today ? "today" : oldTime.slice(0, 10),
+            source: status.source.replace("_", " "),
+          }}
+          components={{ b: <b /> }}
+        />
       </List.Content>
     </List.Item>
   );
 };
 
-ExploreCard.propTypes = propTypes;
 export default ExploreCard;

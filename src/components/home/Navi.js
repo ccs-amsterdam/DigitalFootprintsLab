@@ -17,16 +17,16 @@ const Navi = () => {
         trigger={
           <Button
             style={{
-              marginLeft: "calc(50vw - 82px)",
+              //marginLeft: "calc(50vw - 82px)",
               marginTop: "9px",
-              padding: "10px 70px",
+
               color: "white",
               boxShadow: "0 0 40px white",
               background: "#ffffff99",
+              border: "1px solid white",
             }}
             onClick={() => setOpenModal(!openModal)}
             icon="question"
-            size="huge"
           />
         }
       >

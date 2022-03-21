@@ -6,7 +6,7 @@ import GoogleTakeout_youtube2 from "images/GoogleTakeout_youtube2.png";
 import GoogleTakeout_create from "images/GoogleTakeout_create.png";
 import GoogleTakeout_download from "images/GoogleTakeout_download.png";
 
-export const googleTakeoutInstruction = {
+const googleTakeoutInstruction_EN = {
   title: "Google Takeout",
   introduction: `If you have a Google account, a lot of things that you do online are automatically
   documented. Google is legally required to give you access to this data, and they have
@@ -109,3 +109,10 @@ export const googleTakeoutInstruction = {
     },
   ],
 };
+
+const googleTakeoutInstruction = {
+  default: googleTakeoutInstruction_EN,
+  en: googleTakeoutInstruction_EN,
+};
+
+export default googleTakeoutInstruction;

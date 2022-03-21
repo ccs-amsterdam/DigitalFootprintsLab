@@ -8,7 +8,7 @@ import tokenize from "util/tokenize";
 import { useDispatch } from "react-redux";
 import { updateDataStatus } from "actions";
 import StepwiseInstructions from "./StepwiseInstructions";
-import { googleTakeoutInstruction } from "./googleTakeoutInstruction.js";
+import googleTakeoutInstruction from "./googleTakeoutInstruction.js";
 
 import { DropZone, miseEnPlace } from "data-donation-importers";
 import cookbook from "./googleTakeoutCookbook";
@@ -22,6 +22,7 @@ const GatherGoogleTakeout = ({ children, setLoading }) => {
   const log = useLogger("Gather GoogleTakeout");
   const [open, setOpen] = useState(false);
   const [files, setFiles] = useState([]);
+  const language = "en";
 
   useEffect(() => {
     if (files.length === 0) return;
@@ -41,7 +42,9 @@ const GatherGoogleTakeout = ({ children, setLoading }) => {
     >
       <Modal.Content style={{}}>
         <Modal.Description>
-          <StepwiseInstructions instruction={googleTakeoutInstruction} />
+          <StepwiseInstructions
+            instruction={googleTakeoutInstruction[language] || googleTakeoutInstruction.default}
+          />
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions style={{ textAlign: "center" }}>

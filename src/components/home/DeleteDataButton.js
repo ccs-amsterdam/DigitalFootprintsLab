@@ -10,9 +10,8 @@ const DeleteDataButton = () => {
   const button = (
     <Button
       style={{
-        float: "right",
         background: "#00000000",
-        margin: "10px",
+        marginTop: "9px",
         color: "white",
         border: "1px solid white",
       }}
@@ -28,23 +27,24 @@ const DeleteDataButton = () => {
       <Popup.Content>
         <p>{t("home.deleteButton.content1")}</p>
         <p>{t("home.deleteButton.content2")}</p>
-      </Popup.Content>
-      <br />
-      <Button
-        negative
-        fluid
-        onClick={() =>
-          db.destroyEverything().then((userId) => {
-            if (userId !== "test_user") {
-              window.location.href += `/?id=${userId}`;
-            } else {
-              window.location.reload(`/`);
+        <br />
+        <Button.Group fluid>
+          <Button
+            negative
+            onClick={() =>
+              db.destroyEverything().then((userId) => {
+                if (userId !== "test_user") {
+                  window.location.href += `/?id=${userId}`;
+                } else {
+                  window.location.reload(`/`);
+                }
+              })
             }
-          })
-        }
-      >
-        Delete data
-      </Button>
+          >
+            {t("home.deleteButton.buttonLabel")}
+          </Button>
+        </Button.Group>
+      </Popup.Content>
     </Popup>
   );
 };
