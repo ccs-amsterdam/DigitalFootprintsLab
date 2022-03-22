@@ -3,6 +3,7 @@ import useDashboardData from "components/explore/dashboardData/useDashboardData"
 import QueryInput from "components/explore/dashboards/dashboardParts/QueryInput";
 import Wordcloud from "components/explore/dashboards/dashboardParts/Wordcloud";
 import React, { useEffect, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { Icon, Button, Grid, Header, Segment, Step, List } from "semantic-ui-react";
 
 const ValidateData = ({ setStep }) => {
@@ -31,6 +32,7 @@ const ValidateDataParts = ({ setOuterStep }) => {
   const [dataNames, setDataNames] = useState([]);
   const [step, setStep] = useState(0);
   const [maxStep, setMaxStep] = useState(0);
+  const { t } = useTranslation();
 
   useEffect(() => {
     db.idb.data
@@ -65,8 +67,7 @@ const ValidateDataParts = ({ setOuterStep }) => {
         })}
       </Step.Group>
       <Header textAlign="center" as="h4">
-        To use your data for research, it's important to know how accurate it is. Please help us by
-        answering a few questions about your data
+        {t("donate.validate.header1")}
       </Header>
       <ValidateDataPart dataName={dataNames[step]} setStep={setStep} />
     </div>
@@ -77,19 +78,24 @@ const colors = ["#564615", "#1f6175", "#421f7f"];
 const questions = [
   {
     question: "Do you feel that you recognize this digital footprint as your own?",
+    question_i18n: "donate.validate.question1",
     answers: ["not at all", "very little", "somewhat", "quite a bit", "a great deal"],
   },
   {
     question: "Are the largest items indeed the items you often visit?",
+
+    question_i18n: "donate.validate.question2",
     answers: ["not at all", "very little", "somewhat", "quite a bit", "a great deal"],
   },
   {
     question: "Are there any items that you know you visited often, but are not shown here?",
+    question_i18n: "donate.validate.question3",
     answers: ["none missing", "some missing", "quite a lot missing", "most missing"],
   },
   {
     question: "Is this data only yours, or does someone else use your device or account?",
-    answers: ["Only me", "Mostly me", "Mostly someone else"],
+    question_i18n: "donate.validate.question4",
+    answers: ["only me", "mostly me", "mostly someone else"],
   },
 ];
 
@@ -97,6 +103,8 @@ const ValidateDataPart = React.memo(({ dataName, setStep }) => {
   const [validation, setValidation] = useState({});
   const [querySelection, setQuerySelection] = useState(null);
   const [allAnswered, setAllAnswered] = useState(false);
+  const { t } = useTranslation();
+  console.log(validation);
 
   let field;
   if (dataName === "Browsing") field = "domain";
@@ -155,8 +163,11 @@ const ValidateDataPart = React.memo(({ dataName, setStep }) => {
         </Grid.Column>
         <Grid.Column textAlign="center" width={8}>
           <Header as="h3" style={{ paddingTop: "5px" }}>
-            On the left you see the top items in your <i>{dataName}</i> data. Please answer the
-            following questions to help us understand how accurate this data.
+            <Trans
+              i18nKey="donate.validate.header2"
+              values={{ dataname: dataName }}
+              components={{ i: <i /> }}
+            />
           </Header>
           <List
             style={{
@@ -182,7 +193,7 @@ const ValidateDataPart = React.memo(({ dataName, setStep }) => {
                 fluid
                 primary
                 disabled={!allAnswered}
-                content="CONTINUE"
+                content={t("donate.validate.continue")}
                 onClick={() => setStep((step) => step + 1)}
               />
             </List.Item>
@@ -194,12 +205,16 @@ const ValidateDataPart = React.memo(({ dataName, setStep }) => {
 });
 
 const ValidationQuestion = ({ question, validation, setValidation, dataName }) => {
-  const answers = questions.find((q) => q.question === question)?.answers || [];
+  const { t } = useTranslation();
+  const q = questions.find((q) => q.question === question) || {};
+  const answers = q?.answers || [];
+  const trans_answers = answers.map((a) => t(`answers.${a}`));
+  const trans_question = q?.question_i18n ? t(q?.question_i18n) : "";
 
   return (
     <List.Item key={dataName}>
       <br />
-      <Header as="h4">{question}</Header>
+      <Header as="h4">{trans_question}</Header>
       <Button.Group fluid size="small" style={{ marginTop: "5px" }}>
         {answers.map((a, i) => {
           const selected = validation[question] === a;
@@ -219,7 +234,7 @@ const ValidationQuestion = ({ question, validation, setValidation, dataName }) =
                 border: selected ? "3px solid black" : "3px solid white",
               }}
             >
-              {a}
+              {trans_answers[i]}
             </Button>
           );
         })}

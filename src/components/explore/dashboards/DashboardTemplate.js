@@ -13,6 +13,7 @@ import BackButton from "components/routing/BackButton";
 import useLogger from "util/useLogger";
 import ExploreButtons from "components/routing/ExploreButtons";
 import DonateButtons from "components/routing/DonateButtons";
+import { useTranslation } from "react-i18next";
 
 const propTypes = {
   /** The name of the type of data to explore. */
@@ -110,6 +111,7 @@ const DashboardTemplate = ({ dataName, searchOn, columns, VisComponent, calcStat
 };
 
 const Statistics = ({ statistics }) => {
+  const { t } = useTranslation();
   // statistics should be an array of objects, with: "label" and "value" keys.
 
   return (
@@ -122,7 +124,7 @@ const Statistics = ({ statistics }) => {
       }}
     >
       <Header as="h1" align={"center"} style={{ color: "white", padding: "0", margin: "0" }}>
-        Statistics
+        {t("explore.statistics.header")}
       </Header>
       <Item.Group>
         {statistics.map((statistic) => {

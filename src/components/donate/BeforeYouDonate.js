@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button, Grid, Header, Segment } from "semantic-ui-react";
 import AnnotateTopItems from "./AnnotationTasks/AnnotateTopItems";
 
 const BeforeYouDonate = ({ setStep }) => {
   const [done, setDone] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <Segment
@@ -19,7 +21,7 @@ const BeforeYouDonate = ({ setStep }) => {
         <Grid.Row>
           <Grid.Column width={16}>
             <Header as="h1" style={{ textAlign: "center" }}>
-              Please answer the following questions
+              {t("donate.annotate.header")}
             </Header>
           </Grid.Column>
         </Grid.Row>
@@ -38,7 +40,7 @@ const BeforeYouDonate = ({ setStep }) => {
               onClick={() => setStep(3)}
               style={{ maxHeight: "3em" }}
             >
-              {done ? `Continue with donation` : `Please answer all questions to continue`}
+              {done ? t("donate.annotate.continue") : t("donate.annotate.pleaseanswer")}
             </Button>
           </Grid.Column>
         </Grid.Row>

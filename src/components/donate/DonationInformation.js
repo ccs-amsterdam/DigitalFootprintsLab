@@ -1,7 +1,9 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Button, Grid, Header, Segment } from "semantic-ui-react";
 
 const DonationInformation = ({ setStep }) => {
+  const { t } = useTranslation();
   return (
     <Segment
       style={{
@@ -15,15 +17,11 @@ const DonationInformation = ({ setStep }) => {
       <Grid verticalAlign="middle" centered stackable style={{ height: "100%" }}>
         <Grid.Column width={8}>
           <Header as="h2" style={{ textAlign: "center" }}>
-            About donating your data
+            {t("donate.info.header")}
           </Header>
-          <p>
-            We probably need to tell participants a little story or something about how and for what
-            purpose we'll use their data. Before the actual donation (in the 'Complete donation')
-            step people will then need to verify that they have seen this and give consent.
-          </p>
+          <p>{t("donate.info.p1")}</p>
           <Button fluid primary onClick={() => setStep(1)} style={{ maxHeight: "3em" }}>
-            Continue with donation
+            {t("donate.info.continue")}
           </Button>
         </Grid.Column>
       </Grid>

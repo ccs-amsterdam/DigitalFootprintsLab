@@ -32,7 +32,7 @@ const DonateButtons = () => {
         >
           <Icon name={"eye slash"} />
 
-          {t("home.donate.removeCard.name")}
+          {t("routing.buttons.remove")}
         </Button>
         <Button
           size="large"
@@ -47,7 +47,7 @@ const DonateButtons = () => {
         >
           <Icon name={"flag checkered"} />
 
-          {t("home.donate.donateCard.name")}
+          {t("routing.buttons.donate")}
         </Button>
       </Button.Group>
     </div>

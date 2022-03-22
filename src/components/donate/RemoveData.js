@@ -20,6 +20,7 @@ import DataTable from "components/explore/dashboards/dashboardParts/DataTable";
 import useLogger from "util/useLogger";
 import ExploreButtons from "components/routing/ExploreButtons";
 import DonateButtons from "components/routing/DonateButtons";
+import { Trans, useTranslation } from "react-i18next";
 
 const RemoveData = () => {
   const [data, setData] = useState({});
@@ -65,6 +66,7 @@ const RemoveData = () => {
 const KeywordInput = ({ setData }) => {
   const [text, setText] = useState("");
   const [status, setStatus] = useState("ready");
+  const { t } = useTranslation();
 
   const onSearch = async () => {
     setStatus("loading");
@@ -98,15 +100,17 @@ const KeywordInput = ({ setData }) => {
         width: "25em",
       }}
     >
-      <Header style={{ color: "white" }}>Filter Terms</Header>
+      <Header style={{ color: "white" }}>{t("donate.remove.header")}</Header>
 
       <ul style={{ color: "white" }}>
-        <li>Type one search term per row</li>
+        <li>{t("donate.remove.list1")}</li>
         <li>
-          <span style={{ color: "yellow" }}>secret</span> will also match{" "}
-          <span style={{ color: "yellow" }}>www.supersecret.com</span>
+          <Trans
+            i18nKey="donate.remove.list2"
+            components={{ span: <span style={{ color: "yellow" }} /> }}
+          />
         </li>
-        <li>Terms needs to be at least 3 characters long</li>
+        <li>{t("donate.remove.list3")}</li>
       </ul>
       <Form>
         <Dimmer active={status === "loading"}>
@@ -130,7 +134,7 @@ const KeywordInput = ({ setData }) => {
           onClick={() => onSearch()}
         >
           <Icon size="large" name="search" />
-          Search
+          {t("donate.remove.button")}
         </Button>
       </Form>
     </Container>

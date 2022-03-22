@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HeaderMenu from "./components/routing/HeaderMenu";
 import "./App.css";
@@ -27,7 +27,7 @@ const items = [
   { label: "Donate", path: "/donate", Component: DonationScreen },
 ];
 
-const App = () => {
+const Page = () => {
   // The usePersistance hook checks if the redux 'persistant' state is false, and if so warn
   // users if they try to refresh, leave or close the browser that their data will be gone
   usePersistance();
@@ -62,4 +62,18 @@ const App = () => {
   );
 };
 
-export default App;
+// loading component for suspense fallback
+const Loader = () => (
+  <div className="App">
+    {/* <img src={logo} className="App-logo" alt="logo" /> */}
+    <div>loading...</div>
+  </div>
+);
+
+export default function App() {
+  return (
+    <Suspense fallback={<Loader />}>
+      <Page />
+    </Suspense>
+  );
+}

@@ -11,6 +11,7 @@ import useLogger from "util/useLogger";
 import ExploreButtons from "components/routing/ExploreButtons";
 import DonateButtons from "components/routing/DonateButtons";
 import db from "apis/db";
+import { useTranslation } from "react-i18next";
 
 const DonationScreen = () => {
   const [step, setStep] = useState(0);
@@ -74,6 +75,7 @@ const DonationScreen = () => {
 
 const DonationSteps = ({ step, setStep }) => {
   const [maxStep, setMaxStep] = useState(0);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (step > maxStep) {
@@ -100,8 +102,8 @@ const DonationSteps = ({ step, setStep }) => {
           <Icon name="thumbs up" />
           <br />
           <Step.Content>
-            <Step.Title>Informed consent</Step.Title>
-            <Step.Description>What are you donating?</Step.Description>
+            <Step.Title>{t("donate.step1.title")}</Step.Title>
+            <Step.Description>{t("donate.step1.description")}</Step.Description>
           </Step.Content>
         </Step>
         <Step
@@ -112,8 +114,8 @@ const DonationSteps = ({ step, setStep }) => {
         >
           <Icon name="address card outline" />
           <Step.Content>
-            <Step.Title>Confirm data</Step.Title>
-            <Step.Description>Is this your data?</Step.Description>
+            <Step.Title>{t("donate.step2.title")}</Step.Title>
+            <Step.Description>{t("donate.step2.description")}</Step.Description>
           </Step.Content>
         </Step>
         <Step
@@ -124,8 +126,8 @@ const DonationSteps = ({ step, setStep }) => {
         >
           <Icon name="clipboard" />
           <Step.Content>
-            <Step.Title>Before you donate</Step.Title>
-            <Step.Description>One final request</Step.Description>
+            <Step.Title>{t("donate.step3.title")}</Step.Title>
+            <Step.Description>{t("donate.step3.description")}</Step.Description>
           </Step.Content>
         </Step>
         <Step
@@ -136,8 +138,8 @@ const DonationSteps = ({ step, setStep }) => {
         >
           <Icon name="student" />
           <Step.Content>
-            <Step.Title>Complete donation</Step.Title>
-            <Step.Description>Finalize the data donation</Step.Description>
+            <Step.Title>{t("donate.step4.title")}</Step.Title>
+            <Step.Description>{t("donate.step4.description")}</Step.Description>
           </Step.Content>
         </Step>
       </Step.Group>

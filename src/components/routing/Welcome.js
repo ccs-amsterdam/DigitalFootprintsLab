@@ -7,12 +7,14 @@ import background from "images/background.jpeg";
 import { useDispatch, useSelector } from "react-redux";
 import { setPersistent } from "actions";
 import { useSearchParams } from "react-router-dom";
+import { useTranslation, Trans } from "react-i18next";
 
 /**
  * This component only appears the first time users visit,
  * or if they are away so long that the indexedDB has been cleaned.
  */
 const Welcome = ({ items }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const persistent = useSelector((state) => state.persistent);
@@ -60,69 +62,53 @@ const Welcome = ({ items }) => {
     >
       <Grid.Column style={{ maxWidth: 600 }}>
         <Segment style={{ border: 0 }}>
-          <Header as="h2">Welcome to the Digital Footprints Lab!</Header>
+          <Header as="h2">{t("routing.welcome.header")}</Header>
           <div
             align="justified"
             style={{ textAlign: "left", marginTop: "20px", marginBottom: "20px" }}
           >
-            <h4 style={{ marginBottom: "8px" }}>Gather and explore your digital footprints</h4>
+            <h4 style={{ marginBottom: "8px" }}>{t("routing.welcome.subheader1")}</h4>
             <p>
-              This application let's you collect and explore your own digital traces. All the data
-              is stored and processed on your own device, so it <b>doesn't touch the internet</b>.
+              <Trans i18nKey="routing.welcome.p1" components={{ b: <b /> }} />
             </p>
-            <h4 style={{ marginBottom: "8px" }}>Donate data to support academic research</h4>
+            <h4 style={{ marginBottom: "8px" }}>{t("routing.welcome.subheader2")}</h4>
             <p>
-              You can also donate a selection of this data for scientific research. This data will
-              only be used for <b>non-commercial research</b> by a select group of academics, for
-              research that is approved by the ethical board of their university.
+              <Trans i18nKey="routing.welcome.p2" components={{ b: <b /> }} />
             </p>
-            {persistent ? null : notPersistentMessage()}
-            {userId === null ? testUserMessage() : null}
+            {persistent ? null : notPersistentMessage(t)}
+            {userId === null ? testUserMessage(t) : null}
           </div>
-          {welcomeButton(beWelcomed, userId)}
+          {welcomeButton(t, beWelcomed, userId)}
         </Segment>
       </Grid.Column>
     </Grid>
   );
 };
 
-const notPersistentMessage = () => {
+const notPersistentMessage = (t) => {
   return (
     <>
       <h4 style={{ marginBottom: "8px" }}>
-        <Icon color="orange" name="warning sign" /> If possible, use a different browser
+        <Icon color="orange" name="warning sign" /> {t("routing.welcome.notpersistent.header")}
       </h4>
-      <p>
-        This application works best in recent versions of Chrome, Safari, Edge, Firefox and Opera.
-        For some browsers, like Firefox, it works better when not in private mode. You can still use
-        the application with your current browser, but your data won't be stored if you leave. Don't
-        worry though! you'll get a warning when you try to refresh or leave the page so this doesn't
-        easily happen by accident.
-      </p>
+      <p>{t("routing.welcome.notpersistent.p")}</p>
     </>
   );
 };
 
-const testUserMessage = () => {
+const testUserMessage = (t) => {
   return (
     <>
       <h4 style={{ marginBottom: "8px" }}>
-        <Icon color="orange" name="warning sign" /> LOGGING IN AS TEST USER
+        <Icon color="orange" name="warning sign" /> {t("routing.welcome.testuser.header")}
       </h4>
-      <p>
-        The link that brought you to this website did not contain a user ID. If you are
-        participating in a study, this should not be possible, and you should contact the
-        researchers or survey company.
-      </p>
-      <p>
-        As a test user your <i>real</i> data will not be send to a server. If you complete the data
-        donation steps, the server will receive a dummy submission with fake data.
-      </p>
+      <p>{t("routing.welcome.testuser.p1")}</p>
+      <p>{t("routing.welcome.testuser.p2")}</p>
     </>
   );
 };
 
-const welcomeButton = (beWelcomed, userId) => {
+const welcomeButton = (t, beWelcomed, userId) => {
   if (userId === null)
     return (
       <Button
@@ -130,12 +116,12 @@ const welcomeButton = (beWelcomed, userId) => {
         onClick={() => beWelcomed(false, "test_user")}
         style={{ background: "#ff7300" }}
       >
-        Log in as test user
+        {t("routing.welcome.testuser.button")}
       </Button>
     );
   return (
     <Button primary onClick={() => beWelcomed(false, userId)}>
-      Great, let's get started!
+      {t("routing.welcome.button")}
     </Button>
   );
 };

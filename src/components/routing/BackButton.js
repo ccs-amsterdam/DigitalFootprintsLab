@@ -1,8 +1,10 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Button, Icon } from "semantic-ui-react";
 
 const BackButton = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   // make this a mini menu: home, explore dropdown, donate dropdown
 
@@ -25,7 +27,7 @@ const BackButton = () => {
         }}
         onClick={() => navigate("/datasquare")}
       >
-        Back to overview
+        {t("routing.buttons.back")}
       </Button>
     </div>
   );

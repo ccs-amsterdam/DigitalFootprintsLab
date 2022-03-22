@@ -1,5 +1,6 @@
 import db from "apis/db";
 import React, { useState, useEffect } from "react";
+import { useTranslation, Trans } from "react-i18next";
 import {
   Button,
   Checkbox,
@@ -18,6 +19,7 @@ const ConfirmDonation = () => {
   const [status, setStatus] = useState([]);
   const [loading, setLoading] = useState(false);
   const [testUser, setTestUser] = useState(null);
+  const { t } = useTranslation();
 
   const onClick = async () => {
     setLoading(true);
@@ -50,21 +52,20 @@ const ConfirmDonation = () => {
       <Grid centered stackable verticalAlign="middle" style={{ height: "100%" }}>
         <Grid.Column width={8} stretched>
           <Header as="h2" style={{ textAlign: "center" }}>
-            Please confirm that you understand and agree with the following conditions
+            {t("donate.confirm.header")}
           </Header>
           <br />
           <ConsentForm setConsent={setConsent} />
           <br />
           {testUser ? (
             <Header textAlign="center" color="orange">
-              You are logged in as a test user, so your real data won't be submitted. The server
-              will only see what types of data you submitted, and how many items
+              {t("donate.confirm.testuser")}
             </Header>
           ) : (
             <br />
           )}
           <Button primary disabled={!consent || loading} onClick={onClick}>
-            Donate your data
+            {t("donate.confirm.button")}
           </Button>
           <List>
             {status.map((file) => {
@@ -76,13 +77,19 @@ const ConfirmDonation = () => {
                   />
                   {file.success ? (
                     <List.Content>
-                      Donated {file.n} <b>{file.filename}</b> items{" "}
-                      <i style={{ color: "darkgrey" }}></i>
+                      <Trans
+                        i18nKey="donate.confirm.donated.success"
+                        values={{ n: file.n, filename: file.filename }}
+                        components={{ b: <b /> }}
+                      />
                     </List.Content>
                   ) : (
                     <List.Content>
-                      Failed to submit <b>{file.filename} </b> data. Please try again, and contact
-                      the researchers or survey company if the problem persists
+                      <Trans
+                        i18nKey="donate.confirm.donated.failure"
+                        values={{ filename: file.filename }}
+                        components={{ b: <b /> }}
+                      />
                     </List.Content>
                   )}
                 </List.Item>
@@ -90,7 +97,7 @@ const ConfirmDonation = () => {
             })}
             <Segment style={{ border: "0", boxShadow: "none", marginTop: "20px" }}>
               <Dimmer inverted active={loading}>
-                <Loader>Uploading files</Loader>
+                <Loader>{t("donate.confirm.loader")}</Loader>
               </Dimmer>
             </Segment>{" "}
           </List>
@@ -100,13 +107,11 @@ const ConfirmDonation = () => {
   );
 };
 
-const consentItems = [
-  "I have seen that I can search and delete items from my data, and understand that all items that have not been deleted will be submitted for donation",
-  "I have seen the explanation of how and for what purpose my data will be used, and give my consent to use it for this purpose",
-];
+const consentItems = ["donate.confirm.consent1", "donate.confirm.consent2"];
 
 const ConsentForm = ({ setConsent }) => {
   const [consentArray, setConsentArray] = useState([]);
+  const { t } = useTranslation();
 
   useEffect(() => {
     // could not be done directly in useState, but eventually this should be editable
@@ -125,7 +130,7 @@ const ConsentForm = ({ setConsent }) => {
         return (
           <ConsentItem
             key={item}
-            content={item}
+            content={t(item)}
             consent={consentArray[i]}
             setConsent={(checked) => {
               consentArray[i] = checked;

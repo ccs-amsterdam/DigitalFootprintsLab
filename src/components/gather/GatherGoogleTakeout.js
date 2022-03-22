@@ -13,6 +13,7 @@ import googleTakeoutInstruction from "./googleTakeoutInstruction.js";
 import { DropZone, miseEnPlace } from "data-donation-importers";
 import cookbook from "./googleTakeoutCookbook";
 import useLogger from "util/useLogger";
+import { Trans, useTranslation } from "react-i18next";
 
 /**
  * The modal that opens when the Google_Takeout Gather card is clicked.
@@ -22,7 +23,8 @@ const GatherGoogleTakeout = ({ children, setLoading }) => {
   const log = useLogger("Gather GoogleTakeout");
   const [open, setOpen] = useState(false);
   const [files, setFiles] = useState([]);
-  const language = "en";
+  const { t, i18n } = useTranslation();
+  const language = i18n?.language.split("-")[0];
 
   useEffect(() => {
     if (files.length === 0) return;
@@ -48,17 +50,17 @@ const GatherGoogleTakeout = ({ children, setLoading }) => {
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions style={{ textAlign: "center" }}>
-        <Header as="h2">Final step</Header>
+        <Header as="h2">{t("home.gather.finalStep.header")}</Header>
 
         <List>
           <List.Item>
-            Open your <b>downloads folder</b>
+            <Trans i18nKey="home.gather.finalStep.step1" components={{ b: <b /> }} />
           </List.Item>
           <List.Item>
-            Find the <b>Google Takeout folder or zip file</b>
+            <Trans i18nKey="home.gather.finalStep.step2" components={{ b: <b /> }} />
           </List.Item>
           <List.Item>
-            <b>Click and hold</b> the folder/file, and <b>drag</b> it into the blue field below
+            <Trans i18nKey="home.gather.finalStep.step3" components={{ b: <b /> }} />
           </List.Item>
         </List>
 

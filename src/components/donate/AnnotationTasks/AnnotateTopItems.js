@@ -3,6 +3,7 @@ import db from "apis/db";
 import { Button, Grid, Header, Popup, List, Dropdown } from "semantic-ui-react";
 
 import ignoreIds from "data/youtube_ignore_ids.json";
+import { useTranslation } from "react-i18next";
 
 // For now we'll just make this a fixed task
 const top = 10;
@@ -11,15 +12,8 @@ const field = "channel";
 const detail = "title";
 const question = {
   question: "Some smart question to measure whether the channel covers news",
-  answers: [
-    "Strongly Disagree",
-    "Disagree",
-    "Somewhat Disagree",
-    "Neither Agree nor Disagree",
-    "Somewhat Agree",
-    "Agree",
-    "Strongly Agree",
-  ],
+  question_i18n: "donate.annotate.question",
+  answers: ["not at all", "very little", "somewhat", "quite a bit", "a great deal"],
 };
 const ignoreIdsMap = ignoreIds.ids.reduce((obj, id) => {
   obj[id] = true;
@@ -29,6 +23,7 @@ const ignoreIdsMap = ignoreIds.ids.reduce((obj, id) => {
 const AnnotateTopItems = ({ setDone }) => {
   const [data, setData] = useState(null);
   const [status, setStatus] = useState("idle");
+  const { t } = useTranslation();
 
   useEffect(() => {
     prepareData(top, dataName, field, detail, setData, setDone, setStatus);
@@ -88,7 +83,7 @@ const AnnotateTopItems = ({ setDone }) => {
           <b>LIST</b>
         </Grid.Column>
         <Grid.Column width={7}>
-          <b>{question.question.toUpperCase()}</b>
+          <b>{t(question.question_i18n).toUpperCase()}</b>
         </Grid.Column>
       </Grid.Row>
 
@@ -133,6 +128,7 @@ const AnnotateTopItems = ({ setDone }) => {
 const ItemForm = ({ data, setData, field, value, question }) => {
   const item = data.items.find((item) => item.name === value);
   const answer = data.annotations[field][value].news_score;
+  const { t } = useTranslation();
 
   return (
     <Grid.Row style={{ paddingTop: "7px", paddingBottom: "0px" }}>
@@ -168,7 +164,7 @@ const ItemForm = ({ data, setData, field, value, question }) => {
                   </Button>
                 }
               >
-                {a}
+                {t(`answers.${a}`)}
               </Popup>
             );
           })}
