@@ -20,6 +20,20 @@
       "3": "mostly someone else"
     }
   },
+  "common": {
+    "channel": "channel",
+    "channels": "channels",
+    "date": "date",
+    "domain": "domain",
+    "domains": "domains",
+    "list": "list",
+    "query": "query",
+    "title": "title",
+    "top": "top",
+    "total": "total",
+    "visit": "visit",
+    "visits": "visits"
+  },
   "dataTypes": {
     "browsing": {
       "description": "What pages did you visit?",
@@ -37,9 +51,12 @@
   "donate": {
     "annotate": {
       "continue": "Continue with donation",
+      "dropdown": "Search for a channel or the name of a video from this channel",
       "header": "Please answer the following questions",
+      "p1": "Below you see a list of <b>YouTube channels</b>. To help us understand whether and how YouTube is sometimes used as a source of news, please let us know to what extent you yourself consider these channels to be informative.",
+      "p2": "<b>Do any other news related channels come to mind that are not listed here?</b> If so, please select them in the following search box. Selected channels will be added to the table above.",
       "pleaseanswer": "Please answer all questions to contine",
-      "question": "Some smart question to measure whether the channel covers news"
+      "question": "Does this channel cover content about news and current affairs?"
     },
     "confirm": {
       "button": "Donate your data",

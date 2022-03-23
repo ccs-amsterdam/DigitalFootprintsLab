@@ -19,6 +19,20 @@
       "3": "voornamelijk van iemand anders"
     }
   },
+  "common": {
+    "channel": "kanaal",
+    "channels": "kanalen",
+    "date": "datum",
+    "domain": "domein",
+    "domains": "domeinen",
+    "list": "lijst",
+    "query": "zoekterm",
+    "title": "titel",
+    "top": "top",
+    "total": "totaal",
+    "visit": "bezocht",
+    "visits": "bezocht"
+  },
   "dataTypes": {
     "browsing": {
       "description": "Welke pagina's heb je bezocht?",
@@ -36,9 +50,12 @@
   "donate": {
     "annotate": {
       "continue": "Ga verder met doneren",
+      "dropdown": "",
       "header": "Beantwoord de volgende vragen astublieft",
+      "p1": "",
+      "p2": "",
       "pleaseanswer": "Beantwoord alle vragen om verder te gaan",
-      "question": "Een slimme vraag om te meten of het kanaal nieuws dekt"
+      "question": "In welke mate gaat de content van dit kanaal over nieuws of actualiteiten?"
     },
     "confirm": {
       "button": "Doneer je gegevens",
@@ -60,7 +77,7 @@
     "remove": {
       "button": "Zoekopdracht",
       "header": "Zoek naar items om te verwijderen",
-      "list1": "Typ één zoekterm per rij",
+      "list1": "Geef één zoekterm per rij",
       "list2": "De zoekterm <span>geheim</span> zal ook <span>www.heelgeheim.nl</span> vinden",
       "list3": "Zoektermen moeten minimaal 3 tekens lang zijn"
     },
@@ -116,7 +133,7 @@
       },
       "removeCard": {
         "name": "Gegevens uitsluiten",
-        "subname": "Gebruik trefwoorden om gegevens te zoeken en te verwijderen die u liever niet deelt"
+        "subname": "Gebruik trefwoorden om gegevens die u liever niet deelt te zoeken en te verwijderen"
       },
       "title": "Doneren"
     },
