@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/DigitalFootprintsLab/static/css/main.54320b08.css",
-    "main.js": "/DigitalFootprintsLab/static/js/main.b317c34a.js",
+    "main.js": "/DigitalFootprintsLab/static/js/main.34c6429f.js",
     "static/media/brand-icons.svg": "/DigitalFootprintsLab/static/media/brand-icons.6729d29753e000c17489.svg",
     "static/media/background.jpeg": "/DigitalFootprintsLab/static/media/background.eb5e36bfc64c004fd2c0.jpeg",
     "static/media/icons.svg": "/DigitalFootprintsLab/static/media/icons.62d9dae4e0040e81c980.svg",
@@ -27,11 +27,12 @@
     "static/media/GoogleTakeout_download.png": "/DigitalFootprintsLab/static/media/GoogleTakeout_download.c8f6db21e987e9cca853.png",
     "static/media/outline-icons.woff2": "/DigitalFootprintsLab/static/media/outline-icons.687a4990ea22bb1a49d4.woff2",
     "index.html": "/DigitalFootprintsLab/index.html",
+    "static/media/getFetch.cjs": "/DigitalFootprintsLab/static/media/getFetch.c780682470504fffbd04.cjs",
     "main.54320b08.css.map": "/DigitalFootprintsLab/static/css/main.54320b08.css.map",
-    "main.b317c34a.js.map": "/DigitalFootprintsLab/static/js/main.b317c34a.js.map"
+    "main.34c6429f.js.map": "/DigitalFootprintsLab/static/js/main.34c6429f.js.map"
   },
   "entrypoints": [
     "static/css/main.54320b08.css",
-    "static/js/main.b317c34a.js"
+    "static/js/main.34c6429f.js"
   ]
 }

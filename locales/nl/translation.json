@@ -1,0 +1,188 @@
+{
+  "answers": {
+    "howmuch": {
+      "1": "heel weinig",
+      "2": "weinig",
+      "3": "matig",
+      "4": "veel",
+      "5": "heel veel"
+    },
+    "missing": {
+      "1": "niks ontbreekt",
+      "2": "iets ontbreekt",
+      "3": "veel ontbreekt",
+      "4": "meeste ontbreekt"
+    },
+    "otherusers": {
+      "1": "alleen van mij",
+      "2": "voornamelijk van mij",
+      "3": "voornamelijk van iemand anders"
+    }
+  },
+  "dataTypes": {
+    "browsing": {
+      "description": "Welke pagina's heb je bezocht?",
+      "label": "Browsen"
+    },
+    "search": {
+      "description": "Waar heb je naar gezocht?",
+      "label": "Zoeken"
+    },
+    "youtube": {
+      "description": "Kanalen en video's",
+      "label": "Youtube"
+    }
+  },
+  "donate": {
+    "annotate": {
+      "continue": "Ga verder met doneren",
+      "header": "Beantwoord de volgende vragen astublieft",
+      "pleaseanswer": "Beantwoord alle vragen om verder te gaan",
+      "question": "Een slimme vraag om te meten of het kanaal nieuws dekt"
+    },
+    "confirm": {
+      "button": "Doneer je gegevens",
+      "consent1": "Ik heb gezien dat ik items uit mijn gegevens kan zoeken en verwijderen, en begrijp dat alle items die niet zijn verwijderd worden ingediend voor donatie",
+      "consent2": "Ik heb de uitleg gezien hoe en voor welk doel mijn gegevens worden gebruikt, en geef toestemming hiervoor",
+      "donated": {
+        "failure": "<b>{{filename}}</b> kunnen niet worden ingediend. Probeer het opnieuw en neem contact op met de onderzoekers of het onderzoeksbureau als het probleem aanhoudt",
+        "success": "{{n}} <b>{{filename}}</b> items gedoneerd"
+      },
+      "header": "Bevestig dat u de volgende voorwaarden begrijpt en ermee akkoord gaat:",
+      "loader": "Bestanden uploaden",
+      "testuser": "Je bent ingelogd als testgebruiker, dus je echte gegevens worden niet ingediend. De server ziet alleen welke soorten gegevens je hebt ingediend en hoeveel items"
+    },
+    "info": {
+      "continue": "Ga verder met doneren",
+      "header": "Over het doneren van uw gegevens",
+      "p1": "We moeten de deelnemers waarschijnlijk een verhaaltje of iets vertellen over hoe en met welk doel we hun gegevens zullen gebruiken. Voor de daadwerkelijke donatie (in de stap 'donatie voltooien') zullen mensen dan moeten verifiëren dat ze dit hebben gezien en toestemming geven."
+    },
+    "remove": {
+      "button": "Zoekopdracht",
+      "header": "Zoek naar items om te verwijderen",
+      "list1": "Typ één zoekterm per rij",
+      "list2": "De zoekterm <span>geheim</span> zal ook <span>www.heelgeheim.nl</span> vinden",
+      "list3": "Zoektermen moeten minimaal 3 tekens lang zijn"
+    },
+    "step1": {
+      "description": "Wat doneer je?",
+      "title": "Informed consent"
+    },
+    "step2": {
+      "description": "Zijn dit uw gegevens?",
+      "title": "Bevestig gegevens"
+    },
+    "step3": {
+      "description": "Een laatste verzoek",
+      "title": "Voordat je doneert"
+    },
+    "step4": {
+      "description": "De gegevensdonatie afronden",
+      "title": "Verstuur donatie"
+    },
+    "validate": {
+      "continue": "DOORGAAN",
+      "header1": "Om uw gegevens voor onderzoek te gebruiken, is het belangrijk om te weten hoe nauwkeurig deze zijn. Help ons alstublieft door een paar vragen over uw gegevens te beantwoorden",
+      "header2": "Links zie je de top items in je <i>{{dataname}}</i> data. Beantwoord de volgende vragen om ons te helpen begrijpen hoe nauwkeurig deze gegevens zijn.",
+      "question1": "Heb je het gevoel dat je deze digitale voetafdruk herkent als de jouwe?",
+      "question2": "Zijn de grootste items inderdaad de items die je vaak bezoekt?",
+      "question3": "Zijn er items waarvan je weet dat je ze vaak hebt bezocht, maar die hier niet worden weergegeven?",
+      "question4": "Zijn deze gegevens alleen van jou, of gebruikt iemand anders jouw apparaat of account?"
+    }
+  },
+  "explore": {
+    "statistics": {
+      "header": "Statistieken"
+    }
+  },
+  "home": {
+    "deleteButton": {
+      "buttonLabel": "Verwijder data",
+      "content1": "Wilt u alle verzamelde gegevens uit de browser verwijderen?",
+      "content2": "Houd er rekening mee dat alle gegevens die je hebt gedownload nog steeds op je computer staan, dus misschien wil je die ook verwijderen",
+      "header": "Gegevens uit browser verwijderen"
+    },
+    "donate": {
+      "description": "Draag bij aan academisch onderzoek met uw data",
+      "donateCard": {
+        "name": "Doneren",
+        "status": {
+          "any": "Sommige datatypes zijn nog niet (succesvol) verzameld. U kunt doorgaan, maar er zullen enkele gegevens ontbreken",
+          "none": "Ga naar de kolom <b>Verzamelen</b> voor instructies over het verzamelen van uw digitale voetafdrukken",
+          "notReady": "<b>{{name}}</b> gegevens",
+          "ready": "<b>{{name}}</b> gegevens klaar"
+        },
+        "subname": "Hier kunt u meer te weten komen over waar uw gegevens voor worden gebruikt en deze veilig doneren"
+      },
+      "removeCard": {
+        "name": "Gegevens uitsluiten",
+        "subname": "Gebruik trefwoorden om gegevens te zoeken en te verwijderen die u liever niet deelt"
+      },
+      "title": "Doneren"
+    },
+    "explore": {
+      "description": "Deze stap is optioneel, maar ben je niet nieuwsgierig?",
+      "exploreCard": {
+        "missing": "Gegevens nog niet verzameld",
+        "status": "Verzameld <b>{{date}}</b> van <b>{{source}}</b>"
+      },
+      "title": "Verkennen"
+    },
+    "gather": {
+      "description": "Klik op een kaart om uw gegevens te verzamelen",
+      "finalStep": {
+        "header": "Laatste stap",
+        "step1": "Open je <b>downloadmap</b>",
+        "step2": "Zoek de <b>gedownloade map of het gedownloade bestand</b>",
+        "step3": "<b>Klik en houd</b> de map/het bestand vast en <b>sleep</b> het naar het blauwe veld hieronder"
+      },
+      "gatherCard": {
+        "click": "Klik hier om de gegevens te verzamelen die Google heeft over uw <b>browse-</b> , <b>zoek-</b> en <b>YouTube</b> -geschiedenis",
+        "empty": "<b>{{name}}</b> geschiedenis",
+        "failedGet": "Kan <b>{{name}}</b> niet ophalen",
+        "failedUpdate": "",
+        "failedUpdated": "Kan <b>{{name}}</b> niet updaten",
+        "success": "<b>{{name}}</b> geschiedenis"
+      },
+      "title": "Verzamelen"
+    },
+    "navi": {
+      "first": {
+        "content1": "Klik op een van de kaarten in de <b>Verzamelen<b/> kolom. Je krijgt dan instructies te zien om je data te downloaden en in deze applicatie in te laden.",
+        "content2": "Op dit moment zal je data alleen <b>op je eigen apparaat opgeslagen worden<b/>. Je kunt dan eerst je data verkennen, en eventueel data verwijderen die je niet wilt delen, alvorens je doneert.",
+        "header1": "Begin met het verzamelen van data"
+      },
+      "second": {
+        "content1": "Ten eerste kun je de data <b>Verkennen</b>. Deze stap is optioneel, dus als je hier alleen bent om te doneren dan kun je dit ook overslaan.",
+        "content2": "Ten tweede kun je de data <b>Doneren</b>. Klik hiervoor op de <b>Doneren</b> kaart.",
+        "header2": "Nu je data binnen is, kun je twee dingen doen"
+      }
+    }
+  },
+  "routing": {
+    "buttons": {
+      "back": "Terug naar het overzicht",
+      "donate": "Doneren",
+      "remove": "Gegevens uitsluiten"
+    },
+    "leavemessage": "Weet je zeker dat je wilt vertrekken? Alle gegevens gaan verloren.",
+    "welcome": {
+      "button": "Geweldig, laten we beginnen!",
+      "header": "Welkom bij het Digital Footprints Lab!",
+      "notpersistent": {
+        "header": "Gebruik indien mogelijk een andere browser",
+        "p": "Deze applicatie werkt het beste in recente versies van Chrome, Safari, Edge, Firefox en Opera. Voor sommige browsers, zoals Firefox, werkt het beter als het niet in de privémodus staat. Je kunt de applicatie nog steeds gebruiken met je huidige browser, maar je gegevens worden niet opgeslagen als je weggaat. Maak je echter geen zorgen! u krijgt een waarschuwing wanneer u probeert te vernieuwen of de pagina verlaat, zodat dit niet gemakkelijk per ongeluk kan gebeuren."
+      },
+      "p1": "Met deze applicatie kun je je eigen digitale sporen verzamelen en verkennen. Alle data wordt opgeslagen en verwerkt op je eigen device, dus <b>niet in aanraking met internet</b> .",
+      "p2": "U kunt een selectie van deze gegevens ook doneren voor wetenschappelijk onderzoek. Deze gegevens worden alleen gebruikt voor <b>niet-commercieel onderzoek</b> door een selecte groep wetenschappers, voor onderzoek dat is goedgekeurd door het ethisch bestuur van hun universiteit.",
+      "subheader1": "Verzamel en verken uw digitale voetafdruk",
+      "subheader2": "Doneer data ter ondersteuning van wetenschappelijk onderzoek",
+      "testuser": {
+        "button": "Log in als testgebruiker",
+        "header": "INLOGGEN ALS TESTGEBRUIKER",
+        "p1": "De link die u naar deze website bracht, bevatte geen gebruikers-ID. Als u deelneemt aan een onderzoek, zou dit niet mogelijk moeten zijn en dient u contact op te nemen met de onderzoekers of het onderzoeksbureau.",
+        "p2": "Als testgebruiker worden uw echte gegevens niet naar een server gestuurd. Als u de stappen voor gegevensdonatie voltooit, ontvangt de server een dummy-inzending met nepgegevens."
+      }
+    }
+  }
+}

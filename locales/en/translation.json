@@ -1,0 +1,187 @@
+{
+  "answers": {
+    "a great deal": "a great deal",
+    "howmuch": {
+      "1": "very little",
+      "2": "a little",
+      "3": "somewhat",
+      "4": "a lot",
+      "5": "a great deal"
+    },
+    "missing": {
+      "1": "none missing",
+      "2": "some missing",
+      "3": "quite a lot missing",
+      "4": "most missing"
+    },
+    "otherusers": {
+      "1": "only me",
+      "2": "mostly me",
+      "3": "mostly someone else"
+    }
+  },
+  "dataTypes": {
+    "browsing": {
+      "description": "What pages did you visit?",
+      "label": "Browsing"
+    },
+    "search": {
+      "description": "What did you search for?",
+      "label": "Search"
+    },
+    "youtube": {
+      "description": "Channels and videos",
+      "label": "Youtube"
+    }
+  },
+  "donate": {
+    "annotate": {
+      "continue": "Continue with donation",
+      "header": "Please answer the following questions",
+      "pleaseanswer": "Please answer all questions to contine",
+      "question": "Some smart question to measure whether the channel covers news"
+    },
+    "confirm": {
+      "button": "Donate your data",
+      "consent1": "I have seen that I can search and delete items from my data, and understand that all items that have not been deleted will be submitted for donation",
+      "consent2": "I have seen the explanation of how and for what purpose my data will be used, and give my consent to use it for this purpose",
+      "donated": {
+        "failure": "Failed to submit <b>{{filename}}</b> data. Please try again, and contact the researchers or survey company if the problem persists",
+        "success": "Donated {{n}} <b>{{filename}}</b> items"
+      },
+      "header": "Please confirm that you understand and agree with the following conditions",
+      "loader": "Uploading files",
+      "testuser": "You are logged in as a test user, so your real data won't be submitted. The server will only see what types of data you submitted, and how many items"
+    },
+    "info": {
+      "continue": "Continue with donation",
+      "header": "About donating your data",
+      "p1": "We probably need to tell participants a little story or something about how and for what purpose we'll use their data. Before the actual donation (in the 'Complete donation') step people will then need to verify that they have seen this and give consent."
+    },
+    "remove": {
+      "button": "Search",
+      "header": "Filter Terms",
+      "list1": "Type one search term per row",
+      "list2": "<span>secret</span> will also match <span>www.supersecret.com</span>",
+      "list3": "Terms needs to be at least 3 characters long"
+    },
+    "step1": {
+      "description": "What are you donating?",
+      "title": "Informed consent"
+    },
+    "step2": {
+      "description": "Is this your data?",
+      "title": "Confirm data"
+    },
+    "step3": {
+      "description": "final request",
+      "title": "Before you donate"
+    },
+    "step4": {
+      "description": "Finalize the data donation",
+      "title": "Complete donation"
+    },
+    "validate": {
+      "continue": "CONTINUE",
+      "header1": "To use your data for research, it's important to know how accurate it is. Please help us by answering a few questions about your data",
+      "header2": "On the left you see the top items in your <i>{{dataname}}</i> data. Please answer the following questions to help us understand how accurate this data.",
+      "question1": "Do you feel that you recognize this digital footprint as your own?",
+      "question2": "Are the largest items indeed the items you often visit?",
+      "question3": "Are there any items that you know you visited often, but are not shown here?",
+      "question4": "Is this data only yours, or does someone else use your device or account?"
+    }
+  },
+  "explore": {
+    "statistics": {
+      "header": "Statistics"
+    }
+  },
+  "home": {
+    "deleteButton": {
+      "buttonLabel": "Delete data",
+      "content1": "Do you want to delete all the gathered data from the browser?",
+      "content2": "Note that any data you downloaded will still be on your computer, so you might want to delete that as well",
+      "header": "Delete data from browser"
+    },
+    "donate": {
+      "description": "Support academic research by sharing your data",
+      "donateCard": {
+        "name": "Donate",
+        "status": {
+          "any": "Some of the data types are not yet (successfull) gathered. You can continue, but some data will be missing",
+          "notReady": "<b>{{name}}</b> data",
+          "ready": "<b>{{name}}</b> data ready"
+        },
+        "subname": "Here you can learn more about what your data will be used for, and safely donate it"
+      },
+      "removeCard": {
+        "name": "Exclude data",
+        "subname": "Use keywords to search and remove any data that you prefer not to share"
+      },
+      "title": "Donate"
+    },
+    "explore": {
+      "description": "This step is optional, but aren't you curious?",
+      "exploreCard": {
+        "missing": "Data not yet gathered",
+        "status": "Gathered <b>{{date}}</b> from <b>{{source}}</b>"
+      },
+      "title": "Explore"
+    },
+    "gather": {
+      "description": "Click a card to gather your data",
+      "finalStep": {
+        "header": "Final step",
+        "step1": "Open your <b>downloads folder</b>",
+        "step2": "Find the <b>downloaded folder or file</b>",
+        "step3": "<b>Click and hold</b> the folder/file, and <b>drag</b> it into the blue field below"
+      },
+      "gatherCard": {
+        "click": "Click here to gather the data that Google has about your <b>browsing</b>, <b>search</b> and <b>Youtube</b> history",
+        "empty": "<b>{{name}}</b> history",
+        "failedGet": "Failed to get <b>{{name}}</b> history",
+        "failedUpdate": "",
+        "success": "Gathered <b>{{name}}</b> history"
+      },
+      "title": "Gather"
+    },
+    "navi": {
+      "first": {
+        "content1": "The first step is to click on a card in the <b>Gather</b> column on the left. This will walk you through the steps for gathering this data and loading it into this application.",
+        "content2": "At this point, <b>the data will only be stored on your own device</b>. You can then first use this application to explore your data, and you can also choose to exlude data that you do not want to donate.",
+        "header1": "Get started by gathering some data"
+      },
+      "second": {
+        "content1": "First, you can explore</b> your data. This step is optional, so if you just want to donate your data you can skip it.",
+        "content2": "Second, you can <b>donate</b> you data. If you click the donate card, we will walk you through the steps. You can also first click the <b>exclude data</b> card, which lets you search and delete items from your data that you don't want to share.",
+        "header2": "Now that you have data, you can do two things"
+      }
+    }
+  },
+  "routing": {
+    "buttons": {
+      "back": "Back to overview",
+      "donate": "Donate",
+      "remove": "Exclude data"
+    },
+    "leavemessage": "Are you sure you want to leave? All data will be lost.",
+    "welcome": {
+      "button": "Great, let's get started!",
+      "header": "Welcome to the Digital Footprints Lab!",
+      "notpersistent": {
+        "header": "If possible, use a different browser",
+        "p": "This application works best in recent versions of Chrome, Safari, Edge, Firefox and Opera. For some browsers, like Firefox, it works better when not in private mode. You can still use the application with your current browser, but your data won't be stored if you leave. Don't worry though! you'll get a warning when you try to refresh or leave the page so this doesn't easily happen by accident."
+      },
+      "p1": "This application let's you collect and explore your own digital traces. All the data is stored and processed on your own device, so it <b>doesn't touch the internet</b>.",
+      "p2": "You can also donate a selection of this data for scientific research. This data will only be used for <b>non-commercial research</b> by a select group of academics, for research that is approved by the ethical board of their university.",
+      "subheader1": "Gather and explore your digital footprints",
+      "subheader2": "Donate data to support academic research",
+      "testuser": {
+        "button": "Log in as test user",
+        "header": "LOGGING IN AS TEST USER",
+        "p1": "The link that brought you to this website did not contain a user ID. If you are participating in a study, this should not be possible, and you should contact the researchers or survey company.",
+        "p2": "As a test user your real data will not be send to a server. If you complete the data donation steps, the server will receive a dummy submission with fake data."
+      }
+    }
+  }
+}
