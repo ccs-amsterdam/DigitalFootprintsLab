@@ -48,16 +48,10 @@ const Navi = () => {
 const NaviHeader = ({ statuses, t }) => {
   if (statuses && statuses.length > 0)
     return (
-      <Modal.Header style={{ fontSize: "2.5em" }}>
-        {t("home.navi.first.header1", "Now that you have data, you can do two things")}
-      </Modal.Header>
+      <Modal.Header style={{ fontSize: "2.5em" }}>{t("home.navi.second.header")}</Modal.Header>
     );
 
-  return (
-    <Modal.Header style={{ fontSize: "2.5em" }}>
-      {t("home.navi.second.header2", "Get started by gathering some data")}
-    </Modal.Header>
-  );
+  return <Modal.Header style={{ fontSize: "2.5em" }}>{t("home.navi.first.header")}</Modal.Header>;
 };
 
 const NaviContent = ({ statuses, t }) => {

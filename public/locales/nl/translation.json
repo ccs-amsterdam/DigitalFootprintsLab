@@ -31,7 +31,10 @@
     "top": "top",
     "total": "totaal",
     "visit": "bezocht",
-    "visits": "bezocht"
+    "visits": "bezocht",
+    "search": "zoek",
+    "searches": "zoekopdrachten",
+    "queries": "zoektermen"
   },
   "dataTypes": {
     "browsing": {
@@ -167,12 +170,12 @@
       "first": {
         "content1": "Klik op een van de kaarten in de <b>Verzamelen<b/> kolom. Je krijgt dan instructies te zien om je data te downloaden en in deze applicatie in te laden.",
         "content2": "Op dit moment zal je data alleen <b>op je eigen apparaat opgeslagen worden<b/>. Je kunt dan eerst je data verkennen, en eventueel data verwijderen die je niet wilt delen, alvorens je doneert.",
-        "header1": "Begin met het verzamelen van data"
+        "header": "Begin met het verzamelen van data"
       },
       "second": {
         "content1": "Ten eerste kun je de data <b>Verkennen</b>. Deze stap is optioneel, dus als je hier alleen bent om te doneren dan kun je dit ook overslaan.",
         "content2": "Ten tweede kun je de data <b>Doneren</b>. Klik hiervoor op de <b>Doneren</b> kaart.",
-        "header2": "Nu je data binnen is, kun je twee dingen doen"
+        "header": "Nu je data binnen is, kun je twee dingen doen"
       }
     }
   },

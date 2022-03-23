@@ -32,7 +32,10 @@
     "top": "top",
     "total": "total",
     "visit": "visit",
-    "visits": "visits"
+    "visits": "visits",
+    "search": "search",
+    "searches": "searches",
+    "queries": "queries"
   },
   "dataTypes": {
     "browsing": {
@@ -166,12 +169,12 @@
       "first": {
         "content1": "The first step is to click on a card in the <b>Gather</b> column on the left. This will walk you through the steps for gathering this data and loading it into this application.",
         "content2": "At this point, <b>the data will only be stored on your own device</b>. You can then first use this application to explore your data, and you can also choose to exlude data that you do not want to donate.",
-        "header1": "Get started by gathering some data"
+        "header": "Get started by gathering some data"
       },
       "second": {
         "content1": "First, you can explore</b> your data. This step is optional, so if you just want to donate your data you can skip it.",
         "content2": "Second, you can <b>donate</b> you data. If you click the donate card, we will walk you through the steps. You can also first click the <b>exclude data</b> card, which lets you search and delete items from your data that you don't want to share.",
-        "header2": "Now that you have data, you can do two things"
+        "header": "Now that you have data, you can do two things"
       }
     }
   },
