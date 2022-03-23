@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Container, Button, Header, Segment, Table, Icon, Pagination } from "semantic-ui-react";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
+import { useTranslation } from "react-i18next";
+import transCommon from "util/transCommon";
 
 const propTypes = {
   /** The name of the table in DB */
@@ -119,6 +121,7 @@ const DataTable = ({ dashData, columns, selection, log, pagesize = 10 }) => {
 
 const PaginationTable = ({ data, columns, pages, pageChange, processDelete }) => {
   const [deleteIds, setDeleteIds] = useState([]);
+  const { t } = useTranslation();
 
   const createHeader = (columns) => {
     const columnsWithTrash = [{ name: "", width: 1 }, ...columns];
@@ -130,7 +133,7 @@ const PaginationTable = ({ data, columns, pages, pageChange, processDelete }) =>
           width={column?.width}
           style={{ top: "0px", position: "sticky", zIndex: "2", background: "white" }}
         >
-          {name}
+          {transCommon(name.toUpperCase(), t)}
         </Table.HeaderCell>
       );
     });

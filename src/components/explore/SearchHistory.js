@@ -65,7 +65,7 @@ const calcStatistics = (dashData, selection) => {
   );
 
   return [
-    { label: "Total searches", value: searches },
-    { label: "Top queries", value: top_queries },
+    { statistic: "Total", field: "searches", value: searches },
+    { statistic: "Top", field: "queries", value: top_queries },
   ];
 };

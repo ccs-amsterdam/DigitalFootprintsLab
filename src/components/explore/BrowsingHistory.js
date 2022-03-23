@@ -78,9 +78,9 @@ const calcStatistics = (dashData, selection) => {
     </List>
   );
 
-  const top_domains_label = domains > 1 ? "Top domains" : "Domain";
+  const top_domains_field = domains > 1 ? "domains" : "domain";
   return [
-    { label: "Visits", value: total_visits },
-    { label: top_domains_label, value: top_domains },
+    { statistic: "Total", field: "visits", value: total_visits },
+    { statistic: "Top", field: top_domains_field, value: top_domains },
   ];
 };

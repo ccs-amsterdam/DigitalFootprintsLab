@@ -86,9 +86,6 @@ const googleTakeoutInstruction_EN = {
         {
           text: "Do **NOT** close the window. Google will tell you that the export can take a long time, but with only these two items selected **exporting will usually take between a few seconds and a minute**",
         },
-        {
-          text: "Once ready, Google will take you to the download page (and also send you a link via Email)",
-        },
       ],
     },
     {
@@ -103,7 +100,114 @@ const googleTakeoutInstruction_EN = {
           text: "Click the download link, and store the file in a location where you can find it. Your browser might also automatically put it in your **Downloads** folder ",
         },
         {
-          text: "Finally, click the **Import Google Takeout** button below, and select the downloaded Google Takeout file. It should be named **takeout-some numbers.zip**",
+          text: `See below for the final step. You can click on the blue field and then select the file, often named **takeout-[some number].zip**`,
+        },
+        {
+          text: `**Watch out**. Some computers automatically unzip the file, and then you can't select it. In that case you can look up the folder on your computer and **drag** it into the blue field`,
+        },
+      ],
+    },
+  ],
+};
+
+const googleTakeoutInstruction_NL = {
+  title: "Google Takeout",
+  introduction: `Als je een Google account hebt, dan wordt een groot deel van je online activiteiten
+  automatisch gedocumenteerd. Google is wettelijk verplicht om jou deze data te geven als jij hier om vraagt, 
+  en hebben het daarom makkelijk gemaakt om deze data te downloaden. In de volgende stappen laten wij zien hoe je
+  (een onderdeel van) deze data kunt ophalen.`,
+  steps: [
+    {
+      title: "Stap 1",
+      description: "Ga naar Google Takeout",
+      items: [
+        { text: "Bezoek de [Google Takeout website](https://takeout.google.com)" },
+        { text: "Log indien nodig in" },
+        {
+          text: "Scroll naar de  **CREATE A NEW EXPORT** (EEN NIEUWE EXPORT MAKEN) tabel",
+          image: GoogleTakeout_deselect,
+        },
+      ],
+    },
+    {
+      title: "Stap 2",
+      description: "Selectie ongedaan maken",
+      items: [
+        {
+          text: "Klik **deselect all** (of **selectie van alle items ongedaan maken**) zodat alle checkboxes leeg zijn",
+          image: GoogleTakeout_deselect,
+          image_style: { objectFit: "cover", objectPosition: "0 90%", height: "120px" },
+        },
+        {
+          text: "Er zou nu aangegeven moeten zijn dat er 0 items geselecteerd zijn, en alle checkboxes zijn leeg",
+          image: GoogleTakeout_unselected,
+        },
+      ],
+    },
+    {
+      title: "Stap 3",
+      description: "Selecteer Chrome",
+      items: [
+        {
+          text: "Scroll naar beneden naar Chrome (items gesorteerd op alfabet) en klik op de checkbox",
+          image: GoogleTakeout_chrome,
+        },
+      ],
+    },
+    {
+      title: "Stap 4",
+      description: "Selecteer Youtube -> History",
+      items: [
+        {
+          text: "Scroll helemaal naar beneden naar **Youtube**",
+          image: GoogleTakeout_youtube,
+        },
+        {
+          text: "Klik op **All YouTube data included** (**alle youtube-gegevens inbegrepen**) om een popup te openen",
+        },
+        {
+          text: "Maak ook hier eerst de selectie ongedaan, en selecteer dan alleen **History** (**geschiedenis**)",
+          image: GoogleTakeout_youtube2,
+          image_style: { width: "50%", marginLeft: "25%" },
+        },
+      ],
+    },
+    {
+      title: "Stap 5",
+      description: "Maak een data export",
+      items: [
+        {
+          text: "Klik op de **Next step** (**Volgende stap**) knop rechtsonder",
+        },
+        {
+          text: "Je zou nu moeten zien dat bij **Select data to include** (**gewenste gegevens selecteren**) 2 items zijn geselecteerd",
+          image: GoogleTakeout_create,
+        },
+        {
+          text: "Open **Choose file type, frequency and destination** (**bestandstype, frequentie en bestemming kiezen**). Gebruik de standaard instellingen en klik op **Create export** (**Export maken**)",
+        },
+
+        {
+          text: "Sluit **NIET** het venster. Google zal je vertellen dat het lang kan duren voor de download klaar is, maar de twee items die we geselecteerd hebben **zijn vaak klaar ruim binnen een minuut**",
+        },
+      ],
+    },
+    {
+      title: "Stap 6",
+      description: "Download je data",
+      items: [
+        {
+          text: "Google zal je vanzelf naar de download pagina sturen. Als je de pagina per ongeluk afgesloten hebt, dan heb je ook een mail ontvangen met de link",
+          image: GoogleTakeout_download,
+        },
+        {
+          text: "Klik op de download link, en sla het bestand op op een lokatie die je makkelijk terug kunt vinden. Sommige browsers slaan het bestand vanzelf op in je **Downloads** folder",
+        },
+        {
+          text: `Zie onder voor de laatste stap. Je kunt op het blauwe veld klikken en het bestand selecteren, genaamd **takeout-[een getal].zip**`,
+        },
+        {
+          text: `**let op**. Sommige computers pakken het zip bestand vanzelf uit, waardoor je het niet kunt selecteren. In dat geval kun je in je verkenner de folder opzieken en deze naar het blauwe veld *slepen*`,
         },
       ],
     },
@@ -113,6 +217,7 @@ const googleTakeoutInstruction_EN = {
 const googleTakeoutInstruction = {
   default: googleTakeoutInstruction_EN,
   en: googleTakeoutInstruction_EN,
+  nl: googleTakeoutInstruction_NL,
 };
 
 export default googleTakeoutInstruction;

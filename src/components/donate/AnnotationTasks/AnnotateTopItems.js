@@ -3,7 +3,8 @@ import db from "apis/db";
 import { Button, Grid, Header, Popup, List, Dropdown } from "semantic-ui-react";
 
 import ignoreIds from "data/youtube_ignore_ids.json";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
+import transCommon from "util/transCommon";
 
 // For now we'll just make this a fixed task
 const top = 10;
@@ -74,20 +75,18 @@ const AnnotateTopItems = ({ setDone }) => {
       <Grid.Row>
         <Grid.Column width={10}>
           <p>
-            Below you see a list of <b>YouTube channels</b>. To help us understand whether and how
-            YouTube is sometimes used as a source of news, please let us know to what extent you
-            yourself consider these channels to be informative.
+            <Trans i18nKey="donate.annotate.p1" components={{ b: <b /> }} />
           </p>
         </Grid.Column>
       </Grid.Row>
       <Grid.Row style={{ background: "#737373", color: "white", borderRadius: "5px" }}>
         <Grid.Column width={7}>
-          <b>{field.toUpperCase()}</b>
+          <b>{transCommon(field.toUpperCase(), t)}</b>
         </Grid.Column>
         <Grid.Column width={2}>
-          <b>{detail.toUpperCase()}</b>
+          <b>{transCommon(detail.toUpperCase(), t)}</b>
           <br />
-          <b>LIST</b>
+          <b>{transCommon("LIST", t)}</b>
         </Grid.Column>
         <Grid.Column width={7}>
           <b>{t(question.question_i18n).toUpperCase()}</b>
@@ -111,16 +110,14 @@ const AnnotateTopItems = ({ setDone }) => {
         <Grid.Column width={10}>
           <br />
           <p>
-            <b>Do any other news related channels come to mind that are not listed here?</b> If so,
-            please select them in the following search box. Selected channels will be added to the
-            table above.
+            <Trans i18nKey="donate.annotate.p2" components={{ b: <b /> }} />
           </p>
           <Dropdown
             search
             fluid
             selection
             multiple
-            placeholder={"Search for a channel or the name of a video from this channel"}
+            placeholder={t("donate.annotate.dropdown")}
             options={data?.dropdownOptions || []}
             renderLabel={(item) => ({ content: item.value })}
             value={dropdownValues}

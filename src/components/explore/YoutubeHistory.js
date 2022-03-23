@@ -55,7 +55,7 @@ const calcStatistics = (dashData, selection) => {
   }
 
   top_queries = top_queries.slice(0, n_top_queries);
-  const top_queries_label = `Top channel${top_queries.length === 1 ? "" : "s"}`;
+  const top_queries_label = `channel${top_queries.length === 1 ? "" : "s"}`;
   top_queries = (
     <List>
       {top_queries.map((mv) => {
@@ -69,7 +69,7 @@ const calcStatistics = (dashData, selection) => {
   );
 
   return [
-    { label: "Total views", value: searches },
-    { label: top_queries_label, value: top_queries },
+    { statistic: "Total", field: "views", value: searches },
+    { statistic: "Top", field: top_queries_label, value: top_queries },
   ];
 };

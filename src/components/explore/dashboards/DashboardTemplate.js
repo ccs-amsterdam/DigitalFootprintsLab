@@ -14,6 +14,7 @@ import useLogger from "util/useLogger";
 import ExploreButtons from "components/routing/ExploreButtons";
 import DonateButtons from "components/routing/DonateButtons";
 import { useTranslation } from "react-i18next";
+import transCommon from "util/transCommon";
 
 const propTypes = {
   /** The name of the type of data to explore. */
@@ -128,12 +129,13 @@ const Statistics = ({ statistics }) => {
       </Header>
       <Item.Group>
         {statistics.map((statistic) => {
+          const s = transCommon(statistic.statistic, t);
+          const f = transCommon(statistic.field, t);
+          const label = s + " " + f;
           return (
-            <Item key={statistic.label}>
+            <Item key={label}>
               <Item.Content>
-                <Item.Header style={{ color: "white" }}>
-                  {statistic.label.replace("_", " ")}
-                </Item.Header>
+                <Item.Header style={{ color: "white" }}>{label}</Item.Header>
                 <Item.Description style={{ color: "white" }}>{statistic.value}</Item.Description>
               </Item.Content>
             </Item>
