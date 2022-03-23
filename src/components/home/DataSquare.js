@@ -12,6 +12,7 @@ import DonateCardColumn from "./DonateCardColumn";
 import DeleteDataButton from "./DeleteDataButton";
 import useLogger from "util/useLogger";
 import Navi from "./Navi";
+import ChangeLanguage from "./ChangeLanguage";
 
 const headerStyle = {
   color: "white",
@@ -56,6 +57,7 @@ const DataSquare = () => {
         <Grid.Row style={{ minHeight: "60px" }}>
           <Grid.Column width={15} textAlign="right">
             <Navi />
+            <ChangeLanguage />
             <DeleteDataButton />
           </Grid.Column>
         </Grid.Row>

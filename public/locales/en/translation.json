@@ -1,17 +1,24 @@
 {
   "answers": {
     "a great deal": "a great deal",
-    "most missing": "most missing",
-    "mostly me": "Mostly me",
-    "mostly someone else": "Mostly someone else",
-    "none missing": "none missing",
-    "not at all": "not at all",
-    "only me": "Only me",
-    "quite a bit": "quite a bit",
-    "quite a lot missing": "quite a lot missing",
-    "some missing": "some missing",
-    "somewhat": "somewhat",
-    "very little": "very little"
+    "howmuch": {
+      "1": "very little",
+      "2": "a little",
+      "3": "somewhat",
+      "4": "a lot",
+      "5": "a great deal"
+    },
+    "missing": {
+      "1": "none missing",
+      "2": "some missing",
+      "3": "quite a lot missing",
+      "4": "most missing"
+    },
+    "otherusers": {
+      "1": "only me",
+      "2": "mostly me",
+      "3": "mostly someone else"
+    }
   },
   "dataTypes": {
     "browsing": {
@@ -137,6 +144,18 @@
         "success": "Gathered <b>{{name}}</b> history"
       },
       "title": "Gather"
+    },
+    "navi": {
+      "first": {
+        "content1": "The first step is to click on a card in the <b>Gather</b> column on the left. This will walk you through the steps for gathering this data and loading it into this application.",
+        "content2": "At this point, <b>the data will only be stored on your own device</b>. You can then first use this application to explore your data, and you can also choose to exlude data that you do not want to donate.",
+        "header1": "Get started by gathering some data"
+      },
+      "second": {
+        "content1": "First, you can explore</b> your data. This step is optional, so if you just want to donate your data you can skip it.",
+        "content2": "Second, you can <b>donate</b> you data. If you click the donate card, we will walk you through the steps. You can also first click the <b>exclude data</b> card, which lets you search and delete items from your data that you don't want to share.",
+        "header2": "Now that you have data, you can do two things"
+      }
     }
   },
   "routing": {

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Button, Modal, Icon } from "semantic-ui-react";
+import { Trans, useTranslation } from "react-i18next";
 
 const Navi = () => {
   const [openModal, setOpenModal] = useState(false);
   const statuses = useSelector((state) => state.dataStatus);
+  const { t } = useTranslation();
 
   return (
     <>
@@ -30,8 +32,8 @@ const Navi = () => {
           />
         }
       >
-        <NaviHeader statuses={statuses} />
-        <NaviContent statuses={statuses} />
+        <NaviHeader statuses={statuses} t={t} />
+        <NaviContent statuses={statuses} t={t} />
 
         <Modal.Actions>
           <Button size="large" basic color="green" inverted onClick={() => setOpenModal(false)}>
@@ -43,34 +45,30 @@ const Navi = () => {
   );
 };
 
-const NaviHeader = ({ statuses }) => {
+const NaviHeader = ({ statuses, t }) => {
   if (statuses && statuses.length > 0)
     return (
       <Modal.Header style={{ fontSize: "2.5em" }}>
-        Now that you have data, you can do three things
+        {t("home.navi.first.header1", "Now that you have data, you can do two things")}
       </Modal.Header>
     );
 
   return (
-    <Modal.Header style={{ fontSize: "2.5em" }}>Get started by gathering some data</Modal.Header>
+    <Modal.Header style={{ fontSize: "2.5em" }}>
+      {t("home.navi.second.header2", "Get started by gathering some data")}
+    </Modal.Header>
   );
 };
 
-const NaviContent = ({ statuses }) => {
+const NaviContent = ({ statuses, t }) => {
   if (statuses && statuses.length > 0)
     return (
       <Modal.Content style={{ fontSize: "1.5em" }}>
         <p>
-          First, you can <b>explore</b> your data. This step is optional, so if you just want to
-          donate your data you can skip it.
+          <Trans i18nKey={"home.navi.second.content1"} components={{ b: <b /> }} />
         </p>
         <p>
-          Second, you can <b>donate</b> you data. If you click the donate card, we will walk you
-          through the steps. You can also first click the <b>exclude data</b> card, which lets you
-          search and delete items from your data that you don't want to share.
-        </p>
-        <p>
-          Finally, you can update your data or add new data by clicking a card in the Gather column.
+          <Trans i18nKey={"home.navi.second.content2"} components={{ b: <b /> }} />
         </p>
       </Modal.Content>
     );
@@ -78,13 +76,10 @@ const NaviContent = ({ statuses }) => {
   return (
     <Modal.Content style={{ fontSize: "1.5em" }}>
       <p>
-        The first step is to click on a card in the <b>Gather</b> column on the left. This will walk
-        you through the steps for gathering this data and loading it into this application.
+        <Trans i18nKey={"home.navi.first.content1"} components={{ b: <b /> }} />
       </p>
       <p>
-        At this point, <b>the data will only be stored on your own device</b>. You can then first
-        use this application to explore your data, and you can also choose to exlude data that you
-        do not want to donate.
+        <Trans i18nKey={"home.navi.first.content2"} components={{ b: <b /> }} />
       </p>
     </Modal.Content>
   );

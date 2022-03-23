@@ -79,23 +79,43 @@ const questions = [
   {
     question: "Do you feel that you recognize this digital footprint as your own?",
     question_i18n: "donate.validate.question1",
-    answers: ["not at all", "very little", "somewhat", "quite a bit", "a great deal"],
+    answers: ["very little", "a little", "somewhat", "a lot", "a great deal"],
+    answers_i18n: [
+      "answers.howmuch.1",
+      "answers.howmuch.2",
+      "answers.howmuch.3",
+      "answers.howmuch.4",
+      "answers.howmuch.5",
+    ],
   },
   {
     question: "Are the largest items indeed the items you often visit?",
-
     question_i18n: "donate.validate.question2",
-    answers: ["not at all", "very little", "somewhat", "quite a bit", "a great deal"],
+    answers: ["very little", "a little", "somewhat", "a lot", "a great deal"],
+    answers_i18n: [
+      "answers.howmuch.1",
+      "answers.howmuch.2",
+      "answers.howmuch.3",
+      "answers.howmuch.4",
+      "answers.howmuch.5",
+    ],
   },
   {
     question: "Are there any items that you know you visited often, but are not shown here?",
     question_i18n: "donate.validate.question3",
     answers: ["none missing", "some missing", "quite a lot missing", "most missing"],
+    answers_i18n: [
+      "answers.missing.1",
+      "answers.missing.2",
+      "answers.missing.3",
+      "answers.missing.4",
+    ],
   },
   {
     question: "Is this data only yours, or does someone else use your device or account?",
     question_i18n: "donate.validate.question4",
     answers: ["only me", "mostly me", "mostly someone else"],
+    answers_i18n: ["answers.otherusers.1", "answers.otherusers.2", "answers.otherusers.3"],
   },
 ];
 
@@ -208,7 +228,7 @@ const ValidationQuestion = ({ question, validation, setValidation, dataName }) =
   const { t } = useTranslation();
   const q = questions.find((q) => q.question === question) || {};
   const answers = q?.answers || [];
-  const trans_answers = answers.map((a) => t(`answers.${a}`));
+  const trans_answers = q?.answers_i18n ? q.answers_i18n.map((a) => t(a)) : [];
   const trans_question = q?.question_i18n ? t(q?.question_i18n) : "";
 
   return (

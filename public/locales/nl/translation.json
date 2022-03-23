@@ -1,17 +1,23 @@
 {
   "answers": {
-    "a great deal": "veel",
-    "most missing": "meest vermiste",
-    "mostly me": "meestal ik",
-    "mostly someone else": "Meestal iemand anders",
-    "none missing": "geen enkele ontbreekt",
-    "not at all": "helemaal niet",
-    "only me": "Alleen ik",
-    "quite a bit": "best wel",
-    "quite a lot missing": "er ontbreekt nogal wat",
-    "some missing": "sommige ontbreken",
-    "somewhat": "iets",
-    "very little": "zeer weinig"
+    "howmuch": {
+      "1": "heel weinig",
+      "2": "weinig",
+      "3": "matig",
+      "4": "veel",
+      "5": "heel veel"
+    },
+    "missing": {
+      "1": "niks ontbreekt",
+      "2": "iets ontbreekt",
+      "3": "veel ontbreekt",
+      "4": "meeste ontbreekt"
+    },
+    "otherusers": {
+      "1": "alleen van mij",
+      "2": "voornamelijk van mij",
+      "3": "voornamelijk van iemand anders"
+    }
   },
   "dataTypes": {
     "browsing": {
@@ -20,7 +26,7 @@
     },
     "search": {
       "description": "Waar heb je naar gezocht?",
-      "label": "Zoekopdracht"
+      "label": "Zoeken"
     },
     "youtube": {
       "description": "Kanalen en video's",
@@ -31,16 +37,16 @@
     "annotate": {
       "continue": "Ga verder met doneren",
       "header": "Beantwoord de volgende vragen astublieft",
-      "pleaseanswer": "Gelieve alle vragen te beantwoorden om verder te gaan",
+      "pleaseanswer": "Beantwoord alle vragen om verder te gaan",
       "question": "Een slimme vraag om te meten of het kanaal nieuws dekt"
     },
     "confirm": {
       "button": "Doneer je gegevens",
-      "consent1": "Ik heb gezien dat ik items uit mijn gegevens kan zoeken en verwijderen, en begrijp dat alle items die niet zijn verwijderd, worden ingediend voor donatie",
-      "consent2": "Ik heb de uitleg gezien hoe en voor welk doel mijn gegevens worden gebruikt, en geef toestemming om deze voor dit doel te gebruiken",
+      "consent1": "Ik heb gezien dat ik items uit mijn gegevens kan zoeken en verwijderen, en begrijp dat alle items die niet zijn verwijderd worden ingediend voor donatie",
+      "consent2": "Ik heb de uitleg gezien hoe en voor welk doel mijn gegevens worden gebruikt, en geef toestemming hiervoor",
       "donated": {
         "failure": "<b>{{filename}}</b> kunnen niet worden ingediend. Probeer het opnieuw en neem contact op met de onderzoekers of het onderzoeksbureau als het probleem aanhoudt",
-        "success": "Gedoneerde {{n}} <b>{{filename}}</b> items"
+        "success": "{{n}} <b>{{filename}}</b> items gedoneerd"
       },
       "header": "Bevestig dat u de volgende voorwaarden begrijpt en ermee akkoord gaat:",
       "loader": "Bestanden uploaden",
@@ -53,26 +59,26 @@
     },
     "remove": {
       "button": "Zoekopdracht",
-      "header": "Voorwaarden filteren",
+      "header": "Zoek naar items om te verwijderen",
       "list1": "Typ één zoekterm per rij",
-      "list2": "<span>secret</span> komt ook overeen met <span>www.supersecret.com</span>",
-      "list3": "Voorwaarden moeten minimaal 3 tekens lang zijn"
+      "list2": "De zoekterm <span>geheim</span> zal ook <span>www.heelgeheim.nl</span> vinden",
+      "list3": "Zoektermen moeten minimaal 3 tekens lang zijn"
     },
     "step1": {
-      "description": "Wat schenk je?",
-      "title": "Geïnformeerde toestemming"
+      "description": "Wat doneer je?",
+      "title": "Informed consent"
     },
     "step2": {
       "description": "Zijn dit uw gegevens?",
       "title": "Bevestig gegevens"
     },
     "step3": {
-      "description": "laatste verzoek",
+      "description": "Een laatste verzoek",
       "title": "Voordat je doneert"
     },
     "step4": {
       "description": "De gegevensdonatie afronden",
-      "title": "Volledige donatie"
+      "title": "Verstuur donatie"
     },
     "validate": {
       "continue": "DOORGAAN",
@@ -97,7 +103,7 @@
       "header": "Gegevens uit browser verwijderen"
     },
     "donate": {
-      "description": "Ondersteun academisch onderzoek door uw gegevens te delen",
+      "description": "Draag bij aan academisch onderzoek met uw data",
       "donateCard": {
         "name": "Doneren",
         "status": {
@@ -118,9 +124,9 @@
       "description": "Deze stap is optioneel, maar ben je niet nieuwsgierig?",
       "exploreCard": {
         "missing": "Gegevens nog niet verzameld",
-        "status": "Verzamelde <b>{{date}}</b> uit <b>{{source}}</b>"
+        "status": "Verzameld <b>{{date}}</b> van <b>{{source}}</b>"
       },
-      "title": "Ontdekken"
+      "title": "Verkennen"
     },
     "gather": {
       "description": "Klik op een kaart om uw gegevens te verzamelen",
@@ -136,9 +142,21 @@
         "failedGet": "Kan <b>{{name}}</b> niet ophalen",
         "failedUpdate": "",
         "failedUpdated": "Kan <b>{{name}}</b> niet updaten",
-        "success": "Verzamelde <b>{{name}}</b> geschiedenis"
+        "success": "<b>{{name}}</b> geschiedenis"
       },
-      "title": "Bijeenkomen"
+      "title": "Verzamelen"
+    },
+    "navi": {
+      "first": {
+        "content1": "Klik op een van de kaarten in de <b>Verzamelen<b/> kolom. Je krijgt dan instructies te zien om je data te downloaden en in deze applicatie in te laden.",
+        "content2": "Op dit moment zal je data alleen <b>op je eigen apparaat opgeslagen worden<b/>. Je kunt dan eerst je data verkennen, en eventueel data verwijderen die je niet wilt delen, alvorens je doneert.",
+        "header1": "Begin met het verzamelen van data"
+      },
+      "second": {
+        "content1": "Ten eerste kun je de data <b>Verkennen</b>. Deze stap is optioneel, dus als je hier alleen bent om te doneren dan kun je dit ook overslaan.",
+        "content2": "Ten tweede kun je de data <b>Doneren</b>. Klik hiervoor op de <b>Doneren</b> kaart.",
+        "header2": "Nu je data binnen is, kun je twee dingen doen"
+      }
     }
   },
   "routing": {

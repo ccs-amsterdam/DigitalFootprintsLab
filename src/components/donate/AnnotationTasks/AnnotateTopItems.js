@@ -14,6 +14,13 @@ const question = {
   question: "Some smart question to measure whether the channel covers news",
   question_i18n: "donate.annotate.question",
   answers: ["not at all", "very little", "somewhat", "quite a bit", "a great deal"],
+  answers_i18n: [
+    "answers.howmuch.1",
+    "answers.howmuch.2",
+    "answers.howmuch.3",
+    "answers.howmuch.4",
+    "answers.howmuch.5",
+  ],
 };
 const ignoreIdsMap = ignoreIds.ids.reduce((obj, id) => {
   obj[id] = true;
@@ -164,7 +171,7 @@ const ItemForm = ({ data, setData, field, value, question }) => {
                   </Button>
                 }
               >
-                {t(`answers.${a}`)}
+                {t(question.answers_i18n[i])}
               </Popup>
             );
           })}
