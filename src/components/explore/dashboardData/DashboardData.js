@@ -57,6 +57,7 @@ export default class DashboardData {
       if (this.deleted[index]) continue;
       const searchIn = fields ? fields : Object.keys(item);
       field_loop: for (let field of searchIn) {
+        if (!item[field]) continue;
         for (let regex of regexes) {
           if (regex.test(item[field])) {
             selection.push(index);
@@ -114,7 +115,7 @@ export default class DashboardData {
       if (!Array.isArray(values)) values = [values];
       if (joinArray) values = [values.join(joinArray)];
       for (let value of values) {
-        if (value === "") continue;
+        if (!value) continue;
         if (!counts[value]) counts[value] = 0;
         counts[value]++;
       }

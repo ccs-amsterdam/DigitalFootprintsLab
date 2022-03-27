@@ -124,7 +124,6 @@ const ValidateDataPart = React.memo(({ dataName, setStep }) => {
   const [querySelection, setQuerySelection] = useState(null);
   const [allAnswered, setAllAnswered] = useState(false);
   const { t } = useTranslation();
-  console.log(validation);
 
   let field;
   if (dataName === "Browsing") field = "domain";
@@ -200,6 +199,7 @@ const ValidateDataPart = React.memo(({ dataName, setStep }) => {
             {Object.keys(validation).map((q) => {
               return (
                 <ValidationQuestion
+                  key={q}
                   question={q}
                   validation={validation}
                   setValidation={setValidation}

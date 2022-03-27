@@ -5,19 +5,19 @@ import { useSelector } from "react-redux";
 import { List } from "semantic-ui-react";
 import { Trans, useTranslation } from "react-i18next";
 
-const requestedData = ["Browsing", "Search", "Youtube"];
+const requestedData = ["Chrome", "Youtube_watched", "Youtube_subscribed"];
 
 /**
  * Returns all donate cards to be rendered on the home page.
  */
 const DonateCardColumn = () => {
   const statuses = useSelector((state) => state.dataStatus);
-  if (!statuses.find((s) => s.status === "finished")) return null;
+  if (statuses.length === 0) return null;
 
   return (
     <>
       <FilterCard />
-      <DonateCard requestedData={requestedData} />
+      <DonateCard requestedData={requestedData} statuses={statuses} />
     </>
   );
 };
@@ -40,20 +40,20 @@ const FilterCard = () => {
   );
 };
 
-const DonateCard = ({ requestedData }) => {
+const DonateCard = ({ requestedData, statuses }) => {
   const { t } = useTranslation();
-  const statuses = useSelector((state) => state.dataStatus);
 
   let any = false;
   let all = true;
-  const gathered = requestedData.map((name) => {
-    const status = statuses.find((s) => s.name === name);
-    if (status?.status === "finished") {
+  const gathered = requestedData.map((file) => {
+    const status = statuses.find((s) => s.file === file);
+
+    if (status && status.count > 0) {
       any = true;
     } else {
       all = false;
     }
-    return status ? status : { name, status: "empty" };
+    return status ? status : { file, missing: true };
   });
 
   const navigate = useNavigate();
@@ -71,6 +71,7 @@ const DonateCard = ({ requestedData }) => {
       </p>
     );
   };
+  console.log(gathered);
 
   return (
     <CardTemplate
@@ -89,12 +90,12 @@ const DonateCard = ({ requestedData }) => {
 };
 
 const statusMessage = (gathered, i) => {
-  const name = gathered.name.replace("_", " ");
+  const name = gathered.file.replace("_", " ");
 
-  if (gathered.status === "finished")
+  if (!gathered.missing)
     return (
       <List.Item key={i}>
-        <List.Icon name="check circle outline" color="green" />
+        <List.Icon name="play" color="green" />
         <List.Content>
           <Trans
             i18nKey="home.donate.donateCard.status.ready"
@@ -107,7 +108,7 @@ const statusMessage = (gathered, i) => {
 
   return (
     <List.Item key={i}>
-      <List.Icon name="circle outline" />
+      <List.Icon name="exclamation" color="red" />
       <List.Content>
         <Trans
           i18nKey="home.donate.donateCard.status.notReady"

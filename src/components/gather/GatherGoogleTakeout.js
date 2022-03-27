@@ -6,7 +6,7 @@ import db from "apis/db";
 import tokenize from "util/tokenize";
 
 import { useDispatch } from "react-redux";
-import { updateDataStatus } from "actions";
+import { setDataStatus } from "actions";
 import StepwiseInstructions from "./StepwiseInstructions";
 import googleTakeoutInstruction from "./googleTakeoutInstruction.js";
 
@@ -70,36 +70,49 @@ const GatherGoogleTakeout = ({ children, setLoading }) => {
   );
 };
 
+// HOW TO GENERALIZE THIS
+// THE RECIPES CAN CONTAIN THE DATA NAMES, OR THE DATA CAN CONTAIN A COLUMN FOR DATA NAMES
+// THE SECOND WAY, WE COULD POSSIBLY MOVE THE PREPAREBROWSINGHISTORY PART TO THE IMPORTER,
+// AND THERE ADD A COLUMN WITH BROWING/SEARCH VALUES
+
 const importGT = async (files, log, dispatch) => {
   const meps = miseEnPlace(cookbook, files);
-  const status = { Search: "failed", Browsing: "failed", Youtube: "failed" };
-  log("Import start");
-
-  for (let name of Object.keys(status))
-    dispatch(updateDataStatus(name, "Google_Takeout", "loading"));
+  const source = "Google_Takeout";
+  log("start gathering");
 
   for (let mep of meps) {
     const result = await mep.cook(); // returns array of objects with data, or null if can't find
     if (result.status !== "success") continue;
 
-    if (mep.recipe.name === "browsing") {
+    if (mep.recipe.name === "Chrome") {
       const [browsing, search] = prepareBrowsingHistory(result.data);
-      await db.addData(browsing, "Browsing", "Google_Takeout", ["url", "date"]);
-      await db.addData(search, "Search", "Google_Takeout", ["query", "date"]);
-      status.Search = "finished";
-      status.Browsing = "finished";
+      await db.addData(browsing, "Browsing", source, "Chrome", ["url", "date"]);
+      await db.addData(search, "Search", source, "Chrome", ["query", "date"]);
     }
 
-    if (mep.recipe.name === "youtube") {
-      if (result.data.length > 0)
-        await db.addData(result.data, "Youtube", "Google_Takeout", ["url", "date"]);
-      status.Youtube = "finished";
+    if (mep.recipe.name === "Youtube_watched") {
+      if (result.data.length > 0) {
+        for (let r of result.data) r.type = "watched";
+        await db.addData(result.data, "Youtube", source, "Youtube_watched", ["url", "date"]);
+      }
+    }
+    if (mep.recipe.name === "Youtube_subscribed") {
+      if (result.data.length > 0) {
+        for (let r of result.data) r.type = "subscribed";
+        await db.addData(result.data, "Youtube", source, "Youtube_subscribed", [
+          "channel_url",
+          "type",
+        ]);
+      }
     }
   }
-  for (let name of Object.keys(status)) {
-    log(`Import ${name} ${status[name]}`);
-    dispatch(updateDataStatus(name, "Google_Takeout", status[name]));
-  }
+
+  db.getDataStatus()
+    .then((ds) => {
+      log(JSON.stringify({ what: "gathered", statuses: ds }));
+      dispatch(setDataStatus(ds));
+    })
+    .catch((e) => console.log(e));
 };
 
 const prepareBrowsingHistory = (data) => {
@@ -115,7 +128,7 @@ const prepareBrowsingHistory = (data) => {
       continue;
     }
     if (url.hostname + url.pathname === "www.google.com/search") {
-      const query = item.title.replace("- Google Search", "").trim();
+      const query = item.title.split("- Google")[0].trim();
       let words = tokenize(query);
       search.push({
         query: query,

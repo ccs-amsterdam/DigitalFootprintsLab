@@ -52,7 +52,7 @@ const googleTakeoutInstruction_EN = {
     },
     {
       title: "Step 4",
-      description: "Select Youtube, and only include History",
+      description: "Select Youtube history and subscriptions",
       items: [
         {
           text: "Scroll all the way down to Youtube and check the box",
@@ -62,7 +62,7 @@ const googleTakeoutInstruction_EN = {
           text: "Click on **All YouTube data included** to open a popup for selecting what data to include",
         },
         {
-          text: "Deselect all data, and then only select **History**",
+          text: "Deselect all data, and then only select **History** and **subscriptions**. (If your Google account uses a different language, the names and order of items can be different)",
           image: GoogleTakeout_youtube2,
           image_style: { width: "50%", marginLeft: "25%" },
         },
@@ -156,7 +156,7 @@ const googleTakeoutInstruction_NL = {
     },
     {
       title: "Stap 4",
-      description: "Selecteer Youtube -> History",
+      description: "Selecteer Youtube history en kanaal abonnementen",
       items: [
         {
           text: "Scroll helemaal naar beneden naar **Youtube**",
@@ -166,7 +166,7 @@ const googleTakeoutInstruction_NL = {
           text: "Klik op **All YouTube data included** (**alle youtube-gegevens inbegrepen**) om een popup te openen",
         },
         {
-          text: "Maak ook hier eerst de selectie ongedaan, en selecteer dan alleen **History** (**geschiedenis**)",
+          text: "Maak ook hier eerst de selectie ongedaan, en selecteer dan alleen **history** (**geschiedenis**) en **subscriptions** (**abonnementen**)",
           image: GoogleTakeout_youtube2,
           image_style: { width: "50%", marginLeft: "25%" },
         },

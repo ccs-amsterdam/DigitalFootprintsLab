@@ -145,8 +145,15 @@ class FootprintDB {
 
   // add data given name of data type (e.g., Browsing). idFields is an array of fields in data objects used to check for duplicates.
   // e.g. ['url','date']
-  async addData(data, name, source, idFields = null) {
+  async addData(data, name, sourceName, sourceFile, idFields = null) {
     let fulldata = await this.getData(name);
+
+    const date = new Date();
+    for (let row of data) {
+      row._source = sourceName;
+      row._file = sourceFile;
+      row._date = date;
+    }
 
     const newGroups = {}; // also check for new groups, to immediately call backend for getting groupinfo
     if (fulldata && fulldata.data.length > 0) {
@@ -171,7 +178,6 @@ class FootprintDB {
     await this.idb.data.put({ name, deleted: null, n_deleted: 0, data: JSON.stringify(data) }, [
       name,
     ]);
-    await this.updateDataStatus(name, source);
     await this.setMaxDonationStep(1);
 
     const addGroupInfo = Object.keys(newGroups).filter((group) => newGroups[group]);
@@ -200,20 +206,48 @@ class FootprintDB {
 
   /////// DATA STATUS
 
+  //async getDataStatus(name) {
+  //  return this.idb.datastatus.get({ name });
+  //}
   async getDataStatus(name) {
-    return this.idb.datastatus.get({ name });
+    let allStatuses = [];
+    await this.idb.data.each((d) => {
+      d.data = JSON.parse(d.data);
+      if (d?.deleted) d.data = d.data.filter((row, i) => !d.deleted[i]);
+
+      const statuses = {};
+      for (let row of d.data) {
+        const key = `${d.name} - ${row._source} - ${row._file} - ${row._date}`;
+        //console.log(key);
+        //if (d.name === "Youtube") console.log(key);
+        if (!statuses[key])
+          statuses[key] = {
+            name: d.name,
+            source: row._source,
+            file: row._file,
+            date: new Date(row._date),
+            count: 0,
+          };
+        statuses[key].count++;
+      }
+      allStatuses = [...allStatuses, ...Object.values(statuses)];
+    });
+    return allStatuses;
   }
 
-  async updateDataStatus(name, source) {
+  async updateDataStatus(name, dataName, source) {
     // note that status is always set to finished.
     // whenever the datastatus table is updated, it its written to the dataStatus state (redux)
     // This way the 'loading' status can be triggered via dispatch, and is set to finished when the update is finished
     const current = await this.idb.dataStatus.get({ name });
     const date = new Date();
     if (current) {
-      this.idb.dataStatus.where("name").equals(name).modify({ date, source, status: "finished" });
+      this.idb.dataStatus
+        .where("name")
+        .equals(name)
+        .modify({ date, dataName, source, status: "finished" });
     } else {
-      this.idb.dataStatus.add({ name, date, source, status: "finished" });
+      this.idb.dataStatus.add({ name, dataName, date, source, status: "finished" });
     }
   }
 

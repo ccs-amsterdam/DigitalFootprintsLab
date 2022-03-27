@@ -5,7 +5,7 @@ export const setDataStatus = (dataStatus) => {
   };
 };
 
-export const updateDataStatus = (name, source, status) => {
+export const updateDataStatus = (name, dataName, source, status) => {
   return (dispatch, getState) => {
     const { dataStatus } = getState();
     const newDataStatus = [...dataStatus];
@@ -13,7 +13,7 @@ export const updateDataStatus = (name, source, status) => {
     const i = newDataStatus.findIndex((data) => data.name === name && data.source === source);
     if (i < 0) {
       const date = status === "finished" ? new Date() : null;
-      newDataStatus.push({ name, source, date, status: status });
+      newDataStatus.push({ name, dataName, source, date, status: status });
     } else {
       newDataStatus[i] = { ...newDataStatus[i], status: status };
       if (status === "finished") newDataStatus[i].date = new Date();

@@ -38,8 +38,7 @@ const DataSquare = () => {
 
   useEffect(() => {
     // on startup, check statuses in db and write to redux
-    db.idb.dataStatus
-      .toArray()
+    db.getDataStatus()
       .then((ds) => dispatch(setDataStatus(ds)))
       .catch((e) => console.log(e));
   }, [dispatch]);

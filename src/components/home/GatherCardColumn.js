@@ -31,7 +31,7 @@ const GoogleTakeout = () => {
       <GatherCard
         source={"Google_Takeout"}
         subname={"takeout.google.com"}
-        produces={["Browsing", "Search", "Youtube"]}
+        produces={["Chrome", "Youtube_watched", "Youtube_subscribed"]}
         icon={"google"}
         loading={loading}
       />

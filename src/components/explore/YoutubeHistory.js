@@ -5,7 +5,7 @@ import { List } from "semantic-ui-react";
 
 const GROUP = "channel";
 const SEARCHON = ["channel", "title"];
-const COLUMNS = ["channel", "title", "date"];
+const COLUMNS = ["channel", "type", "title", "date"];
 
 /**
  * A dashboard for the youtube history data.

@@ -6,7 +6,11 @@ import { useTranslation } from "react-i18next";
 
 const ExploreButtons = () => {
   const navigate = useNavigate();
-  const statuses = useSelector((state) => state.dataStatus);
+  const statuses = useSelector((state) => {
+    const uniqueStatuses = {};
+    for (let s of state.dataStatus) uniqueStatuses[s.name] = s;
+    return Object.values(uniqueStatuses);
+  });
   const location = useLocation();
   const { t } = useTranslation();
 
@@ -40,6 +44,7 @@ const ExploreButtons = () => {
           const selected = path === location.pathname;
           return (
             <Button
+              key={status.name}
               size="large"
               active={path === location.pathname}
               style={{

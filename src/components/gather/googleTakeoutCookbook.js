@@ -1,7 +1,7 @@
 import { createCookbook } from "data-donation-importers";
 
-const google_takeout_browsing_history = {
-  name: "browsing",
+const google_takeout_chrome_history = {
+  name: "Chrome",
   file: ["BrowserHistory.json", "BrausingHistörie.jsön"],
   filetype: "json",
   rows_selector: "Browser History",
@@ -22,7 +22,7 @@ const google_takeout_browsing_history = {
 };
 
 const google_takeout_youtube_history_json = {
-  name: "youtube",
+  name: "Youtube_watched",
   file: ["watch-history.json", "kijkgeschiedenis.json", "Wiedergabeverlauf.json"],
   filetype: "json",
   rows_selector: "$.",
@@ -44,7 +44,7 @@ const google_takeout_youtube_history_json = {
 };
 
 const google_takeout_youtube_history_html = {
-  name: "youtube",
+  name: "Youtube_watched",
   file: ["watch-history.html", "kijkgeschiedenis.html", "Wiedergabeverlauf.html"],
   filetype: "html",
   rows_selector: ".mdl-grid > .outer-cell",
@@ -66,10 +66,29 @@ const google_takeout_youtube_history_html = {
   ],
 };
 
+const google_takeout_youtube_subscriptions = {
+  name: "Youtube_subscribed",
+  file: ["subscriptions.csv", "abonnementen.csv"],
+  filetype: "csv",
+  rows_selector: [""],
+  columns: [
+    {
+      name: "channel_url",
+      selector: ["Channel URL", "Kanaal-URL"],
+    },
+    {
+      name: "channel",
+      selector: ["Channel title", "Kanaaltitel"],
+    },
+  ],
+  transformers: [],
+};
+
 const cookbook = createCookbook([
   google_takeout_youtube_history_json,
   google_takeout_youtube_history_html,
-  google_takeout_browsing_history,
+  google_takeout_chrome_history,
+  google_takeout_youtube_subscriptions,
 ]);
 
 export default cookbook;

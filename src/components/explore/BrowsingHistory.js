@@ -41,14 +41,13 @@ const VisComponent = ({ dashData, inSelection, setOutSelection }) => {
 const calcStatistics = (dashData, selection) => {
   if (!dashData) return [];
   const counts = dashData.count(GROUP, selection);
+  const total_visits = dashData.N(selection);
 
-  let total_visits = 0;
   let domains = 0;
   let top_domains = [];
   const n_top_domains = 5;
 
   for (let key of Object.keys(counts)) {
-    total_visits += counts[key];
     domains++;
 
     // add top x (n_top_domains)

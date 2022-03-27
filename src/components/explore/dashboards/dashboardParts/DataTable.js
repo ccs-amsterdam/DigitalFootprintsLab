@@ -32,6 +32,7 @@ const DataTable = ({ dashData, columns, selection, log, pagesize = 10 }) => {
   const [deleteIds, setDeleteIds] = useState([]);
   const [bulkDelete, setBulkDelete] = useState(null);
 
+  console.log(data);
   useEffect(() => {
     if (!dashData) {
       setData([]);
@@ -58,7 +59,7 @@ const DataTable = ({ dashData, columns, selection, log, pagesize = 10 }) => {
 
   const pageChange = async (page) => {
     if (selectionN === data.length) return;
-    setData(dashData.listData(pagesize, selection, pagesize * page));
+    setData(dashData.listData(pagesize, selection, pagesize * (page - 1)));
   };
 
   const processDelete = async (ids) => {
@@ -104,7 +105,7 @@ const DataTable = ({ dashData, columns, selection, log, pagesize = 10 }) => {
         <PaginationTable
           data={data}
           columns={columns}
-          pages={Math.floor(selectionN / pagesize)}
+          pages={Math.ceil(selectionN / pagesize)}
           pageChange={pageChange}
           processDelete={processDelete}
         />
@@ -174,7 +175,19 @@ const PaginationTable = ({ data, columns, pages, pageChange, processDelete }) =>
   };
 
   //if (data === null || data.length === 0) return null;
-  if (!columns) columns = Object.keys(data[0] || {}).filter((c) => c !== "_INDEX") || [];
+
+  let showColumns = new Set([]);
+  if (columns) {
+    showColumns = columns;
+  } else {
+    for (let row of data) {
+      for (let col of Object.keys(row)) {
+        showColumns.add(col);
+      }
+    }
+    showColumns = [...showColumns];
+  }
+  //if (!columns) columns = Object.keys(data[0] || {}).filter((c) => c !== "_INDEX") || [];
 
   return (
     <Table
@@ -183,8 +196,8 @@ const PaginationTable = ({ data, columns, pages, pageChange, processDelete }) =>
       compact="very"
       style={{ width: "100%", color: "white", background: "#00000099" }}
     >
-      {createHeader(columns)}
-      {createBody(columns)}
+      {createHeader(showColumns)}
+      {createBody(showColumns)}
       <ConfirmDeleteModal
         processDelete={processDelete}
         deleteIds={deleteIds}
@@ -193,13 +206,12 @@ const PaginationTable = ({ data, columns, pages, pageChange, processDelete }) =>
       <Table.Footer fullWidth>
         <Table.Row>
           <Table.HeaderCell
-            colSpan={columns.length + 1}
+            colSpan={showColumns.length + 1}
             style={{ paddingTop: "0px", background: "white" }}
           >
             {pages > 1 ? (
               <Pagination
                 size="mini"
-                floated="left"
                 boundaryRange={1}
                 siblingRange={1}
                 ellipsisItem={{

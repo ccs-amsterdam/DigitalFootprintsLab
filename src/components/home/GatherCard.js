@@ -10,14 +10,15 @@ import { Trans } from "react-i18next";
  */
 const GatherCard = ({ source, subname, produces, icon, onClick, loading }) => {
   const statuses = useSelector((state) => {
+    console.log(state.dataStatus);
     return state.dataStatus.filter((data) => data.source === source);
   });
 
   let done = true;
   const produced = produces.map((p) => {
-    const status = statuses.find((s) => s.name === p);
+    const status = statuses.find((s) => s.file === p);
     if (!status?.date) done = false;
-    return status ? status : { name: p, status: "empty" };
+    return status ? status : { file: p, status: "empty" };
   });
 
   return (
@@ -33,7 +34,7 @@ const GatherCard = ({ source, subname, produces, icon, onClick, loading }) => {
         {" "}
         {done ? null : (
           <p>
-            <Trans i18nKey="home.gather.gatherCard.click" components={{ b: "<b/>" }} />
+            <Trans i18nKey="home.gather.gatherCard.click" components={{ b: <b /> }} />
           </p>
         )}
         {produced.map(statusMessage)}
@@ -43,50 +44,23 @@ const GatherCard = ({ source, subname, produces, icon, onClick, loading }) => {
 };
 
 const statusMessage = (produced, i) => {
-  const name = produced.name.replace("_", " ");
-  if (produced.status === "failed") {
-    if (produced.date) {
-      return (
-        <List.Item key={i}>
-          <List.Icon name="exclamation circle" color="red" />
-          <List.Content>
-            <Trans
-              i18nKey="home.gather.gatherCard.failedUpdate"
-              values={{ name }}
-              components={{ b: <b /> }}
-            />
-          </List.Content>
-        </List.Item>
-      );
-    } else {
-      return (
-        <List.Item key={i}>
-          <List.Icon name="close" color="red" />
-          <List.Content>
-            <Trans
-              i18nKey="home.gather.gatherCard.failedGet"
-              values={{ name }}
-              components={{ b: <b /> }}
-            />
-          </List.Content>
-        </List.Item>
-      );
-    }
-  }
+  const name = produced.file.replace("_", " ");
 
-  if (produced.status === "finished")
+  if (produced.date) {
+    const date = produced.date.toISOString().split("T")[0];
     return (
       <List.Item key={i}>
         <List.Icon name="check circle outline" color="green" />
         <List.Content>
           <Trans
             i18nKey="home.gather.gatherCard.success"
-            values={{ name }}
+            values={{ name, date }}
             components={{ b: <b /> }}
           />
         </List.Content>
       </List.Item>
     );
+  }
 
   return (
     <List.Item key={i}>
