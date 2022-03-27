@@ -35,7 +35,6 @@ class FootprintDB {
     this.idb.version(2).stores({
       meta: "welcome", // Keep track of whether user logged in before, and remember userId (if passed as URL parameter)
       log: "++id", // unindexed: log. Which should just be an object with whatever loggin details seem relevant
-      dataStatus: "&name, source, status, date",
       data: "&name, deleted", // unindexed fields: "data". "data" is an array with all the data. "deleted" requires some explanation.
       // data items can be deleted by users, but for speed we don't overwrite the data immediately,
       // and instead store the indices values of the deleted items. The format is a boolean array of same length as data
@@ -206,9 +205,6 @@ class FootprintDB {
 
   /////// DATA STATUS
 
-  //async getDataStatus(name) {
-  //  return this.idb.datastatus.get({ name });
-  //}
   async getDataStatus(name) {
     let allStatuses = [];
     await this.idb.data.each((d) => {
@@ -233,22 +229,6 @@ class FootprintDB {
       allStatuses = [...allStatuses, ...Object.values(statuses)];
     });
     return allStatuses;
-  }
-
-  async updateDataStatus(name, dataName, source) {
-    // note that status is always set to finished.
-    // whenever the datastatus table is updated, it its written to the dataStatus state (redux)
-    // This way the 'loading' status can be triggered via dispatch, and is set to finished when the update is finished
-    const current = await this.idb.dataStatus.get({ name });
-    const date = new Date();
-    if (current) {
-      this.idb.dataStatus
-        .where("name")
-        .equals(name)
-        .modify({ date, dataName, source, status: "finished" });
-    } else {
-      this.idb.dataStatus.add({ name, dataName, date, source, status: "finished" });
-    }
   }
 
   /////// Group INFO
