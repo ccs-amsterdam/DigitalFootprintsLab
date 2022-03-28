@@ -3,27 +3,30 @@ import { List } from "semantic-ui-react";
 import CardTemplate from "./CardTemplate";
 import { useSelector } from "react-redux";
 import { Trans } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 /**
  * The template for generating GatherCards.
  * These are the cards in the Gather column on the home page.
  */
-const GatherCard = ({ source, subname, produces, icon, onClick, loading }) => {
-  const statuses = useSelector((state) => {
-    console.log(state.dataStatus);
-    return state.dataStatus.filter((data) => data.source === source);
-  });
+const GatherCard = ({ name, subname, produces, icon, loading }) => {
+  const statuses = useSelector((state) => state.dataStatus);
+  const navigate = useNavigate();
+
+  const onClick = () => {
+    navigate("/gather/" + name.replace(" ", "_"));
+  };
 
   let done = true;
   const produced = produces.map((p) => {
-    const status = statuses.find((s) => s.file === p);
-    if (!status?.date) done = false;
-    return status ? status : { file: p, status: "empty" };
+    const status = statuses.find((s) => s.source === p);
+    if (!status) done = false;
+    return status ? status : { source: p, empty: true };
   });
 
   return (
     <CardTemplate
-      name={source}
+      name={name}
       subname={subname}
       icon={icon}
       onClick={onClick}
@@ -44,17 +47,18 @@ const GatherCard = ({ source, subname, produces, icon, onClick, loading }) => {
 };
 
 const statusMessage = (produced, i) => {
-  const name = produced.file.replace("_", " ");
+  const name = produced?.source?.replace("_", " ");
 
-  if (produced.date) {
-    const date = produced.date.toISOString().split("T")[0];
+  if (!produced?.empty) {
+    // removed date for now. Could add it back by having db.getDataStatus return the last date or something
+    // const date = produced.date.toISOString().split("T")[0];
     return (
       <List.Item key={i}>
         <List.Icon name="check circle outline" color="green" />
         <List.Content>
           <Trans
             i18nKey="home.gather.gatherCard.success"
-            values={{ name, date }}
+            values={{ name }}
             components={{ b: <b /> }}
           />
         </List.Content>

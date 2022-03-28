@@ -127,7 +127,8 @@ const PaginationTable = ({ data, columns, pages, pageChange, processDelete }) =>
   const createHeader = (columns) => {
     const columnsWithTrash = [{ name: "", width: 1 }, ...columns];
     const cells = columnsWithTrash.map((column) => {
-      const name = typeof column === "object" ? column.name : column;
+      let name = typeof column === "object" ? column.name : column;
+      name = name.replace("_", " ").trim();
       return (
         <Table.HeaderCell
           key={column}

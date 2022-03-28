@@ -45,15 +45,15 @@ const DonateCard = ({ requestedData, statuses }) => {
 
   let any = false;
   let all = true;
-  const gathered = requestedData.map((file) => {
-    const status = statuses.find((s) => s.file === file);
+  const gathered = requestedData.map((source) => {
+    const status = statuses.find((s) => s.source === source);
 
     if (status && status.count > 0) {
       any = true;
     } else {
       all = false;
     }
-    return status ? status : { file, missing: true };
+    return status ? status : { source, missing: true };
   });
 
   const navigate = useNavigate();
@@ -90,7 +90,7 @@ const DonateCard = ({ requestedData, statuses }) => {
 };
 
 const statusMessage = (gathered, i) => {
-  const name = gathered.file.replace("_", " ");
+  const name = gathered.source.replace("_", " ");
 
   if (!gathered.missing)
     return (

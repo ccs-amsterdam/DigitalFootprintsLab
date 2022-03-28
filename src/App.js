@@ -15,11 +15,13 @@ import SearchHistory from "./components/explore/SearchHistory";
 import RemoveData from "./components/donate/RemoveData";
 import DonationScreen from "components/donate/DonationScreen";
 import usePersistance from "components/routing/usePersistence";
+import GatherScreen from "components/gather/GatherScreen";
 
 // Change to add new components to the header
 // The first item will be the opening page after login
 const items = [
   { label: "Data square", path: "/datasquare", Component: DataSquare },
+  { label: "Gather", path: "/gather/*", Component: GatherScreen },
   { label: "Browsing", path: "/browsing", Component: BrowsingHistory },
   { label: "Search", path: "/search", Component: SearchHistory },
   { label: "Youtube", path: "/youtube", Component: YoutubeHistory },

@@ -11,7 +11,7 @@ import { List } from "semantic-ui-react";
 const ExploreCard = ({ name, label, subname, icon }) => {
   const navigate = useNavigate();
   const statuses = useSelector((state) => {
-    return state.dataStatus.filter((data) => data.name === name && data.date);
+    return state.dataStatus.filter((data) => data.name === name);
   });
 
   if (!statuses || statuses.length === 0) return null;
@@ -28,12 +28,10 @@ const ExploreCard = ({ name, label, subname, icon }) => {
 };
 
 const statusMessage = (status) => {
-  const source = `${status.source} - ${status.file}`.replaceAll("_", " ");
-
   return (
-    <List.Item key={source}>
+    <List.Item key={status.source}>
       <List.Content>
-        <b>{source}</b> <i>({status.count})</i>
+        <b>{status.source.replaceAll("_", " ")}</b> <i>({status.count})</i>
       </List.Content>
     </List.Item>
   );

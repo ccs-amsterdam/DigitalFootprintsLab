@@ -144,35 +144,33 @@ class FootprintDB {
 
   // add data given name of data type (e.g., Browsing). idFields is an array of fields in data objects used to check for duplicates.
   // e.g. ['url','date']
-  async addData(data, name, sourceName, sourceFile, idFields = null) {
+  async addData(data, name, platform, source, idFields = null) {
     let fulldata = await this.getData(name);
 
-    const date = new Date();
+    //const date = new Date();
     for (let row of data) {
-      row._source = sourceName;
-      row._file = sourceFile;
-      row._date = date;
+      row._platform = platform;
+      row._source = source;
+      //row._date = date;
     }
 
     const newGroups = {}; // also check for new groups, to immediately call backend for getting groupinfo
     if (fulldata && fulldata.data.length > 0) {
       const existing = {};
-      if (idFields) {
-        for (let d of data) {
-          if (d.group && !newGroups[d.group]) newGroups[d.group] = true;
-          const id = JSON.stringify(idFields.map((f) => d[f]));
-          existing[id] = true;
-        }
+
+      for (let d of data) {
+        if (d.group && !newGroups[d.group]) newGroups[d.group] = true;
+        const id = JSON.stringify(idFields.map((f) => d[f]));
+        existing[id] = true;
       }
       for (let d of fulldata.data) {
         if (d.group && newGroups[d.group]) newGroups[d.group] = false;
-        if (idFields) {
-          const id = JSON.stringify(idFields.map((f) => d[f]));
-          if (existing[id]) continue;
-        }
+        const id = JSON.stringify(idFields.map((f) => d[f]));
+        if (existing[id]) continue;
         data.push(d);
       }
     }
+    console.log(data.length);
 
     await this.idb.data.put({ name, deleted: null, n_deleted: 0, data: JSON.stringify(data) }, [
       name,
@@ -213,15 +211,14 @@ class FootprintDB {
 
       const statuses = {};
       for (let row of d.data) {
-        const key = `${d.name} - ${row._source} - ${row._file} - ${row._date}`;
-        //console.log(key);
-        //if (d.name === "Youtube") console.log(key);
+        const key = `${d.name} - ${row._source}`;
+
         if (!statuses[key])
           statuses[key] = {
             name: d.name,
+            platform: row._platform,
             source: row._source,
-            file: row._file,
-            date: new Date(row._date),
+            //date: new Date(row._date),
             count: 0,
           };
         statuses[key].count++;

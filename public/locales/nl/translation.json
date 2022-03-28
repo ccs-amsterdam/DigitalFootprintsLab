@@ -151,9 +151,9 @@
       "description": "Klik op een kaart om uw gegevens te verzamelen",
       "finalStep": {
         "header": "Laatste stap",
-        "step1": "Open je <b>downloadmap</b>",
-        "step2": "Zoek de <b>gedownloade map of het gedownloade bestand</b>",
-        "step3": "<b>Klik en houd</b> de map/het bestand vast en <b>sleep</b> het naar het blauwe veld hieronder"
+        "step1": "Open je <b>download</b> folder",
+        "step2": "Zoek het gedownloade <b>bestand</b>",
+        "step3": "<b>Klik en sleep</b> het bestand naar het blauwe veld hieronder"
       },
       "gatherCard": {
         "click": "Klik hier om de gegevens te verzamelen die Google heeft over uw <b>browse-</b>, <b>zoek-</b> en <b>YouTube</b>-geschiedenis",

@@ -47,10 +47,10 @@ const RemoveData = () => {
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>
-          <Grid.Column width={6}>
+          <Grid.Column width={4}>
             <KeywordInput setData={setData} />
           </Grid.Column>
-          <Grid.Column width={10} style={{ height: "calc(100% - 50px)", marginTop: "30px" }}>
+          <Grid.Column width={12} style={{ height: "calc(100% - 50px)", marginTop: "30px" }}>
             <Grid>
               {Object.keys(data).map((key) => {
                 return <ResultsTable key={key} title={key} dashData={data[key]} log={log} />;

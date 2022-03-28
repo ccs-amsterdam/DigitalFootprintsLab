@@ -3,9 +3,9 @@ import DashboardTemplate from "./dashboards/DashboardTemplate";
 import Wordcloud from "./dashboards/dashboardParts/Wordcloud";
 import { List } from "semantic-ui-react";
 
-const GROUP = "word";
-const SEARCHON = ["word"];
-const COLUMNS = ["query", "date"];
+const GROUP = "words";
+const SEARCHON = ["query"];
+const COLUMNS = ["query", "_source", "date"];
 
 /**
  * A dashboard for the search history data.
