@@ -1,11 +1,11 @@
 import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { Button, Icon } from "semantic-ui-react";
+import { useLocation } from "react-router-dom";
+import { Button } from "semantic-ui-react";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import MenuButton from "./MenuButton";
 
-const ExploreButtons = () => {
-  const navigate = useNavigate();
+const ExploreButtons = ({ disabled }) => {
   const statuses = useSelector((state) => {
     const uniqueStatuses = {};
     for (let s of state.dataStatus) uniqueStatuses[s.name] = s;
@@ -17,11 +17,11 @@ const ExploreButtons = () => {
   const getLabelAndIcon = (name) => {
     switch (name) {
       case "Browsing":
-        return ["dataTypes.browsing.label", "history"];
+        return [t("dataTypes.browsing.label"), "history"];
       case "Search":
-        return ["dataTypes.search.label", "search"];
+        return [t("dataTypes.search.label"), "search"];
       case "Youtube":
-        return ["dataTypes.youtube.label", "youtube"];
+        return [t("dataTypes.youtube.label"), "youtube"];
       default:
         return ["", null];
     }
@@ -32,34 +32,25 @@ const ExploreButtons = () => {
   if (!statuses || statuses.length === 0) return null;
   return (
     <div style={{ display: "flex" }}>
-      <Icon
+      {/* <Icon
         name="search"
-        size="big"
-        style={{ marginLeft: "20px", marginTop: "30px", color: "white" }}
-      />
+        size="large"
+        style={{ marginLeft: "20px", marginTop: "35px", color: "white" }}
+      /> */}
       <Button.Group style={{ marginLeft: "12px" }}>
         {statuses.map((status) => {
           const [label, icon] = getLabelAndIcon(status.name);
           const path = "/" + status.name;
           const selected = path === location.pathname;
           return (
-            <Button
-              key={status.name}
-              size="large"
-              active={path === location.pathname}
-              style={{
-                background: selected ? "white" : "#00000000",
-                color: selected ? "#3b3a3a" : "white",
-                border: "1px solid white",
-                marginTop: "20px",
-                height: "50px",
-              }}
-              onClick={() => navigate("/" + status.name)}
-            >
-              <Icon name={icon} />
-
-              {t(label)}
-            </Button>
+            <MenuButton
+              key={label}
+              label={label}
+              path={"/" + status.name}
+              selected={selected}
+              icon={icon}
+              disabled={disabled}
+            />
           );
         })}
       </Button.Group>

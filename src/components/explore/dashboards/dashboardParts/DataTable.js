@@ -25,7 +25,7 @@ const propTypes = {
  * @param {*} columns array of columns to show
  * @param {*} selection array of ids in case of selections. Cannot be used if dashData.is_subset
  */
-const DataTable = ({ dashData, columns, selection, log, pagesize = 10 }) => {
+const DataTable = ({ dashData, columns, selection, log, pagesize = 10, unstackable }) => {
   const [n, setN] = useState(0);
   const [data, setData] = useState([]);
   const [selectionN, setSelectionN] = useState(0);
@@ -76,6 +76,7 @@ const DataTable = ({ dashData, columns, selection, log, pagesize = 10 }) => {
         height: "98%",
         width: "98%",
         padding: "0",
+        margin: "0",
       }}
     >
       <Segment style={{ background: "#00000000", height: "55px", margin: "0" }}>
@@ -95,11 +96,13 @@ const DataTable = ({ dashData, columns, selection, log, pagesize = 10 }) => {
           {selectionN === n ? n : `${selectionN} / ${n}`} items
         </Header>
       </Segment>
-      <Container
+      <div
         style={{
           height: "calc(100% - 55px)",
           width: "100%",
           paddingLeft: "20px",
+          marginLeft: "1px !important",
+          padding: "0",
         }}
       >
         <PaginationTable
@@ -108,8 +111,9 @@ const DataTable = ({ dashData, columns, selection, log, pagesize = 10 }) => {
           pages={Math.ceil(selectionN / pagesize)}
           pageChange={pageChange}
           processDelete={processDelete}
+          unstackable={unstackable}
         />
-      </Container>
+      </div>
 
       <ConfirmDeleteModal
         processDelete={processDelete}
@@ -120,7 +124,7 @@ const DataTable = ({ dashData, columns, selection, log, pagesize = 10 }) => {
   );
 };
 
-const PaginationTable = ({ data, columns, pages, pageChange, processDelete }) => {
+const PaginationTable = ({ data, columns, pages, pageChange, processDelete, unstackable }) => {
   const [deleteIds, setDeleteIds] = useState([]);
   const { t } = useTranslation();
 
@@ -133,7 +137,14 @@ const PaginationTable = ({ data, columns, pages, pageChange, processDelete }) =>
         <Table.HeaderCell
           key={column}
           width={column?.width}
-          style={{ top: "0px", position: "sticky", zIndex: "2", background: "white" }}
+          style={{
+            top: "0px",
+            position: "sticky",
+            zIndex: "2",
+            background: "white",
+            paddingTop: "3px",
+            paddingBottom: "3px",
+          }}
         >
           {transCommon(name.toUpperCase(), t)}
         </Table.HeaderCell>
@@ -160,10 +171,10 @@ const PaginationTable = ({ data, columns, pages, pageChange, processDelete }) =>
       });
       return (
         <Table.Row key={i}>
-          <Table.Cell key="0">
+          <Table.Cell key="0" style={{ padding: "3px" }}>
             <Button
               size="mini"
-              style={{ padding: "5px", background: "red", color: "black" }}
+              style={{ padding: "3px", background: "red", color: "black" }}
               onClick={() => setDeleteIds([row._INDEX])}
               icon="trash alternate"
             />
@@ -194,8 +205,14 @@ const PaginationTable = ({ data, columns, pages, pageChange, processDelete }) =>
     <Table
       fixed
       singleLine
+      unstackable={unstackable}
       compact="very"
-      style={{ width: "100%", color: "white", background: "#00000099" }}
+      style={{
+        width: "100%",
+        color: "white",
+        background: "#00000099",
+        fontSize: "min(max(0.8em, 1.4vw), 1.2em)",
+      }}
     >
       {createHeader(showColumns)}
       {createBody(showColumns)}
@@ -208,7 +225,7 @@ const PaginationTable = ({ data, columns, pages, pageChange, processDelete }) =>
         <Table.Row>
           <Table.HeaderCell
             colSpan={showColumns.length + 1}
-            style={{ paddingTop: "0px", background: "white" }}
+            style={{ paddingTop: "0px", background: "white", paddingBottom: "2px" }}
           >
             {pages > 1 ? (
               <Pagination

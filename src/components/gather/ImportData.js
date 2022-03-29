@@ -3,18 +3,30 @@ import { Header, List, Icon, Popup } from "semantic-ui-react";
 
 import { DropZone } from "data-donation-importers";
 
-import { Trans } from "react-i18next";
-
-const ImportData = ({ t, platform, setFiles }) => {
+const ImportData = ({ t, platform, instruction, setFiles }) => {
   return (
     <>
       <Header as="h1" textAlign="center" style={{ color: "rgb(65, 131, 196)" }}>
-        {t("home.gather.finalStep.header")}
+        {t("gather.importdata.header")}
       </Header>
+      <br />
+      <DropZone
+        allowedFiles={platform?.cookbook?.files}
+        setAcceptedFiles={setFiles}
+        label={
+          <span>
+            <Header style={{ color: "white" }}>{t("gather.importdata.dropzone.header")}</Header>
+            <p>{t("gather.importdata.dropzone.p1")}</p>
+            <p>{t("gather.importdata.dropzone.p2")}</p>
+            <p>{t("gather.importdata.dropzone.p3")}</p>
+          </span>
+        }
+      />
 
       <List style={{ textAlign: "center", fontSize: "1.3em" }}>
+        <Icon name="question circle outline" />
         <List.Item>
-          <Trans i18nKey="home.gather.finalStep.step1" components={{ b: <b /> }} />
+          <b>{t("gather.importdata.where.header")}</b>
           <div>
             <GeneralDownloadHelp t={t} />
             <ChromeDownloadHelp t={t} />
@@ -23,27 +35,22 @@ const ImportData = ({ t, platform, setFiles }) => {
           </div>
         </List.Item>
         <br />
-        <List.Item>
-          <Trans i18nKey="home.gather.finalStep.step2" components={{ b: <b /> }} />
-          {platform?.fileHint ? (
+        {instruction?.fileHint ? (
+          <List.Item>
+            <b>{t("gather.importdata.file.header")}</b>
             <p style={{ fontSize: "0.7em" }}>
-              {t("gather.downloadfile.hint", "The file is (often) called")}{" "}
-              <b>{platform.fileHint}</b>
+              {t("gather.importdata.file.hint")} <b>{instruction.fileHint}</b>.
             </p>
-          ) : null}
-        </List.Item>
+          </List.Item>
+        ) : null}
         <br />
-        <List.Item>
-          <Trans i18nKey="home.gather.finalStep.step3" components={{ b: <b /> }} />
-        </List.Item>
       </List>
 
-      <DropZone allowedFiles={platform?.cookbook?.files} setAcceptedFiles={setFiles} />
-      <div style={{ textAlign: "center" }}>
+      {/* <div style={{ textAlign: "center" }}>
         <Icon name="long arrow alternate up" size="huge" style={{ margin: "20px 0px" }} />
         <Icon name="file alternate" size="huge" />
         <Icon name="mouse pointer" />
-      </div>
+      </div> */}
     </>
   );
 };
@@ -51,12 +58,7 @@ const ImportData = ({ t, platform, setFiles }) => {
 const GeneralDownloadHelp = ({ t }) => {
   return (
     <div style={{ fontSize: "0.7em" }}>
-      <p>
-        {t(
-          "gather.downloadfolder.general.l1",
-          "By default, most browsers save your downloaded files in the Download folder on your computer. If you have trouble finding the folder, you can also open it from your browser"
-        )}{" "}
-      </p>
+      <p>{t("gather.importdata.where.general")} </p>
     </div>
   );
 };
@@ -68,19 +70,13 @@ const ChromeDownloadHelp = ({ t }) => {
       wide="very"
       trigger={<Icon name="chrome" style={{ cursor: "pointer", color: "rgb(65, 131, 196)" }} />}
     >
-      <Header>{t("gather.downloadfolder.chrome.header", "Finding Chrome Downloads")}</Header>
+      <Header>{t("gather.importdata.where.chrome.header")}</Header>
       <List as="ol">
         <List.Item as="li">
-          {t(
-            "gather.downloadfolder.chrome.l1",
-            "Click on the three dots in the upper right corner"
-          )}{" "}
-          <Icon name="ellipsis vertical" />
+          {t("gather.importdata.where.chrome.l1")} <Icon name="ellipsis vertical" />
         </List.Item>
-        <List.Item as="li">{t("gather.downloadfolder.chrome.l2", "Select 'Downloads'")} </List.Item>
-        <List.Item as="li">
-          {t("gather.downloadfolder.chrome.l2", "Click on 'show in folder'")}{" "}
-        </List.Item>
+        <List.Item as="li">{t("gather.importdata.where.chrome.l2")} </List.Item>
+        <List.Item as="li">{t("gather.importdata.where.chrome.l3")} </List.Item>
       </List>
     </Popup>
   );
@@ -93,24 +89,13 @@ const FirefoxDownloadHelp = ({ t }) => {
       wide="very"
       trigger={<Icon name="firefox" style={{ cursor: "pointer", color: "red" }} />}
     >
-      <Header>{t("gather.downloadfolder.firefox.header", "Finding Firefox Downloads")}</Header>
+      <Header>{t("gather.importdata.where.firefox.header")}</Header>
       <List as="ol">
         <List.Item as="li">
-          {t(
-            "gather.downloadfolder.firefox.l1",
-            "Click on the hamburger icon in the upper right corner"
-          )}{" "}
-          <Icon name="bars" />
+          {t("home.gather.downloadfolder.firefox.l1")} <Icon name="bars" />
         </List.Item>
-        <List.Item as="li">
-          {t("gather.downloadfolder.firefox.l2", "Select 'Downloads'")}{" "}
-        </List.Item>
-        <List.Item as="li">
-          {t(
-            "gather.downloadfolder.firefox.l2",
-            "Click on the folder icon (on the right in the popup) to 'Show in folder'"
-          )}{" "}
-        </List.Item>
+        <List.Item as="li">{t("gather.importdata.where.firefox.l2")} </List.Item>
+        <List.Item as="li">{t("gather.importdata.where.firefox.l3")} </List.Item>
       </List>
     </Popup>
   );
@@ -123,21 +108,13 @@ const SafariDownloadHelp = ({ t }) => {
       wide="very"
       trigger={<Icon name="safari" style={{ cursor: "pointer", color: "blue" }} />}
     >
-      <Header>{t("gather.downloadfolder.safari.header", "Finding Safari Downloads")}</Header>
+      <Header>{t("gather.importdata.where.safari.header")}</Header>
       <List as="ol">
         <List.Item as="li">
-          {t(
-            "gather.downloadfolder.safari.l1",
-            "Click on the downloads Icon in the upper right corner"
-          )}{" "}
+          {t("gather.importdata.where.safari.l1")}{" "}
           <Icon name="arrow alternate circle down outline" />
         </List.Item>
-        <List.Item as="li">
-          {t(
-            "gather.downloadfolder.safari.l2",
-            "Click on the magnifying glass Icon next to a file to open the folder"
-          )}{" "}
-        </List.Item>
+        <List.Item as="li">{t("gather.importdata.where.safari.l2")} </List.Item>
       </List>
     </Popup>
   );

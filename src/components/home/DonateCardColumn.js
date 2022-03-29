@@ -4,8 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { List } from "semantic-ui-react";
 import { Trans, useTranslation } from "react-i18next";
+import { gatherSettings } from "project/gatherSettings";
 
-const requestedData = ["Chrome", "Youtube_watched", "Youtube_subscribed"];
+const requestedData = [];
+for (let gs of gatherSettings) {
+  for (let name of Object.keys(gs.importMap)) {
+    requestedData.push(name);
+  }
+}
 
 /**
  * Returns all donate cards to be rendered on the home page.

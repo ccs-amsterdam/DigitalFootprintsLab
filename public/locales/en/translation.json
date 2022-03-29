@@ -1,43 +1,22 @@
 {
-  "answers": {
-    "a great deal": "a great deal",
-    "howmuch": {
-      "1": "very little",
-      "2": "a little",
-      "3": "somewhat",
-      "4": "a lot",
-      "5": "a great deal"
-    },
-    "missing": {
-      "1": "none missing",
-      "2": "some missing",
-      "3": "quite a lot missing",
-      "4": "most missing"
-    },
-    "otherusers": {
-      "1": "only me",
-      "2": "mostly me",
-      "3": "mostly someone else"
-    }
-  },
   "common": {
-    "type": "type",
-    "views": "views",
     "channel": "channel",
     "channels": "channels",
     "date": "date",
     "domain": "domain",
     "domains": "domains",
     "list": "list",
+    "queries": "queries",
     "query": "query",
+    "search": "search",
+    "searches": "searches",
     "title": "title",
     "top": "top",
     "total": "total",
+    "type": "type",
+    "views": "views",
     "visit": "visit",
-    "visits": "visits",
-    "search": "search",
-    "searches": "searches",
-    "queries": "queries"
+    "visits": "visits"
   },
   "dataTypes": {
     "browsing": {
@@ -55,18 +34,16 @@
   },
   "donate": {
     "annotate": {
+      "question": "Does this channel cover content about news and current affairs?",
       "continue": "Continue with donation",
       "dropdown": "Search for a channel or the name of a video from this channel",
       "header": "Please answer the following questions",
       "p1": "Below you see a list of <b>YouTube channels</b>. To help us understand whether and how YouTube is sometimes used as a source of news, please let us know to what extent you yourself consider these channels to be informative.",
       "p2": "<b>Do any other news related channels come to mind that are not listed here?</b> If so, please select them in the following search box. Selected channels will be added to the table above.",
-      "pleaseanswer": "Please answer all questions to contine",
-      "question": "Does this channel cover content about news and current affairs?"
+      "pleaseanswer": "Please answer all questions to contine"
     },
     "confirm": {
       "button": "Donate your data",
-      "consent1": "I have seen that I can search and delete items from my data, and understand that all items that have not been deleted will be submitted for donation",
-      "consent2": "I have seen the explanation of how and for what purpose my data will be used, and give my consent to use it for this purpose",
       "donated": {
         "failure": "Failed to submit <b>{{filename}}</b> data. Please try again, and contact the researchers or survey company if the problem persists",
         "success": "Donated {{n}} <b>{{filename}}</b> items"
@@ -76,9 +53,7 @@
       "testuser": "You are logged in as a test user, so your real data won't be submitted. The server will only see what types of data you submitted, and how many items"
     },
     "info": {
-      "continue": "Continue with donation",
-      "header": "About donating your data",
-      "p1": "We probably need to tell participants a little story or something about how and for what purpose we'll use their data. Before the actual donation (in the 'Complete donation') step people will then need to verify that they have seen this and give consent."
+      "continue": "Continue with donation"
     },
     "remove": {
       "button": "Search",
@@ -106,16 +81,50 @@
     "validate": {
       "continue": "CONTINUE",
       "header1": "To use your data for research, it's important to know how accurate it is. Please help us by answering a few questions about your data",
-      "header2": "On the left you see the top items in your <i>{{dataname}}</i> data. Please answer the following questions to help us understand how accurate this data.",
-      "question1": "Do you feel that you recognize this digital footprint as your own?",
-      "question2": "Are the largest items indeed the items you often visit?",
-      "question3": "Are there any items that you know you visited often, but are not shown here?",
-      "question4": "Is this data only yours, or does someone else use your device or account?"
+      "header2": "On the left you see the top items in your <i>{{dataname}}</i> data. Please answer the following questions to help us understand how accurate this data."
     }
   },
   "explore": {
     "statistics": {
       "header": "Statistics"
+    }
+  },
+  "gather": {
+    "download": {
+      "header": "First download your data"
+    },
+    "importdata": {
+      "dropzone": {
+        "header": "Your data goes here!",
+        "p1": "Use this blue field to load the downloaded data into this application",
+        "p2": "If the data is a single file (or a zipped folder), you can either click on this field and then select the file, or drag the file from your file explorer into this field.",
+        "p3": "If the data is a folder, you need to drag it into this field."
+      },
+      "file": {
+        "header": "What file is it?",
+        "hint": "The file is (usually) called: "
+      },
+      "header": "Then import the data",
+      "where": {
+        "chrome": {
+          "header": "Finding Chrome Downloads",
+          "l1": "Click on the three dots in the upper right corner",
+          "l2": "Select 'Downloads'",
+          "l3": "Click on 'show in folder'"
+        },
+        "firefox": {
+          "header": "Finding Firefox Downloads",
+          "l2": "Select 'Downloads'",
+          "l3": "Click on the folder icon (on the right in the popup) to 'Show in folder'"
+        },
+        "general": "By default, most browsers save your downloaded files in the Download folder on your computer. If you have trouble finding the folder, you can also open it from your browser",
+        "header": "Where are my downloads?",
+        "safari": {
+          "header": "Finding Safari Downloads",
+          "l1": "Click on the downloads Icon in the upper right corner",
+          "l2": "Click on the magnifying glass Icon next to a file to open the folder"
+        }
+      }
     }
   },
   "home": {
@@ -131,8 +140,8 @@
         "name": "Donate",
         "status": {
           "any": "Some of the data types are not yet (successfull) gathered. You can continue, but some data will be missing",
-          "notReady": "<b>{{name}}</b> data not yet ready",
-          "ready": "<b>{{name}}</b> data ready to donate"
+          "notReady": "<b>{{name}}</b> not yet gathered",
+          "ready": "<b>{{name}}</b> ready to donate"
         },
         "subname": "Click here to go to the donation screen"
       },
@@ -140,38 +149,30 @@
         "name": "Exclude data",
         "subname": "Use keywords to search and remove any data that you prefer not to share"
       },
-      "title": "Donate"
+      "title": "Step 3. Donate"
     },
     "explore": {
       "description": "This step is optional, but aren't you curious?",
-      "title": "Explore"
+      "title": "Step 2. Explore"
     },
     "gather": {
       "description": "Click a card to gather your data",
-      "finalStep": {
-        "header": "Final step",
-        "step1": "Open your <b>downloads folder</b>",
-        "step2": "Find the <b>downloaded folder or file</b>",
-        "step3": "<b>Click and hold</b> the folder/file, and <b>drag</b> it into the blue field below"
+      "downloadfolder": {
+        "firefox": {
+          "l1": ""
+        }
       },
       "gatherCard": {
-        "click": "Click here to gather the data that Google has about your <b>browsing</b>, <b>search</b> and <b>Youtube</b> history",
-        "empty": "<b>{{name}}</b>",
-        "success": "Gathered <b>{{name}}</b> on <b>{{date}}</b>"
+        "click": "Click here to gather the following data:"
       },
-      "title": "Gather"
+      "title": "Step 1. Gather"
     },
     "navi": {
-      "first": {
-        "content1": "The first step is to click on a card in the <b>Gather</b> column on the left. This will walk you through the steps for gathering this data and loading it into this application.",
-        "content2": "At this point, <b>the data will only be stored on your own device</b>. You can then first use this application to explore your data, and you can also choose to exlude data that you do not want to donate.",
-        "header": "Get started by gathering some data"
-      },
-      "second": {
-        "content1": "First, you can explore</b> your data. This step is optional, so if you just want to donate your data you can skip it.",
-        "content2": "Second, you can <b>donate</b> you data. If you click the donate card, we will walk you through the steps. You can also first click the <b>exclude data</b> card, which lets you search and delete items from your data that you don't want to share.",
-        "header": "Now that you have data, you can do two things"
-      }
+      "header": "Hi there! On this page, there are three steps in total",
+      "ok": "Ok, got it!",
+      "step1": "The first step is to gather data by clicking on one of the cards in the <b>Gather</b> column and following the instruction. Note that after this point you have still not donated your data (that's step 3!)",
+      "step2": "In the second step you can <b>Explore</b> your own data. If you find data that you don't want to share, you can also delete it here.",
+      "step3": "In the final step you can <b>Donate</b> your data for academic research. The data will only be donated after you complete all steps and given your consent. Note that you can also use the <b>Exclude data</b> card to exclude some data from the donation, if you haven't done this already in the <b>Explore</b> step."
     }
   },
   "routing": {

@@ -9,31 +9,36 @@ const default_image_style = {
   marginBottom: "15px",
 };
 
-export default function StepwiseInstructions({ instruction, icon }) {
+export default function DownloadData({ t, instruction, icon }) {
   const [selected, setSelected] = useState(0);
 
   return (
-    <Grid style={{ height: "100%" }}>
-      <Grid.Row style={{ height: "30%", overflow: "auto" }}>
+    <Grid>
+      <Grid.Row>
         <Grid.Column>
-          <Header
-            as="h1"
-            textAlign="center"
-            style={{ marginTop: "5px", color: "rgb(65, 131, 196)" }}
-          >
-            <Icon name={icon} />
+          <Header as="h1" textAlign="center" style={{ color: "rgb(65, 131, 196)" }}>
+            {t("gather.download.header", "First download your data")}
+            <br />
+          </Header>
+          <Header>
+            <Icon name={icon} size="small" />
             {instruction.title}
           </Header>
           <ReactMarkdown linkTarget={"_blank"}>{instruction.introduction}</ReactMarkdown>
         </Grid.Column>
       </Grid.Row>
-      <Grid.Row style={{ height: "70%" }}>
-        <Grid.Column width="5" style={{ height: "100%", overflow: "auto" }}>
+      <Grid.Row>
+        <Grid.Column width="5">
           <div>
-            <Step.Group vertical style={{ width: "calc(100% - 10px)" }}>
+            <Step.Group vertical>
               {instruction.steps.map((step, i) => {
                 return (
-                  <Step key={step.title} active={i === selected} onClick={() => setSelected(i)}>
+                  <Step
+                    key={step.title}
+                    active={i === selected}
+                    onClick={() => setSelected(i)}
+                    style={{ padding: "5%" }}
+                  >
                     <Step.Content>
                       <Step.Title>{step.title}</Step.Title>
                       <Step.Description>{step.description}</Step.Description>
@@ -44,7 +49,7 @@ export default function StepwiseInstructions({ instruction, icon }) {
             </Step.Group>
           </div>
         </Grid.Column>
-        <Grid.Column width="11" style={{ height: "100%", overflow: "auto" }}>
+        <Grid.Column width="11">
           <Segment>
             <List>
               {instruction.steps[selected].items.map((item, i) => {

@@ -2,17 +2,16 @@ import React, { useState, useEffect } from "react";
 import ColoredBackgroundGrid from "components/explore/dashboards/dashboardParts/ColoredBackgroundGrid";
 import { Dimmer, Grid, Loader, Segment } from "semantic-ui-react";
 import background from "images/background.jpeg";
-import BackButton from "components/routing/BackButton";
-import GatherButtons from "components/routing/GatherButtons";
 import useLogger from "util/useLogger";
 import { useLocation, useNavigate } from "react-router-dom";
-import { gatherSettings } from "project/project";
-import StepwiseInstructions from "./StepwiseInstructions";
+import { gatherSettings } from "project/gatherSettings";
+import DownloadData from "./DownloadData";
 import { useTranslation } from "react-i18next";
 import ImportData from "./ImportData";
 import { useDispatch } from "react-redux";
 import { miseEnPlace } from "data-donation-importers";
 import db from "apis/db";
+import MenuGridRow from "components/routing/MenuGridRow";
 
 const segmentStyle = {
   background: "white",
@@ -42,46 +41,29 @@ const GatherScreen = () => {
     });
   }, [platform, navigate, files, setLoading, log, dispatch]);
 
+  let instruction = platform?.instructions?.[language] || platform?.instructions?.default;
+
   return (
     <ColoredBackgroundGrid background={background} color={"#000000b0"}>
-      <Grid stackable style={{ height: "calc(100vh - 38px)", width: "100vw" }}>
-        <Grid.Column
-          width={16}
-          style={{
-            minHeight: "70px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignContent: "flex-start",
-            flexWrap: "wrap",
-          }}
-        >
-          <BackButton />
-          <GatherButtons />
-        </Grid.Column>
+      <Grid stackable style={{ marginLeft: "5px", marginRight: "5px" }}>
+        <MenuGridRow gatherScreen />
 
-        <Grid.Column width={10} style={{ height: "calc(100% - 50px)" }}>
+        <Grid.Column width={10} style={{ minHeight: "calc(100vh - 40px)" }}>
           <Segment style={segmentStyle}>
-            <Instructions platform={platform} language={language} />
+            <DownloadData t={t} instruction={instruction} icon={platform?.icon} />
           </Segment>
         </Grid.Column>
-        <Grid.Column width={6} verticalAlign="middle" style={{ height: "calc(100% - 50px)" }}>
+        <Grid.Column width={6} style={{ height: "calc(100% - 40px)" }}>
           <Segment style={segmentStyle}>
+            <ImportData t={t} platform={platform} instruction={instruction} setFiles={setFiles} />
             <Dimmer active={loading}>
               <Loader />
             </Dimmer>
-            <ImportData t={t} platform={platform} setFiles={setFiles} />
           </Segment>
         </Grid.Column>
       </Grid>
     </ColoredBackgroundGrid>
   );
-};
-
-const Instructions = ({ platform, language }) => {
-  if (!platform) return null;
-  let instruction = platform.instructions?.[language] || platform.instructions.default;
-
-  return <StepwiseInstructions instruction={instruction} icon={platform?.icon} />;
 };
 
 const importData = async (platform, files, log, dispatch) => {

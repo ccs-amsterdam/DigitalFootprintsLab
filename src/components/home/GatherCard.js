@@ -2,8 +2,8 @@ import React from "react";
 import { List } from "semantic-ui-react";
 import CardTemplate from "./CardTemplate";
 import { useSelector } from "react-redux";
-import { Trans } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { t } from "i18next";
 
 /**
  * The template for generating GatherCards.
@@ -37,7 +37,7 @@ const GatherCard = ({ name, subname, produces, icon, loading }) => {
         {" "}
         {done ? null : (
           <p>
-            <Trans i18nKey="home.gather.gatherCard.click" components={{ b: <b /> }} />
+            <b>{t("home.gather.gatherCard.click")}</b>
           </p>
         )}
         {produced.map(statusMessage)}
@@ -49,29 +49,14 @@ const GatherCard = ({ name, subname, produces, icon, loading }) => {
 const statusMessage = (produced, i) => {
   const name = produced?.source?.replace("_", " ");
 
-  if (!produced?.empty) {
-    // removed date for now. Could add it back by having db.getDataStatus return the last date or something
-    // const date = produced.date.toISOString().split("T")[0];
-    return (
-      <List.Item key={i}>
-        <List.Icon name="check circle outline" color="green" />
-        <List.Content>
-          <Trans
-            i18nKey="home.gather.gatherCard.success"
-            values={{ name }}
-            components={{ b: <b /> }}
-          />
-        </List.Content>
-      </List.Item>
-    );
-  }
-
+  const empty = produced?.empty;
   return (
     <List.Item key={i}>
-      <List.Icon name="circle outline" />
-      <List.Content>
-        <Trans i18nKey="home.gather.gatherCard.empty" values={{ name }} components={{ b: <b /> }} />
-      </List.Content>
+      <List.Icon
+        name={empty ? "circle outline" : "check circle outline"}
+        style={{ color: empty ? "black" : "green" }}
+      />
+      <List.Content>{name}</List.Content>
     </List.Item>
   );
 };

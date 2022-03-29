@@ -1,8 +1,9 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import ReactMarkdown from "react-markdown";
 import { Button, Grid, Header, Segment } from "semantic-ui-react";
 
-const DonationInformation = ({ setStep }) => {
+const DonationInformation = ({ setStep, settings }) => {
   const { t } = useTranslation();
   return (
     <Segment
@@ -17,9 +18,13 @@ const DonationInformation = ({ setStep }) => {
       <Grid verticalAlign="middle" centered stackable style={{ height: "100%" }}>
         <Grid.Column width={8}>
           <Header as="h2" style={{ textAlign: "center" }}>
-            {t("donate.info.header")}
+            <ReactMarkdown linkTarget={"_blank"}>
+              {settings?.donationInformation?.title?.trans}
+            </ReactMarkdown>
           </Header>
-          <p>{t("donate.info.p1")}</p>
+          <ReactMarkdown linkTarget={"_blank"}>
+            {settings?.donationInformation?.text?.trans}
+          </ReactMarkdown>
           <Button fluid primary onClick={() => setStep(1)} style={{ maxHeight: "3em" }}>
             {t("donate.info.continue")}
           </Button>

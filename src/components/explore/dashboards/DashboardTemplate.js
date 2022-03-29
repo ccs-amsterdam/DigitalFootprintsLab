@@ -9,12 +9,10 @@ import QueryInput from "./dashboardParts/QueryInput";
 import intersect from "util/intersect";
 import useDashboardData from "../dashboardData/useDashboardData";
 import PropTypes from "prop-types";
-import BackButton from "components/routing/BackButton";
 import useLogger from "util/useLogger";
-import ExploreButtons from "components/routing/ExploreButtons";
-import DonateButtons from "components/routing/DonateButtons";
 import { useTranslation } from "react-i18next";
 import transCommon from "util/transCommon";
+import MenuGridRow from "components/routing/MenuGridRow";
 
 const propTypes = {
   /** The name of the type of data to explore. */
@@ -52,25 +50,16 @@ const DashboardTemplate = ({ dataName, searchOn, columns, VisComponent, calcStat
 
   return (
     <ColoredBackgroundGrid background={background} color={"#000000b0"}>
-      <Grid stackable style={{ height: "100vh", width: "100vw" }}>
-        <Grid.Row style={{ paddingBottom: "0" }}>
-          <Grid.Column
-            width={16}
-            style={{
-              minHeight: "70px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignContent: "flex-start",
-              flexWrap: "wrap",
-            }}
-          >
-            <BackButton />
-            <ExploreButtons />
-            <DonateButtons />
-          </Grid.Column>
-        </Grid.Row>
+      <Grid
+        stackable
+        style={{
+          width: "100vw",
+          height: "100vh",
+        }}
+      >
+        <MenuGridRow />
         <Grid.Row style={{ padding: "0", minHeight: "500px" }}>
-          <Grid.Column width={4}>
+          <Grid.Column width={5}>
             <Container
               style={{
                 margin: "50px",
@@ -88,7 +77,11 @@ const DashboardTemplate = ({ dataName, searchOn, columns, VisComponent, calcStat
               <Statistics statistics={statistics} />
             </Container>
           </Grid.Column>
-          <Grid.Column verticalAlign="middle" width={12} style={{ height: "100%", width: "100%" }}>
+          <Grid.Column
+            verticalAlign="middle"
+            width={11}
+            style={{ height: "100%", width: "100%", marginTop: "10px" }}
+          >
             <VisComponent
               dashData={dashData}
               inSelection={querySelection}
@@ -102,8 +95,15 @@ const DashboardTemplate = ({ dataName, searchOn, columns, VisComponent, calcStat
             padding: "0",
           }}
         >
-          <Grid.Column>
-            <DataTable dashData={dashData} columns={columns} selection={selection} log={log} />
+          <Grid.Column width={16}>
+            <DataTable
+              dashData={dashData}
+              columns={columns}
+              selection={selection}
+              pagesize={6}
+              log={log}
+              unstackable
+            />
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -122,9 +122,19 @@ const Statistics = ({ statistics }) => {
         padding: "20px",
         background: "#55555587",
         borderRadius: "10px",
+        fontSize: "min(max(0.8em, 1.5vw), 1em)",
       }}
     >
-      <Header as="h1" align={"center"} style={{ color: "white", padding: "0", margin: "0" }}>
+      <Header
+        as="h1"
+        align={"center"}
+        style={{
+          color: "white",
+          padding: "0",
+          margin: "0",
+          fontSize: "min(max(2em, 1.5vw), 3em)",
+        }}
+      >
         {t("explore.statistics.header")}
       </Header>
       <Item.Group>

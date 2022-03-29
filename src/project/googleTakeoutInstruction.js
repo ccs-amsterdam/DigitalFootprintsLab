@@ -12,6 +12,8 @@ const googleTakeoutInstruction_EN = {
   documented. Google is legally required to give you access to this data, and they have
   made it easy for you to download it. Here we will walk you through the steps for
   collecting a specific selection of this data.`,
+  fileHint: "takeout-[some numbers]",
+
   steps: [
     {
       title: "Step 1",
@@ -97,13 +99,7 @@ const googleTakeoutInstruction_EN = {
           image: GoogleTakeout_download,
         },
         {
-          text: "Click the download link, and store the file in a location where you can find it. Your browser might also automatically put it in your **Downloads** folder ",
-        },
-        {
-          text: `See below for the final step. You can click on the blue field and then select the file, often named **takeout-[some number].zip**`,
-        },
-        {
-          text: `**Watch out**. Some computers automatically unzip the file, and then you can't select it. In that case you can look up the folder on your computer and **drag** it into the blue field`,
+          text: "Click the download link, and store the file in a location where you can find it. Most browsers automatically put it in your **Downloads** folder ",
         },
       ],
     },
@@ -116,6 +112,8 @@ const googleTakeoutInstruction_NL = {
   automatisch gedocumenteerd. Google is wettelijk verplicht om jou deze data te geven als jij hier om vraagt, 
   en hebben het daarom makkelijk gemaakt om deze data te downloaden. In de volgende stappen laten wij zien hoe je
   (een onderdeel van) deze data kunt ophalen.`,
+  fileHint: "takeout_[getallen]",
+
   steps: [
     {
       title: "Stap 1",
@@ -201,13 +199,7 @@ const googleTakeoutInstruction_NL = {
           image: GoogleTakeout_download,
         },
         {
-          text: "Klik op de download link, en sla het bestand op op een lokatie die je makkelijk terug kunt vinden. Sommige browsers slaan het bestand vanzelf op in je **Downloads** folder",
-        },
-        {
-          text: `Zie onder voor de laatste stap. Je kunt op het blauwe veld klikken en het bestand selecteren, genaamd **takeout-[een getal].zip**`,
-        },
-        {
-          text: `**let op**. Sommige computers pakken het zip bestand vanzelf uit, waardoor je het niet kunt selecteren. In dat geval kun je in je verkenner de folder opzieken en deze naar het blauwe veld *slepen*`,
+          text: "Klik op de download link, en sla het bestand op op een locatie die je makkelijk terug kunt vinden. De meeste browsers slaan het bestand vanzelf op in je **Downloads** folder",
         },
       ],
     },

@@ -6,57 +6,53 @@ import ignoreIds from "data/youtube_ignore_ids.json";
 import { Trans, useTranslation } from "react-i18next";
 import transCommon from "util/transCommon";
 
-// For now we'll just make this a fixed task
-const top = 10;
-const dataName = "Youtube";
-const field = "channel";
-const detail = "title";
-const question = {
-  question: "Some smart question to measure whether the channel covers news",
-  question_i18n: "donate.annotate.question",
-  answers: ["not at all", "very little", "somewhat", "quite a bit", "a great deal"],
-  answers_i18n: [
-    "answers.howmuch.1",
-    "answers.howmuch.2",
-    "answers.howmuch.3",
-    "answers.howmuch.4",
-    "answers.howmuch.5",
-  ],
-};
 const ignoreIdsMap = ignoreIds.ids.reduce((obj, id) => {
+  // this is ugly, but we just hard coded an ignorelist for now
   obj[id] = true;
   return obj;
 }, {});
 
-const AnnotateTopItems = ({ setDone }) => {
+const AnnotateTopItems = ({ question, setDone }) => {
   const [data, setData] = useState(null);
   const [status, setStatus] = useState("idle");
   const { t } = useTranslation();
 
   useEffect(() => {
-    prepareData(top, dataName, field, detail, setData, setDone, setStatus);
-  }, [setDone]);
+    prepareData(
+      question.top.value,
+      question.data.value,
+      question.field.value,
+      question.detail.value,
+      setData,
+      setDone,
+      setStatus
+    );
+  }, [setDone, question]);
 
+  console.log(data);
   useEffect(() => {
-    // check if all the items in the top have been annotated (if so, user is done)
+    // check if all the items in the top have been annotated (if so, user is done with this question)
     if (!data) return;
     let topAnnotated = true;
-    for (let annotation of Object.values(data.annotations[field])) {
+    for (let annotation of Object.values(data.annotations[question.field.value])) {
       if (!annotation.news_score) topAnnotated = false;
     }
-    db.setDataAnnotations(data.annotations, dataName);
+    db.setDataAnnotations(data.annotations, question.data.value);
     setDone(topAnnotated);
-  }, [data, setDone]);
+  }, [data, question, setDone]);
 
   const onDropdownChange = (e, d) => {
     for (let value of d.value) {
-      if (!data.annotations[field][value])
-        data.annotations[field][value] = { manually_added: true };
+      if (!data.annotations[question.field.value][value])
+        data.annotations[question.field.value][value] = { manually_added: true };
     }
 
-    for (let fieldvalue of Object.keys(data.annotations[field])) {
-      if (data.annotations[field][fieldvalue].manually_added && !d.value.includes(fieldvalue))
-        delete data.annotations[field][fieldvalue];
+    for (let fieldvalue of Object.keys(data.annotations[question.field.value])) {
+      if (
+        data.annotations[question.field.value][fieldvalue].manually_added &&
+        !d.value.includes(fieldvalue)
+      )
+        delete data.annotations[question.field.value][fieldvalue];
     }
 
     setData({ ...data });
@@ -66,7 +62,7 @@ const AnnotateTopItems = ({ setDone }) => {
   if (!data) return null;
 
   const dropdownValues = [];
-  for (let [value, a] of Object.entries(data.annotations[field])) {
+  for (let [value, a] of Object.entries(data.annotations[question.field.value])) {
     if (a.manually_added) dropdownValues.push(value);
   }
 
@@ -81,25 +77,25 @@ const AnnotateTopItems = ({ setDone }) => {
       </Grid.Row>
       <Grid.Row style={{ background: "#737373", color: "white", borderRadius: "5px" }}>
         <Grid.Column width={7}>
-          <b>{transCommon(field.toUpperCase(), t)}</b>
+          <b>{question.field.trans.toUpperCase()}</b>
         </Grid.Column>
         <Grid.Column width={2}>
-          <b>{transCommon(detail.toUpperCase(), t)}</b>
+          <b>{question.detail.trans.toUpperCase()}</b>
           <br />
           <b>{transCommon("LIST", t)}</b>
         </Grid.Column>
         <Grid.Column width={7}>
-          <b>{t(question.question_i18n).toUpperCase()}</b>
+          <b>{question.question.trans.toUpperCase()}</b>
         </Grid.Column>
       </Grid.Row>
 
-      {Object.keys(data.annotations[field]).map((fieldvalue, i) => {
+      {Object.keys(data.annotations[question.field.value]).map((fieldvalue, i) => {
         return (
           <ItemForm
             key={fieldvalue}
             data={data}
             setData={setData}
-            field={field}
+            field={question.field.value}
             value={fieldvalue}
             question={question}
           />
@@ -132,8 +128,8 @@ const AnnotateTopItems = ({ setDone }) => {
 const ItemForm = ({ data, setData, field, value, question }) => {
   const item = data.items.find((item) => item.name === value);
   const answer = data.annotations[field][value].news_score;
-  const { t } = useTranslation();
 
+  console.log(question);
   return (
     <Grid.Row style={{ paddingTop: "7px", paddingBottom: "0px" }}>
       <Grid.Column width={7}>
@@ -145,17 +141,17 @@ const ItemForm = ({ data, setData, field, value, question }) => {
       <Grid.Column width={7}>
         <Button.Group fluid size="small">
           {question.answers.map((a, i) => {
-            const active = answer === a;
+            const active = answer === a.value;
             return (
               <Popup
-                key={a + i}
+                key={a.value + i}
                 trigger={
                   <Button
-                    key={a}
+                    key={a.value}
                     active={active}
                     onClick={() => {
                       const newData = { ...data };
-                      newData.annotations[field][item.name].news_score = a;
+                      newData.annotations[field][item.name].news_score = a.value;
                       setData(newData);
                     }}
                     style={{
@@ -168,7 +164,7 @@ const ItemForm = ({ data, setData, field, value, question }) => {
                   </Button>
                 }
               >
-                {t(question.answers_i18n[i])}
+                {a.trans}
               </Popup>
             );
           })}

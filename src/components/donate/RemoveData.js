@@ -12,15 +12,14 @@ import {
   Loader,
 } from "semantic-ui-react";
 import background from "images/background.jpeg";
-import BackButton from "components/routing/BackButton";
 import DashboardData from "components/explore/dashboardData/DashboardData";
 
 import db from "apis/db";
 import DataTable from "components/explore/dashboards/dashboardParts/DataTable";
 import useLogger from "util/useLogger";
-import ExploreButtons from "components/routing/ExploreButtons";
-import DonateButtons from "components/routing/DonateButtons";
+
 import { Trans, useTranslation } from "react-i18next";
+import MenuGridRow from "components/routing/MenuGridRow";
 
 const RemoveData = () => {
   const [data, setData] = useState({});
@@ -29,28 +28,12 @@ const RemoveData = () => {
   return (
     <ColoredBackgroundGrid background={background} color={"#000000b0"}>
       <Grid stackable style={{ height: "calc(100vh - 38px)", width: "100vw" }}>
-        <Grid.Row style={{ paddingBottom: "0" }}>
-          <Grid.Column
-            width={16}
-            style={{
-              minHeight: "70px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignContent: "flex-start",
-              flexWrap: "wrap",
-            }}
-          >
-            <BackButton />
-            <ExploreButtons />
-
-            <DonateButtons />
-          </Grid.Column>
-        </Grid.Row>
+        <MenuGridRow />
         <Grid.Row>
           <Grid.Column width={4}>
             <KeywordInput setData={setData} />
           </Grid.Column>
-          <Grid.Column width={12} style={{ height: "calc(100% - 50px)", marginTop: "30px" }}>
+          <Grid.Column width={12} style={{ height: "calc(100% - 40px)", marginTop: "30px" }}>
             <Grid>
               {Object.keys(data).map((key) => {
                 return <ResultsTable key={key} title={key} dashData={data[key]} log={log} />;
@@ -163,7 +146,7 @@ const ResultsTable = ({ title, dashData, log }) => {
         //width: "100%",
         minHeight: "70px",
 
-        border: "5px solid #ffffff3f",
+        border: "1px solid #ffffff3f",
         marginTop: "10px",
         marginLeft: "15px",
         position: "relative",

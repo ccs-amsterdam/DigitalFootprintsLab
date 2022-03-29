@@ -1,5 +1,6 @@
 import React from "react";
 import GatherCard from "./GatherCard";
+import { gatherSettings } from "project/gatherSettings";
 
 // Like explorecards, this creates the gather cards
 // These are a bit more tricky because these create modals (instead of routing to a new page)
@@ -11,33 +12,20 @@ import GatherCard from "./GatherCard";
  */
 const GatherCardColumn = () => {
   // Currently only uses google takeout, so it looks silly
-  return (
-    <>
-      <GoogleTakeout />
-    </>
-  );
-};
 
-const gtDataMap = {
-  "Chrome visited": "Browsing",
-  "Chrome searched": "Search",
-  "Youtube watched": "Youtube",
-  "Youtube searched": "Search",
-  "Youtube subscriptions": "Youtube",
-};
+  const cards = gatherSettings.map((gs) => {
+    return (
+      <GatherCard
+        key={gs.name}
+        name={gs.name}
+        subname={gs.subname}
+        produces={Object.keys(gs.importMap)}
+        icon={gs.icon}
+      />
+    );
+  });
 
-/**
- * Renders the gather card for Google Takeout
- */
-const GoogleTakeout = () => {
-  return (
-    <GatherCard
-      name={"Google_Takeout"}
-      subname={"takeout.google.com"}
-      produces={Object.keys(gtDataMap)}
-      icon={"google"}
-    />
-  );
+  return <>{cards}</>;
 };
 
 export default GatherCardColumn;

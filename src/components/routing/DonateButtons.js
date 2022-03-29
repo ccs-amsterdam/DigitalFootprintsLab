@@ -1,10 +1,10 @@
 import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { Button, Icon } from "semantic-ui-react";
+import { useLocation } from "react-router-dom";
+import { Button } from "semantic-ui-react";
 import { useTranslation } from "react-i18next";
+import MenuButton from "./MenuButton";
 
-const DonateButtons = () => {
-  const navigate = useNavigate();
+const DonateButtons = ({ disabled }) => {
   const location = useLocation();
   const { t } = useTranslation();
 
@@ -13,42 +13,26 @@ const DonateButtons = () => {
 
   return (
     <div style={{ display: "flex" }}>
-      <Icon
+      {/* <Icon
         name="student"
         size="big"
         style={{ marginLeft: "20px", marginTop: "30px", color: "white" }}
-      />
+      /> */}
       <Button.Group style={{ marginLeft: "12px" }}>
-        <Button
-          size="large"
-          style={{
-            background: selectedRemove ? "white" : "#00000000",
-            color: selectedRemove ? "#3b3a3a" : "white",
-            border: "1px solid white",
-            marginTop: "20px",
-            height: "50px",
-          }}
-          onClick={() => navigate("/remove")}
-        >
-          <Icon name={"eye slash"} />
-
-          {t("routing.buttons.remove")}
-        </Button>
-        <Button
-          size="large"
-          style={{
-            background: selectedDonate ? "white" : "#00000000",
-            color: selectedDonate ? "#3b3a3a" : "white",
-            marginTop: "20px",
-            border: "1px solid white",
-            height: "50px",
-          }}
-          onClick={() => navigate("/donate")}
-        >
-          <Icon name={"flag checkered"} />
-
-          {t("routing.buttons.donate")}
-        </Button>
+        <MenuButton
+          label={t("routing.buttons.remove")}
+          path="/remove"
+          selected={selectedRemove}
+          icon="eye slash"
+          disabled={disabled}
+        />
+        <MenuButton
+          label={t("routing.buttons.donate")}
+          path="/donate"
+          selected={selectedDonate}
+          icon="flag checkered"
+          disabled={disabled}
+        />
       </Button.Group>
     </div>
   );

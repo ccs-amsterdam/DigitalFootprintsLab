@@ -1,0 +1,70 @@
+{
+  "answers": {
+    "a great deal": "a great deal",
+    "howmuch": {
+      "1": "very little",
+      "2": "a little",
+      "3": "somewhat",
+      "4": "a lot",
+      "5": "a great deal"
+    },
+    "missing": {
+      "1": "none missing",
+      "2": "some missing",
+      "3": "quite a lot missing",
+      "4": "most missing"
+    },
+    "otherusers": {
+      "1": "only me",
+      "2": "mostly me",
+      "3": "mostly someone else"
+    }
+  },
+  "common": {
+    "channel": "channel",
+    "channels": "channels",
+    "date": "date",
+    "domain": "domain",
+    "domains": "domains",
+    "list": "list",
+    "queries": "queries",
+    "query": "query",
+    "search": "search",
+    "searches": "searches",
+    "title": "title",
+    "top": "top",
+    "total": "total",
+    "type": "type",
+    "views": "views",
+    "visit": "visit",
+    "visits": "visits"
+  },
+  "donate": {
+    "annotate": {
+      "question": "Does this channel cover content about news and current affairs?"
+    },
+    "confirm": {
+      "consent1": "I have seen that I can search and delete items from my data, and understand that all items that have not been deleted will be submitted for donation",
+      "consent2": "I have seen the explanation of how and for what purpose my data will be used, and give my consent to use it for this purpose"
+    },
+    "info": {
+      "header": "About donating your data",
+      "p1": "We probably need to tell participants a little story or something about how and for what purpose we'll use their data. Before the actual donation (in the 'Complete donation') step people will then need to verify that they have seen this and give consent."
+    },
+    "validate": {
+      "question1": "Do you feel that you recognize this digital footprint as your own?",
+      "question2": "Are the largest items indeed the items you often visit?",
+      "question3": "Are there any items that you know you visited often, but are not shown here?",
+      "question4": "Is this data only yours, or does someone else use your device or account?"
+    }
+  },
+  "gather": {
+    "importdata": {
+      "where": {
+        "firefox": {
+          "l1": "Click on the hamburger icon in the upper right corner"
+        }
+      }
+    }
+  }
+}

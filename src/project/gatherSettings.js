@@ -6,7 +6,6 @@ export const gatherSettings = [
   {
     name: "Google Takeout",
     subname: "takeout.google.com",
-    fileHint: "takeout-[some numbers]",
     icon: "google",
     cookbook: createCookbook(gtRecipes),
     instructions: googleTakeoutInstruction,
@@ -19,11 +18,3 @@ export const gatherSettings = [
     },
   },
 ];
-
-export const importMap = {
-  "Chrome visited": { data: "Browsing", idFields: ["url", "date"] },
-  "Chrome searched": { data: "Search", idFields: ["query", "date"] },
-  "Youtube watched": { data: "Youtube", idFields: ["channel_url", "date"] },
-  "Youtube searched": { data: "Search", idFields: ["query", "date"] },
-  "Youtube subscriptions": { data: "Youtube", idFields: ["channel_url", "date"] },
-};

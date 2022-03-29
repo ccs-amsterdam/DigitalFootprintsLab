@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { Button, Modal, Icon } from "semantic-ui-react";
+import { Button, Modal, Icon, List, Header } from "semantic-ui-react";
 import { Trans, useTranslation } from "react-i18next";
 
 const Navi = () => {
   const [openModal, setOpenModal] = useState(false);
-  const statuses = useSelector((state) => state.dataStatus);
   const { t } = useTranslation();
 
   return (
@@ -32,50 +30,38 @@ const Navi = () => {
           />
         }
       >
-        <NaviHeader statuses={statuses} t={t} />
-        <NaviContent statuses={statuses} t={t} />
+        <Modal.Header style={{ fontSize: "2.5em" }}>{t("home.navi.header")}</Modal.Header>
+        <Modal.Content style={{ fontSize: "1.5em" }}>
+          <List>
+            <List.Item>
+              <Header style={{ color: "white" }}>
+                <Trans i18nKey={"home.gather.title"} components={{ b: <b /> }} />
+              </Header>
+              <Trans i18nKey={"home.navi.step1"} components={{ b: <b /> }} />
+            </List.Item>
+            <List.Item>
+              <Header style={{ color: "white" }}>
+                <Trans i18nKey={"home.explore.title"} components={{ b: <b /> }} />
+              </Header>
+
+              <Trans i18nKey={"home.navi.step2"} components={{ b: <b /> }} />
+            </List.Item>
+            <List.Item>
+              <Header style={{ color: "white" }}>
+                <Trans i18nKey={"home.donate.title"} components={{ b: <b /> }} />
+              </Header>
+              <Trans i18nKey={"home.navi.step3"} components={{ b: <b /> }} />
+            </List.Item>
+          </List>
+        </Modal.Content>
 
         <Modal.Actions>
           <Button size="large" basic color="green" inverted onClick={() => setOpenModal(false)}>
-            <Icon name="checkmark" /> Ok, got it!
+            <Icon name="checkmark" /> {t("home.navi.ok")}
           </Button>
         </Modal.Actions>
       </Modal>
     </>
-  );
-};
-
-const NaviHeader = ({ statuses, t }) => {
-  if (statuses && statuses.length > 0)
-    return (
-      <Modal.Header style={{ fontSize: "2.5em" }}>{t("home.navi.second.header")}</Modal.Header>
-    );
-
-  return <Modal.Header style={{ fontSize: "2.5em" }}>{t("home.navi.first.header")}</Modal.Header>;
-};
-
-const NaviContent = ({ statuses, t }) => {
-  if (statuses && statuses.length > 0)
-    return (
-      <Modal.Content style={{ fontSize: "1.5em" }}>
-        <p>
-          <Trans i18nKey={"home.navi.second.content1"} components={{ b: <b /> }} />
-        </p>
-        <p>
-          <Trans i18nKey={"home.navi.second.content2"} components={{ b: <b /> }} />
-        </p>
-      </Modal.Content>
-    );
-
-  return (
-    <Modal.Content style={{ fontSize: "1.5em" }}>
-      <p>
-        <Trans i18nKey={"home.navi.first.content1"} components={{ b: <b /> }} />
-      </p>
-      <p>
-        <Trans i18nKey={"home.navi.first.content2"} components={{ b: <b /> }} />
-      </p>
-    </Modal.Content>
   );
 };
 

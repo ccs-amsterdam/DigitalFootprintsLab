@@ -6,7 +6,19 @@ import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Button, Grid, Header, Segment, Step, List } from "semantic-ui-react";
 
-const ValidateData = ({ setStep }) => {
+const WORDCLOUD_COLORS = ["#564615", "#1f6175", "#421f7f"];
+
+const ValidateData = ({ setStep, settings }) => {
+  const [questions, setQuestions] = useState(null);
+
+  useEffect(() => {
+    if (!settings?.validateData) {
+      setQuestions(null);
+      return;
+    }
+    setQuestions(settings?.validateData);
+  }, [settings]);
+
   return (
     <Segment
       style={{
@@ -20,7 +32,7 @@ const ValidateData = ({ setStep }) => {
       <Grid centered stackable style={{ height: "100%" }}>
         <Grid.Row>
           <Grid.Column width={16}>
-            <ValidateDataParts setOuterStep={setStep} />
+            <ValidateDataParts questions={questions} setOuterStep={setStep} />
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -28,7 +40,7 @@ const ValidateData = ({ setStep }) => {
   );
 };
 
-const ValidateDataParts = ({ setOuterStep }) => {
+const ValidateDataParts = ({ questions, setOuterStep }) => {
   const [dataNames, setDataNames] = useState([]);
   const [step, setStep] = useState(0);
   const [maxStep, setMaxStep] = useState(0);
@@ -69,57 +81,12 @@ const ValidateDataParts = ({ setOuterStep }) => {
       <Header textAlign="center" as="h4">
         {t("donate.validate.header1")}
       </Header>
-      <ValidateDataPart dataName={dataNames[step]} setStep={setStep} />
+      <ValidateDataPart questions={questions} dataName={dataNames[step]} setStep={setStep} />
     </div>
   );
 };
 
-const colors = ["#564615", "#1f6175", "#421f7f"];
-const questions = [
-  {
-    question: "Do you feel that you recognize this digital footprint as your own?",
-    question_i18n: "donate.validate.question1",
-    answers: ["very little", "a little", "somewhat", "a lot", "a great deal"],
-    answers_i18n: [
-      "answers.howmuch.1",
-      "answers.howmuch.2",
-      "answers.howmuch.3",
-      "answers.howmuch.4",
-      "answers.howmuch.5",
-    ],
-  },
-  {
-    question: "Are the largest items indeed the items you often visit?",
-    question_i18n: "donate.validate.question2",
-    answers: ["very little", "a little", "somewhat", "a lot", "a great deal"],
-    answers_i18n: [
-      "answers.howmuch.1",
-      "answers.howmuch.2",
-      "answers.howmuch.3",
-      "answers.howmuch.4",
-      "answers.howmuch.5",
-    ],
-  },
-  {
-    question: "Are there any items that you know you visited often, but are not shown here?",
-    question_i18n: "donate.validate.question3",
-    answers: ["none missing", "some missing", "quite a lot missing", "most missing"],
-    answers_i18n: [
-      "answers.missing.1",
-      "answers.missing.2",
-      "answers.missing.3",
-      "answers.missing.4",
-    ],
-  },
-  {
-    question: "Is this data only yours, or does someone else use your device or account?",
-    question_i18n: "donate.validate.question4",
-    answers: ["only me", "mostly me", "mostly someone else"],
-    answers_i18n: ["answers.otherusers.1", "answers.otherusers.2", "answers.otherusers.3"],
-  },
-];
-
-const ValidateDataPart = React.memo(({ dataName, setStep }) => {
+const ValidateDataPart = React.memo(({ questions, dataName, setStep }) => {
   const [validation, setValidation] = useState({});
   const [querySelection, setQuerySelection] = useState(null);
   const [allAnswered, setAllAnswered] = useState(false);
@@ -127,20 +94,21 @@ const ValidateDataPart = React.memo(({ dataName, setStep }) => {
 
   let field;
   if (dataName === "Browsing") field = "domain";
-  if (dataName === "Search") field = "word";
+  if (dataName === "Search") field = "words";
   if (dataName === "Youtube") field = "channel";
   const dashData = useDashboardData(dataName);
 
   useEffect(() => {
-    if (!dataName) {
+    if (!dataName || !questions) {
       setValidation({});
       return;
     }
+
     db.getDataValidation(dataName)
       .then((v) => {
         const newv = {};
         for (let q of questions) {
-          newv[q.question] = v?.[q.question];
+          newv[q.question.value] = v?.[q.question.value];
         }
         setValidation(newv);
       })
@@ -148,7 +116,7 @@ const ValidateDataPart = React.memo(({ dataName, setStep }) => {
         console.log(e);
         setValidation({});
       });
-  }, [dataName]);
+  }, [dataName, questions]);
 
   useEffect(() => {
     let done = true;
@@ -167,7 +135,7 @@ const ValidateDataPart = React.memo(({ dataName, setStep }) => {
       <Grid.Row>
         <Grid.Column textAlign="center" width={8} style={{ width: "100%", overflow: "auto" }}>
           <Header>
-            <i>Top {field}s</i>
+            <i>Top {field}</i>
           </Header>
           <QueryInput dashData={dashData} setSelection={setQuerySelection} iconColor="black" />
           <div>
@@ -175,7 +143,7 @@ const ValidateDataPart = React.memo(({ dataName, setStep }) => {
               dashData={dashData}
               group={field}
               inSelection={querySelection}
-              colors={colors}
+              colors={WORDCLOUD_COLORS}
               unclickable={true}
             />
           </div>
@@ -196,11 +164,14 @@ const ValidateDataPart = React.memo(({ dataName, setStep }) => {
             }}
           >
             <br />
-            {Object.keys(validation).map((q) => {
+            {Object.keys(validation).map((key) => {
+              console.log(questions);
+              console.log(key);
+              const question = questions.find((q) => q.question.value === key);
               return (
                 <ValidationQuestion
-                  key={q}
-                  question={q}
+                  key={key}
+                  question={question}
                   validation={validation}
                   setValidation={setValidation}
                   dataName={dataName}
@@ -225,11 +196,9 @@ const ValidateDataPart = React.memo(({ dataName, setStep }) => {
 });
 
 const ValidationQuestion = ({ question, validation, setValidation, dataName }) => {
-  const { t } = useTranslation();
-  const q = questions.find((q) => q.question === question) || {};
-  const answers = q?.answers || [];
-  const trans_answers = q?.answers_i18n ? q.answers_i18n.map((a) => t(a)) : [];
-  const trans_question = q?.question_i18n ? t(q?.question_i18n) : "";
+  const answers = question?.answers.map((a) => a.value) || [];
+  const trans_answers = question?.answers.map((a) => a.trans) || [];
+  const trans_question = question?.question.trans || "";
 
   return (
     <List.Item key={dataName}>
@@ -237,12 +206,12 @@ const ValidationQuestion = ({ question, validation, setValidation, dataName }) =
       <Header as="h4">{trans_question}</Header>
       <Button.Group fluid size="small" style={{ marginTop: "5px" }}>
         {answers.map((a, i) => {
-          const selected = validation[question] === a;
+          const selected = validation[question.question.value] === a;
           return (
             <Button
               key={a}
               onClick={() => {
-                const newValidation = { ...validation, [question]: a };
+                const newValidation = { ...validation, [question.question.value]: a };
                 db.setDataValidation(newValidation, dataName);
                 setValidation(newValidation);
               }}

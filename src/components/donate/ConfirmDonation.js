@@ -14,7 +14,7 @@ import {
 } from "semantic-ui-react";
 import submitData from "./submitData";
 
-const ConfirmDonation = () => {
+const ConfirmDonation = ({ settings }) => {
   const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -55,7 +55,7 @@ const ConfirmDonation = () => {
             {t("donate.confirm.header")}
           </Header>
           <br />
-          <ConsentForm setConsent={setConsent} />
+          <ConsentForm settings={settings} setConsent={setConsent} />
           <br />
           {testUser ? (
             <Header textAlign="center" color="orange">
@@ -107,29 +107,34 @@ const ConfirmDonation = () => {
   );
 };
 
-const consentItems = ["donate.confirm.consent1", "donate.confirm.consent2"];
+//const consentItems = ["donate.confirm.consent1", "donate.confirm.consent2"];
 
-const ConsentForm = ({ setConsent }) => {
+const ConsentForm = ({ settings, setConsent }) => {
   const [consentArray, setConsentArray] = useState([]);
   const { t } = useTranslation();
 
   useEffect(() => {
+    if (!settings?.confirmDonation?.checkboxes) return;
     // could not be done directly in useState, but eventually this should be editable
-    setConsentArray(new Array(consentItems.length).fill(false));
-  }, []);
+    setConsentArray(new Array(settings?.confirmDonation?.checkboxes.length).fill(false));
+  }, [settings]);
 
   useEffect(() => {
-    let allConsent = true;
+    let allConsent = consentArray.length > 0;
     for (let consent of consentArray) if (!consent) allConsent = false;
     setConsent(allConsent);
   }, [setConsent, consentArray]);
+
+  console.log(settings);
+  if (!settings?.confirmDonation?.checkboxes) return null;
+  const consentItems = settings.confirmDonation.checkboxes.map((question) => question.trans);
 
   return (
     <Form>
       {consentItems.map((item, i) => {
         return (
           <ConsentItem
-            key={item}
+            key={item + i}
             content={t(item)}
             consent={consentArray[i]}
             setConsent={(checked) => {

@@ -1,0 +1,79 @@
+{
+  "answers": {
+    "howmuch": {
+      "1": "heel weinig",
+      "2": "weinig",
+      "3": "matig",
+      "4": "veel",
+      "5": "heel veel"
+    },
+    "missing": {
+      "1": "niks ontbreekt",
+      "2": "iets ontbreekt",
+      "3": "veel ontbreekt",
+      "4": "meeste ontbreekt"
+    },
+    "otherusers": {
+      "1": "alleen van mij",
+      "2": "voornamelijk van mij",
+      "3": "voornamelijk van iemand anders"
+    }
+  },
+  "common": {
+    "channel": "kanaal",
+    "channels": "kanalen",
+    "date": "datum",
+    "domain": "domein",
+    "domains": "domeinen",
+    "list": "lijst",
+    "queries": "zoektermen",
+    "query": "zoekterm",
+    "search": "zoek",
+    "searches": "zoekopdrachten",
+    "title": "titel",
+    "today": "vandaag",
+    "top": "top",
+    "total": "totaal",
+    "type": "type",
+    "views": "bekeken",
+    "visit": "bezocht",
+    "visits": "bezocht"
+  },
+  "donate": {
+    "annotate": {
+      "question": "In welke mate gaat de content van dit kanaal over nieuws of actualiteiten?"
+    },
+    "confirm": {
+      "consent1": "Ik heb gezien dat ik items uit mijn gegevens kan zoeken en verwijderen, en begrijp dat alle items die niet zijn verwijderd worden ingediend voor donatie",
+      "consent2": "Ik heb de uitleg gezien hoe en voor welk doel mijn gegevens worden gebruikt, en geef toestemming hiervoor"
+    },
+    "info": {
+      "header": "Over het doneren van uw gegevens",
+      "p1": "We moeten de deelnemers waarschijnlijk een verhaaltje of iets vertellen over hoe en met welk doel we hun gegevens zullen gebruiken. Voor de daadwerkelijke donatie (in de stap 'donatie voltooien') zullen mensen dan moeten verifiëren dat ze dit hebben gezien en toestemming geven."
+    },
+    "validate": {
+      "question1": "Heb je het gevoel dat je deze digitale voetafdruk herkent als de jouwe?",
+      "question2": "Zijn de grootste items inderdaad de items die je vaak bezoekt?",
+      "question3": "Zijn er items waarvan je weet dat je ze vaak hebt bezocht, maar die hier niet worden weergegeven?",
+      "question4": "Zijn deze gegevens alleen van jou, of gebruikt iemand anders jouw apparaat of account?"
+    }
+  },
+  "gather": {
+    "importdata": {
+      "where": {
+        "firefox": {
+          "l1": "Klik op het hamburger icoon in de hoek rechtsboven"
+        }
+      }
+    }
+  },
+  "home": {
+    "donate": {
+      "donateCard": {
+        "status": {
+          "none": "Ga naar de kolom <b>Verzamelen</b> voor instructies over het verzamelen van uw digitale voetafdrukken"
+        }
+      }
+    }
+  }
+}

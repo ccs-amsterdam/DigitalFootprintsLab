@@ -2,35 +2,36 @@ import React, { useState, useEffect } from "react";
 import ColoredBackgroundGrid from "components/explore/dashboards/dashboardParts/ColoredBackgroundGrid";
 import { Container, Grid, Icon, Step } from "semantic-ui-react";
 import background from "images/background.jpeg";
-import BackButton from "components/routing/BackButton";
 import DonationInformation from "./DonationInformation";
-import BeforeYouDonate from "./BeforeYouDonate";
+import AnnotateData from "./AnnotateData";
 import ConfirmDonation from "./ConfirmDonation";
 import ValidateData from "./ValidateData";
 import useLogger from "util/useLogger";
-import ExploreButtons from "components/routing/ExploreButtons";
-import DonateButtons from "components/routing/DonateButtons";
+
 import db from "apis/db";
 import { useTranslation } from "react-i18next";
+import MenuGridRow from "components/routing/MenuGridRow";
+import useSettings from "util/useSettings";
 
 const DonationScreen = () => {
   const [step, setStep] = useState(0);
   const log = useLogger("Donationscreen", "open");
+  const settings = useSettings();
 
   const renderStep = () => {
     switch (step) {
       case 0:
         log("consent information page");
-        return <DonationInformation setStep={setStep} />;
+        return <DonationInformation setStep={setStep} settings={settings} />;
       case 1:
         log("validation page");
-        return <ValidateData setStep={setStep} />;
+        return <ValidateData setStep={setStep} settings={settings} />;
       case 2:
         log("annotation page");
-        return <BeforeYouDonate setStep={setStep} />;
+        return <AnnotateData setStep={setStep} settings={settings} />;
       case 3:
         log("confirm page");
-        return <ConfirmDonation />;
+        return <ConfirmDonation settings={settings} />;
       default:
         return null;
     }
@@ -39,20 +40,7 @@ const DonationScreen = () => {
   return (
     <ColoredBackgroundGrid background={background} color={"#000000b0"}>
       <Grid stackable style={{ height: "calc(100vh - 38px)", width: "100vw" }}>
-        <Grid.Column
-          width={16}
-          style={{
-            minHeight: "70px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignContent: "flex-start",
-            flexWrap: "wrap",
-          }}
-        >
-          <BackButton />
-          <ExploreButtons />
-          <DonateButtons />
-        </Grid.Column>
+        <MenuGridRow disabled />
 
         <Grid.Column width={16} style={{ height: "calc(100% - 50px)" }}>
           <Container
