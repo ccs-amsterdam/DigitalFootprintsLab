@@ -3,7 +3,7 @@ import db from "apis/db";
 import { Button, Grid, Header, Popup, List, Dropdown } from "semantic-ui-react";
 
 import ignoreIds from "data/youtube_ignore_ids.json";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import transCommon from "util/transCommon";
 
 const ignoreIdsMap = ignoreIds.ids.reduce((obj, id) => {
@@ -29,13 +29,13 @@ const AnnotateTopItems = ({ question, setDone }) => {
     );
   }, [setDone, question]);
 
-  console.log(data);
   useEffect(() => {
     // check if all the items in the top have been annotated (if so, user is done with this question)
     if (!data) return;
     let topAnnotated = true;
     for (let annotation of Object.values(data.annotations[question.field.value])) {
-      if (!annotation.news_score) topAnnotated = false;
+      console.log(annotation);
+      if (!annotation[question.question.value]) topAnnotated = false;
     }
     db.setDataAnnotations(data.annotations, question.data.value);
     setDone(topAnnotated);
@@ -70,9 +70,7 @@ const AnnotateTopItems = ({ question, setDone }) => {
     <Grid centered stackable>
       <Grid.Row>
         <Grid.Column width={10}>
-          <p>
-            <Trans i18nKey="donate.annotate.p1" components={{ b: <b /> }} />
-          </p>
+          <p style={{ fontSize: "1.3em" }}>{question?.intro?.trans}</p>
         </Grid.Column>
       </Grid.Row>
       <Grid.Row style={{ background: "#737373", color: "white", borderRadius: "5px" }}>
@@ -105,9 +103,7 @@ const AnnotateTopItems = ({ question, setDone }) => {
       <Grid.Row>
         <Grid.Column width={10}>
           <br />
-          <p>
-            <Trans i18nKey="donate.annotate.p2" components={{ b: <b /> }} />
-          </p>
+          <p style={{ fontSize: "1.3em" }}>{question?.canAddIntro?.trans}</p>
           <Dropdown
             search
             fluid
@@ -127,9 +123,8 @@ const AnnotateTopItems = ({ question, setDone }) => {
 
 const ItemForm = ({ data, setData, field, value, question }) => {
   const item = data.items.find((item) => item.name === value);
-  const answer = data.annotations[field][value].news_score;
+  const answer = data.annotations[field][value][question.question.value];
 
-  console.log(question);
   return (
     <Grid.Row style={{ paddingTop: "7px", paddingBottom: "0px" }}>
       <Grid.Column width={7}>
@@ -151,7 +146,7 @@ const ItemForm = ({ data, setData, field, value, question }) => {
                     active={active}
                     onClick={() => {
                       const newData = { ...data };
-                      newData.annotations[field][item.name].news_score = a.value;
+                      newData.annotations[field][item.name][question.question.value] = a.value;
                       setData(newData);
                     }}
                     style={{
@@ -216,13 +211,12 @@ const prepareData = async (top, dataName, field, detail, setData, setDone, setSt
     return items;
   }, {});
 
-  console.log("ignored channels", ignored_channels);
+  //console.log("ignored channels", ignored_channels);
 
   items = Object.keys(items).map((name) => ({ name, ...items[name] }));
   items.sort((a, b) => b.count - a.count); // sort from high to low value
 
   const annotations = await db.getDataAnnotations(dataName);
-  //const annotations = {};
   if (!annotations[field]) annotations[field] = {};
 
   const currentTop = {};
