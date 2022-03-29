@@ -101,7 +101,7 @@ const statusMessage = (gathered, i) => {
   if (!gathered.missing)
     return (
       <List.Item key={i}>
-        <List.Icon name="play" color="green" />
+        <List.Icon name="clipboard outline" />
         <List.Content>
           <Trans
             i18nKey="home.donate.donateCard.status.ready"

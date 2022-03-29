@@ -19,9 +19,9 @@ class FootprintDB {
     // Dexie automatically checks whether a db with this name exists. If it does,
     // it opens the existing one, if it doesn't, it creates a new one.
     if (!useFake) {
-      this.idb = new Dexie("DigitalFootprintDB");
+      this.idb = new Dexie("DigitalFootprintDB_v0.1");
     } else {
-      this.idb = new Dexie("DigitalFootprintDB", {
+      this.idb = new Dexie("DigitalFootprintDB_v0.1", {
         indexedDB: indexedDB,
         IDBKeyRange: IDBKeyRange,
       });
