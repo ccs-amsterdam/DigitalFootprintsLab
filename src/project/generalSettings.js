@@ -71,12 +71,12 @@ const validateData = [
   },
 ];
 
-const annotateData = [
+const answerQuestions = [
   {
     type: "topItems",
     data: "Youtube",
-    top: 10,
     field: "channel",
+    top: 10,
     detail: "title",
     intro: {
       value: `Below you see a list of Youtube channels that you watched. To what extent do you think their video content has involved discussion on news and current affairs?`,
@@ -84,8 +84,8 @@ const annotateData = [
     },
     canAdd: true,
     canAddIntro: {
-      value: `Besides the channels listed above, are there any other news related channels (in your own data) that come to your mind? If so, please select them in the following search box to add them to the list. `,
-      NL: `Zijn er volgens jou nog andere Youtube kanalen (in jouw eigen data) die over nieuws en actualiteiten berichten? Zo ja, selecteer deze dan alstublieft in deze zoekbox om ze aan de lijst toe te voegen. `,
+      value: `Besides the channels listed above, are there any other news related channels (in your own data) that come to your mind? If so, please select them in the following search box to add them to the list. (Don't forget to score the added items) `,
+      NL: `Zijn er volgens jou nog andere Youtube kanalen (in jouw eigen data) die over nieuws en actualiteiten berichten? Zo ja, selecteer deze dan alstublieft in deze zoekbox om ze aan de lijst toe te voegen. (Vergeet niet de toegevoegde items te scoren)`,
     },
     question: {
       value: "Does this channel cover content about news and current affairs?",
@@ -105,7 +105,7 @@ const generalSettings = {
   donationInformation,
   confirmDonation,
   validateData,
-  annotateData,
+  answerQuestions,
 };
 
 export default generalSettings;

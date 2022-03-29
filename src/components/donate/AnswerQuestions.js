@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Header, Segment } from "semantic-ui-react";
-import AnnotateTopItems from "./AnnotationTasks/AnnotateTopItems";
+import AnnotateTopItems from "./QuestionForms.js/AnnotateTopItems";
 
-const AnnotateData = ({ setStep, settings }) => {
+const AnswerQuestions = ({ setStep, settings }) => {
   const [done, setDone] = useState(false);
   const { t } = useTranslation();
 
@@ -55,7 +55,7 @@ const AnnotateQuestions = ({ settings, setDone }) => {
   const [doneArray, setDoneArray] = useState(null);
 
   useEffect(() => {
-    const questions = settings?.annotateData || [];
+    const questions = settings?.answerQuestions || [];
     const donearray = new Array(questions.length).fill(false);
     setDoneArray(donearray);
     setQuestions(questions);
@@ -68,7 +68,6 @@ const AnnotateQuestions = ({ settings, setDone }) => {
     setDone(allDone);
   }, [doneArray, setDone]);
 
-  console.log(questions);
   if (questions === null) return null;
 
   return (
@@ -91,4 +90,4 @@ const AnnotateQuestions = ({ settings, setDone }) => {
   );
 };
 
-export default AnnotateData;
+export default AnswerQuestions;

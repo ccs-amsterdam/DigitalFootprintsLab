@@ -181,14 +181,17 @@ class FootprintDB {
     if (addGroupInfo.length > 0) updateGroupInfo(addGroupInfo);
   }
 
-  async setDataAnnotations(annotations, name) {
-    await this.idb.data.update(name, { annotations: JSON.stringify(annotations) });
+  async setAnswers(question, answers) {
+    const meta = await this.idb.meta.get(1);
+    const questions = meta.questions ? JSON.parse(meta.questions) : {};
+    questions[question] = answers;
+    await this.idb.meta.update(1, { questions: JSON.stringify(questions) });
   }
 
-  async getDataAnnotations(name) {
-    let data = await this.idb.data.get({ name });
-    if (data?.annotations) return JSON.parse(data.annotations);
-    return {};
+  async getAnswers(question) {
+    const meta = await this.idb.meta.get(1);
+    const questions = meta.questions ? JSON.parse(meta.questions) : {};
+    return questions[question] || {};
   }
 
   async setDataValidation(validation, name) {

@@ -20,6 +20,7 @@ const AnnotateTopItems = ({ question, setDone }) => {
   useEffect(() => {
     prepareData(
       question.top.value,
+      question.question.value,
       question.data.value,
       question.field.value,
       question.detail.value,
@@ -32,39 +33,44 @@ const AnnotateTopItems = ({ question, setDone }) => {
   useEffect(() => {
     // check if all the items in the top have been annotated (if so, user is done with this question)
     if (!data) return;
-    let topAnnotated = true;
-    for (let annotation of Object.values(data.annotations[question.field.value])) {
-      console.log(annotation);
-      if (!annotation[question.question.value]) topAnnotated = false;
+    let topAnswered = true;
+    for (let item of Object.values(data.answers.items)) {
+      if (!item.answer) topAnswered = false;
     }
-    db.setDataAnnotations(data.annotations, question.data.value);
-    setDone(topAnnotated);
+    if (data.answers.added.length === 0 && !data.answers.nothing_to_add) topAnswered = false;
+
+    db.setAnswers(question.question.value, data.answers);
+    setDone(topAnswered);
   }, [data, question, setDone]);
 
   const onDropdownChange = (e, d) => {
-    for (let value of d.value) {
-      if (!data.annotations[question.field.value][value])
-        data.annotations[question.field.value][value] = { manually_added: true };
+    const items = d.value;
+    for (let item of items) {
+      // if item is added to dropdown, add to list
+      if (!data.answers.items[item]) data.answers.items[item] = { manually_added: true };
     }
 
-    for (let fieldvalue of Object.keys(data.annotations[question.field.value])) {
-      if (
-        data.annotations[question.field.value][fieldvalue].manually_added &&
-        !d.value.includes(fieldvalue)
-      )
-        delete data.annotations[question.field.value][fieldvalue];
+    for (let item of Object.keys(data.answers.items)) {
+      // if item has been removed from dropdown, remove from list
+      if (data.answers.items[item].manually_added && !items.includes(item))
+        delete data.answers.items[item];
     }
 
+    data.answers.added = items;
+    if (items.length > 0) data.answers.nothing_to_add = false;
+    setData({ ...data });
+  };
+
+  const onClick = (e, d) => {
+    data.answers.nothing_to_add = !data.answers.nothing_to_add;
     setData({ ...data });
   };
 
   if (status === "no data") return <p style={{ color: "red" }}>No data available</p>;
   if (!data) return null;
 
-  const dropdownValues = [];
-  for (let [value, a] of Object.entries(data.annotations[question.field.value])) {
-    if (a.manually_added) dropdownValues.push(value);
-  }
+  const added = data?.answers?.added || [];
+  const noAdd = data?.answers?.nothing_to_add || false;
 
   return (
     <Grid centered stackable>
@@ -73,7 +79,7 @@ const AnnotateTopItems = ({ question, setDone }) => {
           <p style={{ fontSize: "1.3em" }}>{question?.intro?.trans}</p>
         </Grid.Column>
       </Grid.Row>
-      <Grid.Row style={{ background: "#737373", color: "white", borderRadius: "5px" }}>
+      <Grid.Row style={{ background: "#1678c2", color: "white", borderRadius: "5px" }}>
         <Grid.Column width={7}>
           <b>{question.field.trans.toUpperCase()}</b>
         </Grid.Column>
@@ -87,43 +93,58 @@ const AnnotateTopItems = ({ question, setDone }) => {
         </Grid.Column>
       </Grid.Row>
 
-      {Object.keys(data.annotations[question.field.value]).map((fieldvalue, i) => {
-        return (
-          <ItemForm
-            key={fieldvalue}
-            data={data}
-            setData={setData}
-            field={question.field.value}
-            value={fieldvalue}
-            question={question}
-          />
-        );
-      })}
+      {
+        //Object.keys(data.annotations[question.field.value]).map((fieldvalue, i) => {
+        Object.keys(data.answers.items).map((item, i) => {
+          return (
+            <ItemForm
+              key={item}
+              data={data}
+              setData={setData}
+              field={question.field.value}
+              itemvalue={item}
+              question={question}
+            />
+          );
+        })
+      }
 
       <Grid.Row>
-        <Grid.Column width={10}>
+        <Grid.Column textAlign="center" width={10}>
           <br />
           <p style={{ fontSize: "1.3em" }}>{question?.canAddIntro?.trans}</p>
-          <Dropdown
-            search
-            fluid
-            selection
-            multiple
-            placeholder={t("donate.annotate.dropdown")}
-            options={data?.dropdownOptions || []}
-            renderLabel={(item) => ({ content: item.value })}
-            value={dropdownValues}
-            onChange={onDropdownChange}
-          />
+          <div style={{ display: "flex" }}>
+            <Dropdown
+              search
+              fluid
+              selection
+              multiple
+              placeholder={t("donate.annotate.dropdown")}
+              options={data?.dropdownOptions || []}
+              renderLabel={(item) => ({ content: item.value })}
+              value={added}
+              onChange={onDropdownChange}
+              style={{ border: "1px solid #cce2ff", minHeight: "70px" }}
+            />
+
+            <Button
+              primary
+              disabled={added.length > 0}
+              icon={noAdd ? "check" : ""}
+              positive={noAdd}
+              content={t("donate.annotate.noadd", "Nothing to add!")}
+              onClick={onClick}
+            />
+          </div>
         </Grid.Column>
       </Grid.Row>
     </Grid>
   );
 };
 
-const ItemForm = ({ data, setData, field, value, question }) => {
-  const item = data.items.find((item) => item.name === value);
-  const answer = data.annotations[field][value][question.question.value];
+const ItemForm = ({ data, setData, field, itemvalue, question }) => {
+  const item = data.items.find((item) => item.name === itemvalue);
+  const answer = data.answers.items[itemvalue].answer;
 
   return (
     <Grid.Row style={{ paddingTop: "7px", paddingBottom: "0px" }}>
@@ -146,13 +167,14 @@ const ItemForm = ({ data, setData, field, value, question }) => {
                     active={active}
                     onClick={() => {
                       const newData = { ...data };
-                      newData.annotations[field][item.name][question.question.value] = a.value;
+                      newData.answers.items[item.name].answer = a.value;
+
                       setData(newData);
                     }}
                     style={{
                       padding: "8px 12px",
                       color: active ? "white" : "black",
-                      background: active ? "blue" : "#bbbbbb",
+                      background: active ? "#1678c2" : "#cce2ff",
                     }}
                   >
                     {i + 1}
@@ -176,7 +198,14 @@ const ItemDetails = ({ item }) => {
       on="click"
       style={{ maxHeight: "300px", overflow: "auto" }}
       wide="very"
-      trigger={<Button size="small" circular icon="list ul" style={{ cursor: "pointer" }} />}
+      trigger={
+        <Button
+          size="small"
+          circular
+          icon="list ul"
+          style={{ cursor: "pointer", background: "#cce2ff" }}
+        />
+      }
     >
       <List>
         {item.details.map((detail, i) => {
@@ -187,8 +216,13 @@ const ItemDetails = ({ item }) => {
   );
 };
 
-const prepareData = async (top, dataName, field, detail, setData, setDone, setStatus) => {
+const prepareData = async (top, question, dataName, field, detail, setData, setDone, setStatus) => {
   const data = await db.getData(dataName);
+  const answers = await db.getAnswers(question);
+  if (!answers.items) answers.items = {};
+  if (!answers.added) answers.added = [];
+  if (!answers.nothing_to_add) answers.nothing_to_add = false;
+
   if (!data) {
     setStatus("no data");
     setDone(true);
@@ -211,31 +245,25 @@ const prepareData = async (top, dataName, field, detail, setData, setDone, setSt
     return items;
   }, {});
 
-  //console.log("ignored channels", ignored_channels);
-
   items = Object.keys(items).map((name) => ({ name, ...items[name] }));
   items.sort((a, b) => b.count - a.count); // sort from high to low value
-
-  const annotations = await db.getDataAnnotations(dataName);
-  if (!annotations[field]) annotations[field] = {};
 
   const currentTop = {};
   for (let i = 0; i < items.length && i < top; i++) {
     const item = items[i];
     currentTop[item.name] = true;
-    if (!annotations[field][item.name]) annotations[field][item.name] = {};
-    annotations[field][item.name].manually_added = false;
-    annotations[field][item.name].frequency_rank = i + 1;
+    if (!answers.items[item.name]) answers.items[item.name] = {};
+    answers.items[item.name].manually_added = false;
+    answers.items[item.name].frequency_rank = i + 1;
   }
 
-  for (let key of Object.keys(annotations[field])) {
+  for (let item of Object.keys(answers.items)) {
     // if data is filtered, previous top items might have dropped out, so remove them.
-    if (!annotations[field][key].manually_added && !currentTop[key]) delete annotations[field][key];
+    if (!answers.items[item].manually_added && !currentTop[item]) delete answers.items[item];
   }
 
   const dropdownOptions = items.reduce((options, item) => {
-    if (annotations[field][item.name] && !annotations[field][item.name].manually_added)
-      return options;
+    if (answers.items[item.name] && !answers.items[item.name].manually_added) return options;
     options.push({
       key: item.name,
       value: item.name,
@@ -245,7 +273,7 @@ const prepareData = async (top, dataName, field, detail, setData, setDone, setSt
     return options;
   }, []);
 
-  setData({ items, annotations, dropdownOptions });
+  setData({ items, answers, dropdownOptions });
 };
 
 export default AnnotateTopItems;

@@ -35,13 +35,12 @@
   },
   "donate": {
     "annotate": {
-      "question": "In welke mate gaat de content van dit kanaal over nieuws of actualiteiten?",
       "continue": "Ga verder met doneren",
       "dropdown": "",
       "header": "Beantwoord de volgende vragen astublieft",
-      "p1": "",
-      "p2": "",
-      "pleaseanswer": "Beantwoord alle vragen om verder te gaan"
+      "noadd": "Niks toe te voegen!",
+      "pleaseanswer": "Beantwoord alle vragen om verder te gaan",
+      "question": "In welke mate gaat de content van dit kanaal over nieuws of actualiteiten?"
     },
     "confirm": {
       "button": "Doneer je gegevens",

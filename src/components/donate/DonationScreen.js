@@ -3,7 +3,7 @@ import ColoredBackgroundGrid from "components/explore/dashboards/dashboardParts/
 import { Container, Grid, Icon, Step } from "semantic-ui-react";
 import background from "images/background.jpeg";
 import DonationInformation from "./DonationInformation";
-import AnnotateData from "./AnnotateData";
+import AnswerQuestions from "./AnswerQuestions";
 import ConfirmDonation from "./ConfirmDonation";
 import ValidateData from "./ValidateData";
 import useLogger from "util/useLogger";
@@ -28,7 +28,7 @@ const DonationScreen = () => {
         return <ValidateData setStep={setStep} settings={settings} />;
       case 2:
         log("annotation page");
-        return <AnnotateData setStep={setStep} settings={settings} />;
+        return <AnswerQuestions setStep={setStep} settings={settings} />;
       case 3:
         log("confirm page");
         return <ConfirmDonation settings={settings} />;
@@ -53,7 +53,9 @@ const DonationScreen = () => {
             }}
           >
             <DonationSteps step={step} setStep={setStep} />
-            <div style={{ marginTop: "30px", height: "100%", width: "100%" }}>{renderStep()}</div>
+            <div style={{ marginTop: "30px", flex: "1 1 auto", overflow: "auto", width: "100%" }}>
+              {renderStep()}
+            </div>
           </Container>
         </Grid.Column>
       </Grid>
@@ -84,7 +86,7 @@ const DonationSteps = ({ step, setStep }) => {
   };
 
   return (
-    <div>
+    <div style={{}}>
       <Step.Group fluid>
         <Step active={step === 0} completed={step > 0} onClick={() => onClick(0)}>
           <Icon name="thumbs up" />

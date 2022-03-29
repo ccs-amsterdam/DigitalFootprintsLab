@@ -2,26 +2,20 @@ import db from "apis/db";
 
 const submitData = async (setStatus) => {
   setStatus([]);
-  const meta = await db.idb.meta.get(1);
   const dataNames = await db.idb.data.toCollection().keys();
+  const meta = await db.idb.meta.get(1);
+  const testUser = meta.userId === "test_user";
 
+  postAnswers(meta, testUser, setStatus);
   postUserLogs(meta, setStatus);
+  for (let name of dataNames) postData(meta, name, testUser, setStatus);
+};
 
-  for (let name of dataNames) {
-    const data = await db.getData(name);
-    const testUser = meta.userId === "test_user";
-    await postBody(name, meta.userId, data.n_deleted, data.data, setStatus, testUser, false);
-
-    const metaData = [];
-    // add metadata (validation and annotation questions) as separate array.
-    // This is a bit hacky, but OSD2F seems to want an array.
-    if (data.annotations)
-      metaData.push({ type: "annotations", data: JSON.parse(data.annotations) });
-    if (data.validation) metaData.push({ type: "validation", data: JSON.parse(data.validation) });
-
-    if (metaData.length > 0)
-      await postBody(name + " meta data", meta.userId, 0, metaData, setStatus, testUser, true);
-  }
+const postAnswers = async (meta, testUser, setStatus) => {
+  let answers = meta.questions ? JSON.parse(meta.questions) : {};
+  // answers is an object, so first convert to array
+  answers = Object.keys(answers).map((key) => ({ question: key, ...answers[key] }));
+  await postBody("answers", meta.userId, 0, answers, setStatus, testUser, true);
 };
 
 const postUserLogs = async (meta, setStatus) => {
@@ -29,6 +23,19 @@ const postUserLogs = async (meta, setStatus) => {
   log = log.map((l) => l.log);
   const data = { user_agent: navigator.userAgent, log };
   await postBody("user_logs", meta.userId, 0, data, setStatus, false, true);
+};
+
+const postData = async (meta, name, testUser, setStatus) => {
+  const data = await db.getData(name);
+  await postBody(name, meta.userId, data.n_deleted, data.data, setStatus, testUser, false);
+
+  const metaData = [];
+  // add metadata (validation questions) as separate array.
+  // This is a bit hacky, but OSD2F seems to want an array.
+  if (data.validation) metaData.push({ type: "validation", data: JSON.parse(data.validation) });
+
+  if (metaData.length > 0)
+    await postBody(name + " meta data", meta.userId, 0, metaData, setStatus, testUser, true);
 };
 
 const postBody = async (filename, submission_id, n_deleted, entries, setStatus, fakeIt, isMeta) => {
@@ -45,10 +52,12 @@ const postBody = async (filename, submission_id, n_deleted, entries, setStatus, 
     },
     body: JSON.stringify([body]),
   };
+
+  console.log(filename, body);
   try {
     await fetch("https://digitale-voetsporen.nl/youtube/upload", requestOptions);
     if (!isMeta) setStatus((state) => [...state, { filename, success: true, n }]);
-    // (for meta data, only show if it fails. eventually data + meta should just be 1 package)
+    // (for meta data, only show status if it fails. eventually data + meta should just be 1 package)
   } catch (e) {
     console.log(e);
     setStatus((state) => [...state, { filename, success: false, n }]);
@@ -57,9 +66,10 @@ const postBody = async (filename, submission_id, n_deleted, entries, setStatus, 
 
 const replaceWithFake = (obj) => {
   const newobj = {};
+  let i = 1;
   for (let key of Object.keys(obj)) {
     const len = JSON.stringify(obj[key]).length;
-    newobj[key] = "test ".repeat(Math.max(1, Math.floor(len / 5))).trim();
+    newobj["item" + i++] = "test ".repeat(Math.max(1, Math.floor(len / 5))).trim();
   }
   return newobj;
 };

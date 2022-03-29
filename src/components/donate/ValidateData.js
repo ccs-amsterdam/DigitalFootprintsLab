@@ -26,7 +26,7 @@ const ValidateData = ({ setStep, settings }) => {
         height: "100%",
         color: "black",
         minHeight: "300px",
-        overflow: "auto",
+        //overflow: "auto",
       }}
     >
       <Grid centered stackable style={{ height: "100%" }}>
@@ -69,7 +69,12 @@ const ValidateDataParts = ({ questions, setOuterStep }) => {
       <Step.Group fluid>
         {dataNames.map((dataName, i) => {
           return (
-            <Step active={i === step} onClick={() => setStep(i)} disabled={maxStep < i}>
+            <Step
+              key={dataName}
+              active={i === step}
+              onClick={() => setStep(i)}
+              disabled={maxStep < i}
+            >
               {dataName === "Browsing" ? <Icon name="history" /> : null}
               {dataName === "Search" ? <Icon name="search" /> : null}
               {dataName === "Youtube" ? <Icon name="youtube" /> : null}
@@ -165,8 +170,6 @@ const ValidateDataPart = React.memo(({ questions, dataName, setStep }) => {
           >
             <br />
             {Object.keys(validation).map((key) => {
-              console.log(questions);
-              console.log(key);
               const question = questions.find((q) => q.question.value === key);
               return (
                 <ValidationQuestion

@@ -39,6 +39,7 @@ const Navi = () => {
               </Header>
               <Trans i18nKey={"home.navi.step1"} components={{ b: <b /> }} />
             </List.Item>
+            <br />
             <List.Item>
               <Header style={{ color: "white" }}>
                 <Trans i18nKey={"home.explore.title"} components={{ b: <b /> }} />
@@ -46,6 +47,7 @@ const Navi = () => {
 
               <Trans i18nKey={"home.navi.step2"} components={{ b: <b /> }} />
             </List.Item>
+            <br />
             <List.Item>
               <Header style={{ color: "white" }}>
                 <Trans i18nKey={"home.donate.title"} components={{ b: <b /> }} />

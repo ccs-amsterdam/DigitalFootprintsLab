@@ -45,7 +45,6 @@ const getSettings = (object, language) => {
 
   if (typeof object === "object") {
     if (object.value) {
-      console.log("whut");
       // if we reached the value, we can pick the selected language and use value as default
       const trans = object[language] || object.value;
       return { value: object.value, trans };

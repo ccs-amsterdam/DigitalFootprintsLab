@@ -19,30 +19,7 @@
       "3": "voornamelijk van iemand anders"
     }
   },
-  "common": {
-    "channel": "kanaal",
-    "channels": "kanalen",
-    "date": "datum",
-    "domain": "domein",
-    "domains": "domeinen",
-    "list": "lijst",
-    "queries": "zoektermen",
-    "query": "zoekterm",
-    "search": "zoek",
-    "searches": "zoekopdrachten",
-    "title": "titel",
-    "today": "vandaag",
-    "top": "top",
-    "total": "totaal",
-    "type": "type",
-    "views": "bekeken",
-    "visit": "bezocht",
-    "visits": "bezocht"
-  },
   "donate": {
-    "annotate": {
-      "question": "In welke mate gaat de content van dit kanaal over nieuws of actualiteiten?"
-    },
     "confirm": {
       "consent1": "Ik heb gezien dat ik items uit mijn gegevens kan zoeken en verwijderen, en begrijp dat alle items die niet zijn verwijderd worden ingediend voor donatie",
       "consent2": "Ik heb de uitleg gezien hoe en voor welk doel mijn gegevens worden gebruikt, en geef toestemming hiervoor"
