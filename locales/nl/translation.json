@@ -1,43 +1,23 @@
 {
-  "answers": {
-    "howmuch": {
-      "1": "heel weinig",
-      "2": "weinig",
-      "3": "matig",
-      "4": "veel",
-      "5": "heel veel"
-    },
-    "missing": {
-      "1": "niks ontbreekt",
-      "2": "iets ontbreekt",
-      "3": "veel ontbreekt",
-      "4": "meeste ontbreekt"
-    },
-    "otherusers": {
-      "1": "alleen van mij",
-      "2": "voornamelijk van mij",
-      "3": "voornamelijk van iemand anders"
-    }
-  },
   "common": {
-    "today": "vandaag",
-    "type": "type",
-    "views": "bekeken",
     "channel": "kanaal",
     "channels": "kanalen",
     "date": "datum",
     "domain": "domein",
     "domains": "domeinen",
     "list": "lijst",
+    "queries": "zoektermen",
     "query": "zoekterm",
-    "title": "titel",
-    "top": "top",
-    "total": "totaal",
-    "visit": "bezocht",
-    "visits": "bezocht",
     "search": "zoek",
     "searches": "zoekopdrachten",
-    "queries": "zoektermen"
+    "title": "titel",
+    "today": "vandaag",
+    "top": "top",
+    "total": "totaal",
+    "type": "type",
+    "views": "bekeken",
+    "visit": "bezocht",
+    "visits": "bezocht"
   },
   "dataTypes": {
     "browsing": {
@@ -58,15 +38,12 @@
       "continue": "Ga verder met doneren",
       "dropdown": "",
       "header": "Beantwoord de volgende vragen astublieft",
-      "p1": "",
-      "p2": "",
+      "noadd": "Niks toe te voegen!",
       "pleaseanswer": "Beantwoord alle vragen om verder te gaan",
       "question": "In welke mate gaat de content van dit kanaal over nieuws of actualiteiten?"
     },
     "confirm": {
       "button": "Doneer je gegevens",
-      "consent1": "Ik heb gezien dat ik items uit mijn gegevens kan zoeken en verwijderen, en begrijp dat alle items die niet zijn verwijderd worden ingediend voor donatie",
-      "consent2": "Ik heb de uitleg gezien hoe en voor welk doel mijn gegevens worden gebruikt, en geef toestemming hiervoor",
       "donated": {
         "failure": "<b>{{filename}}</b> kunnen niet worden ingediend. Probeer het opnieuw en neem contact op met de onderzoekers of het onderzoeksbureau als het probleem aanhoudt",
         "success": "{{n}} <b>{{filename}}</b> items gedoneerd"
@@ -76,9 +53,7 @@
       "testuser": "Je bent ingelogd als testgebruiker, dus je echte gegevens worden niet ingediend. De server ziet alleen welke soorten gegevens je hebt ingediend en hoeveel items"
     },
     "info": {
-      "continue": "Ga verder met doneren",
-      "header": "Over het doneren van uw gegevens",
-      "p1": "We moeten de deelnemers waarschijnlijk een verhaaltje of iets vertellen over hoe en met welk doel we hun gegevens zullen gebruiken. Voor de daadwerkelijke donatie (in de stap 'donatie voltooien') zullen mensen dan moeten verifiëren dat ze dit hebben gezien en toestemming geven."
+      "continue": "Ga verder met doneren"
     },
     "remove": {
       "button": "Zoekopdracht",
@@ -106,16 +81,50 @@
     "validate": {
       "continue": "DOORGAAN",
       "header1": "Om uw gegevens voor onderzoek te gebruiken, is het belangrijk om te weten hoe nauwkeurig deze zijn. Help ons alstublieft door een paar vragen over uw gegevens te beantwoorden",
-      "header2": "Links zie je de top items in je <i>{{dataname}}</i> data. Beantwoord de volgende vragen om ons te helpen begrijpen hoe nauwkeurig deze gegevens zijn.",
-      "question1": "Heb je het gevoel dat je deze digitale voetafdruk herkent als de jouwe?",
-      "question2": "Zijn de grootste items inderdaad de items die je vaak bezoekt?",
-      "question3": "Zijn er items waarvan je weet dat je ze vaak hebt bezocht, maar die hier niet worden weergegeven?",
-      "question4": "Zijn deze gegevens alleen van jou, of gebruikt iemand anders jouw apparaat of account?"
+      "header2": "Links zie je de top items in je <i>{{dataname}}</i> data. Beantwoord de volgende vragen om ons te helpen begrijpen hoe nauwkeurig deze gegevens zijn."
     }
   },
   "explore": {
     "statistics": {
       "header": "Statistieken"
+    }
+  },
+  "gather": {
+    "download": {
+      "header": "Download eerst je data"
+    },
+    "importdata": {
+      "dropzone": {
+        "header": "Lees hier de data in!",
+        "p1": "Gebruik dit blauwe veld om de data die je gedownload hebt in te lezen in deze app",
+        "p2": "Als de data een enkel bestand is is (of een ingepakte folder), dan kun je op dit veld klikken om het bestand te selecteren, of het bestand vanuit je verkenner naar dit veld slepen.",
+        "p3": "Als de data een folder is, dan moet je de folder vanuit je verkenner naar dit veld slepen."
+      },
+      "file": {
+        "header": "Om welk bestand gaat het?",
+        "hint": "Het bestand heet (gewoonlijk): "
+      },
+      "header": "Lees dan de data in",
+      "where": {
+        "chrome": {
+          "header": "Chrome Downloads vinden",
+          "l1": "Klik op de drie verticale puntjes in de hoek rechtsboven",
+          "l2": "Selecteer 'Downloads'",
+          "l3": "Klik op 'show in folder'"
+        },
+        "firefox": {
+          "header": "Firefox Downloads vinden",
+          "l2": "Selecteer 'Downloads'",
+          "l3": "Klik op het folder icoon (rechts in de popup) om het bestand in de verkenner te openen ('Show in folder')"
+        },
+        "general": "De meeste browsers slaan je downloads op in de Download(s) folder op je computer. Als je deze folder niet kunt vinden, dan kun je deze ook openen vanuit de browser.",
+        "header": "Waar staan mijn downloads?",
+        "safari": {
+          "header": "Safari Downloads vinden",
+          "l1": "Klik op het download Icoon in de hoek rechtsboven",
+          "l2": "Klik op het vergrootglas naast een bestand om het in de verkenner te openen"
+        }
+      }
     }
   },
   "home": {
@@ -131,9 +140,8 @@
         "name": "Doneren",
         "status": {
           "any": "Sommige datatypes zijn nog niet (succesvol) verzameld. U kunt doorgaan, maar er zullen enkele gegevens ontbreken",
-          "none": "Ga naar de kolom <b>Verzamelen</b> voor instructies over het verzamelen van uw digitale voetafdrukken",
-          "notReady": "<b>{{name}}</b> gegevens nog niet verzameld",
-          "ready": "<b>{{name}}</b> gegevens klaar om te doneren"
+          "notReady": "<b>{{name}}</b> nog niet verzameld",
+          "ready": "<b>{{name}}</b> klaar om te doneren"
         },
         "subname": "Klik hier om naar het donatiescherm te gaan"
       },
@@ -141,41 +149,30 @@
         "name": "Gegevens uitsluiten",
         "subname": "Gebruik trefwoorden om gegevens die u liever niet deelt te zoeken en te verwijderen"
       },
-      "title": "Doneren"
+      "title": "Stap 3. Doneren"
     },
     "explore": {
       "description": "Deze stap is optioneel, maar ben je niet nieuwsgierig?",
-      "title": "Verkennen"
+      "title": "Stap 2. Verkennen"
     },
     "gather": {
       "description": "Klik op een kaart om uw gegevens te verzamelen",
-      "finalStep": {
-        "header": "Laatste stap",
-        "step1": "Open je <b>downloadmap</b>",
-        "step2": "Zoek de <b>gedownloade map of het gedownloade bestand</b>",
-        "step3": "<b>Klik en houd</b> de map/het bestand vast en <b>sleep</b> het naar het blauwe veld hieronder"
+      "downloadfolder": {
+        "firefox": {
+          "l1": ""
+        }
       },
       "gatherCard": {
-        "click": "Klik hier om de gegevens te verzamelen die Google heeft over uw <b>browse-</b>, <b>zoek-</b> en <b>YouTube</b>-geschiedenis",
-        "empty": "<b>{{name}}</b> geschiedenis",
-        "failedGet": "Kan <b>{{name}}</b> niet ophalen",
-        "failedUpdate": "",
-        "failedUpdated": "Kan <b>{{name}}</b> niet updaten",
-        "success": "<b>{{name}}</b> geschiedenis"
+        "click": "Klik hier om de volgende gegevens te verzamelen:"
       },
-      "title": "Verzamelen"
+      "title": "Stap 1. Verzamelen"
     },
     "navi": {
-      "first": {
-        "content1": "Klik op een van de kaarten in de <b>Verzamelen<b/> kolom. Je krijgt dan instructies te zien om je data te downloaden en in deze applicatie in te laden.",
-        "content2": "Op dit moment zal je data alleen <b>op je eigen apparaat opgeslagen worden<b/>. Je kunt dan eerst je data verkennen, en eventueel data verwijderen die je niet wilt delen, alvorens je doneert.",
-        "header": "Begin met het verzamelen van data"
-      },
-      "second": {
-        "content1": "Ten eerste kun je de data <b>Verkennen</b>. Deze stap is optioneel, dus als je hier alleen bent om te doneren dan kun je dit ook overslaan.",
-        "content2": "Ten tweede kun je de data <b>Doneren</b>. Klik hiervoor op de <b>Doneren</b> kaart.",
-        "header": "Nu je data binnen is, kun je twee dingen doen"
-      }
+      "header": "Welkom! Op deze pagina zie je drie stappen",
+      "ok": "Ok, got it!",
+      "step1": "In de eerste stap verzamel je data door op een van de kaarten in de <b>Verzamelen</b> kolom te klikken. Na deze stap heb je nog niet je data gedoneerd (dat is stap 3!)",
+      "step2": "De tweede stap is optioneel. Je kunt hier je data <b>Verkennen</b> als je benieuwd bent naar je eigen digitale sporen. Als je hier data tegenkomt die je liever niet met ons deelt, dan kun je deze ook verwijderen.",
+      "step3": "De laatste stap is om je data te <b>Doneren</b> voor wetenschappelijk onderzoek. Je data wordt pas verstuurd zodra je alle stappen doorlopen hebt en je toestemming hebt gegeven. In de kolom staat ook de <b>Exlude data<b/> kaart, waarmee je data kunt zoeken en uitsluiten van de donatie, voor het geval je dit nog niet gedaan hebt in de <b>Verkennen</b> stap."
     }
   },
   "routing": {
