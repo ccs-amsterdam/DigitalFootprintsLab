@@ -44,6 +44,12 @@
     },
     "confirm": {
       "button": "Doneer je gegevens",
+      "buttonRetry": "Probeer nog een keer te versturen",
+      "thankyou": "Bedankt voor je donatie!",
+      "cleanup": "Als je niet van plan bent om je data verder te verkennen, dan kun je deze hier verwijderen. Let er op dat dit alleen de data uit deze applicatie verwijderd. Als je data op je computer heb opgeslagen dan wil je deze wellicht ook verwijderen.",
+      "continue": "Ga verder naar",
+      "delete": "Verwijder data",
+      "deleteContinue": "Verwijder data en ga verder naar",
       "donated": {
         "failure": "<b>{{filename}}</b> kunnen niet worden ingediend. Probeer het opnieuw en neem contact op met de onderzoekers of het onderzoeksbureau als het probleem aanhoudt",
         "success": "{{n}} <b>{{filename}}</b> items gedoneerd"

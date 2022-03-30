@@ -43,6 +43,12 @@
     },
     "confirm": {
       "button": "Donate your data",
+      "buttonRetry": "Try sending the data again",
+      "thankyou": "Thank you for your donation!",
+      "cleanup": "If you don't intend to further explore your data, you can now delete it. Note that this only deletes the data from this application. If you stored data on your computer, you might also want to delete it there.",
+      "continue": "Continue to",
+      "delete": "Delete data",
+      "deleteContinue": "Delete data and continue to",
       "donated": {
         "failure": "Failed to submit <b>{{filename}}</b> data. Please try again, and contact the researchers or survey company if the problem persists",
         "success": "Donated {{n}} <b>{{filename}}</b> items"
