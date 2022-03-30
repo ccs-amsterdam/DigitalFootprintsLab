@@ -7,7 +7,7 @@ const languageOptions = [
   { key: "nl", value: "nl", text: "Nederlands" },
 ];
 
-const ChangeLanguage = () => {
+const ChangeLanguage = ({ style }) => {
   const { i18n } = useTranslation();
 
   const changeLanguageHandler = (lang) => {
@@ -34,6 +34,7 @@ const ChangeLanguage = () => {
         marginTop: "9px",
         color: "white",
         border: "1px solid white",
+        ...style,
       }}
     />
   );

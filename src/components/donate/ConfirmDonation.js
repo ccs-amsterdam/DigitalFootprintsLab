@@ -15,29 +15,33 @@ import {
 import submitData from "./submitData";
 
 const ConfirmDonation = ({ settings }) => {
+  const { t } = useTranslation();
   const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [testUser, setTestUser] = useState(null);
-  const { t } = useTranslation();
+  const [meta, setMeta] = useState(null);
+  const [fullStatus, setFullStatus] = useState("not started");
 
   const onClick = async () => {
     setLoading(true);
-    await submitData(setStatus);
+    const finished = await submitData(status, setStatus);
+    setFullStatus(finished ? "finished" : "failed");
     setLoading(false);
   };
 
   useEffect(() => {
+    if (meta !== null) return;
     db.isWelcome()
       .then((welcome) => {
-        setTestUser(welcome?.userId === "test_user");
+        setMeta(welcome);
       })
       .catch((e) => {
         console.log(e);
       });
-  });
+  }, [meta]);
 
-  if (testUser === null) return null;
+  if (meta === null) return null;
+  if (fullStatus === "finished") return <Finalize t={t} status={status} meta={meta} />;
 
   return (
     <Segment
@@ -50,58 +54,40 @@ const ConfirmDonation = ({ settings }) => {
       }}
     >
       <Grid centered stackable verticalAlign="middle" style={{ height: "100%" }}>
-        <Grid.Column width={8} stretched>
-          <Header as="h2" style={{ textAlign: "center" }}>
-            {t("donate.confirm.header")}
-          </Header>
-          <br />
-          <ConsentForm settings={settings} setConsent={setConsent} />
-          <br />
-          {testUser ? (
-            <Header textAlign="center" color="orange">
-              {t("donate.confirm.testuser")}
+        <Grid.Row>
+          <Grid.Column width={8} stretched>
+            <Header as="h2" style={{ textAlign: "center" }}>
+              {t("donate.confirm.header")}
             </Header>
-          ) : (
             <br />
-          )}
-          <Button primary disabled={!consent || loading} onClick={onClick}>
-            {t("donate.confirm.button")}
-          </Button>
-          <List>
-            {status.map((file) => {
-              return (
-                <List.Item key={file.filename} style={{ marginLeft: "10%" }}>
-                  <List.Icon
-                    name={file.success ? "check circle outline" : "times circle outline"}
-                    color={file.success ? "green" : "red"}
-                  />
-                  {file.success ? (
-                    <List.Content>
-                      <Trans
-                        i18nKey="donate.confirm.donated.success"
-                        values={{ n: file.n, filename: file.filename }}
-                        components={{ b: <b /> }}
-                      />
-                    </List.Content>
-                  ) : (
-                    <List.Content>
-                      <Trans
-                        i18nKey="donate.confirm.donated.failure"
-                        values={{ filename: file.filename }}
-                        components={{ b: <b /> }}
-                      />
-                    </List.Content>
-                  )}
-                </List.Item>
-              );
-            })}
-            <Segment style={{ border: "0", boxShadow: "none", marginTop: "20px" }}>
-              <Dimmer inverted active={loading}>
-                <Loader>{t("donate.confirm.loader")}</Loader>
-              </Dimmer>
-            </Segment>{" "}
-          </List>
-        </Grid.Column>
+            <ConsentForm
+              settings={settings}
+              setConsent={setConsent}
+              done={fullStatus === "finished"}
+            />
+            <br />
+            {meta?.userId === "test_user" ? (
+              <Header textAlign="center" color="orange">
+                {t("donate.confirm.testuser")}
+              </Header>
+            ) : (
+              <br />
+            )}
+            <Button
+              primary
+              disabled={!consent || loading || fullStatus === "finished"}
+              onClick={(e, d) => {
+                setLoading(true);
+                onClick();
+              }}
+            >
+              {fullStatus === "failed"
+                ? t("donate.confirm.buttonRetry")
+                : t("donate.confirm.button")}
+            </Button>
+            <StatusList t={t} status={status} loading={loading} />
+          </Grid.Column>
+        </Grid.Row>
       </Grid>
     </Segment>
   );
@@ -109,9 +95,8 @@ const ConfirmDonation = ({ settings }) => {
 
 //const consentItems = ["donate.confirm.consent1", "donate.confirm.consent2"];
 
-const ConsentForm = ({ settings, setConsent }) => {
+const ConsentForm = ({ settings, setConsent, done }) => {
   const [consentArray, setConsentArray] = useState([]);
-  const { t } = useTranslation();
 
   useEffect(() => {
     if (!settings?.confirmDonation?.checkboxes) return;
@@ -125,7 +110,6 @@ const ConsentForm = ({ settings, setConsent }) => {
     setConsent(allConsent);
   }, [setConsent, consentArray]);
 
-  console.log(settings);
   if (!settings?.confirmDonation?.checkboxes) return null;
   const consentItems = settings.confirmDonation.checkboxes.map((question) => question.trans);
 
@@ -135,12 +119,13 @@ const ConsentForm = ({ settings, setConsent }) => {
         return (
           <ConsentItem
             key={item + i}
-            content={t(item)}
+            content={item}
             consent={consentArray[i]}
             setConsent={(checked) => {
               consentArray[i] = checked;
               setConsentArray([...consentArray]);
             }}
+            done={done}
           />
         );
       })}
@@ -148,11 +133,120 @@ const ConsentForm = ({ settings, setConsent }) => {
   );
 };
 
-const ConsentItem = ({ content, consent, setConsent }) => {
+const ConsentItem = ({ content, consent, setConsent, done }) => {
   return (
     <Form.Field>
-      <Checkbox label={content} checked={consent} onChange={(e, d) => setConsent(d.checked)} />
+      <Checkbox
+        disabled={done}
+        label={content}
+        checked={consent}
+        onChange={(e, d) => setConsent(d.checked)}
+      />
     </Form.Field>
+  );
+};
+
+const StatusList = ({ t, status, loading }) => {
+  return (
+    <List>
+      {status.map((file) => {
+        return (
+          <List.Item key={file.filename} style={{ marginLeft: "10%" }}>
+            <List.Icon
+              name={file.success ? "check circle outline" : "times circle outline"}
+              color={file.success ? "green" : "red"}
+            />
+            {file.success ? (
+              <List.Content>
+                <Trans
+                  i18nKey="donate.confirm.donated.success"
+                  values={{ n: file.n, filename: file.filename }}
+                  components={{ b: <b /> }}
+                />
+              </List.Content>
+            ) : (
+              <List.Content>
+                <Trans
+                  i18nKey="donate.confirm.donated.failure"
+                  values={{ filename: file.filename }}
+                  components={{ b: <b /> }}
+                />
+              </List.Content>
+            )}
+          </List.Item>
+        );
+      })}
+      <Segment style={{ border: "0", boxShadow: "none", marginTop: "20px" }}>
+        <Dimmer inverted active={loading}>
+          <Loader>{t("donate.confirm.loader")}</Loader>
+        </Dimmer>
+      </Segment>{" "}
+    </List>
+  );
+};
+
+const Finalize = ({ t, status, meta }) => {
+  const onDelete = () => {
+    db.destroyEverything().then(() => {
+      if (meta.returnURL) {
+        window.location.href = meta.returnURL;
+      } else {
+        window.location.reload(`/`);
+      }
+    });
+  };
+
+  const returnLink = () => {
+    if (!meta?.returnURL)
+      return (
+        <Button negative onClick={onDelete}>
+          {t("donate.confirm.delete")}
+        </Button>
+      );
+
+    return (
+      <>
+        <Button.Group fluid>
+          <Button
+            primary
+            onClick={() => {
+              window.location.href = meta.returnURL;
+            }}
+          >
+            {t("donate.confirm.continue")} &nbsp; <b>{meta.returnURL.split("?")[0]}</b>
+          </Button>
+          <Button negative onClick={onDelete}>
+            {t("donate.confirm.deleteContinue")} &nbsp; <b>{meta.returnURL.split("?")[0]}</b>
+          </Button>
+        </Button.Group>
+      </>
+    );
+  };
+
+  return (
+    <Segment
+      style={{
+        background: "white",
+        height: "100%",
+        color: "black",
+        minHeight: "300px",
+        overflow: "auto",
+      }}
+    >
+      <Grid centered stackable verticalAlign="middle" style={{ height: "100%" }}>
+        <Grid.Row>
+          <Grid.Column textAlign="center" width={8}>
+            <Header as="h2">{t("donate.confirm.thankyou")}</Header>
+            <div style={{ textAlign: "left", marginLeft: "20%", marginTop: "5%" }}>
+              <StatusList t={t} status={status} loading={false} />
+            </div>
+            <p>{t("donate.confirm.cleanup")}</p>
+
+            <Grid.Row style={{ marginTop: "30px" }}>{returnLink()}</Grid.Row>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    </Segment>
   );
 };
 

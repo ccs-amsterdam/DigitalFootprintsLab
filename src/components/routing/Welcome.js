@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPersistent } from "actions";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation, Trans } from "react-i18next";
+import ChangeLanguage from "components/home/ChangeLanguage";
+import { urlParamString } from "util/tools";
 
 /**
  * This component only appears the first time users visit,
@@ -20,8 +22,9 @@ const Welcome = ({ items }) => {
   const persistent = useSelector((state) => state.persistent);
   const [searchParams] = useSearchParams();
   const userId = searchParams.get("id");
+  const returnURL = searchParams.get("return");
 
-  const beWelcomed = async (checkWelcome, userId) => {
+  const beWelcomed = async (checkWelcome, userId, returnURL) => {
     if (checkWelcome) {
       const iswelcome = await db.isWelcome();
       if (!iswelcome?.persistent) dispatch(setPersistent(false));
@@ -31,12 +34,13 @@ const Welcome = ({ items }) => {
         // previous session. This should very rarely pose a problem, and it prevents users accidentally
         // submitting data with the wrong user id.
         db.destroyEverything().then(() => {
-          window.location.href += `?id=${userId}`;
+          const paramString = urlParamString({ id: userId, return: returnURL });
+          window.location.href += paramString;
         });
       }
     }
     try {
-      const persistent = await db.welcome(userId ?? "test_user");
+      const persistent = await db.welcome(userId ?? "test_user", returnURL);
       dispatch(setPersistent(persistent));
       navigate(items[0].path);
     } catch (e) {
@@ -45,7 +49,7 @@ const Welcome = ({ items }) => {
   };
 
   useEffect(() => {
-    beWelcomed(true, userId);
+    beWelcomed(true, userId, returnURL);
   });
 
   return (
@@ -61,7 +65,23 @@ const Welcome = ({ items }) => {
       verticalAlign="middle"
     >
       <Grid.Column style={{ maxWidth: 600 }}>
-        <Segment style={{ border: 0 }}>
+        <Segment
+          style={{
+            position: "relative",
+            border: "2px solid grey",
+            boxShadow: "8px 10px #0f0f0f82",
+          }}
+        >
+          <ChangeLanguage
+            style={{
+              position: "absolute",
+              left: "0",
+              top: "0",
+              margin: "0",
+              background: "white",
+              color: "grey",
+            }}
+          />
           <Header as="h2">{t("routing.welcome.header")}</Header>
           <div
             align="justified"
@@ -78,7 +98,7 @@ const Welcome = ({ items }) => {
             {persistent ? null : notPersistentMessage(t)}
             {userId === null ? testUserMessage(t) : null}
           </div>
-          {welcomeButton(t, beWelcomed, userId)}
+          {welcomeButton(t, beWelcomed, userId, returnURL)}
         </Segment>
       </Grid.Column>
     </Grid>
@@ -108,19 +128,19 @@ const testUserMessage = (t) => {
   );
 };
 
-const welcomeButton = (t, beWelcomed, userId) => {
+const welcomeButton = (t, beWelcomed, userId, returnURL) => {
   if (userId === null)
     return (
       <Button
         primary
-        onClick={() => beWelcomed(false, "test_user")}
+        onClick={() => beWelcomed(false, "test_user", returnURL)}
         style={{ background: "#ff7300" }}
       >
         {t("routing.welcome.testuser.button")}
       </Button>
     );
   return (
-    <Button primary onClick={() => beWelcomed(false, userId)}>
+    <Button primary onClick={() => beWelcomed(false, userId, returnURL)}>
       {t("routing.welcome.button")}
     </Button>
   );

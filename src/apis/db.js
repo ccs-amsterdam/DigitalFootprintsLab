@@ -34,7 +34,7 @@ class FootprintDB {
 
     this.idb.version(2).stores({
       meta: "welcome", // Keep track of whether user logged in before, and remember userId (if passed as URL parameter)
-      log: "++id", // unindexed: log. Which should just be an object with whatever loggin details seem relevant
+      log: "++id", // unindexed: log. See utils/useLogger
       data: "&name, deleted", // unindexed fields: "data". "data" is an array with all the data. "deleted" requires some explanation.
       // data items can be deleted by users, but for speed we don't overwrite the data immediately,
       // and instead store the indices values of the deleted items. The format is a boolean array of same length as data
@@ -50,15 +50,15 @@ class FootprintDB {
   }
 
   // META
-  /** just serves to indicate that user has accepted conditions at welcome screen */
-  async welcome(userId) {
+  /** keeps track of user information, like user id, return url, and answers to questions */
+  async welcome(userId, returnURL) {
     let persistent;
     try {
-      await this.idb.meta.put({ welcome: 1, userId });
+      await this.idb.meta.put({ welcome: 1, userId, returnURL });
       persistent = true;
     } catch (e) {
       this.setIDB(true); // switch to fake idb
-      await this.idb.meta.put({ welcome: 1, userId });
+      await this.idb.meta.put({ welcome: 1, userId, returnURL });
       persistent = false;
     }
     return persistent;
@@ -66,10 +66,16 @@ class FootprintDB {
   async isWelcome() {
     try {
       const welcome = await this.idb.meta.get(1);
-      return { welcome: !!welcome, persistent: true, userId: welcome?.userId };
+      console.log(welcome);
+      return {
+        welcome: !!welcome,
+        persistent: true,
+        userId: welcome?.userId,
+        returnURL: welcome?.returnURL,
+      };
     } catch (e) {
       // can throw error if browser can't handle IDB
-      return { welcome: false, persistent: false, userId: null };
+      return { welcome: false, persistent: false, userId: null, returnURL: null };
     }
   }
 

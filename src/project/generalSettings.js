@@ -17,6 +17,15 @@ const confirmDonation = {
       NL: "Door hier te klikken geef ik aan dat ik het eens ben met mijn deelname aan dit onderzoek en geef ik toestemming om mijn data voor analyse op te sturen. ",
     },
   ],
+  returnMessage: {
+    value:
+      "You have now completed the data donation, and can continue with the debriefing for this study",
+    NL: "Je bent nu klaar met de data donatie, en kunt doorgaan naar de debriefing voor dit onderzoek",
+  },
+  returnButton: {
+    value: "Continue to debriefing",
+    NL: "Ga door naar de debriefing",
+  },
 };
 
 const validateData = [

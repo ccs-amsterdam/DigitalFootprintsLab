@@ -49,7 +49,7 @@ const GatherScreen = () => {
         <MenuGridRow gatherScreen />
 
         <Grid.Column width={10} style={{ minHeight: "calc(100vh - 40px)" }}>
-          <Segment style={segmentStyle}>
+          <Segment style={{ ...segmentStyle, background: "transparent" }}>
             <DownloadData t={t} instruction={instruction} icon={platform?.icon} />
           </Segment>
         </Grid.Column>

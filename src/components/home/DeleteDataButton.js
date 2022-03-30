@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import db from "apis/db";
 
-const DeleteDataButton = () => {
+const DeleteDataButton = ({ style }) => {
   const { t } = useTranslation();
 
   const button = (
@@ -14,10 +14,11 @@ const DeleteDataButton = () => {
         marginTop: "9px",
         color: "white",
         border: "1px solid white",
+        ...style,
       }}
     >
       <Icon name="trash" />
-      Delete all data
+      {t("home.deleteButton.buttonLabel")}
     </Button>
   );
 

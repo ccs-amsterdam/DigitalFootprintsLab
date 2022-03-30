@@ -26,7 +26,7 @@ const ValidateData = ({ setStep, settings }) => {
         height: "100%",
         color: "black",
         minHeight: "300px",
-        //overflow: "auto",
+        overflow: "auto",
       }}
     >
       <Grid centered stackable style={{ height: "100%" }}>
@@ -219,7 +219,7 @@ const ValidationQuestion = ({ question, validation, setValidation, dataName }) =
                 setValidation(newValidation);
               }}
               style={{
-                padding: "4px 10px",
+                padding: "7px 10px",
                 background: selected ? "white" : "#555555",
                 color: selected ? "#3b3a3a" : "white",
                 borderRadius: "5px",
