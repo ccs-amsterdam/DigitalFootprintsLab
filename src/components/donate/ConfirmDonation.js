@@ -41,7 +41,8 @@ const ConfirmDonation = ({ settings }) => {
   }, [meta]);
 
   if (meta === null) return null;
-  if (fullStatus === "finished") return <Finalize t={t} status={status} meta={meta} />;
+  if (fullStatus === "finished")
+    return <Finalize t={t} settings={settings} status={status} meta={meta} />;
 
   return (
     <Segment
@@ -185,7 +186,7 @@ const StatusList = ({ t, status, loading }) => {
   );
 };
 
-const Finalize = ({ t, status, meta }) => {
+const Finalize = ({ t, settings, status, meta }) => {
   const onDelete = () => {
     db.destroyEverything().then(() => {
       if (meta.returnURL) {
@@ -195,6 +196,7 @@ const Finalize = ({ t, status, meta }) => {
       }
     });
   };
+  meta.returnURL = "test";
 
   const returnLink = () => {
     if (!meta?.returnURL)
@@ -213,10 +215,11 @@ const Finalize = ({ t, status, meta }) => {
               window.location.href = meta.returnURL;
             }}
           >
-            {t("donate.confirm.continue")} &nbsp; <b>{meta.returnURL.split("?")[0]}</b>
+            {settings?.confirmDonation?.finishButton?.trans}
           </Button>
+          <Button.Or />
           <Button negative onClick={onDelete}>
-            {t("donate.confirm.deleteContinue")} &nbsp; <b>{meta.returnURL.split("?")[0]}</b>
+            {t("donate.confirm.delete")} + {settings?.confirmDonation?.finishButton?.trans}
           </Button>
         </Button.Group>
       </>
@@ -236,7 +239,7 @@ const Finalize = ({ t, status, meta }) => {
       <Grid centered stackable verticalAlign="middle" style={{ height: "100%" }}>
         <Grid.Row>
           <Grid.Column textAlign="center" width={8}>
-            <Header as="h2">{t("donate.confirm.thankyou")}</Header>
+            <Header as="h2">{settings?.confirmDonation?.finishHeader?.trans}</Header>
             <div style={{ textAlign: "left", marginLeft: "20%", marginTop: "5%" }}>
               <StatusList t={t} status={status} loading={false} />
             </div>

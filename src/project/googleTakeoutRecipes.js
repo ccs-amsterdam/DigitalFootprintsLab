@@ -143,7 +143,7 @@ const google_takeout_youtube_history_html = {
 
 const google_takeout_youtube_search_html = {
   name: "Youtube searched",
-  file: ["search-history.html", "zoekgeschiedenis.html"],
+  file: ["search-history.html", "zoekgeschiedenis.html", "Suchverlauf.html"],
   filetype: "html",
   rows_selector: [".mdl-grid > .outer-cell"],
   columns: [
@@ -187,7 +187,7 @@ const google_takeout_youtube_search_html = {
 
 const google_takeout_youtube_search_json = {
   name: "Youtube searched",
-  file: ["search-history.json", "zoekgeschiedenis.json"],
+  file: ["search-history.json", "zoekgeschiedenis.json", "Suchverlauf.json"],
   filetype: "json",
   rows_selector: [""],
   columns: [
@@ -221,17 +221,17 @@ const google_takeout_youtube_search_json = {
 
 const google_takeout_youtube_subscriptions = {
   name: "Youtube subscriptions",
-  file: ["subscriptions.csv", "abonnementen.csv"],
+  file: ["subscriptions.csv", "abonnementen.csv", "Abos.csv"],
   filetype: "csv",
   rows_selector: [""],
   columns: [
     {
       name: "channel_url",
-      selector: ["Channel URL", "Kanaal-URL"],
+      selector: ["Channel URL", "Kanaal-URL", "Kanal-URL"],
     },
     {
       name: "channel",
-      selector: ["Channel title", "Kanaaltitel"],
+      selector: ["Channel title", "Kanaaltitel", "Kanaltitel"],
     },
   ],
   transformers: [

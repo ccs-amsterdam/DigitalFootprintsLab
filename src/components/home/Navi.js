@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { Button, Modal, Icon, List, Header } from "semantic-ui-react";
+import { Button, Modal, Icon, List, Header, Popup } from "semantic-ui-react";
 import { Trans, useTranslation } from "react-i18next";
+import useSettings from "util/useSettings";
+import transCommon from "util/transCommon";
 
 const Navi = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -54,6 +56,7 @@ const Navi = () => {
               </Header>
               <Trans i18nKey={"home.navi.step3"} components={{ b: <b /> }} />
             </List.Item>
+            <ContactInfo t={t} />
           </List>
         </Modal.Content>
 
@@ -64,6 +67,64 @@ const Navi = () => {
         </Modal.Actions>
       </Modal>
     </>
+  );
+};
+
+const ContactInfo = ({ t }) => {
+  const contact = useSettings("contact");
+  if (!contact || Object.keys(contact).length === 0) return null;
+
+  return (
+    <>
+      <br />
+      <List.Item>
+        <Header style={{ color: "white" }}>{contact?.title.trans}</Header>
+        <p style={{ color: "white" }}>{contact?.message?.trans}</p>
+        <ContactEmail t={t} contact={contact} />
+        <ContactPhone contact={contact} />
+      </List.Item>
+    </>
+  );
+};
+
+const ContactEmail = ({ t, contact }) => {
+  const [open, setOpen] = useState(false);
+  if (!contact.email) return null;
+
+  return (
+    <div style={{ display: "flex" }}>
+      <Icon name="mail" style={{ color: "white", marginRight: "10px" }} size="large" />
+      <Popup
+        wide
+        open={open}
+        trigger={
+          <Header
+            style={{ color: "lightblue", cursor: "pointer" }}
+            onClick={async () => {
+              await navigator.clipboard.writeText(contact.email.trans);
+              setOpen(true);
+              setTimeout(() => {
+                setOpen(false);
+              }, 1250);
+            }}
+          >
+            {contact.email.trans}
+          </Header>
+        }
+      >
+        {transCommon("copied", t)}!
+      </Popup>
+    </div>
+  );
+};
+
+const ContactPhone = ({ contact }) => {
+  if (!contact.phone) return null;
+  return (
+    <Header style={{ color: "lightblue" }}>
+      <Icon name="phone" style={{ color: "white" }} />
+      {contact.phone.trans}
+    </Header>
   );
 };
 

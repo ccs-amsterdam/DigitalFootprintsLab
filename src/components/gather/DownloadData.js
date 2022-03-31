@@ -58,13 +58,7 @@ export default function DownloadData({ t, instruction, icon }) {
                     <List.Icon name="play" />
                     <List.Content>
                       <ReactMarkdown linkTarget={"_blank"}>{item.text}</ReactMarkdown>
-                      {item.image ? (
-                        <img
-                          style={{ ...default_image_style, ...item.image_style }}
-                          src={item.image}
-                          alt="loading..."
-                        />
-                      ) : null}
+                      {renderImages(item.image, item.image_style)}
                     </List.Content>
                   </List.Item>
                 );
@@ -76,3 +70,19 @@ export default function DownloadData({ t, instruction, icon }) {
     </Grid>
   );
 }
+
+const renderImages = (image, style) => {
+  if (!image) return null;
+  const images = !Array.isArray(image) ? [image] : image;
+  const image_style = style || {};
+  return images.map((image) => {
+    return (
+      <img
+        key={image}
+        style={{ ...default_image_style, ...image_style }}
+        src={image}
+        alt="loading..."
+      />
+    );
+  });
+};

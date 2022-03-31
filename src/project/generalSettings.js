@@ -1,11 +1,25 @@
+export const contact = {
+  title: {
+    value: "Need help? Contact us!",
+    NL: "Hulp nodig? Neem contact op!",
+  },
+  message: {
+    value: "Send us an email, and we will get back to you within 24 hours",
+    NL: "Stuur ons een email, en wij reageren binnen 24 uur",
+  },
+  email: "digitale-voetsporen.fsw@vu.nl",
+  //phone: "test",
+};
+
 const donationInformation = {
   title: {
-    value: "What are you donating?",
-    NL: "Over het doneren van uw gegevens",
+    value: "Donating your data",
+    NL: "Het doneren van uw data",
   },
   text: {
-    value: "Still need some words here",
-    NL: "Hier moeten we nog iets voor schrijven",
+    value:
+      "You are almost finished! In the following pages we will walk you through the steps for donating your data. We also ask you to answer a few questions about your data.",
+    NL: "Je bent bijna klaar! In de volgende paginas lopen wij met u door het process voor het doneren van uw data. Wij zullen hier ook enkele vragen stellen over uw data. ",
   },
 };
 
@@ -17,14 +31,13 @@ const confirmDonation = {
       NL: "Door hier te klikken geef ik aan dat ik het eens ben met mijn deelname aan dit onderzoek en geef ik toestemming om mijn data voor analyse op te sturen. ",
     },
   ],
-  returnMessage: {
-    value:
-      "You have now completed the data donation, and can continue with the debriefing for this study",
-    NL: "Je bent nu klaar met de data donatie, en kunt doorgaan naar de debriefing voor dit onderzoek",
+  finishHeader: {
+    value: "Thank you for your donation! You can now click the button below to get paid",
+    NL: "Bedankt voor je donatie! Je kunt nu op de knop hieronder klikken om betaald te worden",
   },
-  returnButton: {
-    value: "Continue to debriefing",
-    NL: "Ga door naar de debriefing",
+  finishButton: {
+    value: "Get paid!",
+    NL: "Word betaald!",
   },
 };
 
@@ -111,6 +124,7 @@ const answerQuestions = [
 ];
 
 const generalSettings = {
+  contact,
   donationInformation,
   confirmDonation,
   validateData,

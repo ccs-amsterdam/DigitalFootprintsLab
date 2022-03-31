@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
-import generalSettings from "project/generalSettings";
+import generalSettings, { contact } from "project/generalSettings";
 
 // return instruction
 // return function to get a specific line of instruction
@@ -12,9 +12,14 @@ import generalSettings from "project/generalSettings";
  * but the trans is shown to the user
  * @returns
  */
-const useSettings = () => {
+const useSettings = (which) => {
   const [settings, setSettings] = useState({});
   const [, i18n] = useTranslation();
+
+  const pickSetting = (which) => {
+    if (which === "contact") return contact;
+    return generalSettings;
+  };
 
   useEffect(() => {
     if (!i18n) {
@@ -23,9 +28,9 @@ const useSettings = () => {
     }
 
     const language = i18n?.language.split("-")[0].toUpperCase();
-    const settings = getSettings(generalSettings, language);
+    const settings = getSettings(pickSetting(which), language);
     setSettings(settings);
-  }, [i18n]);
+  }, [i18n, which]);
 
   return settings;
 };

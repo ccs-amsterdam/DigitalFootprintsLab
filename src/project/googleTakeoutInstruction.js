@@ -1,10 +1,18 @@
-import GoogleTakeout_unselected from "images/GoogleTakeout_unselected.png";
-import GoogleTakeout_deselect from "images/GoogleTakeout_deselect.png";
-import GoogleTakeout_chrome from "images/GoogleTakeout_chrome.png";
-import GoogleTakeout_youtube from "images/GoogleTakeout_youtube.png";
-import GoogleTakeout_youtube2 from "images/GoogleTakeout_youtube2.png";
-import GoogleTakeout_create from "images/GoogleTakeout_create.png";
-import GoogleTakeout_download from "images/GoogleTakeout_download.png";
+import GoogleTakeout_unselected from "project/images/GoogleTakeout_unselected.png";
+import GoogleTakeout_deselect from "project/images/GoogleTakeout_deselect.png";
+import GoogleTakeout_chrome from "project/images/GoogleTakeout_chrome.png";
+import GoogleTakeout_youtube from "project/images/GoogleTakeout_youtube.png";
+import GoogleTakeout_youtube2 from "project/images/GoogleTakeout_youtube2.png";
+import GoogleTakeout_create from "project/images/GoogleTakeout_create.png";
+import GoogleTakeout_download from "project/images/GoogleTakeout_download.png";
+
+import GoogleTakeout_unselected_nl from "project/images/GoogleTakeout_unselected_nl.png";
+import GoogleTakeout_deselect_nl from "project/images/GoogleTakeout_deselect_nl.png";
+import GoogleTakeout_chrome_nl from "project/images/GoogleTakeout_chrome_nl.png";
+import GoogleTakeout_youtube_nl from "project/images/GoogleTakeout_youtube_nl.png";
+import GoogleTakeout_youtube2_nl from "project/images/GoogleTakeout_youtube2_nl.png";
+import GoogleTakeout_create_nl from "project/images/GoogleTakeout_create_nl.png";
+import GoogleTakeout_download_nl from "project/images/GoogleTakeout_download_nl.png";
 
 const googleTakeoutInstruction_EN = {
   title: "Google Takeout",
@@ -65,8 +73,8 @@ const googleTakeoutInstruction_EN = {
         },
         {
           text: "Deselect all data, and then only select **History** and **subscriptions**. (If your Google account uses a different language, the names and order of items can be different)",
-          image: GoogleTakeout_youtube2,
-          image_style: { width: "50%", marginLeft: "25%" },
+          image: [GoogleTakeout_youtube2, GoogleTakeout_youtube2_nl],
+          image_style: { width: "45%", marginRight: "5%", verticalAlign: "text-top" },
         },
       ],
     },
@@ -123,7 +131,7 @@ const googleTakeoutInstruction_NL = {
         { text: "Log indien nodig in" },
         {
           text: "Scroll naar de  **CREATE A NEW EXPORT** (EEN NIEUWE EXPORT MAKEN) tabel",
-          image: GoogleTakeout_deselect,
+          image: GoogleTakeout_deselect_nl,
         },
       ],
     },
@@ -133,12 +141,12 @@ const googleTakeoutInstruction_NL = {
       items: [
         {
           text: "Klik **deselect all** (of **selectie van alle items ongedaan maken**) zodat alle checkboxes leeg zijn",
-          image: GoogleTakeout_deselect,
+          image: GoogleTakeout_deselect_nl,
           image_style: { objectFit: "cover", objectPosition: "0 90%", height: "120px" },
         },
         {
           text: "Er zou nu aangegeven moeten zijn dat er 0 items geselecteerd zijn, en alle checkboxes zijn leeg",
-          image: GoogleTakeout_unselected,
+          image: GoogleTakeout_unselected_nl,
         },
       ],
     },
@@ -148,7 +156,7 @@ const googleTakeoutInstruction_NL = {
       items: [
         {
           text: "Scroll naar beneden naar Chrome (items gesorteerd op alfabet) en klik op de checkbox",
-          image: GoogleTakeout_chrome,
+          image: GoogleTakeout_chrome_nl,
         },
       ],
     },
@@ -158,15 +166,15 @@ const googleTakeoutInstruction_NL = {
       items: [
         {
           text: "Scroll helemaal naar beneden naar **Youtube**",
-          image: GoogleTakeout_youtube,
+          image: GoogleTakeout_youtube_nl,
         },
         {
           text: "Klik op **All YouTube data included** (**alle youtube-gegevens inbegrepen**) om een popup te openen",
         },
         {
           text: "Maak ook hier eerst de selectie ongedaan, en selecteer dan alleen **history** (**geschiedenis**) en **subscriptions** (**abonnementen**)",
-          image: GoogleTakeout_youtube2,
-          image_style: { width: "50%", marginLeft: "25%" },
+          image: [GoogleTakeout_youtube2_nl, GoogleTakeout_youtube2],
+          image_style: { width: "45%", marginRight: "5%", verticalAlign: "text-top" },
         },
       ],
     },
@@ -179,7 +187,7 @@ const googleTakeoutInstruction_NL = {
         },
         {
           text: "Je zou nu moeten zien dat bij **Select data to include** (**gewenste gegevens selecteren**) 2 items zijn geselecteerd",
-          image: GoogleTakeout_create,
+          image: GoogleTakeout_create_nl,
         },
         {
           text: "Open **Choose file type, frequency and destination** (**bestandstype, frequentie en bestemming kiezen**). Gebruik de standaard instellingen en klik op **Create export** (**Export maken**)",
@@ -196,7 +204,7 @@ const googleTakeoutInstruction_NL = {
       items: [
         {
           text: "Google zal je vanzelf naar de download pagina sturen. Als je de pagina per ongeluk afgesloten hebt, dan heb je ook een mail ontvangen met de link",
-          image: GoogleTakeout_download,
+          image: GoogleTakeout_download_nl,
         },
         {
           text: "Klik op de download link, en sla het bestand op op een locatie die je makkelijk terug kunt vinden. De meeste browsers slaan het bestand vanzelf op in je **Downloads** folder",
