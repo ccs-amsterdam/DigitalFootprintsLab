@@ -50,8 +50,12 @@ const DataSquare = () => {
         backgroundImage: `url(${background})`,
         backgroundSize: "100% 100%",
         overflow: "auto",
+        position: "relative",
       }}
     >
+      <div style={{ position: "absolute", bottom: "0", left: "5px", color: "white" }}>
+        Version 1.0.1
+      </div>
       <Grid stackable divided centered>
         <Grid.Row style={{ minHeight: "60px" }}>
           <Grid.Column width={15} textAlign="right">

@@ -182,6 +182,16 @@ const google_takeout_youtube_search_html = {
       new_column: "words",
       arguments: {},
     },
+    {
+      transformer: "filter_regex",
+      column: "url",
+      new_column: "",
+      arguments: {
+        regex: "/watch|/activitycontrols",
+        "rm selected": true,
+        "case sensitive": false,
+      },
+    },
   ],
 };
 
@@ -215,6 +225,25 @@ const google_takeout_youtube_search_json = {
       column: "query",
       new_column: "words",
       arguments: {},
+    },
+    {
+      transformer: "filter_regex",
+      column: "url",
+      new_column: "",
+      arguments: {
+        regex: "/watch",
+        "rm selected": true,
+        "case sensitive": false,
+      },
+    },
+    {
+      transformer: "filter",
+      column: "",
+      new_column: "",
+      arguments: {
+        expression: "url == null",
+        "rm selected": true,
+      },
     },
   ],
 };
