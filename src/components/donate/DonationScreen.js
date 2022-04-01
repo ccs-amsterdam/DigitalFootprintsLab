@@ -95,10 +95,9 @@ const DonationSteps = ({ step, setStep }) => {
       <Step.Group unstackable fluid style={{ overflow: "auto" }}>
         <Step active={step === 0} completed={step > 0} onClick={() => onClick(0)} style={stepStyle}>
           <Icon name="thumbs up" />
-          <br />
           <Step.Content>
             <Step.Title>{t("donate.step1.title")}</Step.Title>
-            <Step.Description>{t("donate.step1.description")}</Step.Description>
+            {/* <Step.Description>{t("donate.step1.description")}</Step.Description> */}
           </Step.Content>
         </Step>
         <Step
@@ -111,7 +110,7 @@ const DonationSteps = ({ step, setStep }) => {
           <Icon name="address card outline" />
           <Step.Content>
             <Step.Title>{t("donate.step2.title")}</Step.Title>
-            <Step.Description>{t("donate.step2.description")}</Step.Description>
+            {/* <Step.Description>{t("donate.step2.description")}</Step.Description> */}
           </Step.Content>
         </Step>
         <Step
@@ -124,7 +123,7 @@ const DonationSteps = ({ step, setStep }) => {
           <Icon name="clipboard" />
           <Step.Content>
             <Step.Title>{t("donate.step3.title")}</Step.Title>
-            <Step.Description>{t("donate.step3.description")}</Step.Description>
+            {/* <Step.Description>{t("donate.step3.description")}</Step.Description> */}
           </Step.Content>
         </Step>
         <Step
@@ -137,7 +136,7 @@ const DonationSteps = ({ step, setStep }) => {
           <Icon name="student" />
           <Step.Content>
             <Step.Title>{t("donate.step4.title")}</Step.Title>
-            <Step.Description>{t("donate.step4.description")}</Step.Description>
+            {/* <Step.Description>{t("donate.step4.description")}</Step.Description> */}
           </Step.Content>
         </Step>
       </Step.Group>
