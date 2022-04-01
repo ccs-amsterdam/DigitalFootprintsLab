@@ -54,7 +54,7 @@ const DataSquare = () => {
       }}
     >
       <div style={{ position: "absolute", bottom: "0", left: "5px", color: "white" }}>
-        Version 1.0.1
+        Version 1.0.2
       </div>
       <Grid stackable divided centered>
         <Grid.Row style={{ minHeight: "60px" }}>
