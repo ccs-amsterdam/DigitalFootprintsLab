@@ -39,7 +39,7 @@ const DonationScreen = () => {
 
   return (
     <ColoredBackgroundGrid background={background} color={"#000000b0"}>
-      <Grid stackable style={{ height: "calc(100vh - 38px)", width: "100vw" }}>
+      <Grid stackable style={{ height: "calc(100vh - 18px)", width: "100vw" }}>
         <MenuGridRow disabled />
 
         <Grid.Column width={16} style={{ height: "calc(100% - 50px)" }}>
@@ -53,7 +53,7 @@ const DonationScreen = () => {
             }}
           >
             <DonationSteps step={step} setStep={setStep} />
-            <div style={{ marginTop: "30px", flex: "1 1 auto", overflow: "auto", width: "100%" }}>
+            <div style={{ marginTop: "10px", flex: "1 1 auto", overflow: "auto", width: "100%" }}>
               {renderStep()}
             </div>
           </Container>

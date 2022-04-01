@@ -23,7 +23,7 @@ const MenuGridRow = ({ disabled, gatherScreen }) => {
       <Grid.Column
         width={16}
         style={{
-          minHeight: "60px",
+          minHeight: "50px",
           display: "flex",
           justifyContent: "space-around",
           alignContent: "flex-start",
