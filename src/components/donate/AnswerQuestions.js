@@ -18,7 +18,7 @@ const AnswerQuestions = ({ setStep, settings }) => {
         overflow: "auto",
       }}
     >
-      <Grid verticalAlign="middle" centered stackable style={{ height: "100%" }}>
+      <Grid centered stackable style={{ height: "100%" }}>
         <Grid.Row>
           <Grid.Column width={16}>
             <Header as="h1" style={{ textAlign: "center" }}>
@@ -103,9 +103,9 @@ const AnnotateQuestions = ({ settings, setDone }) => {
   return questions.map((question, i) => {
     return (
       <Grid key={question?.question?.value + i} centered stackable>
-        {i > 0 ? <Divider style={{ margin: "40px" }} /> : null}
+        {i > 0 ? <Divider style={{ margin: "40px", width: "100%" }} /> : null}
         <Grid.Row>
-          <Grid.Column width={10} doubling>
+          <Grid.Column width={10}>
             <Header as="h1" textAlign="center">
               {question?.title?.trans}
             </Header>

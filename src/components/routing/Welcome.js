@@ -24,21 +24,24 @@ const Welcome = ({ items }) => {
   const userId = searchParams.get("id");
   const returnURL = searchParams.get("return");
 
-  const beWelcomed = async (checkWelcome, userId, returnURL) => {
-    if (checkWelcome) {
-      const iswelcome = await db.isWelcome();
-      if (!iswelcome?.persistent) dispatch(setPersistent(false));
-      if (!iswelcome?.welcome) return null;
-      if (iswelcome.userId && userId !== null && iswelcome.userId !== userId) {
-        // if a session was already started, but the user logs in with a new userId, delete the
-        // previous session. This should very rarely pose a problem, and it prevents users accidentally
-        // submitting data with the wrong user id.
-        db.destroyEverything().then(() => {
-          const paramString = urlParamString({ id: userId, return: returnURL });
-          window.location.href += paramString;
-        });
-      }
+  const checkIfWelcome = async (userId, returnURL) => {
+    const iswelcome = await db.isWelcome();
+    console.log(iswelcome);
+    if (!iswelcome?.persistent) dispatch(setPersistent(false));
+    if (!iswelcome?.welcome) return null;
+    if (iswelcome.userId && userId !== null && iswelcome.userId !== userId) {
+      // if a session was already started, but the user logs in with a new userId, delete the
+      // previous session. This should very rarely pose a problem, and it prevents users accidentally
+      // submitting data with the wrong user id.
+      db.destroyEverything().then(() => {
+        const paramString = urlParamString({ id: userId, return: returnURL });
+        window.location.href += paramString;
+      });
     }
+    navigate(items[0].path);
+  };
+
+  const beWelcomed = async (userId, returnURL) => {
     try {
       const persistent = await db.welcome(userId ?? "test_user", returnURL);
       dispatch(setPersistent(persistent));
@@ -49,7 +52,7 @@ const Welcome = ({ items }) => {
   };
 
   useEffect(() => {
-    beWelcomed(true, userId, returnURL);
+    checkIfWelcome(userId, returnURL);
   });
 
   return (
@@ -133,14 +136,14 @@ const welcomeButton = (t, beWelcomed, userId, returnURL) => {
     return (
       <Button
         primary
-        onClick={() => beWelcomed(false, "test_user", returnURL)}
+        onClick={() => beWelcomed("test_user", returnURL)}
         style={{ background: "#ff7300" }}
       >
         {t("routing.welcome.testuser.button")}
       </Button>
     );
   return (
-    <Button primary onClick={() => beWelcomed(false, userId, returnURL)}>
+    <Button primary onClick={() => beWelcomed(userId, returnURL)}>
       {t("routing.welcome.button")}
     </Button>
   );

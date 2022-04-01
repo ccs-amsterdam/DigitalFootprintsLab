@@ -14,13 +14,13 @@ export default function DownloadData({ t, instruction, icon }) {
 
   return (
     <Grid>
-      <Grid.Row style={{ color: "white" }}>
+      <Grid.Row style={{ color: "black", background: "white", borderRadius: "10px" }}>
         <Grid.Column>
-          <Header as="h1" textAlign="center" style={{ color: "white" }}>
+          <Header as="h1" textAlign="center" style={{ color: "rgb(65, 131, 196)" }}>
             {t("gather.download.header", "First download your data")}
             <br />
           </Header>
-          <Header style={{ color: "white" }}>
+          <Header textAlign="center">
             <Icon name={icon} size="small" />
             {instruction.title}
           </Header>

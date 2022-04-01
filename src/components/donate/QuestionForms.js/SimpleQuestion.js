@@ -11,6 +11,7 @@ const SimpleQuestion = ({ question, setDone }) => {
       .then(setAnswer)
       .catch((e) => console.log(e));
   }, [question]);
+  console.log(answer);
 
   useEffect(() => {
     if (answer !== null && answer != null) setDone(true);
@@ -21,32 +22,34 @@ const SimpleQuestion = ({ question, setDone }) => {
   return (
     <>
       <Grid.Row>
-        <Grid.Column width={10} doubling>
+        <Grid.Column width={10}>
           <p style={{ fontSize: "1.3em" }}>{question?.question?.trans}</p>
         </Grid.Column>
-        <Button.Group fluid size="small" style={{ marginTop: "10px" }}>
-          {answerOptions.map((a, i) => {
-            const selected = a.value === answer;
-            return (
-              <Button
-                key={a.value}
-                onClick={async () => {
-                  await db.setAnswers(question.question.value, a.value);
-                  setAnswer(a.value);
-                }}
-                style={{
-                  padding: "10px 10px",
-                  borderRadius: "5px",
-                  //border: selected ? "3px solid black" : "3px solid white",
-                  color: selected ? "white" : "black",
-                  background: selected ? "#1678c2" : "#cce2ff",
-                }}
-              >
-                {a.trans}
-              </Button>
-            );
-          })}
-        </Button.Group>
+        <Grid.Column textAlign="center" width={15}>
+          <Button.Group style={{ marginTop: "10px" }}>
+            {answerOptions.map((a, i) => {
+              const selected = a.value === answer;
+              return (
+                <Button
+                  key={a.value}
+                  onClick={() => {
+                    db.setAnswers(question.question.value, a.value);
+                    setAnswer(a.value);
+                  }}
+                  style={{
+                    borderRadius: "10px",
+                    margin: "2px",
+                    //border: selected ? "3px solid black" : "3px solid white",
+                    color: selected ? "white" : "black",
+                    background: selected ? "#1678c2" : "#cce2ff",
+                  }}
+                >
+                  {a.trans}
+                </Button>
+              );
+            })}
+          </Button.Group>
+        </Grid.Column>
       </Grid.Row>
     </>
   );

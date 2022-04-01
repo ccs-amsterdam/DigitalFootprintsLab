@@ -213,9 +213,9 @@ const ValidationQuestion = ({ question, validation, setValidation, dataName }) =
           return (
             <Button
               key={a}
-              onClick={async () => {
+              onClick={() => {
                 const newValidation = { ...validation, [question.question.value]: a };
-                await db.setDataValidation(newValidation, dataName);
+                db.setDataValidation(newValidation, dataName);
                 setValidation(newValidation);
               }}
               style={{
