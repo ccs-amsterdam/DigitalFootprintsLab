@@ -85,10 +85,15 @@ const DonationSteps = ({ step, setStep }) => {
     setStep(i);
   };
 
+  const stepStyle = {
+    padding: "10px min(max(1vw, 3px),20px)",
+    fontSize: "min(max(1vw, 0.5em), 0.8em)",
+  };
+
   return (
     <div style={{}}>
-      <Step.Group fluid>
-        <Step active={step === 0} completed={step > 0} onClick={() => onClick(0)}>
+      <Step.Group unstackable fluid style={{ overflow: "auto" }}>
+        <Step active={step === 0} completed={step > 0} onClick={() => onClick(0)} style={stepStyle}>
           <Icon name="thumbs up" />
           <br />
           <Step.Content>
@@ -101,6 +106,7 @@ const DonationSteps = ({ step, setStep }) => {
           completed={step > 1}
           disabled={maxStep < 1}
           onClick={() => onClick(1)}
+          style={stepStyle}
         >
           <Icon name="address card outline" />
           <Step.Content>
@@ -113,6 +119,7 @@ const DonationSteps = ({ step, setStep }) => {
           completed={step > 2}
           disabled={maxStep < 2}
           onClick={() => onClick(2)}
+          style={stepStyle}
         >
           <Icon name="clipboard" />
           <Step.Content>
@@ -125,6 +132,7 @@ const DonationSteps = ({ step, setStep }) => {
           completed={step > 3}
           disabled={maxStep < 3}
           onClick={() => onClick(3)}
+          style={stepStyle}
         >
           <Icon name="student" />
           <Step.Content>

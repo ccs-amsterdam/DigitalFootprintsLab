@@ -133,7 +133,7 @@ const ValidateDataPart = React.memo(({ questions, dataName, setStep }) => {
 
   if (!dashData) return null;
   return (
-    <Grid style={{ width: "100%" }}>
+    <Grid stackable style={{ width: "100%" }}>
       <Grid.Row>
         <Grid.Column textAlign="center"></Grid.Column>
       </Grid.Row>
