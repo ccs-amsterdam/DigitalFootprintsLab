@@ -155,6 +155,10 @@ const google_takeout_youtube_search_html = {
       name: "raw_date",
       selector: [".content-cell @INNER"],
     },
+    {
+      name: "url",
+      selector: ["a @href"],
+    },
   ],
   transformers: [
     {
@@ -208,6 +212,10 @@ const google_takeout_youtube_search_json = {
     {
       name: "raw_date",
       selector: ["time"],
+    },
+    {
+      name: "url",
+      selector: ["titleUrl"],
     },
   ],
   transformers: [
