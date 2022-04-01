@@ -3,7 +3,7 @@ import db from "apis/db";
 import { Button, Grid, Header, Popup, List, Dropdown } from "semantic-ui-react";
 
 import ignoreIds from "data/youtube_ignore_ids.json";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import transCommon from "util/transCommon";
 
 const ignoreIdsMap = ignoreIds.ids.reduce((obj, id) => {
@@ -66,7 +66,16 @@ const AnnotateTopItems = ({ question, setDone }) => {
     setData({ ...data });
   };
 
-  if (status === "no data") return <p style={{ color: "red" }}>No data available</p>;
+  if (status === "no data")
+    return (
+      <p style={{ color: "red" }}>
+        <Trans
+          i18nKey="donate.annotate.nodata"
+          values={{ data: question?.data?.value }}
+          components={{ b: <b /> }}
+        />
+      </p>
+    );
   if (!data) return null;
 
   const added = data?.answers?.added || [];

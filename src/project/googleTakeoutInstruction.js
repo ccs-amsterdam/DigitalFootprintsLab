@@ -30,7 +30,7 @@ const googleTakeoutInstruction_EN = {
         { text: "Visit the [Google Takeout website](https://takeout.google.com)" },
         { text: "Log in if needed" },
         {
-          text: "Scroll down a little bit to the **CREATE A NEW EXPORT** table",
+          text: "Go to the **CREATE A NEW EXPORT** table",
           image: GoogleTakeout_deselect,
         },
       ],
@@ -130,7 +130,7 @@ const googleTakeoutInstruction_NL = {
         { text: "Bezoek de [Google Takeout website](https://takeout.google.com)" },
         { text: "Log indien nodig in" },
         {
-          text: "Scroll naar de  **CREATE A NEW EXPORT** (EEN NIEUWE EXPORT MAKEN) tabel",
+          text: "Ga naar de  **CREATE A NEW EXPORT** (EEN NIEUWE EXPORT MAKEN) tabel",
           image: GoogleTakeout_deselect_nl,
         },
       ],
