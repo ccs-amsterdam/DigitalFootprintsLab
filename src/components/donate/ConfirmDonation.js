@@ -196,7 +196,6 @@ const Finalize = ({ t, settings, status, meta }) => {
       }
     });
   };
-  meta.returnURL = "test";
 
   const returnLink = () => {
     if (!meta?.returnURL)

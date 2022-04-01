@@ -43,7 +43,7 @@ const getSettings = (object, language) => {
     return arr;
   }
 
-  if (typeof object !== "object") {
+  if (typeof object !== "object" || object === null || object == null) {
     // if we reached a value, then no translation are available (either just a single string is given, or value is not a string)
     return { value: object, trans: object };
   }

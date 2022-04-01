@@ -66,7 +66,6 @@ class FootprintDB {
   async isWelcome() {
     try {
       const welcome = await this.idb.meta.get(1);
-      console.log(welcome);
       return {
         welcome: !!welcome,
         persistent: true,
@@ -176,7 +175,6 @@ class FootprintDB {
         data.push(d);
       }
     }
-    console.log(data.length);
 
     await this.idb.data.put({ name, deleted: null, n_deleted: 0, data: JSON.stringify(data) }, [
       name,
@@ -197,7 +195,7 @@ class FootprintDB {
   async getAnswers(question) {
     const meta = await this.idb.meta.get(1);
     const questions = meta.questions ? JSON.parse(meta.questions) : {};
-    return questions[question] || {};
+    return questions[question];
   }
 
   async setDataValidation(validation, name) {

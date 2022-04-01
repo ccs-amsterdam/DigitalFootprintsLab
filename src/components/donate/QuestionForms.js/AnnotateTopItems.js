@@ -73,12 +73,7 @@ const AnnotateTopItems = ({ question, setDone }) => {
   const noAdd = data?.answers?.nothing_to_add || false;
 
   return (
-    <Grid centered stackable>
-      <Grid.Row>
-        <Grid.Column width={10}>
-          <p style={{ fontSize: "1.3em" }}>{question?.intro?.trans}</p>
-        </Grid.Column>
-      </Grid.Row>
+    <>
       <Grid.Row style={{ background: "#1678c2", color: "white", borderRadius: "5px" }}>
         <Grid.Column width={7}>
           <b>{question.field.trans.toUpperCase()}</b>
@@ -110,7 +105,7 @@ const AnnotateTopItems = ({ question, setDone }) => {
       }
 
       <Grid.Row>
-        <Grid.Column textAlign="center" width={10}>
+        <Grid.Column width={10}>
           <br />
           <p style={{ fontSize: "1.3em" }}>{question?.canAddIntro?.trans}</p>
           <div style={{ display: "flex" }}>
@@ -138,7 +133,7 @@ const AnnotateTopItems = ({ question, setDone }) => {
           </div>
         </Grid.Column>
       </Grid.Row>
-    </Grid>
+    </>
   );
 };
 
@@ -218,7 +213,7 @@ const ItemDetails = ({ item }) => {
 
 const prepareData = async (top, question, dataName, field, detail, setData, setDone, setStatus) => {
   const data = await db.getData(dataName);
-  const answers = await db.getAnswers(question);
+  const answers = (await db.getAnswers(question)) || {};
   if (!answers.items) answers.items = {};
   if (!answers.added) answers.added = [];
   if (!answers.nothing_to_add) answers.nothing_to_add = false;

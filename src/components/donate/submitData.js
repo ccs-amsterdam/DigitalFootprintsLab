@@ -16,7 +16,7 @@ const submitData = async (status, setStatus) => {
 const postAnswers = async (meta, testUser, status, setStatus, finished) => {
   let answers = meta.questions ? JSON.parse(meta.questions) : {};
   // answers is an object, so first convert to array
-  answers = Object.keys(answers).map((key) => ({ question: key, ...answers[key] }));
+  answers = Object.keys(answers).map((key) => ({ question: key, answers: answers[key] }));
   await postBody("answers", meta.userId, 0, answers, status, setStatus, testUser, true, finished);
 };
 

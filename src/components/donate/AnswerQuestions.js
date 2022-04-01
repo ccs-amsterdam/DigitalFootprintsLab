@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Grid, Header, Segment } from "semantic-ui-react";
+import { Button, Divider, Grid, Header, Segment } from "semantic-ui-react";
 import AnnotateTopItems from "./QuestionForms.js/AnnotateTopItems";
+import SimpleQuestion from "./QuestionForms.js/SimpleQuestion";
 
 const AnswerQuestions = ({ setStep, settings }) => {
   const [done, setDone] = useState(false);
@@ -68,26 +69,53 @@ const AnnotateQuestions = ({ settings, setDone }) => {
     setDone(allDone);
   }, [doneArray, setDone]);
 
+  const renderQuestion = (question, i) => {
+    const updateDoneArray = (done) => {
+      const newDoneArray = [...doneArray];
+      if (newDoneArray[i] !== done) {
+        newDoneArray[i] = done;
+        setDoneArray(newDoneArray);
+      }
+    };
+
+    if (question.type.value === "topItems") {
+      return (
+        <AnnotateTopItems
+          key={question.question.value}
+          question={question}
+          setDone={updateDoneArray}
+        />
+      );
+    }
+    if (question.type.value === "simpleQuestion") {
+      return (
+        <SimpleQuestion
+          key={question.question.value}
+          question={question}
+          setDone={updateDoneArray}
+        />
+      );
+    }
+    return null;
+  };
+
   if (questions === null) return null;
-
-  return (
-    <>
-      {questions.map((question, i) => {
-        const updateDoneArray = (done) => {
-          const newDoneArray = [...doneArray];
-          if (newDoneArray[i] !== done) {
-            newDoneArray[i] = done;
-            setDoneArray(newDoneArray);
-          }
-        };
-
-        if (question.type.value === "topItems") {
-          return <AnnotateTopItems key={i} question={question} setDone={updateDoneArray} />;
-        }
-        return null;
-      })}
-    </>
-  );
+  return questions.map((question, i) => {
+    return (
+      <Grid key={question?.question?.value + i} centered stackable>
+        {i > 0 ? <Divider style={{ margin: "40px" }} /> : null}
+        <Grid.Row>
+          <Grid.Column width={10} doubling>
+            <Header as="h1" textAlign="center">
+              {question?.title?.trans}
+            </Header>
+            {question?.intro?.trans ? <p>{question.intro.trans}</p> : null}
+          </Grid.Column>
+        </Grid.Row>
+        {renderQuestion(question, i)}
+      </Grid>
+    );
+  });
 };
 
 export default AnswerQuestions;
