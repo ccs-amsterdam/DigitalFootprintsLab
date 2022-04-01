@@ -35,6 +35,7 @@
   },
   "donate": {
     "annotate": {
+      "nodata": "No <b>{{data}}</b> data was imported, so you cannot answer this question.",
       "continue": "Continue with donation",
       "dropdown": "Search for a channel or the name of a video from this channel",
       "header": "Please answer the following questions",

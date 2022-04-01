@@ -37,6 +37,7 @@
   },
   "donate": {
     "annotate": {
+      "nodata": "Er is geen <b>{{data}}</b> data geimporteerd, dus deze vraag kun je niet beantwoorden.",
       "continue": "Ga verder met doneren",
       "dropdown": "",
       "header": "Beantwoord de volgende vragen alstublieft",
