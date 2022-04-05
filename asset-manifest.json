@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/DigitalFootprintsLab/static/css/main.54320b08.css",
-    "main.js": "/DigitalFootprintsLab/static/js/main.f43ed487.js",
+    "main.js": "/DigitalFootprintsLab/static/js/main.a20a1142.js",
     "static/media/brand-icons.svg": "/DigitalFootprintsLab/static/media/brand-icons.6729d29753e000c17489.svg",
     "static/media/background.jpeg": "/DigitalFootprintsLab/static/media/background.eb5e36bfc64c004fd2c0.jpeg",
     "static/media/icons.svg": "/DigitalFootprintsLab/static/media/icons.62d9dae4e0040e81c980.svg",
@@ -36,10 +36,10 @@
     "index.html": "/DigitalFootprintsLab/index.html",
     "static/media/getFetch.cjs": "/DigitalFootprintsLab/static/media/getFetch.c780682470504fffbd04.cjs",
     "main.54320b08.css.map": "/DigitalFootprintsLab/static/css/main.54320b08.css.map",
-    "main.f43ed487.js.map": "/DigitalFootprintsLab/static/js/main.f43ed487.js.map"
+    "main.a20a1142.js.map": "/DigitalFootprintsLab/static/js/main.a20a1142.js.map"
   },
   "entrypoints": [
     "static/css/main.54320b08.css",
-    "static/js/main.f43ed487.js"
+    "static/js/main.a20a1142.js"
   ]
 }
