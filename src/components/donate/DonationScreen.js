@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import ColoredBackgroundGrid from "components/explore/dashboards/dashboardParts/ColoredBackgroundGrid";
 import { Container, Grid, Icon, Step } from "semantic-ui-react";
 import background from "images/background.jpeg";
@@ -18,24 +18,27 @@ const DonationScreen = () => {
   const log = useLogger("Donationscreen", "open");
   const settings = useSettings();
 
-  const renderStep = () => {
-    switch (step) {
-      case 0:
-        log("consent information page");
-        return <DonationInformation setStep={setStep} settings={settings} />;
-      case 1:
-        log("validation page");
-        return <ValidateData setStep={setStep} settings={settings} />;
-      case 2:
-        log("annotation page");
-        return <AnswerQuestions setStep={setStep} settings={settings} />;
-      case 3:
-        log("confirm page");
-        return <ConfirmDonation settings={settings} />;
-      default:
-        return null;
-    }
-  };
+  const renderStep = useCallback(
+    (step) => {
+      switch (step) {
+        case 0:
+          //log("consent information page");
+          return <DonationInformation setStep={setStep} settings={settings} />;
+        case 1:
+          log("validation page");
+          return <ValidateData setStep={setStep} settings={settings} />;
+        case 2:
+          log("annotation page");
+          return <AnswerQuestions setStep={setStep} settings={settings} />;
+        case 3:
+          log("confirm page");
+          return <ConfirmDonation settings={settings} />;
+        default:
+          return null;
+      }
+    },
+    [settings, log]
+  );
 
   return (
     <ColoredBackgroundGrid background={background} color={"#000000b0"}>
@@ -54,7 +57,7 @@ const DonationScreen = () => {
           >
             <DonationSteps step={step} setStep={setStep} />
             <div style={{ marginTop: "10px", flex: "1 1 auto", overflow: "auto", width: "100%" }}>
-              {renderStep()}
+              {renderStep(step)}
             </div>
           </Container>
         </Grid.Column>

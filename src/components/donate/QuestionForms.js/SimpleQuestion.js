@@ -11,7 +11,6 @@ const SimpleQuestion = ({ question, setDone }) => {
       .then(setAnswer)
       .catch((e) => console.log(e));
   }, [question]);
-  console.log(answer);
 
   useEffect(() => {
     if (answer !== null && answer != null) setDone(true);

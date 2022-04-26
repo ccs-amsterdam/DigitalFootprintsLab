@@ -77,7 +77,6 @@ const DonateCard = ({ requestedData, statuses }) => {
       </p>
     );
   };
-  console.log(gathered);
 
   return (
     <CardTemplate

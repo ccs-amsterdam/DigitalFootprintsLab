@@ -32,7 +32,6 @@ const DataTable = ({ dashData, columns, selection, log, pagesize = 10, unstackab
   const [deleteIds, setDeleteIds] = useState([]);
   const [bulkDelete, setBulkDelete] = useState(null);
 
-  console.log(data);
   useEffect(() => {
     if (!dashData) {
       setData([]);

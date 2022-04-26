@@ -26,7 +26,6 @@ const Welcome = ({ items }) => {
 
   const checkIfWelcome = async (userId, returnURL) => {
     const iswelcome = await db.isWelcome();
-    console.log(iswelcome);
     if (!iswelcome?.persistent) dispatch(setPersistent(false));
     if (!iswelcome?.welcome) return null;
     if (iswelcome.userId && userId !== null && iswelcome.userId !== userId) {

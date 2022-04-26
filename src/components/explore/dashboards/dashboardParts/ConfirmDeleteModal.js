@@ -20,7 +20,6 @@ const ConfirmDeleteModal = ({ processDelete, deleteIds, setDeleteIds }) => {
   const handleDelete = async () => {
     if (beingDeleted.current === deleteIds) return;
     beingDeleted.current = deleteIds;
-    console.log(deleteIds);
     deleteImmediately.current = !ask;
     await processDelete(deleteIds);
     setDeleteIds([]);
