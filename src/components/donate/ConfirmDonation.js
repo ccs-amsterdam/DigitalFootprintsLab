@@ -12,10 +12,12 @@ import {
   Segment,
   Dimmer,
 } from "semantic-ui-react";
+import useLogger from "util/useLogger";
 import submitData from "./submitData";
 
 const ConfirmDonation = ({ settings }) => {
   const { t } = useTranslation();
+  useLogger("Donation screen - confirm");
   const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState([]);
   const [loading, setLoading] = useState(false);

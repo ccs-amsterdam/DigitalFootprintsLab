@@ -2,8 +2,10 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
 import { Button, Grid, Header, Segment } from "semantic-ui-react";
+import useLogger from "util/useLogger";
 
 const DonationInformation = ({ setStep, settings }) => {
+  useLogger("Donation screen - information");
   const { t } = useTranslation();
   return (
     <Segment

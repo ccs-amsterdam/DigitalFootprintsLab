@@ -6,7 +6,6 @@ import DonationInformation from "./DonationInformation";
 import AnswerQuestions from "./AnswerQuestions";
 import ConfirmDonation from "./ConfirmDonation";
 import ValidateData from "./ValidateData";
-import useLogger from "util/useLogger";
 
 import db from "apis/db";
 import { useTranslation } from "react-i18next";
@@ -14,30 +13,25 @@ import MenuGridRow from "components/routing/MenuGridRow";
 import useSettings from "util/useSettings";
 
 const DonationScreen = () => {
-  const [step, setStep] = useState(0);
-  const log = useLogger("Donationscreen", "open");
+  const [step, setStep] = useState(null);
   const settings = useSettings();
 
   const renderStep = useCallback(
     (step) => {
       switch (step) {
         case 0:
-          //log("consent information page");
           return <DonationInformation setStep={setStep} settings={settings} />;
         case 1:
-          log("validation page");
           return <ValidateData setStep={setStep} settings={settings} />;
         case 2:
-          log("annotation page");
           return <AnswerQuestions setStep={setStep} settings={settings} />;
         case 3:
-          log("confirm page");
           return <ConfirmDonation settings={settings} />;
         default:
           return null;
       }
     },
-    [settings, log]
+    [settings]
   );
 
   return (
@@ -71,7 +65,7 @@ const DonationSteps = ({ step, setStep }) => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (step > maxStep) {
+    if (step !== null && step > maxStep) {
       setMaxStep(step);
       db.setDonationStep(step);
     }

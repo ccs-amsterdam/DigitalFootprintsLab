@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid, Header, Segment } from "semantic-ui-react";
+import useLogger from "util/useLogger";
 import AnnotateTopItems from "./QuestionForms.js/AnnotateTopItems";
 import SimpleQuestion from "./QuestionForms.js/SimpleQuestion";
 
 const AnswerQuestions = ({ setStep, settings }) => {
+  useLogger("Donation screen - questions");
   const [done, setDone] = useState(false);
   const { t } = useTranslation();
 

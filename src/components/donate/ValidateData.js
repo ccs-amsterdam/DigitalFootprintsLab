@@ -5,10 +5,12 @@ import Wordcloud from "components/explore/dashboards/dashboardParts/Wordcloud";
 import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Button, Grid, Header, Segment, Step, List } from "semantic-ui-react";
+import useLogger from "util/useLogger";
 
 const WORDCLOUD_COLORS = ["#564615", "#1f6175", "#421f7f"];
 
 const ValidateData = ({ setStep, settings }) => {
+  useLogger("Donation screen - validation");
   const [questions, setQuestions] = useState(null);
 
   useEffect(() => {

@@ -8,7 +8,6 @@ import { gatherSettings } from "project/gatherSettings";
 import DownloadData from "./DownloadData";
 import { useTranslation } from "react-i18next";
 import ImportData from "./ImportData";
-import { useDispatch } from "react-redux";
 import { miseEnPlace } from "data-donation-importers";
 import db from "apis/db";
 import MenuGridRow from "components/routing/MenuGridRow";
@@ -21,7 +20,6 @@ const segmentStyle = {
 };
 
 const GatherScreen = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const log = useLogger("Gatherscreen", "open");
   const [files, setFiles] = useState([]);
@@ -35,11 +33,11 @@ const GatherScreen = () => {
   useEffect(() => {
     if (files.length === 0) return;
     setLoading(true);
-    importData(platform, files, log, dispatch).finally(() => {
+    importData(platform, files, log).finally(() => {
       setLoading(false);
       navigate("/datasquare");
     });
-  }, [platform, navigate, files, setLoading, log, dispatch]);
+  }, [platform, navigate, files, setLoading, log]);
 
   let instruction = platform?.instructions?.[language] || platform?.instructions?.default;
 
@@ -66,10 +64,10 @@ const GatherScreen = () => {
   );
 };
 
-const importData = async (platform, files, log, dispatch) => {
+const importData = async (platform, files, log) => {
   const meps = miseEnPlace(platform?.cookbook, files);
-  log("start gathering");
 
+  const gathered = [];
   for (let mep of meps) {
     const recipe = mep.recipe.name;
     if (!platform?.importMap[recipe]) continue;
@@ -84,6 +82,13 @@ const importData = async (platform, files, log, dispatch) => {
       recipe,
       platform?.importMap[recipe].idFields
     );
+    gathered.push(recipe);
+  }
+
+  if (gathered.length > 0) {
+    log("gathered: " + gathered.join(", "));
+  } else {
+    log("failed to gather data");
   }
 };
 

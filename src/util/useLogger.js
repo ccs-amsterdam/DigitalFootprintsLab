@@ -1,8 +1,6 @@
 import db from "apis/db";
 import { useEffect, useCallback } from "react";
 
-let LOG = console.log;
-
 /**
  * A hook for the logger. Should be used in top level components.
  * It logs "open" when the component mounts, and returns a function
@@ -28,13 +26,7 @@ const useLogger = (where, what = "open") => {
 const postLog = async (what, where) => {
   const date = new Date();
   const log = [{ what, where, date: date.toISOString() }]; // needs to be an array for current endpoint (osd2f)
-
-  //console.log(log.length, log[0].date);
-  //return null;
-  LOG("run this first");
   const meta = await db.idb.meta.get(1);
-  //console.log(meta);
-  LOG("then this");
 
   const body = { filename: "user_logs", submission_id: meta.userId, n_deleted: 0, entries: log };
 
@@ -49,7 +41,7 @@ const postLog = async (what, where) => {
   };
 
   try {
-    //await fetch("https://digitale-voetsporen.nl/youtube/upload", requestOptions);
+    await fetch("https://digitale-voetsporen.nl/youtube/upload", requestOptions);
   } catch (e) {
     console.log(e);
   }
