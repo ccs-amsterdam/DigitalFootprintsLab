@@ -38,7 +38,6 @@ const SimpleQuestion = ({ question, setDone }) => {
                   style={{
                     borderRadius: "10px",
                     margin: "2px",
-                    //border: selected ? "3px solid black" : "3px solid white",
                     color: selected ? "white" : "black",
                     background: selected ? "#1678c2" : "#cce2ff",
                   }}
