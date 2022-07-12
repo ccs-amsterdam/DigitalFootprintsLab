@@ -1,31 +1,36 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import { Container, Button, Header, Segment, Table, Icon, Pagination } from "semantic-ui-react";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import { useTranslation } from "react-i18next";
 import transCommon from "util/transCommon";
+import { TableColumn } from "types";
 
-const propTypes = {
-  /** The name of the table in DB */
-  table: PropTypes.string,
+/**
+ * Creates a table for a given table in the indexedDB
+ */
+interface DataTableProps {
+  dashData: any;
   /** An array indicating what columns should be shown and how.
    * Items can be simple strings with columns names, or objects of {name: 'column name': f: function, width: int }
    * f and width are optional. f is a function with the row object as an argument and should return the value to display
    * width is an integer between 1 and 16 for semantic style width hints */
-  columns: PropTypes.array,
+  columns?: (string | TableColumn)[];
   /** An array with row IDs to filter on */
-  selection: PropTypes.array,
-  /** A string to indicate the loading status */
-  loading: PropTypes.bool,
-};
+  selection?: number[];
+  /** A function to send logs */
+  log?: (any) => void;
+  pagesize?: Number;
+  unstackable?: boolean;
+}
 
-/**
- * Creates a table for a given table in the indexedDB
- * @param {*} dashData a dashData object
- * @param {*} columns array of columns to show
- * @param {*} selection array of ids in case of selections. Cannot be used if dashData.is_subset
- */
-const DataTable = ({ dashData, columns, selection, log, pagesize = 10, unstackable }) => {
+const DataTable = ({
+  dashData,
+  columns,
+  selection,
+  log,
+  pagesize = 10,
+  unstackable,
+}: DataTableProps) => {
   const [n, setN] = useState(0);
   const [data, setData] = useState([]);
   const [selectionN, setSelectionN] = useState(0);
@@ -273,5 +278,4 @@ const processContent = (row, column, f) => {
   return content;
 };
 
-DataTable.propTypes = propTypes;
 export default React.memo(DataTable);

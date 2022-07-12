@@ -1,0 +1,17 @@
+{
+  "files": ["src/index.tsx", "src/global.d.ts", "src/types.tsx"],
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "noImplicitAny": false,
+    "module": "es6",
+    "target": "es6",
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "moduleResolution": "node",
+    "lib": ["ES2021.String", "DOM"],
+    "declaration": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "baseUrl": "src"
+  }
+}

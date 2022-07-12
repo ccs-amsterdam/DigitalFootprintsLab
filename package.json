@@ -45,7 +45,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "postinstall": "semantic-ui-css-patch",
-    "extract": "i18next --config i18next-parser.config.js"
+    "extract": "i18next --config i18next-parser.config.js",
+    "lint": "eslint . --ext .ts"
   },
   "eslintConfig": {
     "extends": [
@@ -66,7 +67,21 @@
     ]
   },
   "devDependencies": {
+    "@babel/cli": "^7.16.7",
+    "@babel/core": "^7.17.9",
+    "@types/jest": "^27.5.1",
+    "@types/node": "^17.0.34",
+    "@types/randomcolor": "^0.5.6",
+    "@types/react": "^17.0.2",
+    "@types/react-dom": "^17.0.2",
+    "@types/semantic-ui": "^2.2.7",
+    "@types/styled-components": "^5.1.25",
+    "babel-jest": "^28.0.2",
+    "eslint": "^8.19.0",
     "gh-pages": "^3.2.3",
-    "i18next-parser": "^6.0.0"
+    "i18next-parser": "^6.0.0",
+    "jest": "^28.0.2",
+    "ts-loader": "^9.3.0",
+    "typescript": "^4.6.4"
   }
 }

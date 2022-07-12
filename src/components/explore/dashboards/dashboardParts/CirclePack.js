@@ -99,7 +99,7 @@ const createTreeData = (dashData, group, selection, groupInfo) => {
   }
 
   // also add category size, because needed to resize within vega (somehow can't efficiently refer to parent in tree in a vega signal)
-  nodes = nodes.map((node, i) => {
+  nodes = nodes.map((node) => {
     return {
       ...node,
       id: id++,
@@ -107,7 +107,7 @@ const createTreeData = (dashData, group, selection, groupInfo) => {
       categorySize: categories[node.category].size / root.size,
     };
   });
-  categories = Object.values(categories).map((cat, i) => ({ ...cat, size: cat.size / root.size }));
+  categories = Object.values(categories).map((cat) => ({ ...cat, size: cat.size / root.size }));
   root.size = 1;
   return { tree: [root, ...categories, ...nodes] };
 };

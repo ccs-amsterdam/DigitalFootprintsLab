@@ -52,7 +52,7 @@ const ConfirmDeleteModal = ({ processDelete, deleteIds, setDeleteIds }) => {
         <Button primary onClick={() => setDeleteIds([])}>
           Cancel
         </Button>
-        <Button color="red" onClick={(e, d) => handleDelete()}>
+        <Button color="red" onClick={() => handleDelete()}>
           Delete
         </Button>
       </Modal.Actions>

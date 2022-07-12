@@ -2,13 +2,30 @@ import React, { useEffect, useState, useRef } from "react";
 import VegaWordcloud from "./VegaWordcloud";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import { Dimmer, Loader } from "semantic-ui-react";
+import { SetState } from "types";
 
 /**
  * Creates a customized Wordcloud chart. Currently mainly designed for group being a url domain.
  * Can extend to other applications (like youtube channels), but will need to add alternative fallback
  * for getting icons and categories
  */
-const Wordcloud = ({ dashData, group, inSelection, setOutSelection, colors, unclickable }) => {
+interface WordCloudProps {
+  dashData: any;
+  group: string;
+  inSelection: number[];
+  setOutSelection?: SetState<number[]>;
+  colors?: any;
+  unclickable?: boolean;
+}
+
+const Wordcloud = ({
+  dashData,
+  group,
+  inSelection,
+  setOutSelection,
+  colors,
+  unclickable,
+}: WordCloudProps) => {
   const [data, setData] = useState({ table: [] }); // input for vega visualization
   const [deleteIds, setDeleteIds] = useState([]);
   const box = useRef();
@@ -58,7 +75,7 @@ const Wordcloud = ({ dashData, group, inSelection, setOutSelection, colors, uncl
   );
 };
 
-const createWordcloudData = (dashData, group, selection, groupInfo) => {
+const createWordcloudData = (dashData, group, selection) => {
   let groups = dashData.count(group, selection);
   groups = Object.keys(groups).map((word) => ({
     text: word,
