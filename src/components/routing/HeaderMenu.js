@@ -38,7 +38,7 @@ const HeaderMenu = ({ items, children }) => {
       >
         {menuItems}
       </Sidebar>
-      <Sidebar.Pusher>{children}</Sidebar.Pusher>
+      <Sidebar.Pusher style={{ height: "100%", width: "100%" }}>{children}</Sidebar.Pusher>
     </Sidebar.Pushable>
   );
 };

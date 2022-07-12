@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 import db from "apis/db";
 import { useNavigate } from "react-router-dom";
-import { Grid, Button, Header, Segment, Icon } from "semantic-ui-react";
+import { Button, Header, Segment, Icon } from "semantic-ui-react";
 import background from "images/background.jpeg";
 import { useDispatch, useSelector } from "react-redux";
 import { setPersistent } from "actions";
@@ -55,55 +55,58 @@ const Welcome = ({ items }) => {
   });
 
   return (
-    <Grid
-      inverted
-      textAlign="center"
+    <div
       style={{
-        height: "100vh",
+        textAlign: "center",
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+        width: "100%",
         backgroundImage: `url(${background})`,
         backgroundSize: "100% 100%",
-        overflow: "auto",
       }}
-      verticalAlign="middle"
     >
-      <Grid.Column style={{ maxWidth: 600 }}>
-        <Segment
+      <Segment
+        style={{
+          position: "relative",
+          margin: "auto",
+          maxHeight: "calc(100% - 40px)",
+          width: "680px",
+          maxWidth: "calc(100vw - 40px)",
+          overflow: "auto",
+          border: "2px solid grey",
+          boxShadow: "8px 10px #0f0f0f82",
+        }}
+      >
+        <ChangeLanguage
           style={{
-            position: "relative",
-            border: "2px solid grey",
-            boxShadow: "8px 10px #0f0f0f82",
+            position: "absolute",
+            left: "0",
+            top: "0",
+            margin: "0",
+            background: "white",
+            color: "grey",
           }}
+        />
+        <Header as="h2">{t("routing.welcome.header")}</Header>
+        <div
+          align="justified"
+          style={{ textAlign: "left", marginTop: "20px", marginBottom: "20px" }}
         >
-          <ChangeLanguage
-            style={{
-              position: "absolute",
-              left: "0",
-              top: "0",
-              margin: "0",
-              background: "white",
-              color: "grey",
-            }}
-          />
-          <Header as="h2">{t("routing.welcome.header")}</Header>
-          <div
-            align="justified"
-            style={{ textAlign: "left", marginTop: "20px", marginBottom: "20px" }}
-          >
-            <h4 style={{ marginBottom: "8px" }}>{t("routing.welcome.subheader1")}</h4>
-            <p>
-              <Trans i18nKey="routing.welcome.p1" components={{ b: <b /> }} />
-            </p>
-            <h4 style={{ marginBottom: "8px" }}>{t("routing.welcome.subheader2")}</h4>
-            <p>
-              <Trans i18nKey="routing.welcome.p2" components={{ b: <b /> }} />
-            </p>
-            {persistent ? null : notPersistentMessage(t)}
-            {userId === null ? testUserMessage(t) : null}
-          </div>
-          {welcomeButton(t, beWelcomed, userId, returnURL)}
-        </Segment>
-      </Grid.Column>
-    </Grid>
+          <h4 style={{ marginBottom: "8px" }}>{t("routing.welcome.subheader1")}</h4>
+          <p>
+            <Trans i18nKey="routing.welcome.p1" components={{ b: <b /> }} />
+          </p>
+          <h4 style={{ marginBottom: "8px" }}>{t("routing.welcome.subheader2")}</h4>
+          <p>
+            <Trans i18nKey="routing.welcome.p2" components={{ b: <b /> }} />
+          </p>
+          {persistent ? null : notPersistentMessage(t)}
+          {userId === null ? testUserMessage(t) : null}
+        </div>
+        {welcomeButton(t, beWelcomed, userId, returnURL)}
+      </Segment>
+    </div>
   );
 };
 

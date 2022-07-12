@@ -16,6 +16,7 @@ import RemoveData from "./components/donate/RemoveData";
 import DonationScreen from "components/donate/DonationScreen";
 import usePersistance from "components/routing/usePersistence";
 import GatherScreen from "components/gather/GatherScreen";
+import useWindowSize from "util/useWindowSize";
 
 // Change to add new components to the header
 // The first item will be the opening page after login
@@ -33,6 +34,7 @@ const Page = () => {
   // The usePersistance hook checks if the redux 'persistant' state is false, and if so warn
   // users if they try to refresh, leave or close the browser that their data will be gone
   usePersistance();
+  const size = useWindowSize();
 
   const authRoutes = () => {
     return items.map((item) => {
@@ -51,7 +53,7 @@ const Page = () => {
   };
 
   return (
-    <div style={{ background: "#0C1D35", height: "100%" }}>
+    <div style={{ background: "#0C1D35", height: size.height, width: size.width }}>
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <HeaderMenu items={items}>
           <Routes>
