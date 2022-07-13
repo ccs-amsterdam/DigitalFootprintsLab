@@ -1,6 +1,5 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Icon, IconProps, SemanticICONS } from "semantic-ui-react";
+import { Button, Icon, SemanticICONS } from "semantic-ui-react";
 
 interface MenuButtonProps {
   label: string;

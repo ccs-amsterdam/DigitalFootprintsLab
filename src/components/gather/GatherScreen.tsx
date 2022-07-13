@@ -85,6 +85,7 @@ const importData = async (platform, files, log) => {
     gathered.push(recipe);
   }
 
+  console.log(gathered);
   if (gathered.length > 0) {
     log("gathered: " + gathered.join(", "));
   } else {

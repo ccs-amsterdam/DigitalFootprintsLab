@@ -52,7 +52,7 @@ export default function DownloadData({ t, instruction, icon }) {
         <Grid.Column width="11">
           <Segment>
             <List>
-              {instruction.steps[selected].items.map((item, i) => {
+              {instruction.steps?.[selected]?.items?.map((item, i) => {
                 return (
                   <List.Item key={i}>
                     <List.Icon name="play" />

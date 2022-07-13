@@ -1,4 +1,3 @@
-import React from "react";
 import { Header, List, Icon, Popup } from "semantic-ui-react";
 
 import { DropZone } from "data-donation-importers";

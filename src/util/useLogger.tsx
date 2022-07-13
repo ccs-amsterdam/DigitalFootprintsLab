@@ -41,7 +41,7 @@ const postLog = async (what, where) => {
   };
 
   try {
-    await fetch("https://digitale-voetsporen.nl/youtube/upload", requestOptions);
+    //await fetch("https://digitale-voetsporen.nl/youtube/upload", requestOptions);
   } catch (e) {
     console.log(e);
   }
