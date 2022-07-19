@@ -26,7 +26,7 @@ const MenuGridRow = ({ disabled, gatherScreen }: MenuGridRowProps) => {
   return (
     <Grid.Row style={{ paddingBottom: "0", marginTop: "10px", paddingTop: "20px" }}>
       <Grid.Column
-        width={16}
+        width={15}
         style={{
           minHeight: "50px",
           display: "flex",

@@ -23,7 +23,7 @@ export const gatherSettings: GatherSettings[] = [
   {
     name: "TikTok Takeout",
     subname: "tiktok.com",
-    icon: "question",
+    img: "https://www.tiktok.com/favicon.ico",
     cookbook: createCookbook(ttRecipes),
     instructions: tiktokTakeoutInstruction,
     importMap: {

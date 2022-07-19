@@ -4,7 +4,8 @@ import { Card, Dimmer, Icon, Loader, SemanticICONS } from "semantic-ui-react";
 interface CardTemplateProps {
   name: string;
   subname: string;
-  icon: SemanticICONS;
+  icon?: SemanticICONS;
+  img?: string;
   onClick: () => any;
   children?: ReactElement | ReactElement[];
   loading?: boolean;
@@ -17,6 +18,7 @@ const CardTemplate = ({
   name,
   subname,
   icon,
+  img,
   onClick,
   loading,
   done,
@@ -44,18 +46,26 @@ const CardTemplate = ({
       </Dimmer>
       {done ? (
         <Icon
-          size="massive"
+          size="huge"
           name="checkmark"
           style={{
             position: "absolute",
             color: "#57b92d8c",
-            top: "20%",
-            left: "60%",
+            bottom: "0%",
+            right: "0%",
           }}
         />
       ) : null}
       <Card.Content style={{ background: disabled ? "#ffffffcc" : "#ffffff" }}>
-        <Icon size="huge" name={icon} style={{ float: "left", color: "#4183c4" }} />
+        {icon ? (
+          <Icon
+            size="huge"
+            name={icon}
+            style={{ float: "left", width: "66px", height: "55px", color: "#4183c4" }}
+          />
+        ) : (
+          <img src={img} alt={"logo"} style={{ float: "left", width: "66px", height: "55px" }} />
+        )}
         <Card.Header content={name.replace("_", " ")} />
         <Card.Meta content={subname} />
 

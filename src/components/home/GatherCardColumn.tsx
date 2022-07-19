@@ -21,6 +21,7 @@ const GatherCardColumn = () => {
         subname={gs.subname}
         produces={Object.keys(gs.importMap)}
         icon={gs.icon}
+        img={gs.img}
       />
     );
   });

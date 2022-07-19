@@ -14,10 +14,11 @@ interface GatherCardProps {
   subname: string;
   produces: string[];
   icon: SemanticICONS;
+  img: string;
   loading?: boolean;
 }
 
-const GatherCard = ({ name, subname, produces, icon, loading = false }: GatherCardProps) => {
+const GatherCard = ({ name, subname, produces, icon, img, loading = false }: GatherCardProps) => {
   const statuses = useSelector((state: any) => state.dataStatus);
   const navigate = useNavigate();
 
@@ -37,6 +38,7 @@ const GatherCard = ({ name, subname, produces, icon, loading = false }: GatherCa
       name={name}
       subname={subname}
       icon={icon}
+      img={img}
       onClick={onClick}
       loading={loading}
       done={done}

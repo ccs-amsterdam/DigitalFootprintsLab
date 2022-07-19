@@ -1,8 +1,7 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import { Grid, Container, Header, Item } from "semantic-ui-react";
 
-import ColoredBackgroundGrid from "./dashboardParts/ColoredBackgroundGrid";
-import background from "images/background.jpeg";
+import ColoredBackgroundGrid from "./dashboardParts/ColoredBackgroundDiv";
 
 import DataTable from "./dashboardParts/DataTable";
 import QueryInput from "./dashboardParts/QueryInput";
@@ -55,15 +54,16 @@ const DashboardTemplate = ({
   }, [dashData, selection, calcStatistics]);
 
   return (
-    <ColoredBackgroundGrid background={background} color={"#000000b0"}>
+    <div style={{ width: "100%", height: "100%", background: "#000000b0", overflow: "auto" }}>
       <Grid
         stackable
         style={{
-          width: "100vw",
-          height: "100vh",
+          width: "100%",
+          height: "100%",
+          margin: "0",
+          overflow: "auto",
         }}
       >
-        <MenuGridRow />
         <Grid.Row style={{ padding: "0", minHeight: "500px" }}>
           <Grid.Column width={5}>
             <Container
@@ -113,7 +113,7 @@ const DashboardTemplate = ({
           </Grid.Column>
         </Grid.Row>
       </Grid>
-    </ColoredBackgroundGrid>
+    </div>
   );
 };
 

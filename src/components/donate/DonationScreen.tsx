@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useCallback } from "react";
-import ColoredBackgroundGrid from "components/explore/dashboards/dashboardParts/ColoredBackgroundGrid";
+import { useState, useEffect, useCallback } from "react";
+import ColoredBackgroundDiv from "components/explore/dashboards/dashboardParts/ColoredBackgroundDiv";
 import { Container, Grid, Icon, Step } from "semantic-ui-react";
-import background from "images/background.jpeg";
 import DonationInformation from "./DonationInformation";
 import AnswerQuestions from "./AnswerQuestions";
 import ConfirmDonation from "./ConfirmDonation";
@@ -35,7 +34,7 @@ const DonationScreen = () => {
   );
 
   return (
-    <ColoredBackgroundGrid background={background} color={"#000000b0"}>
+    <ColoredBackgroundDiv color={"#000000b0"}>
       <Grid stackable style={{ height: "calc(100vh - 18px)", width: "100vw" }}>
         <MenuGridRow disabled />
 
@@ -56,7 +55,7 @@ const DonationScreen = () => {
           </Container>
         </Grid.Column>
       </Grid>
-    </ColoredBackgroundGrid>
+    </ColoredBackgroundDiv>
   );
 };
 

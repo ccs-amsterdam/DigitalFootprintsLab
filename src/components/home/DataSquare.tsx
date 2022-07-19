@@ -17,14 +17,15 @@ import ChangeLanguage from "./ChangeLanguage";
 const headerStyle = {
   color: "white",
   filter: "none",
-  background: "#00000094",
   paddingBottom: "0.3em",
   paddingTop: "1em",
-  borderRadius: "10px",
 };
 
 const columnStyle = {
   marginBottom: "1em",
+  borderRadius: "10px",
+  padding: "10px 2px 20px 2px",
+  margin: "5px",
 };
 
 const cardGroupStyle = {
@@ -46,17 +47,15 @@ const DataSquare = () => {
   return (
     <div
       style={{
-        height: "100vh",
-        backgroundImage: `url(${background})`,
-        backgroundSize: "100% 100%",
-        overflow: "auto",
+        height: "100%",
+        width: "100%",
         position: "relative",
       }}
     >
       <div style={{ position: "absolute", bottom: "0", left: "5px", color: "white" }}>
         Version 1.0.3
       </div>
-      <Grid stackable divided centered>
+      <Grid stackable centered style={{ width: "100%" }}>
         <Grid.Row style={{ minHeight: "60px" }}>
           <Grid.Column width={15} textAlign="right">
             <Navi />
@@ -65,7 +64,11 @@ const DataSquare = () => {
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>
-          <Grid.Column textAlign="center" width={5} style={columnStyle}>
+          <Grid.Column
+            textAlign="center"
+            width={5}
+            style={{ ...columnStyle, background: "#00000094" }}
+          >
             <ColumnHeader
               title={t("home.gather.title")}
               icon="cloud download"
@@ -87,7 +90,11 @@ const DataSquare = () => {
               <ExploreCardColumn />
             </Card.Group>
           </Grid.Column>
-          <Grid.Column textAlign="center" width={5} style={columnStyle}>
+          <Grid.Column
+            textAlign="center"
+            width={5}
+            style={{ ...columnStyle, background: "#00000094" }}
+          >
             <ColumnHeader
               title={t("home.donate.title")}
               icon="student"

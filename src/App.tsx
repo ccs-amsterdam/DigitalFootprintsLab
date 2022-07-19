@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import HeaderMenu from "./components/routing/HeaderMenu";
 import "./App.css";
 
@@ -17,6 +17,7 @@ import DonationScreen from "components/donate/DonationScreen";
 import usePersistance from "components/routing/usePersistence";
 import GatherScreen from "components/gather/GatherScreen";
 import useWindowSize from "util/useWindowSize";
+import background from "images/background.jpeg";
 
 // Change to add new components to the header
 // The first item will be the opening page after login
@@ -36,31 +37,47 @@ const Page = () => {
   usePersistance();
   const size = useWindowSize();
 
-  const authRoutes = () => {
-    return items.map((item) => {
-      return (
-        <Route
-          key={item.label}
-          path={item.path}
-          element={
-            <AuthRoute>
-              <item.Component />
-            </AuthRoute>
-          }
-        />
-      );
-    });
-  };
-
   return (
-    <div style={{ background: "#0C1D35", height: size.height, width: size.width }}>
+    <div
+      style={{
+        backgroundImage: background ? `url(${background})` : "none",
+        backgroundSize: `100vw 100vh`,
+        height: `${size.height}px`,
+        width: `${size.width}px`,
+      }}
+    >
       <BrowserRouter basename={process.env.PUBLIC_URL}>
-        <HeaderMenu items={items}>
-          <Routes>
-            <Route path={"/"} element={<Welcome items={items} />} />
-            {authRoutes()}
-          </Routes>
-        </HeaderMenu>
+        <div
+          style={{
+            height: "100%",
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start",
+          }}
+        >
+          <div style={{}}>
+            <HeaderMenu items={items} />
+          </div>
+          <div style={{ flex: "1 1 auto", overflow: "auto", marginBottom: "auto" }}>
+            <Routes>
+              <Route path={"/"} element={<Welcome items={items} />} />
+              {items.map((item) => {
+                return (
+                  <Route
+                    key={item.label}
+                    path={item.path}
+                    element={
+                      <AuthRoute>
+                        <item.Component />
+                      </AuthRoute>
+                    }
+                  />
+                );
+              })}
+            </Routes>
+          </div>
+        </div>
       </BrowserRouter>
     </div>
   );

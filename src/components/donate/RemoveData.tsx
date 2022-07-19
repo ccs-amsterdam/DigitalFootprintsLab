@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import ColoredBackgroundGrid from "components/explore/dashboards/dashboardParts/ColoredBackgroundGrid";
+import { useEffect, useState } from "react";
+import ColoredBackgroundDiv from "components/explore/dashboards/dashboardParts/ColoredBackgroundDiv";
 import {
   Container,
   Grid,
@@ -11,7 +11,6 @@ import {
   Dimmer,
   Loader,
 } from "semantic-ui-react";
-import background from "images/background.jpeg";
 import DashboardData from "components/explore/dashboardData/DashboardData";
 
 import db from "apis/db";
@@ -26,23 +25,20 @@ const RemoveData = () => {
   const log = useLogger("Remove data");
 
   return (
-    <ColoredBackgroundGrid background={background} color={"#000000b0"}>
-      <Grid stackable style={{ height: "calc(100vh - 38px)", width: "100vw" }}>
-        <MenuGridRow />
-        <Grid.Row>
-          <Grid.Column width={4}>
-            <KeywordInput setData={setData} />
-          </Grid.Column>
-          <Grid.Column width={12} style={{ height: "calc(100% - 40px)", marginTop: "30px" }}>
-            <Grid>
-              {Object.keys(data).map((key) => {
-                return <ResultsTable key={key} title={key} dashData={data[key]} log={log} />;
-              })}
-            </Grid>
-          </Grid.Column>
-        </Grid.Row>
+    <div style={{ height: "100%", width: "100%", background: "#000000b0" }}>
+      <Grid stackable style={{ height: "100%", width: "100%", margin: "0", overflow: "auto" }}>
+        <Grid.Column width={4}>
+          <KeywordInput setData={setData} />
+        </Grid.Column>
+        <Grid.Column width={12} style={{ height: "calc(100% - 40px)", paddingTop: "30px" }}>
+          <Grid>
+            {Object.keys(data).map((key) => {
+              return <ResultsTable key={key} title={key} dashData={data[key]} log={log} />;
+            })}
+          </Grid>
+        </Grid.Column>
       </Grid>
-    </ColoredBackgroundGrid>
+    </div>
   );
 };
 

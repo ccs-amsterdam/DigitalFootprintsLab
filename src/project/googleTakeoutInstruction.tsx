@@ -1,87 +1,48 @@
-import GoogleTakeout_unselected from "project/images/GoogleTakeout_unselected.png";
-import GoogleTakeout_deselect from "project/images/GoogleTakeout_deselect.png";
-import GoogleTakeout_chrome from "project/images/GoogleTakeout_chrome.png";
+import GoogleTakeout_sources from "project/images/GoogleTakeout_sources.png";
 import GoogleTakeout_youtube from "project/images/GoogleTakeout_youtube.png";
-import GoogleTakeout_youtube2 from "project/images/GoogleTakeout_youtube2.png";
 import GoogleTakeout_create from "project/images/GoogleTakeout_create.png";
 import GoogleTakeout_download from "project/images/GoogleTakeout_download.png";
 
-import GoogleTakeout_unselected_nl from "project/images/GoogleTakeout_unselected_nl.png";
-import GoogleTakeout_deselect_nl from "project/images/GoogleTakeout_deselect_nl.png";
-import GoogleTakeout_chrome_nl from "project/images/GoogleTakeout_chrome_nl.png";
+import GoogleTakeout_sources_nl from "project/images/GoogleTakeout_sources_nl.png";
 import GoogleTakeout_youtube_nl from "project/images/GoogleTakeout_youtube_nl.png";
-import GoogleTakeout_youtube2_nl from "project/images/GoogleTakeout_youtube2_nl.png";
 import GoogleTakeout_create_nl from "project/images/GoogleTakeout_create_nl.png";
 import GoogleTakeout_download_nl from "project/images/GoogleTakeout_download_nl.png";
 import { Instruction } from "types";
 
 const googleTakeoutInstruction_EN: Instruction = {
   title: "Google Takeout",
-  introduction: `If you have a Google account, a lot of things that you do online are automatically
-  documented. Google is legally required to give you access to this data, and they have
-  made it easy for you to download it. Here we will walk you through the steps for
-  collecting a specific selection of this data.`,
+  introduction: `The following steps will show you how to gather your digital footprints from Google.`,
   fileHint: "takeout-[some numbers]",
 
   steps: [
     {
-      title: "Step 1",
-      description: "Go to Google Takeout",
+      title: "Go to Google Takeout",
       items: [
-        { text: "Visit the [Google Takeout website](https://takeout.google.com)" },
+        {
+          text: "Use [this link](https://takeout.google.com/settings/takeout/custom/youtube,news,chrome) to gather your *Chrome*, *Youtube* and *News* data from **Google Takeout**",
+        },
         { text: "Log in if needed" },
         {
-          text: "Go to the **CREATE A NEW EXPORT** table",
-          image: GoogleTakeout_deselect,
+          text: "You should see the following *products* to export",
+          image: GoogleTakeout_sources,
         },
       ],
     },
     {
-      title: "Step 2",
-      description: "Deselect all items",
+      title: "Filter Youtube data",
       items: [
         {
-          text: "Click **deselect all** to un-check all the boxes",
-          image: GoogleTakeout_deselect,
-          image_style: { objectFit: "cover", objectPosition: "0 90%", height: "120px" },
+          text: "Go to the **YouTube** product, and Click on the button that says **All Youtube data included**",
         },
         {
-          text: "It should now say that 0 items are selected, and all boxes should be un-checked",
-          image: GoogleTakeout_unselected,
-        },
-      ],
-    },
-    {
-      title: "Step 3",
-      description: "Select Chrome",
-      items: [
-        {
-          text: "Scroll down to Chrome (items are sorted by alphabet) and click on the box to check it",
-          image: GoogleTakeout_chrome,
-        },
-      ],
-    },
-    {
-      title: "Step 4",
-      description: "Select Youtube history and subscriptions",
-      items: [
-        {
-          text: "Scroll all the way down to Youtube and check the box",
-          image: GoogleTakeout_youtube,
-        },
-        {
-          text: "Click on **All YouTube data included** to open a popup for selecting what data to include",
-        },
-        {
-          text: "Deselect all data, and then only select **History** and **subscriptions**. (If your Google account uses a different language, the names and order of items can be different)",
-          image: [GoogleTakeout_youtube2, GoogleTakeout_youtube2_nl],
+          text: "Make sure to only select **History** and **subscriptions**. (If your Google account uses a different language, the names and order of items can be different)",
+          image: [GoogleTakeout_youtube, GoogleTakeout_youtube_nl],
           image_style: { width: "45%", marginRight: "5%", verticalAlign: "text-top" },
         },
       ],
     },
     {
-      title: "Step 5",
-      description: "Create data export",
+      title: "Create data export",
       items: [
         {
           text: "Click on the **Next step** button on the bottom right",
@@ -100,8 +61,7 @@ const googleTakeoutInstruction_EN: Instruction = {
       ],
     },
     {
-      title: "Step 6",
-      description: "Download your data",
+      title: "Download your data",
       items: [
         {
           text: "Google will automatically open the download page. If you accidentally closed the window, you can also find the download link in your email",
@@ -117,71 +77,38 @@ const googleTakeoutInstruction_EN: Instruction = {
 
 const googleTakeoutInstruction_NL: Instruction = {
   title: "Google Takeout",
-  introduction: `Als je een Google account hebt, dan wordt een groot deel van je online activiteiten
-  automatisch gedocumenteerd. Google is wettelijk verplicht om jou deze data te geven als jij hier om vraagt, 
-  en hebben het daarom makkelijk gemaakt om deze data te downloaden. In de volgende stappen laten wij zien hoe je
-  (een onderdeel van) deze data kunt ophalen.`,
+  introduction: `Volg de instructies om je digitale voetsporen van Google te downloaden.`,
   fileHint: "takeout_[getallen]",
 
   steps: [
     {
-      title: "Stap 1",
-      description: "Ga naar Google Takeout",
+      title: "Ga naar Google Takeout",
       items: [
-        { text: "Bezoek de [Google Takeout website](https://takeout.google.com)" },
+        {
+          text: "Gebruik [deze link](https://takeout.google.com/settings/takeout/custom/youtube,news,chrome) om je *Chrome*, *Youtube* and *Nieuws* data van **Google Takeout** te verzamelen",
+        },
         { text: "Log indien nodig in" },
         {
-          text: "Ga naar de  **CREATE A NEW EXPORT** (EEN NIEUWE EXPORT MAKEN) tabel",
-          image: GoogleTakeout_deselect_nl,
+          text: "Je zou nu de volgende *producten* moeten zien",
+          image: GoogleTakeout_sources_nl,
         },
       ],
     },
     {
-      title: "Stap 2",
-      description: "Selectie ongedaan maken",
+      title: "Filter YouTube data",
       items: [
         {
-          text: "Klik **deselect all** (of **selectie van alle items ongedaan maken**) zodat alle checkboxes leeg zijn",
-          image: GoogleTakeout_deselect_nl,
-          image_style: { objectFit: "cover", objectPosition: "0 90%", height: "120px" },
+          text: "Ga naar het **YouTube** product en click op de knop met de tekst **Alle YouTube-gegevens inbegrepen**",
         },
         {
-          text: "Er zou nu aangegeven moeten zijn dat er 0 items geselecteerd zijn, en alle checkboxes zijn leeg",
-          image: GoogleTakeout_unselected_nl,
-        },
-      ],
-    },
-    {
-      title: "Stap 3",
-      description: "Selecteer Chrome",
-      items: [
-        {
-          text: "Scroll naar beneden naar Chrome (items gesorteerd op alfabet) en klik op de checkbox",
-          image: GoogleTakeout_chrome_nl,
-        },
-      ],
-    },
-    {
-      title: "Stap 4",
-      description: "Selecteer Youtube history en kanaal abonnementen",
-      items: [
-        {
-          text: "Scroll helemaal naar beneden naar **Youtube**",
-          image: GoogleTakeout_youtube_nl,
-        },
-        {
-          text: "Klik op **All YouTube data included** (**alle youtube-gegevens inbegrepen**) om een popup te openen",
-        },
-        {
-          text: "Maak ook hier eerst de selectie ongedaan, en selecteer dan alleen **history** (**geschiedenis**) en **subscriptions** (**abonnementen**)",
-          image: [GoogleTakeout_youtube2_nl, GoogleTakeout_youtube2],
+          text: "Selecteer alleen **history** (**geschiedenis**) en **subscriptions** (**abonnementen**)",
+          image: [GoogleTakeout_youtube_nl, GoogleTakeout_youtube],
           image_style: { width: "45%", marginRight: "5%", verticalAlign: "text-top" },
         },
       ],
     },
     {
-      title: "Stap 5",
-      description: "Maak een data export",
+      title: "Maak een data export",
       items: [
         {
           text: "Klik op de **Next step** (**Volgende stap**) knop rechtsonder",
@@ -200,8 +127,7 @@ const googleTakeoutInstruction_NL: Instruction = {
       ],
     },
     {
-      title: "Stap 6",
-      description: "Download je data",
+      title: "Download je data",
       items: [
         {
           text: "Google zal je vanzelf naar de download pagina sturen. Als je de pagina per ongeluk afgesloten hebt, dan heb je ook een mail ontvangen met de link",

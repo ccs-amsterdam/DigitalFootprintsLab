@@ -1,13 +1,38 @@
-import { Header, List, Icon, Popup } from "semantic-ui-react";
-
+import { useEffect, useState } from "react";
+import { Header, List, Icon, Popup, Segment, Dimmer, Loader } from "semantic-ui-react";
+import db from "apis/db";
+import { miseEnPlace } from "data-donation-importers";
 import { DropZone } from "data-donation-importers";
+import { useNavigate } from "react-router-dom";
+import useLogger from "util/useLogger";
 
-const ImportData = ({ t, platform, instruction, setFiles }) => {
+const ImportData = ({ t, platform, instruction }) => {
+  const navigate = useNavigate();
+
+  const log = useLogger("Gatherscreen", "open");
+  const [files, setFiles] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (files.length === 0) return;
+    setLoading(true);
+    importData(platform, files, log).finally(() => {
+      setLoading(false);
+      navigate("/datasquare");
+    });
+  }, [platform, navigate, files, setLoading, log]);
+
   return (
-    <>
-      <Header as="h1" textAlign="center" style={{ color: "rgb(65, 131, 196)" }}>
-        {t("gather.importdata.header")}
-      </Header>
+    <Segment
+      style={{
+        border: "none",
+        boxShadow: "none",
+        background: "white",
+        height: "100%",
+        color: "black",
+        minHeight: "300px",
+      }}
+    >
       <br />
       <DropZone
         allowedFiles={platform?.cookbook?.files}
@@ -17,7 +42,6 @@ const ImportData = ({ t, platform, instruction, setFiles }) => {
             <Header style={{ color: "white" }}>{t("gather.importdata.dropzone.header")}</Header>
             <p>{t("gather.importdata.dropzone.p1")}</p>
             <p>{t("gather.importdata.dropzone.p2")}</p>
-            <p>{t("gather.importdata.dropzone.p3")}</p>
           </span>
         }
       />
@@ -44,13 +68,10 @@ const ImportData = ({ t, platform, instruction, setFiles }) => {
         ) : null}
         <br />
       </List>
-
-      {/* <div style={{ textAlign: "center" }}>
-        <Icon name="long arrow alternate up" size="huge" style={{ margin: "20px 0px" }} />
-        <Icon name="file alternate" size="huge" />
-        <Icon name="mouse pointer" />
-      </div> */}
-    </>
+      <Dimmer active={loading}>
+        <Loader />
+      </Dimmer>
+    </Segment>
   );
 };
 
@@ -117,6 +138,34 @@ const SafariDownloadHelp = ({ t }) => {
       </List>
     </Popup>
   );
+};
+
+const importData = async (platform, files, log) => {
+  const meps = miseEnPlace(platform?.cookbook, files);
+
+  const gathered = [];
+  for (const mep of meps) {
+    const recipe = mep.recipe.name;
+    if (!platform?.importMap[recipe]) continue;
+
+    const result = await mep.cook(); // returns array of objects with data, or null if can't find
+    if (result.status !== "success") continue;
+
+    await db.addData(
+      result.data,
+      platform?.importMap[recipe].data,
+      "Google Takeout",
+      recipe,
+      platform?.importMap[recipe].idFields
+    );
+    gathered.push(recipe);
+  }
+
+  if (gathered.length > 0) {
+    log("gathered: " + gathered.join(", "));
+  } else {
+    log("failed to gather data");
+  }
 };
 
 export default ImportData;

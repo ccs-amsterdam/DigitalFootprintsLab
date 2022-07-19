@@ -86,7 +86,7 @@
     "validate": {
       "continue": "CONTINUE",
       "header1": "To use your data for research, it's important to know how accurate it is. Please help us by answering a few questions about your data",
-      "header2": "On the left you see the top items in your <i>{{dataname}}</i> data. Please answer the following questions to help us understand how accurate this data."
+      "header2": "In the wordcloud you see the top items in your <i>{{dataname}}</i> data. Please answer the following questions to help us understand how accurate this data."
     }
   },
   "explore": {
@@ -95,21 +95,19 @@
     }
   },
   "gather": {
-    "download": {
-      "header": "First download your data"
-    },
     "importdata": {
+      "step": "Step",
+      "next": "Next step",
       "dropzone": {
         "header": "Your data goes here!",
         "p1": "Use this blue field to load the downloaded data into this application",
-        "p2": "If the data is a single file (or a zipped folder), you can either click on this field and then select the file, or drag the file from your file explorer into this field.",
-        "p3": "If the data is a folder, you need to drag it into this field."
+        "p2": "If the data is a folder, you need to drag it into this field. If it's a file (or zipped folder), you can also click on this field."
       },
       "file": {
         "header": "What file is it?",
         "hint": "The file is (usually) called: "
       },
-      "header": "Then import the data",
+      "header": "Import your data",
       "where": {
         "chrome": {
           "header": "Finding Chrome Downloads",
@@ -182,6 +180,8 @@
   },
   "routing": {
     "buttons": {
+      "gather": "Gather",
+      "explore": "Explore",
       "back": "Back to overview",
       "donate": "Donate",
       "remove": "Exclude data"

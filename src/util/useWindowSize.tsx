@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 export default function useWindowSize() {
   const [size, setSize] = useState({
     height: window.innerHeight,
-    width: document.documentElement.clientWidth,
+    width: document.body.clientWidth,
   });
 
   useEffect(() => {
@@ -37,7 +37,7 @@ function updateSize(setSize) {
   // use window.innerHeight for height, because vh on mobile is weird (can include the address bar)
   // use document.documentElement.clientwidth for width, to exclude the scrollbar
   const height = window.innerHeight;
-  const width = document.documentElement.clientWidth;
+  const width = document.body.clientWidth;
   setSize((size) => {
     if (size.height === height && size.width === width) return size;
     return { height, width };

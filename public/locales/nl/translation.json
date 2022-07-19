@@ -19,7 +19,6 @@
     "visit": "bezocht",
     "visits": "bezocht",
     "copied": "Gekopieerd"
-
   },
   "dataTypes": {
     "browsing": {
@@ -88,7 +87,7 @@
     "validate": {
       "continue": "DOORGAAN",
       "header1": "Om uw gegevens voor onderzoek te gebruiken, is het belangrijk om te weten hoe nauwkeurig deze zijn. Help ons alstublieft door een paar vragen over uw gegevens te beantwoorden",
-      "header2": "Links zie je de top items in je <i>{{dataname}}</i> data. Beantwoord de volgende vragen om ons te helpen begrijpen hoe nauwkeurig deze gegevens zijn."
+      "header2": "In de wordcloud zie je de top items in je <i>{{dataname}}</i> data. Beantwoord de volgende vragen om ons te helpen begrijpen hoe nauwkeurig deze gegevens zijn."
     }
   },
   "explore": {
@@ -97,21 +96,19 @@
     }
   },
   "gather": {
-    "download": {
-      "header": "Download eerst je data"
-    },
+    "step": "Stap",
+    "next": "Volgende stap",
     "importdata": {
       "dropzone": {
         "header": "Lees hier de data in!",
         "p1": "Gebruik dit blauwe veld om de data die je gedownload hebt in te lezen in deze app",
-        "p2": "Als de data een enkel bestand is is (of een ingepakte folder), dan kun je op dit veld klikken om het bestand te selecteren, of het bestand vanuit je verkenner naar dit veld slepen.",
-        "p3": "Als de data een folder is, dan moet je de folder vanuit je verkenner naar dit veld slepen."
+        "p2": "Als de data een folder is, dan moet je de folder vanuit je verkenner naar dit veld slepen. Als het een file is (of ingepakte folder) dan kun je ook op dit veld klikken."
       },
       "file": {
         "header": "Om welk bestand gaat het?",
         "hint": "Het bestand heet (gewoonlijk): "
       },
-      "header": "Lees dan de data in",
+      "header": "Importeer je data",
       "where": {
         "chrome": {
           "header": "Chrome Downloads vinden",
@@ -184,6 +181,8 @@
   },
   "routing": {
     "buttons": {
+      "gather": "Verzamel",
+      "explore": "Verken",
       "back": "Terug naar het overzicht",
       "donate": "Doneren",
       "remove": "Gegevens uitsluiten"

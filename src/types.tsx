@@ -15,7 +15,8 @@ export interface DataStatus {
 export interface GatherSettings {
   name: string;
   subname: string;
-  icon: SemanticICONS;
+  icon?: SemanticICONS;
+  img?: string;
   cookbook: any;
   instructions: {
     [language: string]: Instruction;
@@ -41,7 +42,6 @@ export interface Instruction {
 
 export interface InstructionStep {
   title: string;
-  description: string;
   items: InstructionStepItem[];
 }
 
