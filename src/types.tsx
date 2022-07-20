@@ -1,3 +1,4 @@
+import { number } from "prop-types";
 import { CSSProperties, Dispatch, SetStateAction } from "react";
 import { SemanticICONS } from "semantic-ui-react";
 
@@ -5,6 +6,11 @@ import { SemanticICONS } from "semantic-ui-react";
 
 // shorthand for the many setstate props being passed around
 export type SetState<Type> = Dispatch<SetStateAction<Type>>;
+
+export interface WindowSize {
+  height: number;
+  width: number;
+}
 
 ///// DATA
 

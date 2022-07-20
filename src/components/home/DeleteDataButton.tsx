@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, Button, Popup } from "semantic-ui-react";
+import { Icon, Button, Popup, Menu } from "semantic-ui-react";
 import { useTranslation } from "react-i18next";
 
 import db from "apis/db";
@@ -8,18 +8,14 @@ const DeleteDataButton = ({ style = {} }) => {
   const { t } = useTranslation();
 
   const button = (
-    <Button
+    <Menu.Item
       style={{
-        background: "#00000000",
-        marginTop: "9px",
         color: "white",
-        border: "1px solid white",
         ...style,
       }}
     >
       <Icon name="trash" />
-      {t("home.deleteButton.buttonLabel")}
-    </Button>
+    </Menu.Item>
   );
 
   return (

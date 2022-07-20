@@ -11,3 +11,10 @@ export const setPersistent = (persistent) => {
     persistent,
   };
 };
+
+export const setSmallScreen = (smallScreen) => {
+  return {
+    type: "SET_SMALLSCREEN",
+    smallScreen,
+  };
+};

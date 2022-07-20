@@ -12,11 +12,11 @@ import generalSettings, { contact } from "project/generalSettings";
  * but the trans is shown to the user
  * @returns
  */
-const useSettings = (which = null) => {
+const useSettings = (which?: string): any => {
   const [settings, setSettings] = useState<any>({});
   const [, i18n] = useTranslation();
 
-  const pickSetting = (which) => {
+  const pickSetting = (which?: string) => {
     if (which === "contact") return contact;
     return generalSettings;
   };
@@ -36,7 +36,7 @@ const useSettings = (which = null) => {
 };
 
 // this function copies the settings, but replacing all values with the {value, trans} object
-const getSettings = (object, language) => {
+const getSettings = (object: any, language: string): any => {
   if (Array.isArray(object)) {
     const arr = [];
     for (const item of object) arr.push(getSettings(item, language));
@@ -55,7 +55,7 @@ const getSettings = (object, language) => {
       return { value: object.value, trans: String(trans) };
     }
 
-    const obj = {};
+    const obj: any = {};
     for (const key of Object.keys(object)) {
       obj[key] = getSettings(object[key], language);
     }

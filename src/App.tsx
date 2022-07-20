@@ -5,7 +5,7 @@ import "./App.css";
 
 // login and authenticated route
 import Welcome from "./components/routing/Welcome";
-import AuthRoute from "./components/routing/AuthRoute";
+import InitRoute from "./components/routing/InitRoute";
 
 // Main pages. Use below in items to include in header menu
 import DataSquare from "./components/home/DataSquare";
@@ -68,9 +68,9 @@ const Page = () => {
                     key={item.label}
                     path={item.path}
                     element={
-                      <AuthRoute>
+                      <InitRoute>
                         <item.Component />
-                      </AuthRoute>
+                      </InitRoute>
                     }
                   />
                 );

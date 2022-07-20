@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Modal, Icon, List, Header, Popup } from "semantic-ui-react";
+import { Button, Modal, Icon, List, Header, Popup, Menu } from "semantic-ui-react";
 import { Trans, useTranslation } from "react-i18next";
 import useSettings from "util/useSettings";
 import transCommon from "util/transCommon";
@@ -17,15 +17,12 @@ const Navi = () => {
         onClose={() => setOpenModal(false)}
         position="bottom right"
         trigger={
-          <Button
+          <Menu.Item
             style={{
               //marginLeft: "calc(50vw - 82px)",
-              marginTop: "9px",
-
               color: "white",
-              boxShadow: "0 0 40px white",
-              background: "#ffffff99",
-              border: "1px solid white",
+              //boxShadow: "0 0 40px white",
+              //background: "#ffffff40",
             }}
             onClick={() => setOpenModal(!openModal)}
             icon="question"

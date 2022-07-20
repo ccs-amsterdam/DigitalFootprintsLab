@@ -8,7 +8,7 @@ import { useEffect, useCallback } from "react";
  * @param {*} where The name of a location. e.g., "Explore Browsing data"
  * @returns
  */
-const useLogger = (where, what = "open") => {
+const useLogger = (where: string, what: string = "open") => {
   const log = useCallback(
     (what) => {
       postLog(where, what);
@@ -23,7 +23,7 @@ const useLogger = (where, what = "open") => {
   return log;
 };
 
-const postLog = async (what, where) => {
+const postLog = async (what: string, where: string): Promise<void> => {
   const date = new Date();
   const log = [{ what, where, date: date.toISOString() }]; // needs to be an array for current endpoint (osd2f)
   const meta = await db.idb.meta.get(1);

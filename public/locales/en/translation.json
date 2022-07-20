@@ -171,9 +171,9 @@
       "title": "Step 1. Gather"
     },
     "navi": {
-      "header": "Hi there! On this page, there are three steps in total",
+      "header": "Hi there! This application works in three steps:",
       "ok": "Ok, got it!",
-      "step1": "The first step is to gather data by clicking on one of the cards in the <b>Gather</b> column and following the instruction. Note that after this point you have still not donated your data (that's step 3!)",
+      "step1": "The first step is to gather data by clicking on one of the cards in the <b>Gather</b> column and following the instruction. At this point you haven't yet donated your data, but only loaded the data into your own browser",
       "step2": "In the second step you can <b>Explore</b> your own data. If you find data that you don't want to share, you can also delete it here.",
       "step3": "In the final step you can <b>Donate</b> your data for academic research. The data will only be donated after you complete all steps and given your consent. Note that you can also use the <b>Exclude data</b> card to exclude some data from the donation, if you haven't done this already in the <b>Explore</b> step."
     }

@@ -19,8 +19,18 @@ const persistent = (state = true, action) => {
   }
 };
 
+const smallScreen = (state = true, action) => {
+  switch (action.type) {
+    case "SET_SMALLSCREEN":
+      return action.smallScreen;
+    default:
+      return state;
+  }
+};
+
 const rootReducer = combineReducers({
   dataStatus,
   persistent,
+  smallScreen,
 });
 export default rootReducer;

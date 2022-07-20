@@ -30,8 +30,7 @@ const CardTemplate = ({
       style={{
         cursor: disabled ? null : "pointer",
         width: "100%",
-        marginLeft: "2em",
-        marginRight: "2em",
+        margin: "20px 10px 0px 10px",
         position: "relative",
         color: "green",
         background: "#0f0f0f82",

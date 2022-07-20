@@ -5,10 +5,10 @@ import { useSearchParams } from "react-router-dom";
 import { urlParamString } from "util/tools";
 
 /**
- * Handles authentication (which at the moment is just accepting the welcome message)
- * Redirects to the welcome pages if the condition in connect is not met.
+ * Ensures that users have accepted any conditions specified at welcome, and
+ * that db has been created.
  */
-const AuthRoute = ({ children }) => {
+const InitRoute = ({ children }) => {
   const [searchParams] = useSearchParams();
   const userId = searchParams.get("id");
   const returnURL = searchParams.get("return");
@@ -35,4 +35,4 @@ const AuthRoute = ({ children }) => {
   return children;
 };
 
-export default AuthRoute;
+export default InitRoute;

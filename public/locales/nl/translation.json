@@ -172,9 +172,9 @@
       "title": "Stap 1. Verzamelen"
     },
     "navi": {
-      "header": "Welkom! Op deze pagina zie je drie stappen",
+      "header": "Welkom! In deze applicatie zijn er drie stappen:",
       "ok": "Ok, got it!",
-      "step1": "In de eerste stap verzamel je data door op een van de kaarten in de <b>Verzamelen</b> kolom te klikken. Na deze stap heb je nog niet je data gedoneerd (dat is stap 3!)",
+      "step1": "In de eerste stap verzamel je data door op een van de kaarten in de <b>Verzamelen</b> kolom te klikken. Na deze stap heb je nog niet je data gedoneerd. De data is alleen ingeladen in je eigen browser.",
       "step2": "De tweede stap is optioneel. Je kunt hier je data <b>Verkennen</b> als je benieuwd bent naar je eigen digitale sporen. Als je hier data tegenkomt die je liever niet met ons deelt, dan kun je deze ook verwijderen.",
       "step3": "De laatste stap is om je data te <b>Doneren</b> voor wetenschappelijk onderzoek. Je data wordt pas verstuurd zodra je alle stappen doorlopen hebt en je toestemming hebt gegeven. In de kolom staat ook de <b>Exlude data</b> kaart, waarmee je data kunt zoeken en uitsluiten van de donatie, voor het geval je dit nog niet gedaan hebt in de <b>Verkennen</b> stap."
     }
