@@ -11,6 +11,7 @@ const DeleteDataButton = ({ style = {} }) => {
     <Menu.Item
       style={{
         color: "white",
+        paddingLeft: "0",
         ...style,
       }}
     >

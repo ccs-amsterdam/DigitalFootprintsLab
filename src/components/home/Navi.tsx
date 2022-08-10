@@ -21,6 +21,7 @@ const Navi = () => {
             style={{
               //marginLeft: "calc(50vw - 82px)",
               color: "white",
+              paddingLeft: "0",
               //boxShadow: "0 0 40px white",
               //background: "#ffffff40",
             }}

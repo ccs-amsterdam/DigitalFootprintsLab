@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Grid, Header, Icon, List, Button } from "semantic-ui-react";
 import ReactMarkdown from "react-markdown";
 import ImportData from "./ImportData";
+import useSwipe from "util/useSwipe";
 
 const default_image_style = {
   width: "100%",
@@ -15,6 +16,12 @@ export default function GatherSteps({ t, platform, instruction }) {
   // if selected == instruction.steps.length (so the item after the last step),
   // the import step is shown
   const [selected, setSelected] = useState(0);
+
+  useSwipe((direction) => {
+    if (direction === "right" && selected > 0) setSelected(selected - 1);
+    if (direction === "left" && selected < (instruction?.steps?.length || 0))
+      setSelected(selected + 1);
+  });
 
   const Prev = () => {
     const active = selected > 0;
@@ -52,6 +59,31 @@ export default function GatherSteps({ t, platform, instruction }) {
         }}
         style={active ? { cursor: "pointer", color: "#1678c2" } : { color: "white" }}
       />
+    );
+  };
+
+  const Pagination = () => {
+    const steps = [...Array(instruction.steps.length + 1).keys()];
+
+    return (
+      <Button.Group style={{ paddingTop: "11px" }}>
+        {steps.map((step) => {
+          const active = step === selected;
+          const color = active ? "white" : null;
+          const background = active ? "rgb(22, 120, 194)" : null;
+
+          return (
+            <Button
+              circular
+              style={{ borderRadius: "50%", color, background }}
+              onClick={() => setSelected(step)}
+              compact
+            >
+              {step + 1}
+            </Button>
+          );
+        })}
+      </Button.Group>
     );
   };
 
@@ -103,9 +135,7 @@ export default function GatherSteps({ t, platform, instruction }) {
           <div style={{ display: "flex", width: "100%", justifyContent: "center" }}>
             <Prev />
             <div style={{ minWidth: "200px" }}>
-              <h2 style={{ color: "#1678c2", paddingTop: "9px" }}>
-                {t("gather.importdata.step")} {selected + 1}
-              </h2>
+              <Pagination />
             </div>
             <Next />
           </div>
@@ -113,6 +143,9 @@ export default function GatherSteps({ t, platform, instruction }) {
       </Grid.Row>
       <Grid.Row>
         <Grid.Column width="16" style={{ maxWidth: "600px" }}>
+          {/* <h2 style={{ color: "#1678c2", textAlign: "center" }}>
+            {t("gather.importdata.step")} {selected + 1}
+          </h2> */}
           <h3 style={{ color: "#1678c2", textAlign: "center" }}>{title}</h3>
           <InstructionStep />
         </Grid.Column>

@@ -83,12 +83,13 @@ const DataTable = ({
         margin: "0",
       }}
     >
-      <Segment style={{ background: "#00000000", height: "55px", margin: "0" }}>
-        <Header textAlign="center" as="h2" style={{ color: "white" }}>
+      <Segment style={{ background: "#00000000", height: "45px", margin: "0" }}>
+        <Header textAlign="center" as="h3" style={{ color: "white" }}>
           {bulkDelete ? (
             <Button
               onClick={() => setDeleteIds(bulkDelete)}
               icon="trash alternate"
+              size="small"
               style={{
                 color: "red",
                 padding: "0",
@@ -215,7 +216,7 @@ const PaginationTable = ({ data, columns, pages, pageChange, processDelete, unst
         width: "100%",
         color: "white",
         background: "#00000099",
-        fontSize: "min(max(0.8em, 1.4vw), 1.2em)",
+        fontSize: "clamp(0.8em, 1vw, 1em)",
       }}
     >
       {createHeader(showColumns)}

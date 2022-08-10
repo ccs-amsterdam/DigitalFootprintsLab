@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useState, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { Button, Checkbox, Modal } from "semantic-ui-react";
 
 const propTypes = {
@@ -14,6 +15,7 @@ const propTypes = {
 
 const ConfirmDeleteModal = ({ processDelete, deleteIds, setDeleteIds }) => {
   const [ask, setAsk] = useState(true);
+  const { t } = useTranslation();
   const deleteImmediately = useRef(false);
   const beingDeleted = useRef([]);
 
@@ -38,22 +40,26 @@ const ConfirmDeleteModal = ({ processDelete, deleteIds, setDeleteIds }) => {
       open={n > 0}
       onClose={() => setDeleteIds([])}
     >
-      <Modal.Header>Delete item{n === 1 ? "" : "s"}</Modal.Header>
       <Modal.Content>
-        <p>Are you sure you want to delete {n === 1 ? "this item" : `${n} items`}?</p>
+        <p>
+          {t("explore.table.delete.confirm", {
+            n: n,
+            items: n === 1 ? t("common.item") : t("common.items"),
+          })}
+        </p>
       </Modal.Content>
       <Modal.Actions>
         {n > 1 ? null : (
           <Checkbox
             onChange={(e, d) => setAsk(!d.checked)}
-            label="Do not ask again. Next time, delete immediately when clicking the trash icon"
+            label={t("explore.table.delete.dontask")}
           />
         )}
         <Button primary onClick={() => setDeleteIds([])}>
-          Cancel
+          {t("common.cancel")}
         </Button>
         <Button color="red" onClick={() => handleDelete()}>
-          Delete
+          {t("common.delete")}
         </Button>
       </Modal.Actions>
     </Modal>

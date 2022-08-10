@@ -18,7 +18,11 @@
     "views": "bekeken",
     "visit": "bezocht",
     "visits": "bezocht",
-    "copied": "Gekopieerd"
+    "copied": "Gekopieerd",
+    "cancel": "annuleren",
+    "delete": "verwijder",
+    "item": "item",
+    "items": "items"
   },
   "dataTypes": {
     "browsing": {
@@ -93,6 +97,12 @@
   "explore": {
     "statistics": {
       "header": "Statistieken"
+    },
+    "table": {
+      "delete": {
+        "confirm": "Weet je zeker dat je {{n}} {{items}} wilt verwijderen?",
+        "dontask": "Vraag niet nog eens"
+      }
     }
   },
   "gather": {

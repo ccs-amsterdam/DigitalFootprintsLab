@@ -1,4 +1,3 @@
-import React from "react";
 import { Dropdown } from "semantic-ui-react";
 import { useTranslation } from "react-i18next";
 
@@ -21,15 +20,14 @@ const ChangeLanguage = ({ style = {} }) => {
     <Dropdown
       item
       text={label.toUpperCase()}
-      className="icon"
       value={value}
-      floating
-      labeled
-      //icon="world"
+      icon={null}
+      direction="left"
       options={languageOptions}
       onChange={(e, d) => changeLanguageHandler(d.value)}
       style={{
         color: "white",
+        paddingLeft: "0",
         ...style,
       }}
     />

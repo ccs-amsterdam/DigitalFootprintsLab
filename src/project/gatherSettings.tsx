@@ -1,7 +1,7 @@
 import gtRecipes from "./googleTakeoutRecipes";
-import ttRecipes from "./tiktokTakeoutRecipes";
 import { createCookbook } from "data-donation-importers";
-import tiktokTakeoutInstruction from "./tiktokTakeoutInstruction";
+//import ttRecipes from "./tiktokTakeoutRecipes";
+//import tiktokTakeoutInstruction from "./tiktokTakeoutInstruction";
 import googleTakeoutInstruction from "./googleTakeoutInstruction";
 import { GatherSettings } from "types";
 
@@ -20,14 +20,14 @@ export const gatherSettings: GatherSettings[] = [
       "Youtube subscriptions": { data: "Youtube", idFields: ["channel_url", "date"] },
     },
   },
-  {
-    name: "TikTok Takeout",
-    subname: "tiktok.com",
-    img: "https://www.tiktok.com/favicon.ico",
-    cookbook: createCookbook(ttRecipes),
-    instructions: tiktokTakeoutInstruction,
-    importMap: {
-      "TikTok following": { data: "TikTok", idFields: ["name", "date"] },
-    },
-  },
+  // {
+  //   name: "TikTok Takeout",
+  //   subname: "tiktok.com",
+  //   img: "https://www.tiktok.com/favicon.ico",
+  //   cookbook: createCookbook(ttRecipes),
+  //   instructions: tiktokTakeoutInstruction,
+  //   importMap: {
+  //     "TikTok following": { data: "TikTok", idFields: ["name", "date"] },
+  //   },
+  // },
 ];

@@ -3,40 +3,34 @@ import { Icon, Menu, Sidebar } from "semantic-ui-react";
 import { Link, useLocation } from "react-router-dom";
 import ExploreMenuDropdown from "./ExploreMenuDropdown";
 import GatherMenuDropdown from "./GatherMenuDropdown";
+import DonateMenuDropdown from "./DonateMenuDropdown";
 import ChangeLanguage from "components/home/ChangeLanguage";
 import Navi from "components/home/Navi";
 import DeleteDataButton from "components/home/DeleteDataButton";
 
+const menuStyle = {
+  background: "#00000090",
+  borderBottom: "1px solid white",
+  zIndex: 10,
+  display: "flex",
+  flexWrap: "wrap",
+  fontSize: "min(max(2vw, 1em),1.1em)",
+};
+
 const HeaderMenu = ({ items }) => {
   const location = useLocation();
 
+  if (location.pathname === "/")
+    return (
+      <Menu style={menuStyle}>
+        <Menu.Menu position="right">
+          <ChangeLanguage />
+        </Menu.Menu>
+      </Menu>
+    );
+
   return (
-    <Menu
-      style={{
-        background: "#00000090",
-        borderBottom: "1px solid white",
-        zIndex: 10,
-        display: "flex",
-        flexWrap: "wrap",
-        fontSize: "min(max(2vw, 1em),1.1em)",
-      }}
-    >
-      {/* {items.map((item, index) => {
-        return (
-          <Menu.Item
-            key={"item-" + index}
-            index={index}
-            as={Link}
-            to={item.path}
-            header={index === 0}
-            disabled={false}
-            active={item.path === location.pathname}
-            style={{ color: "white" }}
-          >
-            {item.label}
-          </Menu.Item>
-        );
-      })} */}
+    <Menu style={menuStyle}>
       <Menu.Item
         key={"home"}
         as={Link}
@@ -49,6 +43,7 @@ const HeaderMenu = ({ items }) => {
       </Menu.Item>
       <GatherMenuDropdown />
       <ExploreMenuDropdown />
+      <DonateMenuDropdown />
       <Menu.Menu position="right">
         <Navi />
         <ChangeLanguage />

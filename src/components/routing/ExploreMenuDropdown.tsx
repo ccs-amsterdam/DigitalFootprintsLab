@@ -32,7 +32,12 @@ const ExploreMenuDropdown = ({ disabled = false }) => {
 
   if (!statuses || statuses.length === 0) return null;
   return (
-    <Dropdown item text={t("routing.buttons.explore")} style={{ color: "white" }}>
+    <Dropdown
+      item
+      icon={null}
+      text={t("routing.buttons.explore")}
+      style={{ color: "white", paddingLeft: "0" }}
+    >
       <Dropdown.Menu>
         {statuses.map((status) => {
           const [label, icon] = getLabelAndIcon(status.name);

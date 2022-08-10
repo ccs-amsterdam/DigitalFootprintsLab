@@ -1,7 +1,5 @@
 import React, { ReactElement, useEffect, useState } from "react";
-import { Grid, Container, Header, Item } from "semantic-ui-react";
-
-import ColoredBackgroundGrid from "./dashboardParts/ColoredBackgroundDiv";
+import { Grid, Container, Button, Item, Icon } from "semantic-ui-react";
 
 import DataTable from "./dashboardParts/DataTable";
 import QueryInput from "./dashboardParts/QueryInput";
@@ -10,7 +8,6 @@ import useDashboardData from "../dashboardData/useDashboardData";
 import useLogger from "util/useLogger";
 import { useTranslation } from "react-i18next";
 import transCommon from "util/transCommon";
-import MenuGridRow from "components/routing/MenuGridRow";
 import { TableColumn } from "types";
 
 /**
@@ -57,51 +54,30 @@ const DashboardTemplate = ({
     <div style={{ width: "100%", height: "100%", background: "#000000b0", overflow: "auto" }}>
       <Grid
         stackable
+        verticalAlign="middle"
         style={{
           width: "100%",
           height: "100%",
           margin: "0",
-          overflow: "auto",
         }}
       >
-        <Grid.Row style={{ padding: "0", minHeight: "500px" }}>
+        <Grid.Row style={{ padding: "10px 0 10px 0" }}>
           <Grid.Column width={5}>
-            <Container
-              style={{
-                margin: "50px",
-                marginTop: "50px",
-                padding: "20px",
-              }}
-            >
-              <div style={{ marginBottom: "1em" }}>
-                <QueryInput
-                  dashData={dashData}
-                  searchOn={searchOn}
-                  setSelection={setQuerySelection}
-                />
+            <Container>
+              <div style={{ padding: "6px 0 10px 0", display: "flex", flexDirection: "row" }}>
+                <AltFilter altSelection={altSelection} setAltSelection={setAltSelection} />
+                <div style={{ flex: "1 1 auto" }}>
+                  <QueryInput
+                    dashData={dashData}
+                    searchOn={searchOn}
+                    setSelection={setQuerySelection}
+                  />
+                </div>
               </div>
               <Statistics statistics={statistics} />
             </Container>
           </Grid.Column>
-          <Grid.Column
-            verticalAlign="middle"
-            width={11}
-            style={{ height: "100%", width: "100%", marginTop: "10px" }}
-          >
-            <VisComponent
-              dashData={dashData}
-              inSelection={querySelection}
-              setOutSelection={setAltSelection}
-            />
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row
-          style={{
-            width: "100%",
-            padding: "0",
-          }}
-        >
-          <Grid.Column width={16}>
+          <Grid.Column width={11} style={{ paddingTop: "10px" }}>
             <DataTable
               dashData={dashData}
               columns={columns}
@@ -112,8 +88,38 @@ const DashboardTemplate = ({
             />
           </Grid.Column>
         </Grid.Row>
+        <Grid.Row
+          style={{
+            width: "100%",
+            padding: "0",
+          }}
+        >
+          <Grid.Column width={16} style={{ padding: "1vw" }}>
+            <VisComponent
+              dashData={dashData}
+              inSelection={querySelection}
+              setOutSelection={setAltSelection}
+            />
+          </Grid.Column>
+        </Grid.Row>
       </Grid>
     </div>
+  );
+};
+
+const AltFilter = ({ altSelection, setAltSelection }) => {
+  if (!altSelection) return null;
+  return (
+    <>
+      <Icon name="filter" size="big" style={{ paddingTop: "9px", color: "white" }} />
+      <Button
+        compact
+        icon="window close"
+        onClick={() => setAltSelection(null)}
+        size="huge"
+        style={{ color: "white", height: "1em", background: "#ffffff00" }}
+      />
+    </>
   );
 };
 
@@ -122,34 +128,27 @@ const Statistics = ({ statistics }) => {
   // statistics should be an array of objects, with: "label" and "value" keys.
 
   return (
-    <Container
+    <div
       style={{
         height: "98%",
-        padding: "20px",
+        padding: "20px 20px 20px 20px",
         background: "#55555587",
         borderRadius: "10px",
-        fontSize: "min(max(0.8em, 1.5vw), 1em)",
+        margin: "0px",
+        fontSize: "clamp(0.8em, 1vw, 1em)",
       }}
     >
-      <Header
-        as="h1"
-        align={"center"}
-        style={{
-          color: "white",
-          padding: "0",
-          margin: "0",
-          fontSize: "min(max(2em, 1.5vw), 3em)",
-        }}
-      >
-        {t("explore.statistics.header")}
-      </Header>
       <Item.Group>
-        {statistics.map((statistic) => {
+        {statistics.map((statistic, i) => {
           const s = transCommon(statistic.statistic, t);
           const f = transCommon(statistic.field, t);
           const label = s + " " + f;
+
           return (
-            <Item key={label}>
+            <Item
+              key={label}
+              style={{ marginTop: "0", marginBottom: i + 1 === statistics.length ? "0" : "1em" }}
+            >
               <Item.Content>
                 <Item.Header style={{ color: "white" }}>{label}</Item.Header>
                 <Item.Description style={{ color: "white" }}>{statistic.value}</Item.Description>
@@ -158,7 +157,7 @@ const Statistics = ({ statistics }) => {
           );
         })}
       </Item.Group>
-    </Container>
+    </div>
   );
 };
 

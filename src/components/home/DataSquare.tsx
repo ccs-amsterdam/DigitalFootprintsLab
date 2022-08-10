@@ -1,7 +1,6 @@
-import React, { CSSProperties, useEffect, useState } from "react";
-import { Button, Card, Grid, Header, Icon } from "semantic-ui-react";
+import  { CSSProperties, useEffect, useState } from "react";
+import {  Card, Header, Icon } from "semantic-ui-react";
 import { useTranslation } from "react-i18next";
-import background from "images/background.jpeg";
 import db from "apis/db";
 
 import GatherCardColumn from "./GatherCardColumn";
@@ -9,10 +8,8 @@ import ExploreCardColumn from "./ExploreCardColumn";
 import { useDispatch, useSelector } from "react-redux";
 import { setDataStatus } from "actions";
 import DonateCardColumn from "./DonateCardColumn";
-import DeleteDataButton from "./DeleteDataButton";
 import useLogger from "util/useLogger";
-import Navi from "./Navi";
-import ChangeLanguage from "./ChangeLanguage";
+import useSwipe from "util/useSwipe";
 
 const DataSquare = () => {
   useLogger("Home");
@@ -20,6 +17,11 @@ const DataSquare = () => {
   const dispatch = useDispatch();
   const [selected, setSelected] = useState(0);
   const smallScreen = useSelector((state: any) => state.smallScreen);
+
+  useSwipe((direction) => {
+    if (direction === "right" && selected > 0) setSelected(selected - 1);
+    if (direction === "left" && selected < 2) setSelected(selected + 1);
+  });
 
   useEffect(() => {
     // on startup, check statuses in db and write to redux

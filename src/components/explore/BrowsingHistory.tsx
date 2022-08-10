@@ -1,6 +1,7 @@
 import React from "react";
 import DashboardTemplate from "./dashboards/DashboardTemplate";
-import CirclePack from "./dashboards/dashboardParts/CirclePack";
+//import CirclePack from "./dashboards/dashboardParts/CirclePack";
+import Wordcloud from "./dashboards/dashboardParts/Wordcloud";
 import { List, Image } from "semantic-ui-react";
 
 const GROUP = "domain";
@@ -23,18 +24,30 @@ export default function BrowsingHistory() {
   );
 }
 
+// const VisComponent = ({ dashData, inSelection, setOutSelection }) => {
+//   if (!dashData) return null;
+//   return (
+//     <div>
+//       <CirclePack
+//         dashData={dashData}
+//         group={GROUP}
+//         grouptype="domain"
+//         inSelection={inSelection}
+//         setOutSelection={setOutSelection}
+//       />
+//     </div>
+//   );
+// };
+
 const VisComponent = ({ dashData, inSelection, setOutSelection }) => {
   if (!dashData) return null;
   return (
-    <div>
-      <CirclePack
-        dashData={dashData}
-        group={GROUP}
-        grouptype="domain"
-        inSelection={inSelection}
-        setOutSelection={setOutSelection}
-      />
-    </div>
+    <Wordcloud
+      dashData={dashData}
+      group={GROUP}
+      inSelection={inSelection}
+      setOutSelection={setOutSelection}
+    />
   );
 };
 

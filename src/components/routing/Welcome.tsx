@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPersistent } from "actions";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation, Trans } from "react-i18next";
-import ChangeLanguage from "components/home/ChangeLanguage";
 import { urlParamString } from "util/tools";
 
 /**
@@ -78,16 +77,6 @@ const Welcome = ({ items }) => {
           boxShadow: "8px 10px #0f0f0f82",
         }}
       >
-        <ChangeLanguage
-          style={{
-            position: "absolute",
-            left: "0",
-            top: "0",
-            margin: "0",
-            background: "white",
-            color: "grey",
-          }}
-        />
         <Header as="h2">{t("routing.welcome.header")}</Header>
         <div style={{ textAlign: "left", marginTop: "20px", marginBottom: "20px" }}>
           <h4 style={{ marginBottom: "8px" }}>{t("routing.welcome.subheader1")}</h4>
