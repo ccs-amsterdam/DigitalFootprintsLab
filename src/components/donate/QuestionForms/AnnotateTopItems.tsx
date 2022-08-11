@@ -133,7 +133,7 @@ const AnnotateTopItems = ({ question, setDone }: AnnotateTopItemsProps) => {
               renderLabel={(item) => ({ content: item.value })}
               value={added}
               onChange={onDropdownChange}
-              style={{ border: "1px solid #cce2ff", minHeight: "70px" }}
+              style={{ border: "1px solid #cce2ff", minHeight: "70px", fontSize: "0.8em" }}
             />
 
             <Button

@@ -84,7 +84,7 @@ const DashboardTemplate = ({
               <Statistics statistics={statistics} />
             </Container>
           </Grid.Column>
-          <Grid.Column width={11} style={{}}>
+          <Grid.Column width={11}>
             <DataTable
               dashData={dashData}
               columns={columns}

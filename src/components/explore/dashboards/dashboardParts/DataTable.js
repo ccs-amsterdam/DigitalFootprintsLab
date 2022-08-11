@@ -1,5 +1,14 @@
-import React, {  useEffect, useState } from "react";
-import { Container, Button, Header, Segment, Table, Icon, Pagination } from "semantic-ui-react";
+import React, { useEffect, useState } from "react";
+import {
+  Container,
+  Button,
+  Header,
+  Segment,
+  Table,
+  Icon,
+  Pagination,
+  Popup,
+} from "semantic-ui-react";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import { useTranslation } from "react-i18next";
 import transCommon from "util/transCommon";
@@ -99,8 +108,9 @@ const DataTable = ({
               icon="trash alternate"
               size="small"
               style={{
-                color: "red",
-                padding: "0",
+                color: "crimson",
+                padding: "2 0 0 0",
+                fontSize: "1em",
                 marginBottom: "10px",
                 background: "#ffffff00",
               }}
@@ -199,7 +209,7 @@ const PaginationTable = ({
         const content = processContent(row, name, f);
         return (
           <Table.Cell key={name + "_" + i} title={content}>
-            {content}
+            <PopupCell text={content} />
           </Table.Cell>
         );
       });
@@ -207,10 +217,14 @@ const PaginationTable = ({
         <Table.Row key={i}>
           <Table.Cell key="0" style={{ padding: "3px" }}>
             <Button
-              size="mini"
-              style={{ padding: "3px", background: "red", color: "black" }}
+              size="normal"
+              style={{
+                padding: "3px",
+                background: "transparent",
+                color: "crimson",
+              }}
               onClick={() => setDeleteIds([row._INDEX])}
-              icon="trash alternate"
+              icon="cancel"
             />
           </Table.Cell>
           {cells}
@@ -264,7 +278,7 @@ const PaginationTable = ({
             {pages > 1 ? (
               <Pagination
                 size="mini"
-                boundaryRange={1}
+                boundaryRange={0}
                 siblingRange={1}
                 ellipsisItem={{
                   content: <Icon name="ellipsis horizontal" />,
@@ -294,6 +308,20 @@ const PaginationTable = ({
         </Table.Row>
       </Table.Footer>
     </Table>
+  );
+};
+
+const PopupCell = ({ text }) => {
+  return (
+    <Popup
+      hideOnScroll
+      style={{ padding: "2px", boxShadow: "0px 0px 10px white" }}
+      trigger={<span>{text}</span>}
+    >
+      <Popup.Content style={{ overflow: "auto", overflowWrap: "break-word", maxWidth: "150px" }}>
+        {text}
+      </Popup.Content>
+    </Popup>
   );
 };
 

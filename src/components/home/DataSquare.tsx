@@ -1,5 +1,5 @@
-import  { CSSProperties, useEffect, useState } from "react";
-import {  Card, Header, Icon } from "semantic-ui-react";
+import { CSSProperties, useEffect, useState } from "react";
+import { Card, Header, Icon } from "semantic-ui-react";
 import { useTranslation } from "react-i18next";
 import db from "apis/db";
 
@@ -143,7 +143,11 @@ const CardColumn = ({
         <Icon
           size="huge"
           name="chevron left"
-          style={{ ...iconStyle, color: smallScreen && canGoLeft ? "white" : "transparent" }}
+          style={{
+            ...iconStyle,
+            color: smallScreen && canGoLeft ? "white" : "transparent",
+            transition: "color 0.5s",
+          }}
           onClick={() => {
             if (selected > 0) setSelected(selected - 1);
           }}
@@ -158,7 +162,11 @@ const CardColumn = ({
         <Icon
           size="huge"
           name="chevron right"
-          style={{ ...iconStyle, color: smallScreen && canGoRight ? "white" : "transparent" }}
+          style={{
+            ...iconStyle,
+            color: smallScreen && canGoRight ? "white" : "transparent",
+            transition: "color 0.5s",
+          }}
           onClick={() => {
             if (selected < 2) setSelected(selected + 1);
           }}

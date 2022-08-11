@@ -117,7 +117,7 @@ const getSpec = (height, width, colors, clickable, rotate) => {
             text: { field: "text" },
             align: { value: "center" },
             baseline: { value: "alphabetic" },
-            tooltip: { signal: "datum.text + ' (' + datum.visits + ')'" },
+            //tooltip: { signal: "datum.text + ' (' + datum.visits + ')'" },
           },
           update: {
             fill: [
