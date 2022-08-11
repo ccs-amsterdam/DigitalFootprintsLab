@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import db from "apis/db";
-import { Button, Grid, Header, Popup, List, Dropdown } from "semantic-ui-react";
+import { Button, Grid, Popup, List, Dropdown } from "semantic-ui-react";
 
 import ignoreIds from "data/youtube_ignore_ids.json";
 import { Trans, useTranslation } from "react-i18next";
@@ -99,7 +99,7 @@ const AnnotateTopItems = ({ question, setDone }: AnnotateTopItemsProps) => {
           <b>{transCommon("LIST", t)}</b>
         </Grid.Column>
         <Grid.Column width={7}>
-          <b>{question.question.trans.toUpperCase()}</b>
+          <b>{question.question.trans}</b>
         </Grid.Column>
       </Grid.Row>
 
@@ -119,9 +119,9 @@ const AnnotateTopItems = ({ question, setDone }: AnnotateTopItemsProps) => {
       }
 
       <Grid.Row>
-        <Grid.Column width={10}>
+        <Grid.Column width={16}>
           <br />
-          <p style={{ fontSize: "1.3em" }}>{question?.canAddIntro?.trans}</p>
+          <p style={{ fontSize: "1em" }}>{question?.canAddIntro?.trans}</p>
           <div style={{ display: "flex" }}>
             <Dropdown
               search
@@ -158,13 +158,23 @@ const ItemForm = ({ data, setData, itemvalue, question }) => {
   return (
     <Grid.Row style={{ paddingTop: "7px", paddingBottom: "0px" }}>
       <Grid.Column width={7}>
-        <Header as="h4">{item.name} </Header>
+        <span
+          style={{
+            fontSize: "0.8em",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            textOverflow: "ellipsis",
+          }}
+          title={item.name}
+        >
+          {item.name}{" "}
+        </span>
       </Grid.Column>
       <Grid.Column width={2}>
         <ItemDetails item={item} />
       </Grid.Column>
       <Grid.Column width={7}>
-        <Button.Group fluid size="small">
+        <Button.Group fluid size="mini">
           {question.answers.map((a, i) => {
             const active = answer === a.value;
             return (
@@ -225,7 +235,7 @@ const ItemDetails = ({ item }) => {
       wide="very"
       trigger={
         <Button
-          size="small"
+          size="mini"
           circular
           icon="list ul"
           style={{ cursor: "pointer", background: "#cce2ff" }}

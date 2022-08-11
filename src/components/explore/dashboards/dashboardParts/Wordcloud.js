@@ -13,7 +13,8 @@ interface WordCloudProps {
   dashData: any;
   group: string;
   inSelection: number[];
-  setOutSelection?: SetState<number[]>;
+  outSelection?: { label: string, selection: number[] };
+  setOutSelection?: SetState<{ label: string, selection: number[] }>;
   colors?: any;
   unclickable?: boolean;
 }
@@ -22,41 +23,38 @@ const Wordcloud = ({
   dashData,
   group,
   inSelection,
+  outSelection,
   setOutSelection,
   colors,
   unclickable,
 }: WordCloudProps) => {
   const [data, setData] = useState({ table: [] }); // input for vega visualization
   const [deleteIds, setDeleteIds] = useState([]);
+  const [selectedWord, setSelectedWord] = useState(null);
   const box = useRef();
 
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setData(createWordcloudData(dashData, group, inSelection));
-    if (setOutSelection) setOutSelection(null);
   }, [dashData, group, inSelection, setOutSelection, setLoading]);
 
-  // Vega signal handler
-  const onSelectWord = (signal, word) => {
-    if (!word) {
+  useEffect(() => {
+    setSelectedWord((selectedWord) => {
+      if (selectedWord !== outSelection?.selected) return outSelection?.selected;
+      return selectedWord;
+    });
+    console.log(outSelection?.selected);
+  }, [outSelection]);
+
+  useEffect(() => {
+    if (!selectedWord) {
       if (setOutSelection) setOutSelection(null);
     } else {
-      filterSelectedDatum(word);
+      const selection = dashData.searchValues([selectedWord], group);
+      if (setOutSelection) setOutSelection({ selected: selectedWord, ids: selection });
     }
-  };
-
-  // Vega signal handler
-
-  // Popup button handler
-  const filterSelectedDatum = async (word) => {
-    let selection = await dashData.searchValues([word], group);
-    if (setOutSelection) setOutSelection(selection);
-  };
-
-  const signalListeners = {
-    selectedWord: onSelectWord,
-  };
+  }, [dashData, selectedWord]);
 
   return (
     <div ref={box} style={{ position: "relative", width: "100%", height: "100%" }}>
@@ -66,7 +64,8 @@ const Wordcloud = ({
 
       <VegaWordcloud
         data={data}
-        signalListeners={signalListeners}
+        selectedWord={selectedWord}
+        setSelectedWord={setSelectedWord}
         colors={colors}
         unclickable={unclickable}
       />

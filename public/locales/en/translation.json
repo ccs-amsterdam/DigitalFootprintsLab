@@ -89,8 +89,8 @@
     },
     "validate": {
       "continue": "CONTINUE",
-      "header1": "To use your data for research, it's important to know how accurate it is. Please help us by answering a few questions about your data",
-      "header2": "In the wordcloud you see the top items in your <i>{{dataname}}</i> data. Please answer the following questions to help us understand how accurate this data."
+      "header1": "In the wordcloud you see the top items from your <i>{{dataname}}</i> data.",
+      "header2": "Please answer the following questions to help us understand how accurate this data is."
     }
   },
   "explore": {

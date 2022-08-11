@@ -21,11 +21,11 @@ const SimpleQuestion = ({ question, setDone }) => {
   return (
     <>
       <Grid.Row>
-        <Grid.Column width={10}>
-          <p style={{ fontSize: "1.3em" }}>{question?.question?.trans}</p>
+        <Grid.Column width={16}>
+          <p style={{ fontSize: "1em" }}>{question?.question?.trans}</p>
         </Grid.Column>
         <Grid.Column textAlign="center" width={15}>
-          <Button.Group style={{ marginTop: "10px" }}>
+          <Button.Group style={{ marginTop: "10px" }} vertical>
             {answerOptions.map((a) => {
               const selected = a.value === answer;
               return (

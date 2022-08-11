@@ -89,9 +89,9 @@
       "title": "Verstuur donatie"
     },
     "validate": {
-      "continue": "DOORGAAN",
-      "header1": "Om uw gegevens voor onderzoek te gebruiken, is het belangrijk om te weten hoe nauwkeurig deze zijn. Help ons alstublieft door een paar vragen over uw gegevens te beantwoorden",
-      "header2": "In de wordcloud zie je de top items in je <i>{{dataname}}</i> data. Beantwoord de volgende vragen om ons te helpen begrijpen hoe nauwkeurig deze gegevens zijn."
+      "continue": "GA DOOR",
+      "header1": "In de wordcloud ziet u de meest voorkomende items in <i>{{dataname}}</i> data.",
+      "header2": "Wij vragen u de volgende vragen te beantwoorden om ons te helpen begrijpen hoe nauwkeurig deze gegevens zijn."
     }
   },
   "explore": {

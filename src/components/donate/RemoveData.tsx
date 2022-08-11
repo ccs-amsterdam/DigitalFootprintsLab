@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import ColoredBackgroundDiv from "components/explore/dashboards/dashboardParts/ColoredBackgroundDiv";
 import {
   Container,
   Grid,
@@ -18,27 +17,36 @@ import DataTable from "components/explore/dashboards/dashboardParts/DataTable";
 import useLogger from "util/useLogger";
 
 import { Trans, useTranslation } from "react-i18next";
-import MenuGridRow from "components/routing/MenuGridRow";
 
 const RemoveData = () => {
   const [data, setData] = useState({});
   const log = useLogger("Remove data");
 
   return (
-    <div style={{ height: "100%", width: "100%", background: "#000000b0" }}>
-      <Grid stackable style={{ height: "100%", width: "100%", margin: "0", overflow: "auto" }}>
-        <Grid.Column width={4}>
-          <KeywordInput setData={setData} />
-        </Grid.Column>
-        <Grid.Column width={12} style={{ height: "calc(100% - 40px)", paddingTop: "30px" }}>
-          <Grid>
-            {Object.keys(data).map((key) => {
-              return <ResultsTable key={key} title={key} dashData={data[key]} log={log} />;
-            })}
-          </Grid>
-        </Grid.Column>
-      </Grid>
-    </div>
+    <Grid
+      centered
+      stackable
+      verticalAlign="top"
+      style={{
+        height: "100%",
+        width: "100%",
+        background: "#000000b0",
+        margin: "0",
+        overflow: "auto",
+      }}
+    >
+      <Grid.Column width={6}>
+        <KeywordInput setData={setData} />
+      </Grid.Column>
+
+      <Grid.Column width={10} style={{}}>
+        <Grid>
+          {Object.keys(data).map((key) => {
+            return <ResultsTable key={key} title={key} dashData={data[key]} log={log} />;
+          })}
+        </Grid>
+      </Grid.Column>
+    </Grid>
   );
 };
 
@@ -73,8 +81,8 @@ const KeywordInput = ({ setData }) => {
   return (
     <Container
       style={{
-        margin: "50px",
-        padding: "20px",
+        //margin: "50px",
+        padding: "10px",
         height: "100%",
         width: "25em",
       }}
@@ -135,31 +143,18 @@ const ResultsTable = ({ title, dashData, log }) => {
   if (!dashDataCopy) return null;
 
   return (
-    <Grid.Row
-      style={{
-        //minHeight: "500px",
-        //maxHeight: "calc(100vh - 500px)",
-        //width: "100%",
-        minHeight: "70px",
-
-        border: "1px solid #ffffff3f",
-        marginTop: "10px",
-        marginLeft: "15px",
-        position: "relative",
-      }}
-    >
-      <Header
-        style={{
-          position: "absolute",
-          fontSize: "1.8em",
-          top: "5px",
-          left: "5px",
-          color: "#ffffff",
-        }}
-      >
-        {title}
-      </Header>
-      <DataTable dashData={dashDataCopy} log={log} pagesize={5} />
+    <Grid.Row centered>
+      <Grid.Column>
+        <DataTable
+          title={title}
+          collapsable
+          dashData={dashDataCopy}
+          log={log}
+          pagesize={5}
+          full
+          unstackable
+        />
+      </Grid.Column>
     </Grid.Row>
   );
 };

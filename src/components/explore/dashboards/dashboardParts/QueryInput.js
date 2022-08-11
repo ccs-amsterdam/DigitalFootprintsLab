@@ -51,7 +51,7 @@ const QueryInput = ({ dashData, searchOn, setSelection, iconColor = "white" }) =
               icon="window close"
               onClick={() => setSearch("")}
               size="huge"
-              style={{ color: iconColor, height: "1em", background: "#ffffff00" }}
+              style={{ color: iconColor, padding: "0px 5px 5px 10px", background: "#ffffff00" }}
             />
           }
           onChange={(e, d) => setSearch(d.value)}

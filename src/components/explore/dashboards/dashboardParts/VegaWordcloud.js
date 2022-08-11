@@ -1,16 +1,41 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { Vega } from "react-vega";
 import useResponsiveSize from "./useResponsiveSize";
 
 const COLORS = ["#e0ca8a", "#8acce0", "#bea5e9"];
 
-const VegaWordcloud = ({ data, signalListeners, colors, unclickable, rotate }) => {
+const VegaWordcloud = ({ data, selectedWord, setSelectedWord, colors, unclickable, rotate }) => {
   const [size, box] = useResponsiveSize();
+  const [view, setView] = useState(null);
 
-  const spec = getSpec(500, size.width, colors || COLORS, !unclickable, rotate);
+  console.log(size);
+
+  useEffect(() => {
+    if (view) view.signal("selectedWord", selectedWord).run();
+  }, [view, selectedWord]);
+
+  const onSelectWord = (signal, word) => {
+    setSelectedWord(word);
+  };
+
+  const signalListeners = {
+    selectedWord: onSelectWord,
+  };
+
+  const handleNewView = (view) => {
+    setView(view);
+  };
+
+  const spec = getSpec(size.height, size.width, colors || COLORS, !unclickable, rotate);
   return (
     <div ref={box} style={{ height: "100%", width: "100%", maxWidth: "100vw" }}>
-      <Vega data={data} spec={spec} signalListeners={signalListeners} actions={false} />
+      <Vega
+        data={data}
+        spec={spec}
+        signalListeners={signalListeners}
+        onNewView={handleNewView}
+        actions={false}
+      />
     </div>
   );
 };
@@ -73,7 +98,7 @@ const getSpec = (height, width, colors, clickable, rotate) => {
     signals: [
       {
         name: "selectedWord",
-        update: "data('table') ? '' : ''", // stupid, but this way it resets on rerender
+        //update: "data('table') ? '' : ''", // stupid, but this way it resets on rerender
         on: clicksignal,
       },
       {
@@ -97,6 +122,8 @@ const getSpec = (height, width, colors, clickable, rotate) => {
           update: {
             fill: [
               { test: "selectedWord === datum.text", value: "white" },
+              { test: "selectedWord && selectedWord !== datum.text", value: "grey" },
+
               { scale: "color", field: "text" },
             ],
             fillOpacity: { value: 1 },

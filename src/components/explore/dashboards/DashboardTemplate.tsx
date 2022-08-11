@@ -43,7 +43,7 @@ const DashboardTemplate = ({
   const log = useLogger("Explore " + dataName);
 
   useEffect(() => {
-    setSelection(intersect([querySelection, altSelection]));
+    setSelection(intersect([querySelection, altSelection?.ids || null]));
   }, [querySelection, altSelection]);
 
   useEffect(() => {
@@ -54,7 +54,7 @@ const DashboardTemplate = ({
     <div style={{ width: "100%", height: "100%", background: "#000000b0", overflow: "auto" }}>
       <Grid
         stackable
-        verticalAlign="middle"
+        verticalAlign="top"
         style={{
           width: "100%",
           height: "100%",
@@ -64,9 +64,16 @@ const DashboardTemplate = ({
         <Grid.Row style={{ padding: "10px 0 10px 0" }}>
           <Grid.Column width={5}>
             <Container>
-              <div style={{ padding: "6px 0 10px 0", display: "flex", flexDirection: "row" }}>
+              <div
+                style={{
+                  padding: "6px 0 10px 0",
+                  display: "flex",
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                }}
+              >
                 <AltFilter altSelection={altSelection} setAltSelection={setAltSelection} />
-                <div style={{ flex: "1 1 auto" }}>
+                <div style={{ flex: "1 1 auto", minWidth: "50%" }}>
                   <QueryInput
                     dashData={dashData}
                     searchOn={searchOn}
@@ -77,7 +84,7 @@ const DashboardTemplate = ({
               <Statistics statistics={statistics} />
             </Container>
           </Grid.Column>
-          <Grid.Column width={11} style={{ paddingTop: "10px" }}>
+          <Grid.Column width={11} style={{}}>
             <DataTable
               dashData={dashData}
               columns={columns}
@@ -98,6 +105,7 @@ const DashboardTemplate = ({
             <VisComponent
               dashData={dashData}
               inSelection={querySelection}
+              outSelection={altSelection}
               setOutSelection={setAltSelection}
             />
           </Grid.Column>
@@ -110,16 +118,26 @@ const DashboardTemplate = ({
 const AltFilter = ({ altSelection, setAltSelection }) => {
   if (!altSelection) return null;
   return (
-    <>
-      <Icon name="filter" size="big" style={{ paddingTop: "9px", color: "white" }} />
+    <div
+      style={{
+        height: "38px",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+      }}
+    >
+      <Icon name="filter" size="big" style={{ color: "white" }} />
+      <div style={{ padding: "5px", color: "white", fontSize: "1.2em" }}>
+        {altSelection?.selected}
+      </div>
       <Button
         compact
         icon="window close"
         onClick={() => setAltSelection(null)}
         size="huge"
-        style={{ color: "white", height: "1em", background: "#ffffff00" }}
+        style={{ color: "white", padding: "0px 5px 5px 5px", background: "#ffffff00" }}
       />
-    </>
+    </div>
   );
 };
 

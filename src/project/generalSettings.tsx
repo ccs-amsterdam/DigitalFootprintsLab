@@ -59,31 +59,6 @@ const validateData = [
   },
   {
     question: {
-      value: "Are the largest items indeed the items you often visit?",
-      NL: "Zijn de grootste items inderdaad de items die je vaak bezoekt?",
-    },
-    answers: [
-      { value: "very little", NL: "heel weinig" },
-      { value: "a little", NL: "weinig" },
-      { value: "somewhat", NL: "matig" },
-      { value: "a lot", NL: "veel" },
-      { value: "a great deal", NL: "heel veel" },
-    ],
-  },
-  {
-    question: {
-      value: "Are there any items that you know you visited often, but are not shown here?",
-      NL: "Zijn er items waarvan je weet dat je ze vaak hebt bezocht, maar die hier niet worden weergegeven?",
-    },
-    answers: [
-      { value: "none missing", NL: "niks ontbreekt" },
-      { value: "some missing", NL: "iets ontbreekt" },
-      { value: "quite a lot missing", NL: "veel ontbreekt" },
-      { value: "most missing", NL: "meeste ontbreekt" },
-    ],
-  },
-  {
-    question: {
       value: "Is this data only yours, or does someone else use your device or account?",
       NL: "Zijn deze gegevens alleen van jou, of gebruikt iemand anders jouw apparaat of account?",
     },

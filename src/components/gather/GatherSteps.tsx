@@ -114,24 +114,13 @@ export default function GatherSteps({ t, platform, instruction }) {
     <Grid centered>
       <Grid.Row style={{ color: "black", background: "white", borderRadius: "10px" }}>
         <Grid.Column textAlign="center" style={{ maxWidth: "600px" }}>
-          <Header>
-            {platform.icon ? (
-              <Icon
-                size="huge"
-                name={platform.icon}
-                style={{ width: "66px", height: "55px", color: "#4183c4" }}
-              />
-            ) : (
-              <img src={platform.img} alt={"logo"} style={{ width: "66px", height: "55px" }} />
-            )}
-            {instruction.title}
-          </Header>
+          <Header>{instruction.title}</Header>
           <ReactMarkdown linkTarget={"_blank"}>{instruction.introduction}</ReactMarkdown>
         </Grid.Column>
       </Grid.Row>
       <Grid.Row style={{ paddingBottom: "0px" }}>
         <Grid.Column textAlign="center">
-          <h3 style={{ marginBottom: "2px" }}></h3>
+          {/* <h3 style={{ marginBottom: "2px" }}></h3> */}
           <div style={{ display: "flex", width: "100%", justifyContent: "center" }}>
             <Prev />
             <div style={{ minWidth: "200px" }}>

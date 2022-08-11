@@ -23,7 +23,7 @@ export default function Youtube() {
   );
 }
 
-const VisComponent = ({ dashData, inSelection, setOutSelection }) => {
+const VisComponent = ({ dashData, inSelection, outSelection, setOutSelection }) => {
   if (!dashData) return null;
   return (
     <div>
@@ -31,6 +31,7 @@ const VisComponent = ({ dashData, inSelection, setOutSelection }) => {
         dashData={dashData}
         group={GROUP}
         inSelection={inSelection}
+        outSelection={outSelection}
         setOutSelection={setOutSelection}
       />
     </div>

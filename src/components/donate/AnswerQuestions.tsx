@@ -18,16 +18,17 @@ const AnswerQuestions = ({ setStep, settings }) => {
         color: "black",
         minHeight: "300px",
         overflow: "auto",
+        fontSize: "1em",
       }}
     >
       <Grid centered stackable style={{ height: "100%" }}>
-        <Grid.Row>
+        {/* <Grid.Row>
           <Grid.Column width={16}>
             <Header as="h1" style={{ textAlign: "center" }}>
               {t("donate.annotate.header")}
             </Header>
           </Grid.Column>
-        </Grid.Row>
+        </Grid.Row> */}
 
         <Grid.Row>
           <Grid.Column width={14}>
@@ -104,10 +105,10 @@ const AnnotateQuestions = ({ settings, setDone }) => {
   if (questions === null) return null;
   return questions.map((question, i) => {
     return (
-      <Grid key={question?.question?.value + i} centered stackable>
+      <Grid key={question?.question?.value + i} centered>
         {i > 0 ? <Divider style={{ margin: "40px", width: "100%" }} /> : null}
         <Grid.Row>
-          <Grid.Column width={10}>
+          <Grid.Column width={16}>
             <Header as="h1" textAlign="center">
               {question?.title?.trans}
             </Header>

@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import ColoredBackgroundDiv from "components/explore/dashboards/dashboardParts/ColoredBackgroundDiv";
-import { Container, Grid, Icon, Step } from "semantic-ui-react";
+import { Icon, Step } from "semantic-ui-react";
 import DonationInformation from "./DonationInformation";
 import AnswerQuestions from "./AnswerQuestions";
 import ConfirmDonation from "./ConfirmDonation";
@@ -8,7 +7,6 @@ import ValidateData from "./ValidateData";
 
 import db from "apis/db";
 import { useTranslation } from "react-i18next";
-import MenuGridRow from "components/routing/MenuGridRow";
 import useSettings from "util/useSettings";
 
 const DonationScreen = () => {
@@ -34,28 +32,37 @@ const DonationScreen = () => {
   );
 
   return (
-    <ColoredBackgroundDiv color={"#000000b0"}>
-      <Grid stackable style={{ height: "calc(100vh - 18px)", width: "100vw" }}>
-        <MenuGridRow disabled />
-
-        <Grid.Column width={16} style={{ height: "calc(100% - 50px)" }}>
-          <Container
-            style={{
-              height: "100%",
-              color: "white",
-              fontSize: "1.5em",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <DonationSteps step={step} setStep={setStep} />
-            <div style={{ marginTop: "10px", flex: "1 1 auto", overflow: "auto", width: "100%" }}>
-              {renderStep(step)}
-            </div>
-          </Container>
-        </Grid.Column>
-      </Grid>
-    </ColoredBackgroundDiv>
+    <div
+      style={{
+        height: "100%",
+        width: "100%",
+        background: "#000000b0",
+        padding: "3vmin",
+      }}
+    >
+      <div
+        style={{
+          height: "100%",
+          color: "white",
+          fontSize: "1.5em",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <DonationSteps step={step} setStep={setStep} />
+        <div
+          style={{
+            paddingTop: "10px",
+            flex: "1 1 auto",
+            overflow: "auto",
+            width: "100%",
+            fontSize: "clamp(0.8em, 1vw, 1em)",
+          }}
+        >
+          {renderStep(step)}
+        </div>
+      </div>
+    </div>
   );
 };
 
@@ -89,50 +96,43 @@ const DonationSteps = ({ step, setStep }) => {
   return (
     <div style={{}}>
       <Step.Group unstackable fluid style={{ overflow: "auto" }}>
-        <Step active={step === 0} completed={step > 0} onClick={() => onClick(0)} style={stepStyle}>
+        <Step active={step === 0} onClick={() => onClick(0)} style={stepStyle}>
           <Icon name="thumbs up" />
-          <Step.Content>
+          <Step.Content style={{ display: step === 0 ? "" : "none" }}>
             <Step.Title>{t("donate.step1.title")}</Step.Title>
-            {/* <Step.Description>{t("donate.step1.description")}</Step.Description> */}
           </Step.Content>
         </Step>
         <Step
           active={step === 1}
-          completed={step > 1}
           disabled={maxStep < 1}
           onClick={() => onClick(1)}
           style={stepStyle}
         >
           <Icon name="address card outline" />
-          <Step.Content>
+          <Step.Content style={{ display: step === 1 ? "" : "none" }}>
             <Step.Title>{t("donate.step2.title")}</Step.Title>
-            {/* <Step.Description>{t("donate.step2.description")}</Step.Description> */}
           </Step.Content>
         </Step>
         <Step
           active={step === 2}
-          completed={step > 2}
           disabled={maxStep < 2}
           onClick={() => onClick(2)}
           style={stepStyle}
         >
           <Icon name="clipboard" />
-          <Step.Content>
+          <Step.Content style={{ display: step === 2 ? "" : "none" }}>
             <Step.Title>{t("donate.step3.title")}</Step.Title>
-            {/* <Step.Description>{t("donate.step3.description")}</Step.Description> */}
           </Step.Content>
         </Step>
         <Step
           active={step === 3}
-          completed={step > 3}
           disabled={maxStep < 3}
           onClick={() => onClick(3)}
           style={stepStyle}
         >
           <Icon name="student" />
-          <Step.Content>
+          <Step.Content style={{ display: step === 3 ? "" : "none" }}>
             <Step.Title>{t("donate.step4.title")}</Step.Title>
-            {/* <Step.Description>{t("donate.step4.description")}</Step.Description> */}
           </Step.Content>
         </Step>
       </Step.Group>

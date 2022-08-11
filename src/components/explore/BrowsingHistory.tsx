@@ -39,13 +39,14 @@ export default function BrowsingHistory() {
 //   );
 // };
 
-const VisComponent = ({ dashData, inSelection, setOutSelection }) => {
+const VisComponent = ({ dashData, inSelection, outSelection, setOutSelection }) => {
   if (!dashData) return null;
   return (
     <Wordcloud
       dashData={dashData}
       group={GROUP}
       inSelection={inSelection}
+      outSelection={outSelection}
       setOutSelection={setOutSelection}
     />
   );

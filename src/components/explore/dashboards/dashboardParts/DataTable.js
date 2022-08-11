@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import { Container, Button, Header, Segment, Table, Icon, Pagination } from "semantic-ui-react";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import { useTranslation } from "react-i18next";
@@ -21,6 +21,9 @@ interface DataTableProps {
   log?: (any) => void;
   pagesize?: Number;
   unstackable?: boolean;
+  title?: String;
+  collapsable?: boolean;
+  full?: boolean;
 }
 
 const DataTable = ({
@@ -30,12 +33,16 @@ const DataTable = ({
   log,
   pagesize = 10,
   unstackable,
+  title,
+  collapsable = false,
+  full,
 }: DataTableProps) => {
   const [n, setN] = useState(0);
   const [data, setData] = useState([]);
   const [selectionN, setSelectionN] = useState(0);
   const [deleteIds, setDeleteIds] = useState([]);
   const [bulkDelete, setBulkDelete] = useState(null);
+  const [collapsed, setCollapsed] = useState(collapsable);
 
   useEffect(() => {
     if (!dashData) {
@@ -77,14 +84,15 @@ const DataTable = ({
   return (
     <Container
       style={{
-        height: "98%",
-        width: "98%",
+        width: "100%",
         padding: "0",
         margin: "0",
       }}
     >
-      <Segment style={{ background: "#00000000", height: "45px", margin: "0" }}>
-        <Header textAlign="center" as="h3" style={{ color: "white" }}>
+      <Segment style={{ background: "#00000000", width: "100%", paddingBottom: "0", margin: "0" }}>
+        <Header textAlign="center" as="h3" style={{ width: "100%", color: "white" }}>
+          {title}
+          {title ? <br /> : null}
           {bulkDelete ? (
             <Button
               onClick={() => setDeleteIds(bulkDelete)}
@@ -99,14 +107,26 @@ const DataTable = ({
             />
           ) : null}
           {selectionN === n ? n : `${selectionN} / ${n}`} items
+          <Button
+            icon={collapsed ? "caret right" : "caret down"}
+            size="small"
+            onClick={() => setCollapsed(!collapsed)}
+            style={{
+              color: "white",
+              background: "transparent",
+              padding: "5px 5px 5px 5px",
+            }}
+          ></Button>
         </Header>
       </Segment>
       <div
         style={{
+          display: collapsed ? "none" : null,
           height: "calc(100% - 55px)",
           width: "100%",
-          paddingLeft: "20px",
-          marginLeft: "1px !important",
+          overflow: "auto",
+          //paddingLeft: "20px",
+          //marginLeft: "1px !important",
           padding: "0",
         }}
       >
@@ -117,6 +137,7 @@ const DataTable = ({
           pageChange={pageChange}
           processDelete={processDelete}
           unstackable={unstackable}
+          full={full}
         />
       </div>
 
@@ -129,7 +150,15 @@ const DataTable = ({
   );
 };
 
-const PaginationTable = ({ data, columns, pages, pageChange, processDelete, unstackable }) => {
+const PaginationTable = ({
+  data,
+  columns,
+  pages,
+  pageChange,
+  processDelete,
+  unstackable,
+  full,
+}) => {
   const [deleteIds, setDeleteIds] = useState([]);
   const { t } = useTranslation();
 
@@ -208,8 +237,8 @@ const PaginationTable = ({ data, columns, pages, pageChange, processDelete, unst
 
   return (
     <Table
-      fixed
-      singleLine
+      fixed={!full}
+      singleLine={!full}
       unstackable={unstackable}
       compact="very"
       style={{

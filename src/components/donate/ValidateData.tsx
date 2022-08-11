@@ -1,6 +1,5 @@
 import db from "apis/db";
 import useDashboardData from "components/explore/dashboardData/useDashboardData";
-import QueryInput from "components/explore/dashboards/dashboardParts/QueryInput";
 import Wordcloud from "components/explore/dashboards/dashboardParts/Wordcloud";
 import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -47,7 +46,6 @@ const ValidateDataParts = ({ questions, setOuterStep }) => {
   const [dataNames, setDataNames] = useState([]);
   const [step, setStep] = useState(0);
   const [maxStep, setMaxStep] = useState(0);
-  const { t } = useTranslation();
 
   useEffect(() => {
     db.idb.data
@@ -68,8 +66,8 @@ const ValidateDataParts = ({ questions, setOuterStep }) => {
   }, [step, maxStep, dataNames, setOuterStep]);
 
   return (
-    <div>
-      <Step.Group fluid>
+    <div style={{ height: "100%" }}>
+      <Step.Group size="mini" fluid unstackable>
         {dataNames.map((dataName, i) => {
           return (
             <Step
@@ -77,17 +75,22 @@ const ValidateDataParts = ({ questions, setOuterStep }) => {
               active={i === step}
               onClick={() => setStep(i)}
               disabled={maxStep < i}
+              style={{ padding: "10px 5px 10px 5px" }}
             >
-              {dataName === "Browsing" ? <Icon name="history" /> : null}
+              {dataName === "Browsing" ? <Icon size="mini" name="history" /> : null}
               {dataName === "Search" ? <Icon name="search" /> : null}
               {dataName === "Youtube" ? <Icon name="youtube" /> : null}
-              <Step.Content>{dataName}</Step.Content>
+              <Step.Content>{i === step ? dataName : null}</Step.Content>
             </Step>
           );
         })}
       </Step.Group>
-      <Header textAlign="center" as="h4">
-        {t("donate.validate.header1")}
+      <Header textAlign="center" as="h2">
+        <Trans
+          i18nKey="donate.validate.header1"
+          values={{ dataname: dataNames[step] }}
+          components={{ i: <i /> }}
+        />
       </Header>
       <ValidateDataPart questions={questions} dataName={dataNames[step]} setStep={setStep} />
     </div>
@@ -102,11 +105,11 @@ interface ValidateDataPartProps {
 
 const ValidateDataPart = React.memo(({ questions, dataName, setStep }: ValidateDataPartProps) => {
   const [validation, setValidation] = useState({});
-  const [querySelection, setQuerySelection] = useState(null);
+  //const [querySelection, setQuerySelection] = useState(null);
   const [allAnswered, setAllAnswered] = useState(false);
   const { t } = useTranslation();
 
-  let field;
+  let field = "";
   if (dataName === "Browsing") field = "domain";
   if (dataName === "Search") field = "words";
   if (dataName === "Youtube") field = "channel";
@@ -144,25 +147,25 @@ const ValidateDataPart = React.memo(({ questions, dataName, setStep }: ValidateD
   return (
     <Grid stackable style={{ width: "100%" }}>
       <Grid.Row>
-        <Grid.Column textAlign="center"></Grid.Column>
-      </Grid.Row>
-      <Grid.Row>
-        <Grid.Column textAlign="center" width={8} style={{ width: "100%", overflow: "auto" }}>
-          <Header>
-            <i>Top {field}</i>
-          </Header>
-          <QueryInput dashData={dashData} setSelection={setQuerySelection} iconColor="black" />
-          <div>
+        <Grid.Column centered textAlign="center" width={16} style={{ width: "100%" }}>
+          {/* <Header>
+            <i>{field.toUpperCase()}</i>
+          </Header> */}
+          {/* <div style={{ maxWidth: "400px" }}>
+            <QueryInput dashData={dashData} setSelection={setQuerySelection} iconColor="black" />
+          </div> */}
+          <div style={{ height: "300px" }}>
             <Wordcloud
               dashData={dashData}
               group={field}
-              inSelection={querySelection}
+              //inSelection={querySelection}
+              inSelection={null}
               colors={WORDCLOUD_COLORS}
               unclickable={true}
             />
           </div>
         </Grid.Column>
-        <Grid.Column textAlign="center" width={8}>
+        <Grid.Column textAlign="center" width={16}>
           <Header as="h3" style={{ paddingTop: "5px" }}>
             <Trans
               i18nKey="donate.validate.header2"
