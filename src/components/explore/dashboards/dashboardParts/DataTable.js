@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, CSSProperties } from "react";
 import {
   Container,
   Button,
@@ -13,6 +13,7 @@ import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import { useTranslation } from "react-i18next";
 import transCommon from "util/transCommon";
 import { TableColumn } from "types";
+import { t } from "i18next";
 
 /**
  * Creates a table for a given table in the indexedDB
@@ -31,8 +32,10 @@ interface DataTableProps {
   pagesize?: Number;
   unstackable?: boolean;
   title?: String;
-  collapsable?: boolean;
+  /** Should the table be minified to only show the number of items (and delete button)?   */
+  minified?: boolean;
   full?: boolean;
+  style?: CSSProperties;
 }
 
 const DataTable = ({
@@ -43,15 +46,17 @@ const DataTable = ({
   pagesize = 10,
   unstackable,
   title,
-  collapsable = false,
+  minified = false,
   full,
+  style = {},
 }: DataTableProps) => {
   const [n, setN] = useState(0);
   const [data, setData] = useState([]);
   const [selectionN, setSelectionN] = useState(0);
   const [deleteIds, setDeleteIds] = useState([]);
   const [bulkDelete, setBulkDelete] = useState(null);
-  const [collapsed, setCollapsed] = useState(collapsable);
+  const [collapsed, setCollapsed] = useState(minified);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!dashData) {
@@ -88,45 +93,59 @@ const DataTable = ({
   };
 
   if (!dashData) return null;
-  if (!selectionN) return null;
+  if (selectionN == null) return null;
 
   return (
-    <Container
+    <div
       style={{
         width: "100%",
         padding: "0",
         margin: "0",
+        ...style,
       }}
     >
-      <Segment style={{ background: "#00000000", width: "100%", paddingBottom: "0", margin: "0" }}>
+      <Segment
+        style={{
+          background: "#00000000",
+          width: "100%",
+          paddingBottom: "0",
+          paddingTop: "5px",
+          margin: "0",
+        }}
+      >
         <Header textAlign="center" as="h3" style={{ width: "100%", color: "white" }}>
           {title}
           {title ? <br /> : null}
-          {bulkDelete ? (
-            <Button
-              onClick={() => setDeleteIds(bulkDelete)}
-              icon="trash alternate"
-              size="small"
-              style={{
-                color: "crimson",
-                padding: "2 0 0 0",
-                fontSize: "1em",
-                marginBottom: "10px",
-                background: "#ffffff00",
-              }}
-            />
-          ) : null}
+          <Button
+            key="deleteall"
+            onClick={() => setDeleteIds(bulkDelete)}
+            icon="trash alternate"
+            size="small"
+            style={{
+              visibility: bulkDelete ? "visible" : "hidden",
+              color: "crimson",
+              padding: "0px 0px 7px 0px",
+              fontSize: "1em",
+              marginBottom: "0px",
+              background: "#ffffff00",
+            }}
+          />
           {selectionN === n ? n : `${selectionN} / ${n}`} items
           <Button
+            key="collapse"
             icon={collapsed ? "caret right" : "caret down"}
             size="small"
             onClick={() => setCollapsed(!collapsed)}
             style={{
-              color: "white",
+              //display: collapsable ? null : "none",
+              color: "yellow",
               background: "transparent",
-              padding: "5px 5px 5px 5px",
+              padding: "0px 5px 0px 10px",
             }}
-          ></Button>
+          >
+            <Icon name="table" />
+            {collapsed ? t("explore.table.show") : t("explore.table.hide")}
+          </Button>
         </Header>
       </Segment>
       <div
@@ -144,6 +163,7 @@ const DataTable = ({
           data={data}
           columns={columns}
           pages={Math.ceil(selectionN / pagesize)}
+          pagesize={pagesize}
           pageChange={pageChange}
           processDelete={processDelete}
           unstackable={unstackable}
@@ -156,7 +176,7 @@ const DataTable = ({
         deleteIds={deleteIds}
         setDeleteIds={setDeleteIds}
       />
-    </Container>
+    </div>
   );
 };
 
@@ -164,6 +184,7 @@ const PaginationTable = ({
   data,
   columns,
   pages,
+  pagesize,
   pageChange,
   processDelete,
   unstackable,
@@ -202,26 +223,33 @@ const PaginationTable = ({
   };
 
   const createBody = (columns) => {
-    const rows = data.map((row, i) => {
+    const rowi = [...Array(pagesize).keys()];
+    const rows = rowi.map((i) => {
+      const row = i < data.length ? data[i] : null;
       const cells = columns.map((column) => {
         const name = typeof column === "object" ? column.name : column;
         const f = column?.f || null;
         const content = processContent(row, name, f);
         return (
-          <Table.Cell key={name + "_" + i} title={content}>
+          <Table.Cell
+            key={name + "_" + i}
+            title={content}
+            style={{ maxWidth: "10em", overflow: "hidden", paddingRight: "2px" }}
+          >
             <PopupCell text={content} />
+            &nbsp;
           </Table.Cell>
         );
       });
       return (
-        <Table.Row key={i}>
+        <Table.Row key={i} style={{ height: "29.5px" }}>
           <Table.Cell key="0" style={{ padding: "3px" }}>
             <Button
               size="normal"
               style={{
                 padding: "3px",
                 background: "transparent",
-                color: "crimson",
+                color: row == null ? "transparent" : "crimson",
               }}
               onClick={() => setDeleteIds([row._INDEX])}
               icon="cancel"
@@ -251,8 +279,7 @@ const PaginationTable = ({
 
   return (
     <Table
-      fixed={!full}
-      singleLine={!full}
+      singleLine
       unstackable={unstackable}
       compact="very"
       style={{
@@ -275,35 +302,33 @@ const PaginationTable = ({
             colSpan={showColumns.length + 1}
             style={{ paddingTop: "0px", background: "white", paddingBottom: "2px" }}
           >
-            {pages > 1 ? (
-              <Pagination
-                size="mini"
-                boundaryRange={0}
-                siblingRange={1}
-                ellipsisItem={{
-                  content: <Icon name="ellipsis horizontal" />,
-                  icon: true,
-                }}
-                firstItem={{
-                  content: <Icon name="angle double left" />,
-                  icon: true,
-                }}
-                lastItem={{
-                  content: <Icon name="angle double right" />,
-                  icon: true,
-                }}
-                prevItem={{ content: <Icon name="angle left" />, icon: true }}
-                nextItem={{
-                  content: <Icon name="angle right" />,
-                  icon: true,
-                }}
-                pointing
-                secondary
-                defaultActivePage={1}
-                totalPages={pages}
-                onPageChange={(e, d) => pageChange(d.activePage)}
-              ></Pagination>
-            ) : null}
+            <Pagination
+              size="mini"
+              boundaryRange={0}
+              siblingRange={1}
+              ellipsisItem={{
+                content: <Icon name="ellipsis horizontal" />,
+                icon: true,
+              }}
+              firstItem={{
+                content: <Icon name="angle double left" />,
+                icon: true,
+              }}
+              lastItem={{
+                content: <Icon name="angle double right" />,
+                icon: true,
+              }}
+              prevItem={{ content: <Icon name="angle left" />, icon: true }}
+              nextItem={{
+                content: <Icon name="angle right" />,
+                icon: true,
+              }}
+              pointing
+              secondary
+              defaultActivePage={1}
+              totalPages={pages}
+              onPageChange={(e, d) => pageChange(d.activePage)}
+            ></Pagination>
           </Table.HeaderCell>
         </Table.Row>
       </Table.Footer>
@@ -326,6 +351,7 @@ const PopupCell = ({ text }) => {
 };
 
 const processContent = (row, column, f) => {
+  if (row == null) return null;
   let content;
   if (f) {
     content = f(row);

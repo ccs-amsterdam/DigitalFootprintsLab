@@ -91,14 +91,19 @@
     "validate": {
       "continue": "GA DOOR",
       "header1": "In de wordcloud ziet u de meest voorkomende items in <i>{{dataname}}</i> data.",
-      "header2": "Wij vragen u de volgende vragen te beantwoorden om ons te helpen begrijpen hoe nauwkeurig deze gegevens zijn."
+      "header2": "De volgende vragen helpen ons te begrijpen hoe nauwkeurig deze gegevens zijn."
     }
   },
   "explore": {
     "statistics": {
       "header": "Statistieken"
     },
+    "search": {
+      "placeholder": "Typ hier om data te filteren"
+    },
     "table": {
+      "show": "toon tabel",
+      "hide": "verberg tabel",
       "delete": {
         "confirm": "Weet je zeker dat je {{n}} {{items}} wilt verwijderen?",
         "dontask": "Vraag niet nog eens"

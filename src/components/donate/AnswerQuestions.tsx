@@ -18,7 +18,7 @@ const AnswerQuestions = ({ setStep, settings }) => {
         color: "black",
         minHeight: "300px",
         overflow: "auto",
-        fontSize: "1em",
+        fontSize: "1.2em",
       }}
     >
       <Grid centered stackable style={{ height: "100%" }}>

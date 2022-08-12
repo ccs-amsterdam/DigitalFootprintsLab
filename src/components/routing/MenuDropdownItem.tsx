@@ -34,7 +34,7 @@ const MenuDropdownItem = ({
         paddingLeft: "max(1vw, 5px)",
         paddingRight: "max(1vw, 5px)",
         overflow: "visible",
-        zIndex: 9000,
+        zIndex: 90,
         //boxShadow: "2px 1px #ffffff2b",
       }}
       onClick={() => navigate(path)}

@@ -109,7 +109,7 @@ const KeywordInput = ({ setData }) => {
             setStatus("ready");
             setText(String(d.value));
           }}
-          rows={10}
+          rows={5}
           style={{ width: "100%" }}
         />
         ;
@@ -147,12 +147,12 @@ const ResultsTable = ({ title, dashData, log }) => {
       <Grid.Column>
         <DataTable
           title={title}
-          collapsable
           dashData={dashDataCopy}
           log={log}
           pagesize={5}
           full
           unstackable
+          minified
         />
       </Grid.Column>
     </Grid.Row>

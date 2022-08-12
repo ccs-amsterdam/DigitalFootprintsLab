@@ -90,14 +90,19 @@
     "validate": {
       "continue": "CONTINUE",
       "header1": "In the wordcloud you see the top items from your <i>{{dataname}}</i> data.",
-      "header2": "Please answer the following questions to help us understand how accurate this data is."
+      "header2": "The following questions help us understand how accurate this data is."
     }
   },
   "explore": {
     "statistics": {
       "header": "Statistics"
     },
+    "search": {
+      "placeholder": "Type here to filter data"
+    },
     "table": {
+      "show": "show table",
+      "hide": "hide table",
       "delete": {
         "confirm": "Are you sure you want to delete {{n}} {{items}}?",
         "dontask": "Do not ask again"

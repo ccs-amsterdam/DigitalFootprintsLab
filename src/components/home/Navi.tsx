@@ -30,8 +30,8 @@ const Navi = () => {
           />
         }
       >
-        <Modal.Header style={{ fontSize: "2.5em" }}>{t("home.navi.header")}</Modal.Header>
-        <Modal.Content style={{ fontSize: "1.5em" }}>
+        <Modal.Header style={{ fontSize: "2em" }}>{t("home.navi.header")}</Modal.Header>
+        <Modal.Content style={{ fontSize: "1.3em" }}>
           <List>
             <List.Item>
               <Header style={{ color: "white" }}>

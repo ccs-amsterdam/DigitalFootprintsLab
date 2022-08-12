@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 const useResponsiveSize = () => {
   const [size, setSize] = useState({ height: 500, width: 1000 });
   const [delayedSize, setDelayedSize] = useState(null);
-  const box = useRef();
+  const box: any = useRef();
 
   useEffect(() => {
     const timer = setTimeout(() => {

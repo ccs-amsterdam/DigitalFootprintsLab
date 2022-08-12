@@ -78,17 +78,27 @@ const calcStatistics = (dashData, selection) => {
   }
 
   top_domains = top_domains.slice(0, n_top_domains);
+  const top_domains_i = [...Array(n_top_domains).keys()];
   const top_domains_list = (
-    <List>
-      {top_domains.map((mv) => {
+    <div style={{ display: "grid", grid: "auto-flow / 20px 1fr", gridGap: "2px 10px" }}>
+      {top_domains_i.map((i) => {
+        if (i >= top_domains.length)
+          return <List.Content style={{ gridRow: i + 1, gridColumn: 2 }}>&nbsp;</List.Content>;
+        const mv = i < top_domains.length ? top_domains[i] : null;
         return (
-          <List.Item key={mv.key}>
-            <Image style={{ height: "20px", width: "20px" }} src={mv.image} />
-            <List.Content>{`${mv.key.replace(/www[^.]*\./, "")} (${mv.count})`}</List.Content>
-          </List.Item>
+          <>
+            <Image
+              style={{ gridRow: i + 1, gridColumn: 1, height: "19px", width: "20px" }}
+              src={mv?.image}
+            />
+            <List.Content style={{ gridRow: i + 1, gridColumn: 2 }}>{`${mv?.key.replace(
+              /www[^.]*\./,
+              ""
+            )} (${mv?.count})`}</List.Content>
+          </>
         );
       })}
-    </List>
+    </div>
   );
 
   const top_domains_field = domains > 1 ? "domains" : "domain";

@@ -37,14 +37,14 @@ const DonationScreen = () => {
         height: "100%",
         width: "100%",
         background: "#000000b0",
-        padding: "3vmin",
+        padding: "1vmin",
       }}
     >
       <div
         style={{
           height: "100%",
           color: "white",
-          fontSize: "1.5em",
+          fontSize: "1em",
           display: "flex",
           flexDirection: "column",
         }}
@@ -52,7 +52,7 @@ const DonationScreen = () => {
         <DonationSteps step={step} setStep={setStep} />
         <div
           style={{
-            paddingTop: "10px",
+            paddingTop: "5px",
             flex: "1 1 auto",
             overflow: "auto",
             width: "100%",
@@ -94,7 +94,7 @@ const DonationSteps = ({ step, setStep }) => {
   };
 
   return (
-    <div style={{}}>
+    <div style={{ fontSize: "1.3em" }}>
       <Step.Group unstackable fluid style={{ overflow: "auto" }}>
         <Step active={step === 0} onClick={() => onClick(0)} style={stepStyle}>
           <Icon name="thumbs up" />

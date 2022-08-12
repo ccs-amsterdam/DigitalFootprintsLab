@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Input, Icon, Loader } from "semantic-ui-react";
+import { useTranslation } from "react-i18next";
 
 const propTypes = {
   /** The name of the table */
@@ -17,6 +18,7 @@ const propTypes = {
 const QueryInput = ({ dashData, searchOn, setSelection, iconColor = "white" }) => {
   const [search, setSearch] = useState("");
   const [searching, setSearching] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setSearching(true);
@@ -38,12 +40,13 @@ const QueryInput = ({ dashData, searchOn, setSelection, iconColor = "white" }) =
         <Icon
           size="big"
           name={searching ? null : "search"}
-          style={{ paddingTop: "9px", paddingLeft: "10px", color: iconColor }}
+          style={{ paddingTop: "4px", paddingLeft: "10px", color: iconColor }}
         />
       </div>
       <div style={{ flex: "1 1 auto" }}>
         <Input
           fluid
+          placeholder={t("explore.search.placeholder")}
           value={search}
           icon={
             <Button
@@ -51,7 +54,7 @@ const QueryInput = ({ dashData, searchOn, setSelection, iconColor = "white" }) =
               icon="window close"
               onClick={() => setSearch("")}
               size="huge"
-              style={{ color: iconColor, padding: "0px 5px 5px 10px", background: "#ffffff00" }}
+              style={{ color: iconColor, padding: "0px 5px 5px 5px", background: "#ffffff00" }}
             />
           }
           onChange={(e, d) => setSearch(d.value)}

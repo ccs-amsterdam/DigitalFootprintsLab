@@ -3,7 +3,7 @@ import useDashboardData from "components/explore/dashboardData/useDashboardData"
 import Wordcloud from "components/explore/dashboards/dashboardParts/Wordcloud";
 import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Icon, Button, Grid, Header, Segment, Step, List } from "semantic-ui-react";
+import { Icon, Button, Header, Segment, Step, List } from "semantic-ui-react";
 import useLogger from "util/useLogger";
 import { ValidationQuestion } from "types";
 
@@ -31,13 +31,9 @@ const ValidateData = ({ setStep, settings }) => {
         overflow: "auto",
       }}
     >
-      <Grid centered stackable style={{ height: "100%" }}>
-        <Grid.Row>
-          <Grid.Column width={16}>
-            <ValidateDataParts questions={questions} setOuterStep={setStep} />
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+      <div style={{ height: "100%" }}>
+        <ValidateDataParts questions={questions} setOuterStep={setStep} />
+      </div>
     </Segment>
   );
 };
@@ -66,7 +62,7 @@ const ValidateDataParts = ({ questions, setOuterStep }) => {
   }, [step, maxStep, dataNames, setOuterStep]);
 
   return (
-    <div style={{ height: "100%" }}>
+    <div style={{ height: "100%", width: "100%" }}>
       <Step.Group size="mini" fluid unstackable>
         {dataNames.map((dataName, i) => {
           return (
@@ -85,7 +81,7 @@ const ValidateDataParts = ({ questions, setOuterStep }) => {
           );
         })}
       </Step.Group>
-      <Header textAlign="center" as="h2">
+      <Header textAlign="center" as="h3">
         <Trans
           i18nKey="donate.validate.header1"
           values={{ dataname: dataNames[step] }}
@@ -145,68 +141,73 @@ const ValidateDataPart = React.memo(({ questions, dataName, setStep }: ValidateD
 
   if (!dashData) return null;
   return (
-    <Grid stackable style={{ width: "100%" }}>
-      <Grid.Row>
-        <Grid.Column centered textAlign="center" width={16} style={{ width: "100%" }}>
-          {/* <Header>
+    <div style={{ display: "flex", flexDirection: "column", height: "100%", width: "100%" }}>
+      <div style={{ width: "100%" }}>
+        {/* <Header>
             <i>{field.toUpperCase()}</i>
           </Header> */}
-          {/* <div style={{ maxWidth: "400px" }}>
+        {/* <div style={{ maxWidth: "400px" }}>
             <QueryInput dashData={dashData} setSelection={setQuerySelection} iconColor="black" />
           </div> */}
-          <div style={{ height: "300px" }}>
-            <Wordcloud
-              dashData={dashData}
-              group={field}
-              //inSelection={querySelection}
-              inSelection={null}
-              colors={WORDCLOUD_COLORS}
-              unclickable={true}
-            />
-          </div>
-        </Grid.Column>
-        <Grid.Column textAlign="center" width={16}>
-          <Header as="h3" style={{ paddingTop: "5px" }}>
-            <Trans
-              i18nKey="donate.validate.header2"
-              values={{ dataname: dataName }}
-              components={{ i: <i /> }}
-            />
-          </Header>
-          <List
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              height: "100%",
-            }}
-          >
-            <br />
-            {Object.keys(validation).map((key) => {
-              const question = questions.find((q) => q.question.value === key);
-              return (
-                <ValidationQuestionForm
-                  key={key}
-                  question={question}
-                  validation={validation}
-                  setValidation={setValidation}
-                  dataName={dataName}
-                />
-              );
-            })}
-            <br />
-            <List.Item>
-              <Button
-                fluid
-                primary
-                disabled={!allAnswered}
-                content={t("donate.validate.continue")}
-                onClick={() => setStep((step) => step + 1)}
+        <div
+          style={{
+            height: "300px",
+            border: "1px solid lightgrey",
+            borderRadius: "10px",
+            boxShadow: "0px 0px 10px grey",
+          }}
+        >
+          <Wordcloud
+            dashData={dashData}
+            group={field}
+            //inSelection={querySelection}
+            inSelection={null}
+            colors={WORDCLOUD_COLORS}
+            unclickable={true}
+          />
+        </div>
+      </div>
+      <div>
+        <Header textAlign="center" as="h3" style={{ paddingTop: "15px" }}>
+          <Trans
+            i18nKey="donate.validate.header2"
+            values={{ dataname: dataName }}
+            components={{ i: <i /> }}
+          />
+        </Header>
+        <List
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            marginTop: "0",
+            height: "100%",
+          }}
+        >
+          {Object.keys(validation).map((key) => {
+            const question = questions.find((q) => q.question.value === key);
+            return (
+              <ValidationQuestionForm
+                key={key}
+                question={question}
+                validation={validation}
+                setValidation={setValidation}
+                dataName={dataName}
               />
-            </List.Item>
-          </List>
-        </Grid.Column>
-      </Grid.Row>
-    </Grid>
+            );
+          })}
+          <br />
+          <List.Item>
+            <Button
+              fluid
+              primary
+              disabled={!allAnswered}
+              content={t("donate.validate.continue")}
+              onClick={() => setStep((step) => step + 1)}
+            />
+          </List.Item>
+        </List>
+      </div>
+    </div>
   );
 });
 
@@ -219,7 +220,7 @@ const ValidationQuestionForm = ({ question, validation, setValidation, dataName 
     <List.Item key={dataName}>
       <br />
       <Header as="h4">{trans_question}</Header>
-      <Button.Group fluid size="small" style={{ marginTop: "5px" }}>
+      <div style={{ marginTop: "5px", display: "flex" }}>
         {answers.map((a, i) => {
           const selected = validation[question.question.value] === a;
           return (
@@ -231,6 +232,7 @@ const ValidationQuestionForm = ({ question, validation, setValidation, dataName 
                 setValidation(newValidation);
               }}
               style={{
+                flex: "1 1 auto",
                 padding: "7px 10px",
                 background: selected ? "white" : "#555555",
                 color: selected ? "#3b3a3a" : "white",
@@ -242,7 +244,7 @@ const ValidationQuestionForm = ({ question, validation, setValidation, dataName 
             </Button>
           );
         })}
-      </Button.Group>
+      </div>
     </List.Item>
   );
 };

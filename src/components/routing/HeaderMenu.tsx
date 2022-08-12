@@ -1,5 +1,4 @@
-import React from "react";
-import { Icon, Menu, Sidebar } from "semantic-ui-react";
+import { Icon, Menu } from "semantic-ui-react";
 import { Link, useLocation } from "react-router-dom";
 import ExploreMenuDropdown from "./ExploreMenuDropdown";
 import GatherMenuDropdown from "./GatherMenuDropdown";
@@ -9,12 +8,13 @@ import Navi from "components/home/Navi";
 import DeleteDataButton from "components/home/DeleteDataButton";
 
 const menuStyle = {
-  background: "#00000090",
+  background: "#000000b0",
   borderBottom: "1px solid white",
   zIndex: 10,
   display: "flex",
   flexWrap: "wrap",
   fontSize: "min(max(2vw, 1em),1.1em)",
+  borderRadius: "0",
 };
 
 const HeaderMenu = ({ items }) => {

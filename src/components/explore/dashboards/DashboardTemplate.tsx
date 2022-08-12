@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from "react";
-import { Grid, Container, Button, Item, Icon } from "semantic-ui-react";
+import { Grid, Button, Icon } from "semantic-ui-react";
 
 import DataTable from "./dashboardParts/DataTable";
 import QueryInput from "./dashboardParts/QueryInput";
@@ -44,73 +44,116 @@ const DashboardTemplate = ({
 
   useEffect(() => {
     setSelection(intersect([querySelection, altSelection?.ids || null]));
-  }, [querySelection, altSelection]);
+
+    // if altSelection has no hits, delete selection altogether
+    if (altSelection && altSelection.ids.length === 0) setAltSelection(null);
+  }, [querySelection, altSelection, setAltSelection]);
 
   useEffect(() => {
     setStatistics(calcStatistics(dashData, selection));
   }, [dashData, selection, calcStatistics]);
 
   return (
-    <div style={{ width: "100%", height: "100%", background: "#000000b0", overflow: "auto" }}>
-      <Grid
-        stackable
-        verticalAlign="top"
+    <div
+      style={{
+        height: "100%",
+        width: "100%",
+
+        display: "flex",
+        flexDirection: "column",
+        transition: "height 1s",
+      }}
+    >
+      {/* <div
         style={{
-          width: "100%",
-          height: "100%",
-          margin: "0",
+          flex: "1 1 auto",
+          padding: "10px 10px 0px 10px",
+          display: "flex",
+          flexDirection: "row",
+
+          zIndex: 5,
+          height: "48px",
+          backdropFilter: "blur(2px",
+          fontSize: "1em",
         }}
       >
-        <Grid.Row style={{ padding: "10px 0 10px 0" }}>
-          <Grid.Column width={5}>
-            <Container>
-              <div
-                style={{
-                  padding: "6px 0 10px 0",
-                  display: "flex",
-                  flexDirection: "row",
-                  flexWrap: "wrap",
-                }}
-              >
-                <AltFilter altSelection={altSelection} setAltSelection={setAltSelection} />
-                <div style={{ flex: "1 1 auto", minWidth: "50%" }}>
-                  <QueryInput
-                    dashData={dashData}
-                    searchOn={searchOn}
-                    setSelection={setQuerySelection}
-                  />
-                </div>
-              </div>
-              <Statistics statistics={statistics} />
-            </Container>
-          </Grid.Column>
-          <Grid.Column width={11}>
-            <DataTable
-              dashData={dashData}
-              columns={columns}
-              selection={selection}
-              pagesize={6}
-              log={log}
-              unstackable
-            />
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row
+        <AltFilter altSelection={altSelection} setAltSelection={setAltSelection} />
+        <div style={{ flex: "1 1 auto", minWidth: "50%" }}>
+          <QueryInput dashData={dashData} searchOn={searchOn} setSelection={setQuerySelection} />
+        </div>
+      </div> */}
+
+      <Grid
+        stackable
+        verticalAlign="middle"
+        style={{
+          margin: "0",
+          background: "#00000088",
+
+          // marginTop: "-58px",
+          // paddingTop: "58px",
+          zIndex: 0,
+          width: "100%",
+          height: "100%",
+          overflow: "auto",
+          alignItems: "flex-start",
+        }}
+      >
+        <Grid.Column width={6} style={{ paddingBottom: "0px !important" }}>
+          <Statistics statistics={statistics} />
+        </Grid.Column>
+
+        <Grid.Column width={10} style={{ paddingTop: "5px" }}>
+          <VisComponent
+            dashData={dashData}
+            inSelection={querySelection}
+            outSelection={altSelection}
+            setOutSelection={setAltSelection}
+          />
+        </Grid.Column>
+      </Grid>
+      <div
+        style={{
+          flex: "1 1 auto",
+          background: "#000000b0",
+
+          borderTop: "1px solid white",
+          padding: "10px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <div
           style={{
+            height: "100%",
             width: "100%",
-            padding: "0",
+            padding: "10px 10px 0px 10px",
+            marginBottom: "10px",
+            display: "flex",
+            flexDirection: "row",
+            maxWidth: "600px",
+            zIndex: 5,
+            fontSize: "1em",
           }}
         >
-          <Grid.Column width={16} style={{ padding: "1vw" }}>
-            <VisComponent
-              dashData={dashData}
-              inSelection={querySelection}
-              outSelection={altSelection}
-              setOutSelection={setAltSelection}
-            />
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+          <AltFilter altSelection={altSelection} setAltSelection={setAltSelection} />
+          <div style={{ flex: "1 1 auto", minWidth: "50%" }}>
+            <QueryInput dashData={dashData} searchOn={searchOn} setSelection={setQuerySelection} />
+          </div>
+        </div>
+        <div style={{ flex: "1 1 auto", width: "100%" }}>
+          <DataTable
+            dashData={dashData}
+            columns={columns}
+            selection={selection}
+            pagesize={6}
+            log={log}
+            unstackable
+            minified
+          />
+        </div>
+      </div>
     </div>
   );
 };
@@ -121,13 +164,16 @@ const AltFilter = ({ altSelection, setAltSelection }) => {
     <div
       style={{
         height: "38px",
+        maxWidth: "50%",
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
       }}
     >
-      <Icon name="filter" size="big" style={{ color: "white" }} />
-      <div style={{ padding: "5px", color: "white", fontSize: "1.2em" }}>
+      <Icon name="filter" size="big" style={{ color: "white", paddingTop: "4px" }} />
+      <div
+        style={{ padding: "5px 2px 0px 5px", color: "white", fontSize: "1em", overflow: "auto" }}
+      >
         {altSelection?.selected}
       </div>
       <Button
@@ -148,33 +194,46 @@ const Statistics = ({ statistics }) => {
   return (
     <div
       style={{
-        height: "98%",
-        padding: "20px 20px 20px 20px",
+        height: "100%",
+        width: "100%",
+        padding: "10px 20px 10px 20px",
         background: "#55555587",
         borderRadius: "10px",
         margin: "0px",
+        color: "white",
         fontSize: "clamp(0.8em, 1vw, 1em)",
+        display: "grid",
+        grid: "auto-flow / 1fr 2fr",
+        justifyItems: "stretch",
+        alignItems: "center",
+        gridGap: "10px 1.5em",
+        overflow: "auto",
       }}
     >
-      <Item.Group>
-        {statistics.map((statistic, i) => {
-          const s = transCommon(statistic.statistic, t);
-          const f = transCommon(statistic.field, t);
-          const label = s + " " + f;
+      {statistics.map((statistic, i) => {
+        const s = transCommon(statistic.statistic, t);
+        const f = transCommon(statistic.field, t);
+        const label = s + " " + f;
 
-          return (
-            <Item
-              key={label}
-              style={{ marginTop: "0", marginBottom: i + 1 === statistics.length ? "0" : "1em" }}
+        return (
+          <>
+            <div
+              key={label + "left"}
+              style={{
+                gridRow: i + 1,
+                gridColumn: 1,
+                fontSize: "1.3em",
+                fontWeight: "bold",
+              }}
             >
-              <Item.Content>
-                <Item.Header style={{ color: "white" }}>{label}</Item.Header>
-                <Item.Description style={{ color: "white" }}>{statistic.value}</Item.Description>
-              </Item.Content>
-            </Item>
-          );
-        })}
-      </Item.Group>
+              {label}
+            </div>
+            <div key={label + "right"} style={{ gridRow: i + 1, gridColumn: 2, fontSize: "1.1em" }}>
+              <span style={{ whiteSpace: "nowrap" }}>{statistic.value}</span>
+            </div>
+          </>
+        );
+      })}
     </div>
   );
 };

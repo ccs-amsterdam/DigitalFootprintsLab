@@ -55,10 +55,10 @@ const ConfirmDeleteModal = ({ processDelete, deleteIds, setDeleteIds }) => {
             label={t("explore.table.delete.dontask")}
           />
         )}
-        <Button primary onClick={() => setDeleteIds([])}>
+        <Button size="mini" primary onClick={() => setDeleteIds([])}>
           {t("common.cancel")}
         </Button>
-        <Button color="red" onClick={() => handleDelete()}>
+        <Button size="mini" color="red" onClick={() => handleDelete()}>
           {t("common.delete")}
         </Button>
       </Modal.Actions>

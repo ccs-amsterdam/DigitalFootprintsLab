@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import db from "apis/db";
-import { Button, Grid, Popup, List, Dropdown } from "semantic-ui-react";
+import { Button, Grid, Popup, List, Dropdown, Header } from "semantic-ui-react";
 
 import ignoreIds from "data/youtube_ignore_ids.json";
 import { Trans, useTranslation } from "react-i18next";
-import transCommon from "util/transCommon";
 import { SetState, QTopItems } from "../../../types";
 
 const ignoreIdsMap = ignoreIds.ids.reduce((obj, id) => {
@@ -90,15 +89,10 @@ const AnnotateTopItems = ({ question, setDone }: AnnotateTopItemsProps) => {
   return (
     <>
       <Grid.Row style={{ background: "#1678c2", color: "white", borderRadius: "5px" }}>
-        <Grid.Column width={7}>
+        <Grid.Column width={8}>
           <b>{question.field.trans.toUpperCase()}</b>
         </Grid.Column>
-        <Grid.Column width={2}>
-          <b>{question.detail.trans.toUpperCase()}</b>
-          <br />
-          <b>{transCommon("LIST", t)}</b>
-        </Grid.Column>
-        <Grid.Column width={7}>
+        <Grid.Column width={8}>
           <b>{question.question.trans}</b>
         </Grid.Column>
       </Grid.Row>
@@ -157,23 +151,21 @@ const ItemForm = ({ data, setData, itemvalue, question }) => {
 
   return (
     <Grid.Row style={{ paddingTop: "7px", paddingBottom: "0px" }}>
-      <Grid.Column width={7}>
-        <span
-          style={{
-            fontSize: "0.8em",
-            overflow: "hidden",
-            whiteSpace: "nowrap",
-            textOverflow: "ellipsis",
-          }}
-          title={item.name}
-        >
+      <Grid.Column
+        width={8}
+        style={{
+          overflow: "hidden",
+          whiteSpace: "nowrap",
+          textOverflow: "ellipsis",
+          padding: "0",
+        }}
+      >
+        <span title={item.name}>
+          <ItemDetails item={item} />
           {item.name}{" "}
         </span>
       </Grid.Column>
-      <Grid.Column width={2}>
-        <ItemDetails item={item} />
-      </Grid.Column>
-      <Grid.Column width={7}>
+      <Grid.Column width={8}>
         <Button.Group fluid size="mini">
           {question.answers.map((a, i) => {
             const active = answer === a.value;
@@ -235,14 +227,18 @@ const ItemDetails = ({ item }) => {
       wide="very"
       trigger={
         <Button
-          size="mini"
-          circular
-          icon="list ul"
-          style={{ cursor: "pointer", background: "#cce2ff" }}
+          icon="question circle outline"
+          style={{
+            padding: "4px 3px 3px 0px",
+            cursor: "pointer",
+            color: "rgb(22, 120, 194)",
+            background: "transparent",
+          }}
         />
       }
     >
-      <List>
+      <Header>{item.name}</Header>
+      <List bulleted>
         {item.details.map((detail, i) => {
           return <List.Item key={detail + i}>{detail}</List.Item>;
         })}
