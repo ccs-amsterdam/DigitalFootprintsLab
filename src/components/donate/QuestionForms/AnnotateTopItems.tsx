@@ -1,6 +1,16 @@
 import { useState, useEffect } from "react";
 import db from "apis/db";
-import { Button, Grid, Popup, List, Dropdown, Header } from "semantic-ui-react";
+import {
+  Button,
+  Grid,
+  Popup,
+  List,
+  Dropdown,
+  Header,
+  Dimmer,
+  Loader,
+  Segment,
+} from "semantic-ui-react";
 
 import ignoreIds from "data/youtube_ignore_ids.json";
 import { Trans, useTranslation } from "react-i18next";
@@ -43,10 +53,13 @@ const AnnotateTopItems = ({ question, setDone }: AnnotateTopItemsProps) => {
       if (!item.answer) topAnswered = false;
     }
     if (data.answers.added.length === 0 && !data.answers.nothing_to_add) topAnswered = false;
-
-    db.setAnswers(question.question.value, data.answers);
     setDone(topAnswered);
   }, [data, question, setDone]);
+
+  useEffect(() => {
+    if (!data) return;
+    db.setAnswers(question.question.value, data.answers);
+  }, [data, question]);
 
   const onDropdownChange = (e, d) => {
     const items = d.value;
@@ -81,7 +94,14 @@ const AnnotateTopItems = ({ question, setDone }: AnnotateTopItemsProps) => {
         />
       </p>
     );
-  if (!data) return null;
+  if (!data)
+    return (
+      <Segment style={{ height: "50px", width: "100%" }}>
+        <Dimmer active>
+          <Loader />
+        </Dimmer>
+      </Segment>
+    );
 
   const added = data?.answers?.added || [];
   const noAdd = data?.answers?.nothing_to_add || false;
@@ -179,7 +199,6 @@ const ItemForm = ({ data, setData, itemvalue, question }) => {
                     onClick={() => {
                       const newData = { ...data };
                       newData.answers.items[item.name].answer = a.value;
-
                       setData(newData);
                     }}
                     style={{

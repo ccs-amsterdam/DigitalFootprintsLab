@@ -26,7 +26,7 @@ const ConfirmDonation = ({ settings }) => {
 
   const onClick = async () => {
     setLoading(true);
-    const finished = await submitData(status, setStatus);
+    const finished = await submitData(settings, status, setStatus);
     setFullStatus(finished ? "finished" : "failed");
     setLoading(false);
   };
@@ -76,6 +76,11 @@ const ConfirmDonation = ({ settings }) => {
             ) : (
               <br />
             )}
+            <span style={{ textAlign: "center" }}>
+              {t("donate.confirm.server")} <br />
+              <span style={{ color: "#2185d0" }}>{settings?.server?.donationUrl.value}</span>
+            </span>
+            <br />
             <Button
               primary
               disabled={!consent || loading || fullStatus === "finished"}

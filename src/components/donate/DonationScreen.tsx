@@ -38,14 +38,18 @@ const DonationScreen = () => {
         width: "100%",
         background: "#000000b0",
         padding: "1vmin",
+        display: "flex",
       }}
     >
       <div
         style={{
+          margin: "auto",
           height: "100%",
           color: "white",
           fontSize: "1em",
           display: "flex",
+          width: "800px",
+          maxWidth: "100%",
           flexDirection: "column",
         }}
       >

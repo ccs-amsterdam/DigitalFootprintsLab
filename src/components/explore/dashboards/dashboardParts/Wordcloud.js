@@ -44,7 +44,6 @@ const Wordcloud = ({
       if (selectedWord !== outSelection?.selected) return outSelection?.selected;
       return selectedWord;
     });
-    console.log(outSelection?.selected);
   }, [outSelection]);
 
   useEffect(() => {
@@ -54,7 +53,7 @@ const Wordcloud = ({
       const selection = dashData.searchValues([selectedWord], group);
       if (setOutSelection) setOutSelection({ selected: selectedWord, ids: selection });
     }
-  }, [dashData, selectedWord]);
+  }, [dashData, group, setOutSelection, selectedWord]);
 
   return (
     <div ref={box} style={{ position: "relative", width: "100%", height: "100%" }}>

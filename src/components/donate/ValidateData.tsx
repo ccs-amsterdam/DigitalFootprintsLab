@@ -3,7 +3,7 @@ import useDashboardData from "components/explore/dashboardData/useDashboardData"
 import Wordcloud from "components/explore/dashboards/dashboardParts/Wordcloud";
 import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Icon, Button, Header, Segment, Step, List } from "semantic-ui-react";
+import { Icon, Button, Header, Segment, Step, List, Dimmer, Loader } from "semantic-ui-react";
 import useLogger from "util/useLogger";
 import { ValidationQuestion } from "types";
 
@@ -31,7 +31,7 @@ const ValidateData = ({ setStep, settings }) => {
         overflow: "auto",
       }}
     >
-      <div style={{ height: "100%" }}>
+      <div style={{ height: "100%", width: "100%" }}>
         <ValidateDataParts questions={questions} setOuterStep={setStep} />
       </div>
     </Segment>
@@ -139,9 +139,18 @@ const ValidateDataPart = React.memo(({ questions, dataName, setStep }: ValidateD
     setAllAnswered(done);
   }, [validation, setAllAnswered]);
 
-  if (!dashData) return null;
+  if (!dashData)
+    return (
+      <Dimmer active>
+        <Loader />
+      </Dimmer>
+    );
+
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%", width: "100%" }}>
+      <Dimmer active={validation == null || Object.keys(validation).length === 0}>
+        <Loader />
+      </Dimmer>
       <div style={{ width: "100%" }}>
         {/* <Header>
             <i>{field.toUpperCase()}</i>
@@ -152,6 +161,7 @@ const ValidateDataPart = React.memo(({ questions, dataName, setStep }: ValidateD
         <div
           style={{
             height: "300px",
+            width: "100%",
             border: "1px solid lightgrey",
             borderRadius: "10px",
             boxShadow: "0px 0px 10px grey",

@@ -48,6 +48,7 @@
       "question": "Does this channel cover content about news and current affairs?"
     },
     "confirm": {
+      "server": "Your data will be send to",
       "button": "Donate your data",
       "buttonRetry": "Try sending the data again",
       "thankyou": "Thank you for your donation!",
@@ -213,11 +214,13 @@
       "p2": "You can also donate a selection of this data for scientific research. This data will only be used for <b>non-commercial research</b> by a select group of academics, for research that is approved by the ethical board of their university.",
       "subheader1": "Gather and explore your digital footprints",
       "subheader2": "Donate data to support academic research",
-      "testuser": {
-        "button": "Log in as test user",
-        "header": "LOGGING IN AS TEST USER",
+      "noid": {
+        "placeholder": "Provide a user ID",
+        "testuser": "Log in as test user",
+        "customid": "Log in with custom ID",
+        "header": "Provide a user ID or login as test user",
         "p1": "The link that brought you to this website did not contain a user ID. If you are participating in a study, this should not be possible, and you should contact the researchers or survey company.",
-        "p2": "As a test user your real data will not be send to a server. If you complete the data donation steps, the server will receive a dummy submission with fake data."
+        "p2": "You can either provide a (unique) user ID yourself, or login as a test user. As a test user your real data will not be send to a server. If you complete the data donation steps, the server will receive a dummy submission with fake data."
       }
     }
   }

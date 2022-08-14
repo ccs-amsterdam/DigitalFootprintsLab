@@ -1,5 +1,10 @@
 import { QuestionInput } from "types";
 
+const server = {
+  donationUrl: "dummy url for testing",
+  //donationUrl: "https://digitale-voetsporen.nl/youtube/upload",
+};
+
 export const contact = {
   title: {
     value: "Need help? Contact us!",
@@ -121,9 +126,18 @@ const answerQuestions: QuestionInput[] = [
       { value: "very often", NL: "heel vaak" },
     ],
   },
+  {
+    type: "youtubeChannels",
+    title: {
+      value: "YouTube categories",
+      NL: "Youtube categorieen",
+    },
+    question: "",
+  },
 ];
 
 const generalSettings = {
+  server,
   contact,
   donationInformation,
   confirmDonation,

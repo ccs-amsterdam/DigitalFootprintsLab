@@ -14,7 +14,7 @@ import generalSettings, { contact } from "project/generalSettings";
  */
 const useSettings = (which?: string): any => {
   const [settings, setSettings] = useState<any>({});
-  const [, i18n] = useTranslation();
+  const [t, i18n] = useTranslation();
 
   const pickSetting = (which?: string) => {
     if (which === "contact") return contact;
@@ -30,7 +30,7 @@ const useSettings = (which?: string): any => {
     const language = i18n?.language.split("-")[0].toUpperCase();
     const settings = getSettings(pickSetting(which), language);
     setSettings(settings);
-  }, [i18n, which]);
+  }, [t, i18n, which]);
 
   return settings;
 };

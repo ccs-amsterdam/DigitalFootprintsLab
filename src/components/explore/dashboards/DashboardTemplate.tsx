@@ -41,6 +41,7 @@ const DashboardTemplate = ({
   const [querySelection, setQuerySelection] = useState(null);
   const [selection, setSelection] = useState(null);
   const log = useLogger("Explore " + dataName);
+  //const [sources, setSources] = useState(null);
 
   useEffect(() => {
     setSelection(intersect([querySelection, altSelection?.ids || null]));
@@ -51,6 +52,13 @@ const DashboardTemplate = ({
 
   useEffect(() => {
     setStatistics(calcStatistics(dashData, selection));
+
+    // let sources = {};
+    // const n = dashData?.data?.length || 0;
+    // for (let i = 0; i < n; i++) {
+    //   sources[dashData.data[i]._source] = true;
+    // }
+    // setSources(Object.keys(sources));
   }, [dashData, selection, calcStatistics]);
 
   return (
@@ -64,25 +72,20 @@ const DashboardTemplate = ({
         transition: "height 1s",
       }}
     >
-      {/* <div
+      <div
         style={{
           flex: "1 1 auto",
           padding: "10px 10px 0px 10px",
-          display: "flex",
-          flexDirection: "row",
-
+          textAlign: "center",
+          color: "white",
           zIndex: 5,
-          height: "48px",
+          height: "40px",
           backdropFilter: "blur(2px",
           fontSize: "1em",
         }}
       >
-        <AltFilter altSelection={altSelection} setAltSelection={setAltSelection} />
-        <div style={{ flex: "1 1 auto", minWidth: "50%" }}>
-          <QueryInput dashData={dashData} searchOn={searchOn} setSelection={setQuerySelection} />
-        </div>
-      </div> */}
-
+        <span style={{ fontSize: "1.3em", fontWeight: "bold" }}>{dataName.toUpperCase()}</span>
+      </div>
       <Grid
         stackable
         verticalAlign="middle"
@@ -90,8 +93,8 @@ const DashboardTemplate = ({
           margin: "0",
           background: "#00000088",
 
-          // marginTop: "-58px",
-          // paddingTop: "58px",
+          marginTop: "-50px",
+          paddingTop: "50px",
           zIndex: 0,
           width: "100%",
           height: "100%",

@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import db from "apis/db";
 import { useNavigate } from "react-router-dom";
-import { Button, Header, Segment, Icon } from "semantic-ui-react";
+import { Button, Header, Segment, Icon, Input, Grid, Divider } from "semantic-ui-react";
 import background from "images/background.jpeg";
 import { useDispatch, useSelector } from "react-redux";
 import { setPersistent } from "actions";
@@ -88,9 +88,9 @@ const Welcome = ({ items }) => {
             <Trans i18nKey="routing.welcome.p2" components={{ b: <b /> }} />
           </p>
           {persistent ? null : notPersistentMessage(t)}
-          {userId === null ? testUserMessage(t) : null}
+          {userId === null ? noIdMessage(t) : null}
         </div>
-        {welcomeButton(t, beWelcomed, userId, returnURL)}
+        <WelcomeButton t={t} beWelcomed={beWelcomed} userId={userId} returnURL={returnURL} />
       </Segment>
     </div>
   );
@@ -107,28 +107,52 @@ const notPersistentMessage = (t) => {
   );
 };
 
-const testUserMessage = (t) => {
+const noIdMessage = (t) => {
   return (
     <>
       <h4 style={{ marginBottom: "8px" }}>
-        <Icon color="orange" name="warning sign" /> {t("routing.welcome.testuser.header")}
+        <Icon color="orange" name="warning sign" /> {t("routing.welcome.noid.header")}
       </h4>
-      <p>{t("routing.welcome.testuser.p1")}</p>
-      <p>{t("routing.welcome.testuser.p2")}</p>
+      <p>{t("routing.welcome.noid.p1")}</p>
+      <p>{t("routing.welcome.noid.p2")}</p>
     </>
   );
 };
 
-const welcomeButton = (t, beWelcomed, userId, returnURL) => {
+const WelcomeButton = ({ t, beWelcomed, userId, returnURL }) => {
+  const [customID, setCustomID] = useState(null);
+
   if (userId === null)
     return (
-      <Button
-        primary
-        onClick={() => beWelcomed("test_user", returnURL)}
-        style={{ background: "#ff7300" }}
-      >
-        {t("routing.welcome.testuser.button")}
-      </Button>
+      <Grid columns={2} textAlign="center" verticalAlign="middle">
+        <Grid.Column width={16}>
+          <Input
+            value={customID}
+            onChange={(e, d) => setCustomID(d.value)}
+            placeholder={t("routing.welcome.noid.placeholder")}
+            attached="left"
+          />
+          <Button
+            disabled={!customID}
+            attached="right"
+            primary
+            onClick={() => beWelcomed(customID, returnURL)}
+          >
+            {t("routing.welcome.noid.customid")}
+          </Button>
+        </Grid.Column>
+        <Divider horizontal>Or</Divider>
+        <Grid.Column width={16}>
+          <Button
+            attached="right"
+            primary
+            onClick={() => beWelcomed("test_user", returnURL)}
+            style={{ background: "#ff7300" }}
+          >
+            {t("routing.welcome.noid.testuser")}
+          </Button>
+        </Grid.Column>
+      </Grid>
     );
   return (
     <Button primary onClick={() => beWelcomed(userId, returnURL)}>

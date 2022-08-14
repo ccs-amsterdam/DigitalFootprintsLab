@@ -1,36 +1,61 @@
 import db from "apis/db";
 
-const submitData = async (status, setStatus) => {
+const submitData = async (settings, status, setStatus) => {
   const dataNames = await db.idb.data.toCollection().keys();
   const meta = await db.idb.meta.get(1);
   const testUser = meta.userId === "test_user";
   const finished = { finished: true }; // will be set to false if one of the postBody fails
+  const url = settings?.server?.donationUrl.value;
 
-  await postAnswers(meta, testUser, status, setStatus, finished);
-  await postUserLogs(meta, status, setStatus, finished);
-  for (const name of dataNames) await postData(meta, name, testUser, status, setStatus, finished);
+  await postAnswers(url, meta, testUser, status, setStatus, finished);
+  await postUserLogs(url, meta, status, setStatus, finished);
+  for (const name of dataNames)
+    await postData(url, meta, name, testUser, status, setStatus, finished);
 
   return finished.finished;
 };
 
-const postAnswers = async (meta, testUser, status, setStatus, finished) => {
+const postAnswers = async (url, meta, testUser, status, setStatus, finished) => {
   let answers = meta.questions ? JSON.parse(meta.questions) : {};
   // answers is an object, so first convert to array
   answers = Object.keys(answers).map((key) => ({ question: key, answers: answers[key] }));
-  await postBody("answers", meta.userId, 0, answers, status, setStatus, testUser, true, finished);
+  await postBody(
+    url,
+    "answers",
+    meta.userId,
+    0,
+    answers,
+    status,
+    setStatus,
+    testUser,
+    true,
+    finished
+  );
 };
 
-const postUserLogs = async (meta, status, setStatus, finished) => {
+const postUserLogs = async (url, meta, status, setStatus, finished) => {
   let log = await db.getLog();
   log = log.map((l) => l.log);
-  await postBody("user_logs", meta.userId, 0, log, status, setStatus, false, true, finished);
+  await postBody(url, "user_logs", meta.userId, 0, log, status, setStatus, false, true, finished);
   const userMeta = [{ user_agent: navigator.userAgent }];
-  await postBody("user_meta", meta.userId, 0, userMeta, status, setStatus, false, true, finished);
+  await postBody(
+    url,
+    "user_meta",
+    meta.userId,
+    0,
+    userMeta,
+    status,
+    setStatus,
+    false,
+    true,
+    finished
+  );
 };
 
-const postData = async (meta, name, testUser, status, setStatus, finished) => {
+const postData = async (url, meta, name, testUser, status, setStatus, finished) => {
   const data = await db.getData(name);
   await postBody(
+    url,
     name,
     meta.userId,
     data.n_deleted,
@@ -49,6 +74,7 @@ const postData = async (meta, name, testUser, status, setStatus, finished) => {
 
   if (metaData.length > 0)
     await postBody(
+      url,
       name + " meta data",
       meta.userId,
       0,
@@ -62,6 +88,7 @@ const postData = async (meta, name, testUser, status, setStatus, finished) => {
 };
 
 const postBody = async (
+  url,
   filename,
   submission_id,
   n_deleted,
@@ -90,7 +117,9 @@ const postBody = async (
   };
 
   try {
-    await fetch("https://digitale-voetsporen.nl/youtube/upload", requestOptions);
+    const res = await fetch(url, requestOptions);
+    if (res.status < 200 || res.status > 204) throw new Error("Could not post data");
+
     if (!isMeta)
       setStatus((state) => {
         // update current state, minus file of the same name (which can only happen if it failed before)

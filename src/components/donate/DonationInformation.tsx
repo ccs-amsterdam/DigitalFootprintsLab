@@ -14,11 +14,17 @@ const DonationInformation = ({ setStep, settings }) => {
         height: "100%",
         color: "black",
         minHeight: "300px",
-        overflow: "auto",
       }}
     >
-      <Grid verticalAlign="middle" centered stackable style={{ height: "100%" }}>
-        <Grid.Column width={8}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          height: "100%",
+        }}
+      >
+        <div>
           <Header as="h2" style={{ textAlign: "center" }}>
             <ReactMarkdown linkTarget={"_blank"}>
               {settings?.donationInformation?.title?.trans}
@@ -30,8 +36,8 @@ const DonationInformation = ({ setStep, settings }) => {
           <Button fluid primary onClick={() => setStep(1)} style={{ maxHeight: "3em" }}>
             {t("donate.info.continue")}
           </Button>
-        </Grid.Column>
-      </Grid>
+        </div>
+      </div>
     </Segment>
   );
 };

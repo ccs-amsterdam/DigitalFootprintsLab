@@ -39,7 +39,7 @@ class FootprintDB {
     this.idb.version(2).stores({
       meta: "welcome", // Keep track of whether user logged in before, and remember userId (if passed as URL parameter)
       log: "++id", // unindexed: log. See utils/useLogger
-      data: "&name, deleted", // unindexed fields: "data". "data" is an array with all the data. "deleted" requires some explanation.
+      data: "&name, deleted", // unindexed fields: "data", "n_deleted", "validation". "data" is an array with all the data. "deleted" requires some explanation.
       // data items can be deleted by users, but for speed we don't overwrite the data immediately,
       // and instead store the indices values of the deleted items. The format is a boolean array of same length as data
       groupInfo: "&group", // unindexed: info
@@ -125,7 +125,7 @@ class FootprintDB {
         data.data = data.data.filter((d, i) => !data.deleted[i]);
         let n_deleted = data.data.n_deleted || 0;
         n_deleted += n_before - data.data.length;
-        await this.idb.data.put(
+        await this.idb.data.update(
           { name, deleted: null, n_deleted, data: JSON.stringify(data.data) },
           [name]
         );

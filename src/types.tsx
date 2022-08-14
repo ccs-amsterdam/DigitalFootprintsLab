@@ -1,4 +1,3 @@
-import { number } from "prop-types";
 import { CSSProperties, Dispatch, SetStateAction } from "react";
 import { SemanticICONS } from "semantic-ui-react";
 
@@ -82,7 +81,7 @@ export interface TranslatedValue {
 ///// QUESTIONS
 
 export interface QuestionInput {
-  type: "topItems" | "simpleQuestion";
+  type: "topItems" | "simpleQuestion" | "youtubeChannels";
   title: string | TranslatedValueInput;
   question: string | TranslatedValueInput;
   answers?: (string | TranslatedValueInput)[];

@@ -15,13 +15,14 @@ const GatherMenuDropdown = () => {
       text={t("routing.buttons.gather")}
       style={{ color: "white", paddingLeft: "0" }}
     >
-      <Dropdown.Menu>
+      <Dropdown.Menu style={{ transition: "all 1s linear" }}>
         {gatherSettings.map((platform) => {
           const pathname = platform.name.replace(" ", "_");
           const path = "/gather/" + pathname;
           const selected = path === location.pathname;
           return (
             <MenuDropdownItem
+              key={"/gather/" + pathname}
               label={platform.name}
               path={"/gather/" + pathname}
               selected={selected}

@@ -8,8 +8,6 @@ const VegaWordcloud = ({ data, selectedWord, setSelectedWord, colors, unclickabl
   const [size, box] = useResponsiveSize();
   const [view, setView] = useState(null);
 
-  console.log(size);
-
   useEffect(() => {
     if (view) view.signal("selectedWord", selectedWord).run();
   }, [view, selectedWord]);

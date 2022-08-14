@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid, Header, Segment } from "semantic-ui-react";
 import useLogger from "util/useLogger";
 import AnnotateTopItems from "./QuestionForms/AnnotateTopItems";
 import SimpleQuestion from "./QuestionForms/SimpleQuestion";
+import YoutubeChannels from "./QuestionForms/YoutubeChannels";
 
 const AnswerQuestions = ({ setStep, settings }) => {
   useLogger("Donation screen - questions");
@@ -72,36 +73,6 @@ const AnnotateQuestions = ({ settings, setDone }) => {
     setDone(allDone);
   }, [doneArray, setDone]);
 
-  const renderQuestion = (question, i) => {
-    const updateDoneArray = (done) => {
-      const newDoneArray = [...doneArray];
-      if (newDoneArray[i] !== done) {
-        newDoneArray[i] = done;
-        setDoneArray(newDoneArray);
-      }
-    };
-
-    if (question.type.value === "topItems") {
-      return (
-        <AnnotateTopItems
-          key={question.question.value}
-          question={question}
-          setDone={updateDoneArray}
-        />
-      );
-    }
-    if (question.type.value === "simpleQuestion") {
-      return (
-        <SimpleQuestion
-          key={question.question.value}
-          question={question}
-          setDone={updateDoneArray}
-        />
-      );
-    }
-    return null;
-  };
-
   if (questions === null) return null;
   return questions.map((question, i) => {
     return (
@@ -115,10 +86,55 @@ const AnnotateQuestions = ({ settings, setDone }) => {
             {question?.intro?.trans ? <p>{question.intro.trans}</p> : null}
           </Grid.Column>
         </Grid.Row>
-        {renderQuestion(question, i)}
+        <Question question={question} i={i} setDoneArray={setDoneArray} />
       </Grid>
     );
   });
+};
+
+const Question = ({ question, i, setDoneArray }) => {
+  const updateDoneArray = useCallback(
+    // this looks needlessly complicated, but updateDoneArray shouldn't change because it can trigger updates
+    (done) => {
+      setDoneArray((doneArray) => {
+        const newDoneArray = [...doneArray];
+        if (newDoneArray[i] !== done) {
+          newDoneArray[i] = done;
+          setDoneArray(newDoneArray);
+        } else {
+          setDoneArray(doneArray);
+        }
+      });
+    },
+    [i, setDoneArray]
+  );
+
+  if (question.type.value === "topItems") {
+    return (
+      <AnnotateTopItems
+        key={question.question.value}
+        question={question}
+        setDone={updateDoneArray}
+      />
+    );
+  }
+  if (question.type.value === "simpleQuestion") {
+    return (
+      <SimpleQuestion key={question.question.value} question={question} setDone={updateDoneArray} />
+    );
+  }
+
+  if (question.type.value === "youtubeChannels") {
+    return (
+      <YoutubeChannels
+        key={question.question.value}
+        question={question}
+        setDone={updateDoneArray}
+      />
+    );
+  }
+
+  return null;
 };
 
 export default AnswerQuestions;
