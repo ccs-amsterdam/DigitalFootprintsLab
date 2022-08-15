@@ -17,7 +17,11 @@
     "views": "views",
     "visit": "visit",
     "visits": "visits",
-    "copied": "copied"
+    "copied": "copied",
+    "cancel": "cancel",
+    "delete": "delete",
+    "item": "item",
+    "items": "items"
   },
   "dataTypes": {
     "browsing": {
@@ -44,6 +48,7 @@
       "question": "Does this channel cover content about news and current affairs?"
     },
     "confirm": {
+      "server": "Your data will be send to",
       "button": "Donate your data",
       "buttonRetry": "Try sending the data again",
       "thankyou": "Thank you for your donation!",
@@ -85,31 +90,40 @@
     },
     "validate": {
       "continue": "CONTINUE",
-      "header1": "To use your data for research, it's important to know how accurate it is. Please help us by answering a few questions about your data",
-      "header2": "On the left you see the top items in your <i>{{dataname}}</i> data. Please answer the following questions to help us understand how accurate this data."
+      "header1": "In the wordcloud you see the top items from your <i>{{dataname}}</i> data.",
+      "header2": "The following questions help us understand how accurate this data is."
     }
   },
   "explore": {
     "statistics": {
       "header": "Statistics"
+    },
+    "search": {
+      "placeholder": "Type here to filter data"
+    },
+    "table": {
+      "show": "show table",
+      "hide": "hide table",
+      "delete": {
+        "confirm": "Are you sure you want to delete {{n}} {{items}}?",
+        "dontask": "Do not ask again"
+      }
     }
   },
   "gather": {
-    "download": {
-      "header": "First download your data"
-    },
     "importdata": {
+      "step": "Step",
+      "next": "Next step",
       "dropzone": {
         "header": "Your data goes here!",
         "p1": "Use this blue field to load the downloaded data into this application",
-        "p2": "If the data is a single file (or a zipped folder), you can either click on this field and then select the file, or drag the file from your file explorer into this field.",
-        "p3": "If the data is a folder, you need to drag it into this field."
+        "p2": "If the data is a folder, you need to drag it into this field. If it's a file (or zipped folder), you can also click on this field."
       },
       "file": {
         "header": "What file is it?",
         "hint": "The file is (usually) called: "
       },
-      "header": "Then import the data",
+      "header": "Import your data",
       "where": {
         "chrome": {
           "header": "Finding Chrome Downloads",
@@ -173,15 +187,17 @@
       "title": "Step 1. Gather"
     },
     "navi": {
-      "header": "Hi there! On this page, there are three steps in total",
+      "header": "Hi there! This application works in three steps:",
       "ok": "Ok, got it!",
-      "step1": "The first step is to gather data by clicking on one of the cards in the <b>Gather</b> column and following the instruction. Note that after this point you have still not donated your data (that's step 3!)",
+      "step1": "The first step is to gather data by clicking on one of the cards in the <b>Gather</b> column and following the instruction. At this point you haven't yet donated your data, but only loaded the data into your own browser",
       "step2": "In the second step you can <b>Explore</b> your own data. If you find data that you don't want to share, you can also delete it here.",
       "step3": "In the final step you can <b>Donate</b> your data for academic research. The data will only be donated after you complete all steps and given your consent. Note that you can also use the <b>Exclude data</b> card to exclude some data from the donation, if you haven't done this already in the <b>Explore</b> step."
     }
   },
   "routing": {
     "buttons": {
+      "gather": "Gather",
+      "explore": "Explore",
       "back": "Back to overview",
       "donate": "Donate",
       "remove": "Exclude data"
@@ -198,11 +214,13 @@
       "p2": "You can also donate a selection of this data for scientific research. This data will only be used for <b>non-commercial research</b> by a select group of academics, for research that is approved by the ethical board of their university.",
       "subheader1": "Gather and explore your digital footprints",
       "subheader2": "Donate data to support academic research",
-      "testuser": {
-        "button": "Log in as test user",
-        "header": "LOGGING IN AS TEST USER",
+      "noid": {
+        "placeholder": "Provide a user ID",
+        "testuser": "Log in as test user",
+        "customid": "Log in with custom ID",
+        "header": "Provide a user ID or login as test user",
         "p1": "The link that brought you to this website did not contain a user ID. If you are participating in a study, this should not be possible, and you should contact the researchers or survey company.",
-        "p2": "As a test user your real data will not be send to a server. If you complete the data donation steps, the server will receive a dummy submission with fake data."
+        "p2": "You can either provide a (unique) user ID yourself, or login as a test user. As a test user your real data will not be send to a server. If you complete the data donation steps, the server will receive a dummy submission with fake data."
       }
     }
   }

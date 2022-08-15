@@ -18,8 +18,11 @@
     "views": "bekeken",
     "visit": "bezocht",
     "visits": "bezocht",
-    "copied": "Gekopieerd"
-
+    "copied": "Gekopieerd",
+    "cancel": "annuleren",
+    "delete": "verwijder",
+    "item": "item",
+    "items": "items"
   },
   "dataTypes": {
     "browsing": {
@@ -46,6 +49,8 @@
       "question": "In welke mate gaat de content van dit kanaal over nieuws of actualiteiten?"
     },
     "confirm": {
+      "server": "Uw data wordt verstuurd naar",
+
       "button": "Doneer je gegevens",
       "buttonRetry": "Probeer nog een keer te versturen",
       "thankyou": "Bedankt voor je donatie!",
@@ -86,32 +91,41 @@
       "title": "Verstuur donatie"
     },
     "validate": {
-      "continue": "DOORGAAN",
-      "header1": "Om uw gegevens voor onderzoek te gebruiken, is het belangrijk om te weten hoe nauwkeurig deze zijn. Help ons alstublieft door een paar vragen over uw gegevens te beantwoorden",
-      "header2": "Links zie je de top items in je <i>{{dataname}}</i> data. Beantwoord de volgende vragen om ons te helpen begrijpen hoe nauwkeurig deze gegevens zijn."
+      "continue": "GA DOOR",
+      "header1": "In de wordcloud ziet u de meest voorkomende items in <i>{{dataname}}</i> data.",
+      "header2": "De volgende vragen helpen ons te begrijpen hoe nauwkeurig deze gegevens zijn."
     }
   },
   "explore": {
     "statistics": {
       "header": "Statistieken"
+    },
+    "search": {
+      "placeholder": "Typ hier om data te filteren"
+    },
+    "table": {
+      "show": "toon tabel",
+      "hide": "verberg tabel",
+      "delete": {
+        "confirm": "Weet je zeker dat je {{n}} {{items}} wilt verwijderen?",
+        "dontask": "Vraag niet nog eens"
+      }
     }
   },
   "gather": {
-    "download": {
-      "header": "Download eerst je data"
-    },
+    "step": "Stap",
+    "next": "Volgende stap",
     "importdata": {
       "dropzone": {
         "header": "Lees hier de data in!",
         "p1": "Gebruik dit blauwe veld om de data die je gedownload hebt in te lezen in deze app",
-        "p2": "Als de data een enkel bestand is is (of een ingepakte folder), dan kun je op dit veld klikken om het bestand te selecteren, of het bestand vanuit je verkenner naar dit veld slepen.",
-        "p3": "Als de data een folder is, dan moet je de folder vanuit je verkenner naar dit veld slepen."
+        "p2": "Als de data een folder is, dan moet je de folder vanuit je verkenner naar dit veld slepen. Als het een file is (of ingepakte folder) dan kun je ook op dit veld klikken."
       },
       "file": {
         "header": "Om welk bestand gaat het?",
         "hint": "Het bestand heet (gewoonlijk): "
       },
-      "header": "Lees dan de data in",
+      "header": "Importeer je data",
       "where": {
         "chrome": {
           "header": "Chrome Downloads vinden",
@@ -175,15 +189,17 @@
       "title": "Stap 1. Verzamelen"
     },
     "navi": {
-      "header": "Welkom! Op deze pagina zie je drie stappen",
+      "header": "Welkom! In deze applicatie zijn er drie stappen:",
       "ok": "Ok, got it!",
-      "step1": "In de eerste stap verzamel je data door op een van de kaarten in de <b>Verzamelen</b> kolom te klikken. Na deze stap heb je nog niet je data gedoneerd (dat is stap 3!)",
+      "step1": "In de eerste stap verzamel je data door op een van de kaarten in de <b>Verzamelen</b> kolom te klikken. Na deze stap heb je nog niet je data gedoneerd. De data is alleen ingeladen in je eigen browser.",
       "step2": "De tweede stap is optioneel. Je kunt hier je data <b>Verkennen</b> als je benieuwd bent naar je eigen digitale sporen. Als je hier data tegenkomt die je liever niet met ons deelt, dan kun je deze ook verwijderen.",
       "step3": "De laatste stap is om je data te <b>Doneren</b> voor wetenschappelijk onderzoek. Je data wordt pas verstuurd zodra je alle stappen doorlopen hebt en je toestemming hebt gegeven. In de kolom staat ook de <b>Exlude data</b> kaart, waarmee je data kunt zoeken en uitsluiten van de donatie, voor het geval je dit nog niet gedaan hebt in de <b>Verkennen</b> stap."
     }
   },
   "routing": {
     "buttons": {
+      "gather": "Verzamel",
+      "explore": "Verken",
       "back": "Terug naar het overzicht",
       "donate": "Doneren",
       "remove": "Gegevens uitsluiten"
@@ -200,11 +216,12 @@
       "p2": "U kunt een selectie van deze gegevens ook doneren voor wetenschappelijk onderzoek. Deze gegevens worden alleen gebruikt voor <b>niet-commercieel onderzoek</b> door een selecte groep wetenschappers, voor onderzoek dat is goedgekeurd door het ethisch bestuur van hun universiteit.",
       "subheader1": "Verzamel en verken uw digitale voetafdruk",
       "subheader2": "Doneer data ter ondersteuning van wetenschappelijk onderzoek",
-      "testuser": {
-        "button": "Log in als testgebruiker",
-        "header": "INLOGGEN ALS TESTGEBRUIKER",
+      "noid": {
+        "testuser": "Log in als testgebruiker",
+        "customid": "Log in met ID",
+        "header": "Geef een user ID of log in als testgebruiker",
         "p1": "De link die u naar deze website bracht, bevatte geen gebruikers-ID. Als u deelneemt aan een onderzoek, zou dit niet mogelijk moeten zijn en dient u contact op te nemen met de onderzoekers of het onderzoeksbureau.",
-        "p2": "Als testgebruiker worden uw echte gegevens niet naar een server gestuurd. Als u de stappen voor gegevensdonatie voltooit, ontvangt de server een dummy-inzending met nepgegevens."
+        "p2": "U kunt zelf een ID invullen, of inloggen als testgebruiker. Als testgebruiker worden uw echte gegevens niet naar een server gestuurd. Als u de stappen voor gegevensdonatie voltooit, ontvangt de server een dummy-inzending met nepgegevens."
       }
     }
   }
