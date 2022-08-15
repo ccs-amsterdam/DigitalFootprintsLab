@@ -15,6 +15,7 @@ const submitData = async (settings, status, setStatus) => {
   return finished.finished;
 };
 
+
 const postAnswers = async (url, meta, testUser, status, setStatus, finished) => {
   let answers = meta.questions ? JSON.parse(meta.questions) : {};
   // answers is an object, so first convert to array
@@ -120,11 +121,10 @@ const postBody = async (
     const res = await fetch(url, requestOptions);
     if (res.status < 200 || res.status > 204) throw new Error("Could not post data");
 
-    if (!isMeta)
       setStatus((state) => {
         // update current state, minus file of the same name (which can only happen if it failed before)
         const newState = [...state].filter((s) => s.filename !== filename);
-        newState.push({ filename, success: true, n });
+        newState.push({ filename, success: true, n, isMeta });
         return newState;
       });
     // (for meta data, only show status if it fails. eventually data + meta should just be 1 package)
@@ -132,7 +132,7 @@ const postBody = async (
     console.log(e);
     setStatus((state) => {
       const newState = [...state].filter((s) => s.filename !== filename);
-      newState.push({ filename, success: false, n });
+      newState.push({ filename, success: false, n, isMeta });
       return newState;
     });
     finished.finished = false;

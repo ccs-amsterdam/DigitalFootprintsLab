@@ -4,6 +4,7 @@ import DonationInformation from "./DonationInformation";
 import AnswerQuestions from "./AnswerQuestions";
 import ConfirmDonation from "./ConfirmDonation";
 import ValidateData from "./ValidateData";
+import YoutubeCategories from '../lowlands/YoutubeCategories'
 
 import db from "apis/db";
 import { useTranslation } from "react-i18next";
@@ -23,6 +24,8 @@ const DonationScreen = () => {
         case 2:
           return <AnswerQuestions setStep={setStep} settings={settings} />;
         case 3:
+          return <YoutubeCategories settings={settings} />;
+        case 4:
           return <ConfirmDonation settings={settings} />;
         default:
           return null;
@@ -134,8 +137,19 @@ const DonationSteps = ({ step, setStep }) => {
           onClick={() => onClick(3)}
           style={stepStyle}
         >
-          <Icon name="student" />
+          <Icon name="music" />
           <Step.Content style={{ display: step === 3 ? "" : "none" }}>
+            <Step.Title>Lowlands</Step.Title>
+          </Step.Content>
+        </Step>
+        <Step
+          active={step === 4}
+          disabled={maxStep < 4}
+          onClick={() => onClick(4)}
+          style={stepStyle}
+        >
+          <Icon name="student" />
+          <Step.Content style={{ display: step === 4 ? "" : "none" }}>
             <Step.Title>{t("donate.step4.title")}</Step.Title>
           </Step.Content>
         </Step>

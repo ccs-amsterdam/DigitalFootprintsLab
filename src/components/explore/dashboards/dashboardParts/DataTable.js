@@ -1,19 +1,9 @@
 import React, { useEffect, useState, CSSProperties } from "react";
-import {
-  Container,
-  Button,
-  Header,
-  Segment,
-  Table,
-  Icon,
-  Pagination,
-  Popup,
-} from "semantic-ui-react";
+import { Button, Header, Segment, Table, Icon, Pagination, Popup } from "semantic-ui-react";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import { useTranslation } from "react-i18next";
 import transCommon from "util/transCommon";
 import { TableColumn } from "types";
-import { t } from "i18next";
 
 /**
  * Creates a table for a given table in the indexedDB

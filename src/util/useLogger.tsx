@@ -41,7 +41,9 @@ const postLog = async (what: string, where: string): Promise<void> => {
   };
 
   try {
-    //await fetch("https://digitale-voetsporen.nl/youtube/upload", requestOptions);
+    //const url = "https://digitale-voetsporen.nl/youtube/upload"
+    const url = 'dummy'
+    await fetch(url, requestOptions);
   } catch (e) {
     console.log(e);
   }

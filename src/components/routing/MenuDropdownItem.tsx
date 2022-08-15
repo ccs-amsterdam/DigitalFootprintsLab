@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Button, Dropdown, Icon, SemanticICONS } from "semantic-ui-react";
+import { Dropdown, Icon, SemanticICONS } from "semantic-ui-react";
 
 interface MenuDropdownItemProps {
   label: string;

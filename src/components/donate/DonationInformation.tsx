@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
-import { Button, Grid, Header, Segment } from "semantic-ui-react";
+import { Button, Header, Segment } from "semantic-ui-react";
 import useLogger from "util/useLogger";
 
 const DonationInformation = ({ setStep, settings }) => {
@@ -14,10 +14,13 @@ const DonationInformation = ({ setStep, settings }) => {
         height: "100%",
         color: "black",
         minHeight: "300px",
+        display:'flex'
       }}
     >
       <div
         style={{
+          margin:'auto',
+          maxWidth:'500px',
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",

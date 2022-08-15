@@ -219,7 +219,7 @@
       "noid": {
         "testuser": "Log in als testgebruiker",
         "customid": "Log in met ID",
-        "header": "INLOGGEN ALS TESTGEBRUIKER",
+        "header": "Geef een user ID of log in als testgebruiker",
         "p1": "De link die u naar deze website bracht, bevatte geen gebruikers-ID. Als u deelneemt aan een onderzoek, zou dit niet mogelijk moeten zijn en dient u contact op te nemen met de onderzoekers of het onderzoeksbureau.",
         "p2": "U kunt zelf een ID invullen, of inloggen als testgebruiker. Als testgebruiker worden uw echte gegevens niet naar een server gestuurd. Als u de stappen voor gegevensdonatie voltooit, ontvangt de server een dummy-inzending met nepgegevens."
       }

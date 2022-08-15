@@ -4,7 +4,6 @@ import { Button, Divider, Grid, Header, Segment } from "semantic-ui-react";
 import useLogger from "util/useLogger";
 import AnnotateTopItems from "./QuestionForms/AnnotateTopItems";
 import SimpleQuestion from "./QuestionForms/SimpleQuestion";
-import YoutubeChannels from "./QuestionForms/YoutubeChannels";
 
 const AnswerQuestions = ({ setStep, settings }) => {
   useLogger("Donation screen - questions");
@@ -121,16 +120,6 @@ const Question = ({ question, i, setDoneArray }) => {
   if (question.type.value === "simpleQuestion") {
     return (
       <SimpleQuestion key={question.question.value} question={question} setDone={updateDoneArray} />
-    );
-  }
-
-  if (question.type.value === "youtubeChannels") {
-    return (
-      <YoutubeChannels
-        key={question.question.value}
-        question={question}
-        setDone={updateDoneArray}
-      />
     );
   }
 

@@ -25,6 +25,7 @@ const VegaWordcloud = ({ data, selectedWord, setSelectedWord, colors, unclickabl
   };
 
   const spec = getSpec(size.height, size.width, colors || COLORS, !unclickable, rotate);
+
   return (
     <div ref={box} style={{ height: "100%", width: "100%", maxWidth: "100vw" }}>
       <Vega
@@ -67,7 +68,7 @@ const getSpec = (height, width, colors, clickable, rotate) => {
     $schema: "https://vega.github.io/schema/vega/v5.json",
     width: width,
     height: height,
-    //autosize: { type: "fit-x", contains: "padding" },
+    autosize: { type: "fit-x", contains: "padding" },
 
     data: [
       {

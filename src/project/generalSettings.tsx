@@ -126,14 +126,7 @@ const answerQuestions: QuestionInput[] = [
       { value: "very often", NL: "heel vaak" },
     ],
   },
-  {
-    type: "youtubeChannels",
-    title: {
-      value: "YouTube categories",
-      NL: "Youtube categorieen",
-    },
-    question: "",
-  },
+ 
 ];
 
 const generalSettings = {

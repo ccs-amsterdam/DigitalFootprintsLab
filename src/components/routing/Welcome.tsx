@@ -120,7 +120,7 @@ const noIdMessage = (t) => {
 };
 
 const WelcomeButton = ({ t, beWelcomed, userId, returnURL }) => {
-  const [customID, setCustomID] = useState(null);
+  const [customID, setCustomID] = useState('');
 
   if (userId === null)
     return (
