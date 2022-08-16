@@ -1,3 +1,4 @@
+import db from "apis/db";
 import { useEffect, useState } from "react";
 import { Grid, Segment } from "semantic-ui-react";
 import youtubeCats from "data/youtube_categories.json";
@@ -99,6 +100,26 @@ const YoutubeCategories = ({ settings }) => {
   );
 };
 
+const submitData = async (data) => {
+  const meta = await db.idb.meta.get(1);
+  const body = { submission_id: meta.userId, data };
+
+  const requestOptions: RequestInit = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  };
+
+  try {
+    await fetch("http://localhost:5000/project/lowlands/publicdata", requestOptions);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 const YoutubeChannels = () => {
   const [data, setData] = useState(null);
   //const [categoryChannels, setCategoryChannels] = useState({});
@@ -133,6 +154,7 @@ const YoutubeChannels = () => {
     }));
     setData({ table });
     //setCategoryChannels(categoryChannels);
+    submitData(data);
   }, [dashData]);
 
   if (!data) return null;
