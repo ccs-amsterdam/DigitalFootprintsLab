@@ -33,14 +33,15 @@ const Lowlands = () => {
 const getData = async (setData) => {
   try {
     const res = await fetch("http://localhost:5000/project/lowlands/publicdata");
-    const data: Record<string, number>[] = await res.json();
+    const json = await res.json();
+    const genres = json.map((j) => j.genre);
+    const data: Record<string, number>[] = json.map((j) => j.categories);
     const table = {};
     for (const row of data) {
       let total: number = 0;
       for (const value of Object.values(row)) total += value;
       if (total === 0) continue;
       for (const key of Object.keys(row)) {
-        console.log(row[key], total);
         if (!table[key]) table[key] = 0;
         table[key] += row[key] / total;
       }

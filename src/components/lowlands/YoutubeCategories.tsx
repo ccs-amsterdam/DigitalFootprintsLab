@@ -1,6 +1,6 @@
 import db from "apis/db";
 import { useEffect, useState } from "react";
-import { Grid, Segment } from "semantic-ui-react";
+import { Button, Grid, Segment } from "semantic-ui-react";
 import youtubeCats from "data/youtube_categories.json";
 import useDashboardData from "components/explore/dashboardData/useDashboardData";
 import VegaWordcloud from "components/explore/dashboards/dashboardParts/VegaWordcloud";
@@ -8,7 +8,15 @@ import background from "../../images/lowlands_background.png";
 
 const colors = ["#bc6e96", "#e2bc3f"];
 
-const YoutubeCategories = ({ settings }) => {
+const YoutubeCategories = ({ setStep, settings }) => {
+  const [data, setData] = useState(null);
+
+  const onClick = (genre) => {
+    console.log(genre);
+    submitData({ genre, categories: data });
+    setStep(4);
+  };
+
   return (
     <Segment
       style={{
@@ -35,18 +43,18 @@ const YoutubeCategories = ({ settings }) => {
             width={14}
             style={{
               border: "1px solid black",
-              background: "#ffffff77",
+              background: "#00000099",
+              backdropFilter: "blur(3px)",
               borderRadius: "5px",
               marginTop: "30px",
-              color: "black",
-              backdropFilter: "blur(3px)",
+              color: "white",
               textAlign: "center",
               fontWeight: "bold",
+              textShadow: "1px 1px #bc6e96",
             }}
           >
             <h1
               style={{
-                textShadow: "2px 2px white",
                 width: "100%",
                 fontSize: "3em",
               }}
@@ -58,26 +66,26 @@ const YoutubeCategories = ({ settings }) => {
               musical tastes. We will keep track of the shared tastes of all participants on the big
               screen in the Digital Footprints Lab tent!
             </p>
+            <YoutubeChannels data={data} setData={setData} />
           </Grid.Column>
         </Grid.Row>
-        <YoutubeChannels />
         <Grid.Row>
           <Grid.Column
             width={14}
             style={{
               border: "1px solid black",
-              background: "#ffffff77",
+              background: "#00000099",
+              backdropFilter: "blur(3px)",
               borderRadius: "5px",
               marginTop: "30px",
-              color: "black",
-              backdropFilter: "blur(3px)",
+              color: "white",
               textAlign: "center",
               fontWeight: "bold",
+              textShadow: "1px 1px #bc6e96",
             }}
           >
             <h1
               style={{
-                textShadow: "2px 2px white",
                 width: "100%",
                 fontSize: "3em",
               }}
@@ -87,10 +95,25 @@ const YoutubeCategories = ({ settings }) => {
             <p style={{ fontSize: "1.4em" }}>
               Which of the following musical genres do you like best?
               <br />
-              <span style={{ color: "purple" }}>
+              <span style={{ color: "#bc6e96", textShadow: "0px 0px white" }}>
                 You can also get a (temporary) tattoo of these illustrations!
               </span>
             </p>
+            <div
+              style={{ display: "flex", flexDirection: "column", width: "100%", padding: "10px" }}
+            >
+              {["Rock", "Hiphop", "Classic", "Electronic"].map((genre) => {
+                return (
+                  <Button
+                    style={{ flex: "1 1 auto", margin: "5px", background: "white" }}
+                    key={genre}
+                    onClick={() => onClick(genre)}
+                  >
+                    {genre}
+                  </Button>
+                );
+              })}
+            </div>
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>
@@ -121,9 +144,9 @@ const submitData = async (data) => {
   }
 };
 
-const YoutubeChannels = () => {
-  const [data, setData] = useState(null);
+const YoutubeChannels = ({ data, setData }) => {
   //const [categoryChannels, setCategoryChannels] = useState({});
+  const [table, setTable] = useState(null);
   const dashData = useDashboardData("Youtube");
 
   useEffect(() => {
@@ -153,43 +176,25 @@ const YoutubeChannels = () => {
       visits: data[category],
       angle: [-45, 0, 45][~~(Math.random() * 3)],
     }));
-    setData({ table });
+    setData(data);
+    setTable({ table });
     //setCategoryChannels(categoryChannels);
-    submitData(data);
-  }, [dashData]);
+  }, [dashData, setData]);
 
   if (!data) return null;
-  console.log(data);
 
   return (
-    <>
-      <Grid.Row>
-        <Grid.Column
-          width={14}
-          style={{
-            border: "",
-            background: "#00000099",
-            backdropFilter: "blur(3px)",
-            //border: "1px solid grey",
-            borderRadius: "10px",
-            paddingTop: "0px",
-            height: "300px",
-          }}
-        >
-          <VegaWordcloud
-            data={data}
-            selectedWord={null}
-            setSelectedWord={(word) => {
-              //const channels = categoryChannels?.[word];
-              //console.log(channels);
-            }}
-            unclickable={true}
-            colors={colors}
-            rotate={undefined}
-          />
-        </Grid.Column>
-      </Grid.Row>
-    </>
+    <VegaWordcloud
+      data={table}
+      selectedWord={null}
+      setSelectedWord={(word) => {
+        //const channels = categoryChannels?.[word];
+        //console.log(channels);
+      }}
+      unclickable={true}
+      colors={colors}
+      rotate={undefined}
+    />
   );
 };
 

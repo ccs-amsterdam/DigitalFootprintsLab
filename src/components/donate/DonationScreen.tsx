@@ -4,7 +4,7 @@ import DonationInformation from "./DonationInformation";
 import AnswerQuestions from "./AnswerQuestions";
 import ConfirmDonation from "./ConfirmDonation";
 import ValidateData from "./ValidateData";
-import YoutubeCategories from '../lowlands/YoutubeCategories'
+import YoutubeCategories from "../lowlands/YoutubeCategories";
 
 import db from "apis/db";
 import { useTranslation } from "react-i18next";
@@ -24,7 +24,7 @@ const DonationScreen = () => {
         case 2:
           return <AnswerQuestions setStep={setStep} settings={settings} />;
         case 3:
-          return <YoutubeCategories settings={settings} />;
+          return <YoutubeCategories setStep={setStep} settings={settings} />;
         case 4:
           return <ConfirmDonation settings={settings} />;
         default:
