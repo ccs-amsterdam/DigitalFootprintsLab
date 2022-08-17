@@ -1,5 +1,20 @@
+import { useEffect, useState } from "react";
 import VegaWordcloud from "components/explore/dashboards/dashboardParts/VegaWordcloud";
-import React, { useEffect, useState } from "react";
+import background from "../../images/lowlands_background.png";
+
+import Electronic from "../../images/Electronic.png";
+import Rock from "../../images/Rock.png";
+import HipHop from "../../images/HipHop.png";
+import Pop from "../../images/Pop.png";
+import Key from "../../images/Key.png";
+
+const images = {
+  Rock: Rock,
+  Hiphop: HipHop,
+  Pop: Pop,
+  Electronic: Electronic,
+  "Classic & Jazz": Key,
+};
 
 const colors = ["#bc6e96", "#e2bc3f"];
 
@@ -12,8 +27,15 @@ const Lowlands = () => {
   console.log(data);
 
   return (
-    <div style={{ width: "100vw", height: "100vh", background: "#00000088", display: "flex" }}>
-      <div style={{ margin: "auto" }}>
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        background: "#00000088",
+        display: "flex",
+      }}
+    >
+      <div style={{ margin: "auto", width: "50%" }}>
         <VegaWordcloud
           data={data?.wordcloud}
           selectedWord={null}
@@ -25,6 +47,70 @@ const Lowlands = () => {
           colors={colors}
           rotate={undefined}
         />
+      </div>
+      <div
+        style={{
+          display: "flex",
+          width: "50%",
+          height: "100%",
+          border: "2px solid white",
+          backgroundImage: background ? `url(${background})` : "none",
+          backgroundSize: `100% 100%`,
+        }}
+      >
+        <div
+          style={{
+            margin: "auto",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          {["Rock", "Hiphop", "Pop", "Electronic", "Classic & Jazz"].map((genre) => {
+            const pct = 100 * (data?.genrePct?.[genre] || 0);
+            return (
+              <div
+                key={genre}
+                style={{
+                  flex: "1 1 auto",
+                  marginBottom: "5%",
+                  display: "flex",
+                  alignItems: "center",
+                  textAlign: "left",
+                }}
+              >
+                <div style={{ width: "30%", margin: "auto 5% auto 5%" }}>
+                  <div
+                    style={{
+                      width: "100%",
+                      padding: "20px 10px 10px 10px",
+                      background: `linear-gradient(to right, black ${pct}%, #000000aa ${pct}% 100%, #000000aa 100%)`,
+                      borderRadius: "10px",
+                      color: "white",
+                      marginBottom: "2px",
+                      textAlign: "center",
+                    }}
+                  >
+                    <p>
+                      <span style={{ fontSize: "2em", padding: "0px" }}>{genre}</span>
+                      <br />
+                      <span style={{ fontSize: "1.2em", fontStyle: "italic", lineHeight: "2em" }}>
+                        {Math.round(pct)}%
+                      </span>
+                    </p>
+                  </div>
+                </div>
+                <img
+                  alt={genre}
+                  style={{
+                    border: "3px solid black",
+                    width: "55%",
+                  }}
+                  src={images[genre]}
+                />
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
@@ -46,12 +132,20 @@ const getData = async (setData) => {
         table[key] += row[key] / total;
       }
     }
+
+    const genrePct = {};
+    for (const genre of genres) {
+      if (!genrePct[genre]) genrePct[genre] = 0;
+      genrePct[genre] += 1 / genres.length;
+    }
+
     const wordcloud = Object.keys(table).map((category) => ({
       text: category,
       visits: table[category],
       angle: [-45, 0, 45][~~(Math.random() * 3)],
     }));
-    setData({ n: data.length, wordcloud: { table: wordcloud } });
+
+    setData({ n: data.length, wordcloud: { table: wordcloud }, genrePct });
   } catch (e) {
     console.log(e);
   }

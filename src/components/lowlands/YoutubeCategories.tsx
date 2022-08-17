@@ -1,15 +1,31 @@
 import db from "apis/db";
 import { useEffect, useState } from "react";
-import { Button, Grid, Segment } from "semantic-ui-react";
+import { Grid, Segment } from "semantic-ui-react";
 import youtubeCats from "data/youtube_categories.json";
 import useDashboardData from "components/explore/dashboardData/useDashboardData";
 import VegaWordcloud from "components/explore/dashboards/dashboardParts/VegaWordcloud";
 import background from "../../images/lowlands_background.png";
+import { useTranslation } from "react-i18next";
+
+import Electronic from "../../images/Electronic.png";
+import Rock from "../../images/Rock.png";
+import HipHop from "../../images/HipHop.png";
+import Pop from "../../images/Pop.png";
+import Key from "../../images/Key.png";
+
+const images = {
+  Rock: Rock,
+  Hiphop: HipHop,
+  Pop: Pop,
+  Electronic: Electronic,
+  "Classic & Jazz": Key,
+};
 
 const colors = ["#bc6e96", "#e2bc3f"];
 
 const YoutubeCategories = ({ setStep, settings }) => {
   const [data, setData] = useState(null);
+  const { t } = useTranslation();
 
   const onClick = (genre) => {
     console.log(genre);
@@ -43,7 +59,7 @@ const YoutubeCategories = ({ setStep, settings }) => {
             width={14}
             style={{
               border: "1px solid black",
-              background: "#00000099",
+              background: "#000000aa",
               backdropFilter: "blur(3px)",
               borderRadius: "5px",
               marginTop: "30px",
@@ -59,13 +75,9 @@ const YoutubeCategories = ({ setStep, settings }) => {
                 fontSize: "3em",
               }}
             >
-              Stuff you like
+              {t("lowlands.h1")}
             </h1>
-            <p style={{ fontSize: "1.4em" }}>
-              Based on your Youtube viewing history we can get a rough sketch of your interests and
-              musical tastes. We will keep track of the shared tastes of all participants on the big
-              screen in the Digital Footprints Lab tent!
-            </p>
+            <p style={{ fontSize: "1.4em", paddingBottom: "0" }}>{t("lowlands.p1")}</p>
             <YoutubeChannels data={data} setData={setData} />
           </Grid.Column>
         </Grid.Row>
@@ -74,7 +86,7 @@ const YoutubeCategories = ({ setStep, settings }) => {
             width={14}
             style={{
               border: "1px solid black",
-              background: "#00000099",
+              background: "#000000aa",
               backdropFilter: "blur(3px)",
               borderRadius: "5px",
               marginTop: "30px",
@@ -90,27 +102,37 @@ const YoutubeCategories = ({ setStep, settings }) => {
                 fontSize: "3em",
               }}
             >
-              Genre Wars
+              {t("lowlands.h2")}
             </h1>
             <p style={{ fontSize: "1.4em" }}>
-              Which of the following musical genres do you like best?
+              {t("lowlands.p2")}
+
               <br />
-              <span style={{ color: "#bc6e96", textShadow: "0px 0px white" }}>
-                You can also get a (temporary) tattoo of these illustrations!
-              </span>
+              {/* <span style={{ color: "#bc6e96", textShadow: "0px 0px white" }}>
+                {t("lowlands.p3")}
+              </span> */}
             </p>
             <div
               style={{ display: "flex", flexDirection: "column", width: "100%", padding: "10px" }}
             >
-              {["Rock", "Hiphop", "Classic", "Electronic"].map((genre) => {
+              {["Rock", "Hiphop", "Pop", "Electronic", "Classic & Jazz"].map((genre) => {
                 return (
-                  <Button
-                    style={{ flex: "1 1 auto", margin: "5px", background: "white" }}
+                  <div
                     key={genre}
+                    style={{ flex: "1 1 auto", marginBottom: "6px", cursor: "pointer" }}
                     onClick={() => onClick(genre)}
                   >
-                    {genre}
-                  </Button>
+                    <h3 style={{ marginBottom: "2px" }}>{genre}</h3>
+                    <img
+                      alt={genre}
+                      style={{
+                        width: "80%",
+                        maxWidth: "400px",
+                        height: "100px",
+                      }}
+                      src={images[genre]}
+                    />
+                  </div>
                 );
               })}
             </div>
