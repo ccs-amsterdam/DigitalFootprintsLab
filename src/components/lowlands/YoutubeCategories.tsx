@@ -24,6 +24,7 @@ const YoutubeCategories = ({ settings }) => {
         centered
         verticalAlign="top"
         style={{
+          minHeight: "100%",
           backgroundImage: background ? `url(${background})` : "none",
           backgroundSize: `100% 100%`,
           //height: "800px",

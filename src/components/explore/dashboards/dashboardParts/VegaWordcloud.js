@@ -4,7 +4,16 @@ import useResponsiveSize from "./useResponsiveSize";
 
 const COLORS = ["#e0ca8a", "#8acce0", "#bea5e9"];
 
-const VegaWordcloud = ({ data, selectedWord, setSelectedWord, colors, unclickable, rotate }) => {
+const VegaWordcloud = ({
+  data,
+  selectedWord,
+  setSelectedWord,
+  colors,
+  unclickable,
+  rotate,
+  width = null,
+  height = null,
+}) => {
   const [size, box] = useResponsiveSize();
   const [view, setView] = useState(null);
 
@@ -24,7 +33,16 @@ const VegaWordcloud = ({ data, selectedWord, setSelectedWord, colors, unclickabl
     setView(view);
   };
 
-  const spec = getSpec(size.height, size.width, colors || COLORS, !unclickable, rotate);
+  const spec = getSpec(
+    height || size.height,
+    width || size.width,
+    colors || COLORS,
+    !unclickable,
+    rotate
+  );
+
+  console.log(size);
+  if (!data) return null;
 
   return (
     <div ref={box} style={{ height: "100%", width: "100%", maxWidth: "100vw" }}>
@@ -68,7 +86,7 @@ const getSpec = (height, width, colors, clickable, rotate) => {
     $schema: "https://vega.github.io/schema/vega/v5.json",
     width: width,
     height: height,
-    autosize: { type: "fit-x", contains: "padding" },
+    //autosize: { type: "fit-x", contains: "padding" },
 
     data: [
       {
