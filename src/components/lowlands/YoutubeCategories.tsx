@@ -160,7 +160,8 @@ const submitData = async (data) => {
   };
 
   try {
-    await fetch("http://localhost:5000/project/lowlands/publicdata", requestOptions);
+    await fetch("https://kasperwelbers.com/lowlands/project/lowlands/publicdata", requestOptions);
+    //await fetch("http://localhost:5000/project/lowlands/publicdata", requestOptions);
   } catch (e) {
     console.log(e);
   }
@@ -205,7 +206,7 @@ const YoutubeChannels = ({ data, setData }) => {
     //setCategoryChannels(categoryChannels);
   }, [dashData, setData]);
 
-  if (!data) return null;
+  if (!table) return null;
 
   return (
     <VegaWordcloud

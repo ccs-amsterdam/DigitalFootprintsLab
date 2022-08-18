@@ -26,15 +26,13 @@ export default function Youtube() {
 const VisComponent = ({ dashData, inSelection, outSelection, setOutSelection }) => {
   if (!dashData) return null;
   return (
-    <div>
-      <Wordcloud
-        dashData={dashData}
-        group={GROUP}
-        inSelection={inSelection}
-        outSelection={outSelection}
-        setOutSelection={setOutSelection}
-      />
-    </div>
+    <Wordcloud
+      dashData={dashData}
+      group={GROUP}
+      inSelection={inSelection}
+      outSelection={outSelection}
+      setOutSelection={setOutSelection}
+    />
   );
 };
 

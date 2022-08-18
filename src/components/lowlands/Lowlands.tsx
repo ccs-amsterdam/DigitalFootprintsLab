@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import VegaWordcloud from "components/explore/dashboards/dashboardParts/VegaWordcloud";
 import background from "../../images/lowlands_background.png";
 
@@ -20,11 +20,12 @@ const colors = ["#bc6e96", "#e2bc3f"];
 
 const Lowlands = () => {
   const [data, setData] = useState(null);
+  const modified = useRef(0);
 
   useEffect(() => {
-    getData(setData);
-  }, []);
-  console.log(data);
+    const interval = setInterval(() => getData(setData, modified), 5000);
+    return () => clearInterval(interval);
+  }, [setData, modified]);
 
   return (
     <div
@@ -35,7 +36,15 @@ const Lowlands = () => {
         display: "flex",
       }}
     >
-      <div style={{ margin: "auto", width: "50%" }}>
+      <div
+        style={{
+          position: "relative",
+          margin: "auto",
+          width: "50%",
+          height: "100%",
+          maxWidth: "50vw",
+        }}
+      >
         <VegaWordcloud
           data={data?.wordcloud}
           selectedWord={null}
@@ -116,22 +125,30 @@ const Lowlands = () => {
   );
 };
 
-const getData = async (setData) => {
+const getData = async (setData, modified) => {
   try {
-    const res = await fetch("http://localhost:5000/project/lowlands/publicdata");
-    const json = await res.json();
+    const res = await fetch(
+      `https://kasperwelbers.com/lowlands/project/lowlands/publicdata?updated=${modified.current}`
+    );
+    // const res = await fetch(
+    //   `http://localhost:5000/project/lowlands/publicdata?updated=${modified.current}`
+    // );
 
-    const genres = json.map((j) => j.genre);
-    const data: Record<string, number>[] = json.map((j) => j.categories);
+    const json = await res.json();
+    console.log(json);
+    modified.current = json.modified;
+    if (!json.updated) return;
+
+    const genres = json.data.map((j) => j.genre);
+    const data: Record<string, any>[] = json.data.map((j) => j.categories);
     const table = {};
-    console.log(data);
     for (const row of data) {
       let total: number = 0;
-      for (const value of Object.values(row)) total += value;
+      for (const item of Object.values(row)) total += item.count;
       if (total === 0) continue;
       for (const key of Object.keys(row)) {
         if (!table[key]) table[key] = 0;
-        table[key] += row[key] / total;
+        table[key] += row[key].count / total;
       }
     }
 

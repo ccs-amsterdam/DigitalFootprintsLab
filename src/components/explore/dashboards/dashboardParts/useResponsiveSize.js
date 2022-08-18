@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useCallback, useState } from "react";
 
 /**
  * Hook for getting the size of a box, that updates when resizing
@@ -7,7 +7,6 @@ import { useEffect, useRef, useState } from "react";
 const useResponsiveSize = () => {
   const [size, setSize] = useState({ height: 500, width: 1000 });
   const [delayedSize, setDelayedSize] = useState(null);
-  const box: any = useRef();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -16,20 +15,20 @@ const useResponsiveSize = () => {
     return () => clearTimeout(timer);
   }, [setSize, delayedSize]);
 
-  useEffect(() => {
-    updateSize(box, setSize);
-    window.addEventListener("resize", () => updateSize(box, setDelayedSize));
-    return () => window.removeEventListener("resize", () => updateSize(box, setDelayedSize));
+  const box = useCallback((node) => {
+    updateSize(node, setSize);
+    window.addEventListener("resize", () => updateSize(node, setDelayedSize));
+    return () => window.removeEventListener("resize", () => updateSize(node, setDelayedSize));
   }, []);
 
   return [size, box];
 };
 
-const updateSize = (box, setSize) => {
+const updateSize = (el, setSize) => {
   setSize((size) => {
-    if (!box.current) return size;
-    const height = Math.min(window.innerHeight, box.current.clientHeight);
-    const width = Math.min(window.innerWidth, box.current.clientWidth);
+    if (!el) return size;
+    const height = Math.min(window.innerHeight, el.clientHeight);
+    const width = Math.min(window.innerWidth, el.clientWidth);
     if (size?.height === height && size?.width === width) return size;
     return { width, height };
   });

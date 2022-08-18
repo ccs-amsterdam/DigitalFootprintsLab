@@ -38,7 +38,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts --max_old_space_size=4096 start",
+    "start": "react-scripts --max_old_space_size=8192 start",
     "predeploy": "react-scripts build && cp build/index.html build/404.html",
     "deploy": "gh-pages -d build",
     "build": "react-scripts build",

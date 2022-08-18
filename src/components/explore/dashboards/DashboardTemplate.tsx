@@ -106,7 +106,7 @@ const DashboardTemplate = ({
           <Statistics statistics={statistics} />
         </Grid.Column>
 
-        <Grid.Column width={10} style={{ paddingTop: "5px" }}>
+        <Grid.Column width={10} style={{ paddingTop: "5px", height: "100%" }}>
           <VisComponent
             dashData={dashData}
             inSelection={querySelection}
