@@ -32,7 +32,8 @@ const DeleteDataButton = ({ style = {} }) => {
             onClick={() =>
               db.destroyEverything().then((userId) => {
                 if (userId !== "test_user") {
-                  window.location.href += `/?id=${userId}`;
+                  //window.location.href += `/?id=${userId}`;
+                  window.location.href += "";
                 } else {
                   window.location.reload();
                 }

@@ -1,8 +1,8 @@
 import { QuestionInput } from "types";
 
 const server = {
-  donationUrl: "dummy url for testing",
-  //donationUrl: "https://digitale-voetsporen.nl/youtube/upload",
+  //donationUrl: "dummy url for testing",
+  donationUrl: "https://digitale-voetsporen.nl/youtube/upload",
 };
 
 export const contact = {
@@ -126,7 +126,6 @@ const answerQuestions: QuestionInput[] = [
       { value: "very often", NL: "heel vaak" },
     ],
   },
- 
 ];
 
 const generalSettings = {

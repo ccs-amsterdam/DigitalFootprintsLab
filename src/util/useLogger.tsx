@@ -17,7 +17,7 @@ const useLogger = (where: string, what: string = "open") => {
   );
 
   useEffect(() => {
-    postLog(where, what);
+    //postLog(where, what);
   }, [where, what]);
 
   return log;
@@ -42,7 +42,7 @@ const postLog = async (what: string, where: string): Promise<void> => {
 
   try {
     //const url = "https://digitale-voetsporen.nl/youtube/upload"
-    const url = 'dummy'
+    const url = "dummy";
     await fetch(url, requestOptions);
   } catch (e) {
     console.log(e);
