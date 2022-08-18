@@ -1,4 +1,5 @@
 import db from "apis/db";
+import { t } from "i18next";
 import React, { useState, useEffect } from "react";
 import { useTranslation, Trans } from "react-i18next";
 import {
@@ -23,11 +24,13 @@ const ConfirmDonation = ({ settings }) => {
   const [loading, setLoading] = useState(false);
   const [meta, setMeta] = useState(null);
   const [fullStatus, setFullStatus] = useState("not started");
+  const [backup, setBackup] = useState(null);
 
   const onClick = async () => {
     setLoading(true);
-    const finished = await submitData(settings, status, setStatus);
+    const [finished, backup] = await submitData(settings, status, setStatus);
     setFullStatus(finished ? "finished" : "failed");
+    setBackup(backup);
     setLoading(false);
   };
 
@@ -44,7 +47,7 @@ const ConfirmDonation = ({ settings }) => {
 
   if (meta === null) return null;
   if (fullStatus === "finished")
-    return <Finalize t={t} settings={settings} status={status} meta={meta} />;
+    return <Finalize t={t} settings={settings} status={status} meta={meta} backup={backup} />;
 
   return (
     <Segment
@@ -76,10 +79,10 @@ const ConfirmDonation = ({ settings }) => {
             ) : (
               <br />
             )}
-            <span style={{ textAlign: "center" }}>
+            {/* <span style={{ textAlign: "center" }}>
               {t("donate.confirm.server")} <br />
               <span style={{ color: "#2185d0" }}>{settings?.server?.donationUrl.value}</span>
-            </span>
+            </span> */}
             <br />
             <Button
               primary
@@ -93,6 +96,7 @@ const ConfirmDonation = ({ settings }) => {
                 ? t("donate.confirm.buttonRetry")
                 : t("donate.confirm.button")}
             </Button>
+            <DownloadBackup backup={backup} />
             <StatusList t={t} status={status} loading={loading} />
           </Grid.Column>
         </Grid.Row>
@@ -193,7 +197,7 @@ const StatusList = ({ t, status, loading }) => {
   );
 };
 
-const Finalize = ({ t, settings, status, meta }) => {
+const Finalize = ({ t, settings, status, meta, backup }) => {
   const onDelete = () => {
     db.destroyEverything().then(() => {
       if (meta.returnURL) {
@@ -244,7 +248,7 @@ const Finalize = ({ t, settings, status, meta }) => {
     >
       <Grid centered stackable verticalAlign="middle" style={{ height: "100%" }}>
         <Grid.Row>
-          <Grid.Column textAlign="center" width={8}>
+          <Grid.Column textAlign="center" width={12}>
             <Header as="h2">{settings?.confirmDonation?.finishHeader?.trans}</Header>
             <div style={{ textAlign: "left", marginLeft: "20%", marginTop: "5%" }}>
               <StatusList t={t} status={status} loading={false} />
@@ -254,8 +258,38 @@ const Finalize = ({ t, settings, status, meta }) => {
             <Grid.Row style={{ marginTop: "30px" }}>{returnLink()}</Grid.Row>
           </Grid.Column>
         </Grid.Row>
+        <Grid.Row>
+          <Grid.Column textAlign="center">
+            <DownloadBackup backup={backup} />
+          </Grid.Column>
+        </Grid.Row>
       </Grid>
     </Segment>
+  );
+};
+
+const DownloadBackup = ({ backup }) => {
+  const downloadBackup = async () => {
+    const meta = await db.idb.meta.get(1);
+    const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(JSON.stringify(backup))}`;
+    const link = document.createElement("a");
+    link.href = jsonString;
+    link.download = `dfl_${meta.userId}.json`;
+    link.click();
+  };
+
+  if (!backup) return null;
+
+  return (
+    <Button
+      style={{ paddingTop: "10px" }}
+      secondary
+      onClick={() => {
+        downloadBackup();
+      }}
+    >
+      {t("donate.confirm.download")}{" "}
+    </Button>
   );
 };
 

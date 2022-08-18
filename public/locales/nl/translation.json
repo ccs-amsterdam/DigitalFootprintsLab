@@ -69,7 +69,8 @@
       },
       "header": "Bevestig dat u de volgende voorwaarden begrijpt en ermee akkoord gaat:",
       "loader": "Bestanden uploaden",
-      "testuser": "Je bent ingelogd als testgebruiker, dus je echte gegevens worden niet ingediend. De server ziet alleen welke soorten gegevens je hebt ingediend en hoeveel items"
+      "testuser": "Je bent ingelogd als testgebruiker, dus je echte gegevens worden niet ingediend. De server ziet alleen welke soorten gegevens je hebt ingediend en hoeveel items",
+      "download": "Je kunt de data ook downloaden"
     },
     "info": {
       "continue": "Ga verder met doneren"
