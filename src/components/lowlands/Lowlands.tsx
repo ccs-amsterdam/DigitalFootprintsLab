@@ -120,9 +120,11 @@ const getData = async (setData) => {
   try {
     const res = await fetch("http://localhost:5000/project/lowlands/publicdata");
     const json = await res.json();
+
     const genres = json.map((j) => j.genre);
     const data: Record<string, number>[] = json.map((j) => j.categories);
     const table = {};
+    console.log(data);
     for (const row of data) {
       let total: number = 0;
       for (const value of Object.values(row)) total += value;

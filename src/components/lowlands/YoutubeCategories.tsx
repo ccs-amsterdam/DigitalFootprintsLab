@@ -184,9 +184,10 @@ const YoutubeChannels = ({ data, setData }) => {
       const indices = youtubeCats.channel_categories?.[id] || [];
       for (let i of indices) {
         const category = youtubeCats.category_labels?.[i - 1];
-        if (!category) continue;
-        if (!data[category]) data[category] = 0;
-        data[category]++;
+        if (!category?.parent) continue;
+        if (!data[category?.category])
+          data[category.category] = { parent: category?.parent, count: 0 };
+        data[category?.category].count++;
         // if (!categoryChannels[category]) categoryChannels[category] = {};
         // if (!categoryChannels[category][row.channel]) categoryChannels[category][row.channel] = 0;
         // categoryChannels[category][row.channel]++;
@@ -195,7 +196,8 @@ const YoutubeChannels = ({ data, setData }) => {
 
     const table = Object.keys(data).map((category) => ({
       text: category,
-      visits: data[category],
+      visits: data[category].count,
+      parent: data[category].parent,
       angle: [-45, 0, 45][~~(Math.random() * 3)],
     }));
     setData(data);
