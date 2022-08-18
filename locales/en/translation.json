@@ -67,7 +67,8 @@
       },
       "header": "Please confirm that you understand and agree with the following conditions",
       "loader": "Uploading files",
-      "testuser": "You are logged in as a test user, so your real data won't be submitted. The server will only see what types of data you submitted, and how many items"
+      "testuser": "You are logged in as a test user, so your real data won't be submitted. The server will only see what types of data you submitted, and how many items",
+      "download": "You can also download the data"
     },
     "info": {
       "continue": "Continue with donation"
