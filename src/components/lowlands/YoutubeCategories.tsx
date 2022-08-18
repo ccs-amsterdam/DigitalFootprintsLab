@@ -28,7 +28,6 @@ const YoutubeCategories = ({ setStep, settings }) => {
   const { t } = useTranslation();
 
   const onClick = (genre) => {
-    console.log(genre);
     submitData({ genre, categories: data });
     setStep(4);
   };
@@ -174,8 +173,7 @@ const YoutubeChannels = ({ data, setData }) => {
 
   useEffect(() => {
     if (!dashData) return null;
-    console.log(dashData);
-    console.log(youtubeCats);
+
     const data = {};
     //const categoryChannels = {};
 
@@ -185,7 +183,6 @@ const YoutubeChannels = ({ data, setData }) => {
       const indices = youtubeCats.channel_categories?.[id] || [];
       for (let i of indices) {
         const category = youtubeCats.category_labels?.[i - 1];
-        if (!category?.parent) continue;
         if (!data[category?.category])
           data[category.category] = { parent: category?.parent, count: 0 };
         data[category?.category].count++;
@@ -195,12 +192,17 @@ const YoutubeChannels = ({ data, setData }) => {
       }
     }
 
-    const table = Object.keys(data).map((category) => ({
-      text: category,
-      visits: data[category].count,
-      parent: data[category].parent,
-      angle: [-45, 0, 45][~~(Math.random() * 3)],
-    }));
+    const table = [];
+    for (const category of Object.keys(data)) {
+      if (!data[category].parent) continue;
+      table.push({
+        text: category,
+        visits: data[category].count,
+        parent: data[category].parent,
+        angle: [-45, 0, 45][~~(Math.random() * 3)],
+      });
+    }
+
     setData(data);
     setTable({ table });
     //setCategoryChannels(categoryChannels);
@@ -209,17 +211,19 @@ const YoutubeChannels = ({ data, setData }) => {
   if (!table) return null;
 
   return (
-    <VegaWordcloud
-      data={table}
-      selectedWord={null}
-      setSelectedWord={(word) => {
-        //const channels = categoryChannels?.[word];
-        //console.log(channels);
-      }}
-      unclickable={true}
-      colors={colors}
-      rotate={undefined}
-    />
+    <div style={{ height: "300px" }}>
+      <VegaWordcloud
+        data={table}
+        selectedWord={null}
+        setSelectedWord={(word) => {
+          //const channels = categoryChannels?.[word];
+          //console.log(channels);
+        }}
+        unclickable={true}
+        colors={colors}
+        rotate={undefined}
+      />
+    </div>
   );
 };
 

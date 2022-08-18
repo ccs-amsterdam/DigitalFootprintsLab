@@ -26,7 +26,7 @@ const VegaWordcloud = ({ data, selectedWord, setSelectedWord, colors, unclickabl
 
   const spec = getSpec(size.height, size.width, colors || COLORS, !unclickable, rotate);
 
-  console.log(size);
+  //console.log(size);
   if (!data) return null;
 
   return (

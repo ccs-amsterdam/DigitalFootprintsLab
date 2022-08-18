@@ -16,6 +16,7 @@ const images = {
   "Classic & Jazz": Key,
 };
 
+//const colors_parent = ["white"];
 const colors = ["#bc6e96", "#e2bc3f"];
 
 const Lowlands = () => {
@@ -26,7 +27,6 @@ const Lowlands = () => {
     const interval = setInterval(() => getData(setData, modified), 5000);
     return () => clearInterval(interval);
   }, [setData, modified]);
-
   return (
     <div
       style={{
@@ -38,9 +38,9 @@ const Lowlands = () => {
     >
       <div
         style={{
-          position: "relative",
           margin: "auto",
-          width: "50%",
+          position: "relative",
+          width: "100%",
           height: "100%",
           maxWidth: "50vw",
         }}
@@ -135,20 +135,25 @@ const getData = async (setData, modified) => {
     // );
 
     const json = await res.json();
-    console.log(json);
     modified.current = json.modified;
     if (!json.updated) return;
 
     const genres = json.data.map((j) => j.genre);
     const data: Record<string, any>[] = json.data.map((j) => j.categories);
     const table = {};
+    const table_parent = {};
     for (const row of data) {
       let total: number = 0;
       for (const item of Object.values(row)) total += item.count;
       if (total === 0) continue;
       for (const key of Object.keys(row)) {
-        if (!table[key]) table[key] = 0;
-        table[key] += row[key].count / total;
+        if (row[key].parent === "") {
+          if (!table_parent[key]) table_parent[key] = 0;
+          table_parent[key] += row[key].count / total;
+        } else {
+          if (!table[key]) table[key] = 0;
+          table[key] += row[key].count / total;
+        }
       }
     }
 
@@ -164,7 +169,18 @@ const getData = async (setData, modified) => {
       angle: [-45, 0, 45][~~(Math.random() * 3)],
     }));
 
-    setData({ n: data.length, wordcloud: { table: wordcloud }, genrePct });
+    const wordcloud_parent = Object.keys(table_parent).map((category) => ({
+      text: category,
+      visits: table_parent[category],
+      angle: [-45, 0, 45][~~(Math.random() * 3)],
+    }));
+
+    setData({
+      n: data.length,
+      wordcloud: { table: wordcloud },
+      wordcloud_parent: { table: wordcloud_parent },
+      genrePct,
+    });
   } catch (e) {
     console.log(e);
   }
