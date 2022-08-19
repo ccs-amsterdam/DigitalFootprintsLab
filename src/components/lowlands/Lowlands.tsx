@@ -158,6 +158,7 @@ const getData = async (setData, modified) => {
     const table = {};
     const table_parent = {};
     for (const row of data) {
+      if (!row) continue;
       let total: number = 0;
       for (const item of Object.values(row)) total += item.count;
       if (total === 0) continue;
