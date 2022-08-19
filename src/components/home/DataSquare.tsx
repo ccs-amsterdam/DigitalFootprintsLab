@@ -39,7 +39,7 @@ const DataSquare = () => {
       }}
     >
       <div style={{ position: "absolute", bottom: "0", left: "5px", color: "white" }}>
-        Version 1.0.3
+        Version 1.1.0
       </div>
       <div
         style={{

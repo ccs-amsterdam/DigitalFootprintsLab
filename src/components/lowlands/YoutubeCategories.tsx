@@ -195,6 +195,7 @@ const YoutubeChannels = ({ data, setData }) => {
     const table = [];
     for (const category of Object.keys(data)) {
       if (!data[category].parent) continue;
+      if (data[category].parent !== "Music") continue;
       table.push({
         text: category,
         visits: data[category].count,

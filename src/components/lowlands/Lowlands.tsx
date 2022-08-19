@@ -8,6 +8,8 @@ import HipHop from "../../images/HipHop.png";
 import Pop from "../../images/Pop.png";
 import Key from "../../images/Key.png";
 
+//import qr from "../../images/qrcode.png";
+
 const images = {
   Rock: Rock,
   Hiphop: HipHop,
@@ -34,10 +36,23 @@ const Lowlands = () => {
         height: "100%",
         background: "#00000088",
         display: "flex",
+        position: "relative",
       }}
     >
+      {/* <img
+        style={{
+          zIndex: 100,
+          position: "absolute",
+          bottom: "10px",
+          left: "10px",
+          height: "100px",
+        }}
+        alt="https://ccs-amsterdam.github.io/DigitalFootprintsLab"
+        src={qr}
+      /> */}
       <div
         style={{
+          zIndex: 50,
           margin: "auto",
           position: "relative",
           width: "100%",
@@ -100,9 +115,9 @@ const Lowlands = () => {
                     }}
                   >
                     <p>
-                      <span style={{ fontSize: "2em", padding: "0px" }}>{genre}</span>
+                      <span style={{ fontSize: "1.2em", padding: "0px" }}>{genre}</span>
                       <br />
-                      <span style={{ fontSize: "1.2em", fontStyle: "italic", lineHeight: "2em" }}>
+                      <span style={{ fontSize: "1em", fontStyle: "italic", lineHeight: "2em" }}>
                         {Math.round(pct)}%
                       </span>
                     </p>
@@ -147,6 +162,7 @@ const getData = async (setData, modified) => {
       for (const item of Object.values(row)) total += item.count;
       if (total === 0) continue;
       for (const key of Object.keys(row)) {
+        if (row[key].parent !== "Music") continue;
         if (row[key].parent === "") {
           if (!table_parent[key]) table_parent[key] = 0;
           table_parent[key] += row[key].count / total;
