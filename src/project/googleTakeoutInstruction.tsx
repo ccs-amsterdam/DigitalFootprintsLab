@@ -19,11 +19,11 @@ const googleTakeoutInstruction_EN: Instruction = {
       title: "Go to Google Takeout",
       items: [
         {
-          text: "Use [this link](https://takeout.google.com/settings/takeout/custom/youtube,news,chrome) to gather your *Chrome*, *Youtube* and *News* data from **Google Takeout**",
+          text: "Use [this link](https://takeout.google.com/settings/takeout/custom/youtube,chrome) to gather your *Chrome* and *Youtube* data from **Google Takeout**",
         },
         { text: "Log in if needed" },
         {
-          text: "You should see the following *products* to export",
+          text: "You should see the following *products* to export (maybe without the 'news', but that's ok)",
           image: GoogleTakeout_sources,
         },
       ],
@@ -85,11 +85,11 @@ const googleTakeoutInstruction_NL: Instruction = {
       title: "Ga naar Google Takeout",
       items: [
         {
-          text: "Gebruik [deze link](https://takeout.google.com/settings/takeout/custom/youtube,news,chrome) om je *Chrome*, *Youtube* and *Nieuws* data van **Google Takeout** te verzamelen",
+          text: "Gebruik [deze link](https://takeout.google.com/settings/takeout/custom/youtube,chrome) om je *Chrome* en *Youtube* data van **Google Takeout** te verzamelen",
         },
         { text: "Log indien nodig in" },
         {
-          text: "Je zou nu de volgende *producten* moeten zien",
+          text: "Je zou nu de volgende *producten* moeten zien (misschien zonder 'nieuws', maar dat is ok)",
           image: GoogleTakeout_sources_nl,
         },
       ],
