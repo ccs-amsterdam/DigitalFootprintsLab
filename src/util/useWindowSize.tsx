@@ -17,11 +17,13 @@ export default function useWindowSize() {
     // Listen for changes to screen size and orientation
     // (this would have been so much easier if Safari would support window.screen.orientation)
     window.visualViewport.addEventListener("resize", onResize);
+    window.addEventListener("resize", onResize);
     if (window?.screen?.orientation) {
       window.screen.orientation?.addEventListener("change", onResize);
     }
     return () => {
       window.visualViewport.removeEventListener("resize", onResize);
+      window.removeEventListener("resize", onResize);
       if (window?.screen?.orientation) {
         window.screen.orientation.removeEventListener("change", onResize);
       }
@@ -32,6 +34,7 @@ export default function useWindowSize() {
     // listening for orientation and size changes doesn't always work and on some devices
     // size isn't properly set on mount. Therefore also just check the size repeatedly
     // (which should not be costly)
+    updateSize(setSize, dispatch);
     const interval = setInterval(() => updateSize(setSize, dispatch), 1000);
     return () => clearInterval(interval);
   }, [setSize, dispatch]);

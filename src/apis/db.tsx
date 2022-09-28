@@ -38,6 +38,7 @@ class FootprintDB {
 
     this.idb.version(2).stores({
       meta: "welcome", // Keep track of whether user logged in before, and remember userId (if passed as URL parameter)
+      // Only the first row of meta is used to basically act as an object (but use this instead of local storage to keep things synced easily)
       log: "++id", // unindexed: log. See utils/useLogger
       data: "&name, deleted", // unindexed fields: "data", "n_deleted", "validation". "data" is an array with all the data. "deleted" requires some explanation.
       // data items can be deleted by users, but for speed we don't overwrite the data immediately,
@@ -67,6 +68,7 @@ class FootprintDB {
     }
     return persistent;
   }
+
   async isWelcome() {
     try {
       const welcome = await this.idb.meta.get(1);

@@ -1,11 +1,5 @@
 {
-  "lowlands": {
-    "h1": "Your Youtube footprint",
-    "p1": "Based on your Youtube viewing history we can get a rough sketch of your interests and musical tastes. We will keep track of the shared tastes of all participants on the big screen in the Digital Footprints Lab tent!",
-    "h2": "Genre wars",
-    "p2": "Which of the following musical genres do you like best?",
-    "p3": "You can also get a (temporary) tattoo of these illustrations!"
-  },
+
   "common": {
     "channel": "channel",
     "channels": "channels",

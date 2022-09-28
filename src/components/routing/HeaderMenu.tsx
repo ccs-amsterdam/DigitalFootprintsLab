@@ -20,8 +20,6 @@ const menuStyle = {
 const HeaderMenu = ({ items }) => {
   const location = useLocation();
 
-  if (location.pathname === '/lowlands') return null
-
   if (location.pathname === "/")
     return (
       <Menu style={menuStyle}>

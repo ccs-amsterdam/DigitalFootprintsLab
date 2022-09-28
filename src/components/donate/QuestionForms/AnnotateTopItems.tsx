@@ -12,15 +12,8 @@ import {
   Segment,
 } from "semantic-ui-react";
 
-import ignoreIds from "data/youtube_ignore_ids.json";
 import { Trans, useTranslation } from "react-i18next";
 import { SetState, QTopItems } from "../../../types";
-
-const ignoreIdsMap = ignoreIds.ids.reduce((obj, id) => {
-  // this is ugly, but we just hard coded an ignorelist for now
-  obj[id] = true;
-  return obj;
-}, {});
 
 interface AnnotateTopItemsProps {
   question: QTopItems;
@@ -289,14 +282,7 @@ const prepareData = async (
     return;
   }
 
-  const ignored_channels = {};
   let items = data.data.reduce((items, item) => {
-    const id = item.channel_url?.split("/channel/").slice(-1)[0];
-    if (ignoreIdsMap[id]) {
-      if (!ignored_channels[item.channel]) ignored_channels[item.channel] = 0;
-      ignored_channels[item.channel]++;
-      return items;
-    }
     if (!item[field] || item[field] === "undefined") return items;
     if (!items[item[field]]) items[item[field]] = { count: 0, details: [] };
     items[item[field]].count++;
