@@ -52,7 +52,7 @@ const validateData = [
   {
     question: {
       value: "Do you feel that you recognize this digital footprint as your own?",
-      NL: "Heb je het gevoel dat je deze digitale voetafdruk herkent als de jouwe?",
+      NL: "Heb je het gevoel dat je deze digitale voetafdruk herkent als jouw eigen?",
     },
     answers: [
       { value: "very little", NL: "heel weinig" },
@@ -77,53 +77,22 @@ const validateData = [
 
 const answerQuestions: QuestionInput[] = [
   {
-    type: "topItems",
-    data: "Youtube",
-    field: "channel",
-    top: 10,
-    detail: "title",
-    title: {
-      value: "News and current affairs on Youtube",
-      NL: "Nieuws en actualiteiten op Youtube",
-    },
-    intro: {
-      value: `Below you see a list of Youtube channels that you watched. To what extent do you think their video content has involved discussion on news and current affairs?`,
-      NL: `Hieronder zie je een aantal Youtube kanalen die jij bekeken hebt. In welke mate denk jij dat deze kanalen nieuws en actualiteiten bespreken?`,
-    },
-    canAdd: true,
-    canAddIntro: {
-      value: `Besides the channels listed above, are there any other news related channels (in your own data) that come to your mind? If so, please select them in the following search box to add them to the list. (Don't forget to score the added items) `,
-      NL: `Zijn er volgens jou nog andere Youtube kanalen (in jouw eigen data) die over nieuws en actualiteiten berichten? Zo ja, selecteer deze dan alstublieft in deze zoekbox om ze aan de lijst toe te voegen. (Vergeet niet de toegevoegde items te scoren)`,
-    },
-    question: {
-      value: "Does this channel cover content about news and current affairs?",
-      NL: "In welke mate gaat de content van dit kanaal over nieuws of actualiteiten? ",
-    },
-    answers: [
-      { value: "not at all", NL: "helemaal niet" },
-      { value: "very little", NL: "heel weinig" },
-      { value: "somewhat", NL: "matig" },
-      { value: "quite a bit", NL: "veel" },
-      { value: "a great deal", NL: "heel veel" },
-    ],
-  },
-  {
     type: "simpleQuestion",
     title: {
-      value: "Sharing Youtube news",
-      NL: "Nieuws van Youtube delen",
+      value: "Rutte",
+      NL: "Rutte",
     },
     //intro: { value: "One final question!", NL: "Laatste vraag!" },
     question: {
-      value: `Thinking about this kind of news-related YouTube channels and videos, how often do you share such news related content to others? For example, sending a YouTube video link via WhatsApp, or posting a YouTube video on your Facebook or Twitter.`,
-      NL: `Met betrekking tot dit soort nieuws-gerelateerde content op Youtube, hoe vaak deel jij dit soort content met anderen? Bijvoorbeeld, een Youtube video delen via WhatsApp, of een video posten op Facebook of Twitter.`,
+      value: `Do you still trust Rutte?`,
+      NL: `Vertrouwt u Rutte nog wel?`,
     },
     answers: [
-      { value: "never", NL: "nooit" },
-      { value: "rarely", NL: "zelden" },
-      { value: "sometimes", NL: "soms" },
-      { value: "often", NL: "vaak" },
-      { value: "very often", NL: "heel vaak" },
+      { value: "never have", NL: "nooit gedaan" },
+      { value: "not really", NL: "niet echt" },
+      { value: "could be better", NL: "kan beter" },
+      { value: "nope", NL: "neuh" },
+      { value: "meh", NL: "meh" },
     ],
   },
 ];

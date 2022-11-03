@@ -13,5 +13,6 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "baseUrl": "src"
-  }
+  },
+  "include": ["custom.d.ts"]
 }

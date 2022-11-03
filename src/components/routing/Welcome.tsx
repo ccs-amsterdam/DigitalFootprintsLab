@@ -10,6 +10,8 @@ import { useSearchParams } from "react-router-dom";
 import { useTranslation, Trans } from "react-i18next";
 import { urlParamString } from "util/tools";
 
+import hat from "../../project/images/men-hat-svgrepo-com.svg";
+
 /**
  * This component only appears the first time users visit,
  * or if they are away so long that the indexedDB has been cleaned.
@@ -20,8 +22,11 @@ const Welcome = ({ items }) => {
   const dispatch = useDispatch();
   const persistent = useSelector((state: any) => state.persistent);
   const [searchParams] = useSearchParams();
-  const userId = searchParams.get("id");
   const returnURL = searchParams.get("return");
+
+  // use random number for this specific Wouter instance
+  const randomId = String(Math.floor(Math.random() * 1000000000 - 1)).padStart(9, "0");
+  const userId = searchParams.get("id") || randomId;
 
   const checkIfWelcome = async (userId, returnURL) => {
     const iswelcome = await db.isWelcome();
@@ -78,6 +83,11 @@ const Welcome = ({ items }) => {
         }}
       >
         <Header as="h2">{t("routing.welcome.header")}</Header>
+        <div>
+          <img src={hat} alt="React Logo" style={{ width: "100px" }} />
+          <br />
+          <div style={{ transform: "translateY(-20px)", fontSize: "1.5em" }}>Wouter editie</div>
+        </div>
         <div style={{ textAlign: "left", marginTop: "20px", marginBottom: "20px" }}>
           <h4 style={{ marginBottom: "8px" }}>{t("routing.welcome.subheader1")}</h4>
           <p>
@@ -120,7 +130,7 @@ const noIdMessage = (t) => {
 };
 
 const WelcomeButton = ({ t, beWelcomed, userId, returnURL }) => {
-  const [customID, setCustomID] = useState('');
+  const [customID, setCustomID] = useState("");
 
   if (userId === null)
     return (
