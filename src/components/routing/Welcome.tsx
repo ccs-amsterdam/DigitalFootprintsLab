@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPersistent } from "actions";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation, Trans } from "react-i18next";
-import { urlParamString } from "util/tools";
 
 import hat from "../../project/images/men-hat-svgrepo-com.svg";
 
@@ -32,15 +31,15 @@ const Welcome = ({ items }) => {
     const iswelcome = await db.isWelcome();
     if (!iswelcome?.persistent) dispatch(setPersistent(false));
     if (!iswelcome?.welcome) return null;
-    if (iswelcome.userId && userId !== null && iswelcome.userId !== userId) {
-      // if a session was already started, but the user logs in with a new userId, delete the
-      // previous session. This should very rarely pose a problem, and it prevents users accidentally
-      // submitting data with the wrong user id.
-      db.destroyEverything().then(() => {
-        const paramString = urlParamString({ id: userId, return: returnURL });
-        window.location.href += paramString;
-      });
-    }
+    // if (iswelcome.userId && userId !== null && iswelcome.userId !== userId) {
+    //   // if a session was already started, but the user logs in with a new userId, delete the
+    //   // previous session. This should very rarely pose a problem, and it prevents users accidentally
+    //   // submitting data with the wrong user id.
+    //   db.destroyEverything().then(() => {
+    //     const paramString = urlParamString({ id: userId, return: returnURL });
+    //     window.location.href += paramString;
+    //   });
+    // }
     navigate(items[0].path);
   };
 
