@@ -79,20 +79,131 @@ const answerQuestions: QuestionInput[] = [
   {
     type: "simpleQuestion",
     title: {
-      value: "Rutte",
-      NL: "Rutte",
+      value: "Age",
+      NL: "Leeftijd",
     },
     //intro: { value: "One final question!", NL: "Laatste vraag!" },
     question: {
-      value: `Do you still trust Rutte?`,
-      NL: `Vertrouwt u Rutte nog wel?`,
+      value: `What is your age?`,
+      NL: `Wat is uw leeftijd?`,
     },
     answers: [
-      { value: "never have", NL: "nooit gedaan" },
-      { value: "not really", NL: "niet echt" },
-      { value: "could be better", NL: "kan beter" },
-      { value: "nope", NL: "neuh" },
-      { value: "meh", NL: "meh" },
+      { value: "< 24" },
+      { value: "25 - 34" },
+      { value: "35 - 44" },
+      { value: "45 - 54" },
+      { value: "55 - 64" },
+      { value: "> 64" },
+    ],
+  },
+  {
+    type: "simpleQuestion",
+    title: {
+      value: "Education",
+      NL: "Opleiding",
+    },
+    //intro: { value: "One final question!", NL: "Laatste vraag!" },
+    question: {
+      value: `What is your highest level of education?`,
+      NL: `Wat is uw hoogst genoten opleiding?`,
+    },
+    answers: [
+      { value: "HBO or University", NL: "HBO of universiteit" },
+      { value: "MBO, HBS, HAVO or VWO", NL: "MBO, HBS, HAVO of VWO" },
+      { value: "VMBO, MAVO or preliminary", NL: "VMBO, MAVO of basisonderwijs" },
+    ],
+  },
+  {
+    type: "scaleQuestion",
+    title: {
+      value: "Trust",
+      NL: "Vertrouwen",
+    },
+    //intro: { value: "One final question!", NL: "Laatste vraag!" },
+    question: {
+      value: `How much trust do you have in...`,
+      NL: `Hoeveel vertrouwen heeft u in...`,
+    },
+    items: [
+      { value: "Journalists", NL: "Journalisten" },
+      {
+        value: "The government",
+        NL: "De regering",
+      },
+      {
+        value: "Politicians",
+        NL: "Politici",
+      },
+      { value: "The Dutch Democracy", NL: "De Nederlandse Democratie" },
+      { value: "Science", NL: "De wetenschap" },
+    ],
+    answers: [
+      { value: "Not at all", NL: "Helemaal niet" },
+      { value: "A little", NL: "weinig" },
+      { value: "Neutral", NL: "Neutraal" },
+      { value: "A lot", NL: "Veel" },
+      { value: "A great deal", NL: "Heel veel" },
+    ],
+    answerLabels: [
+      { value: "-2" },
+      { value: "-1" },
+      { value: "0" },
+      { value: "1" },
+      { value: "2" },
+    ],
+  },
+  {
+    type: "scaleQuestion",
+    title: {
+      value: "Politics and current affairs news",
+      NL: "Nieuws over politiek en actualiteiten",
+    },
+    //intro: { value: "One final question!", NL: "Laatste vraag!" },
+    question: {
+      value: `How many days in the past two weeks have you followed the following sources to stay up to date on politics and current affairs?`,
+      NL: `Hoeveel dagen in de afgelopen twee weken heeft u de volgende bronnen gevold om iets te weten te komen over politiek en actualiteiten`,
+    },
+    items: [
+      { value: "Television", NL: "Televisie" },
+      {
+        value: "Newspapers or magazines (paper or online)",
+        NL: "Kranten of opiniebladen (op papier of online)",
+      },
+      {
+        value: "Online nieuwssites (like nu.nl) or blogs",
+        NL: "Online nieuwssites (zoals nu.nl) of blogs",
+      },
+      { value: "Radio (including online)", NL: "Radio (inclusief online)" },
+      {
+        value: "Social media (Facebook, Twitter, Instagram, etc.)",
+        NL: "Sociale Media (Facebook, Twitter, Instagram, etc.",
+      },
+      {
+        value: "Messaging apps (Whatsapp, messenger, etc.)",
+        NL: "Messaging apps (Whatsapp, messenger, etc.)",
+      },
+      { value: "Conversations with people", NL: "Gesprekken met mensen" },
+      {
+        value: "News apps or pushmessages on my phone",
+        NL: "Nieuwsapps of pushberichten op mijn telefoon",
+      },
+      { value: "Search enginges (like Google or Bing)", NL: "Zoekmachines (zoals Google of Bing)" },
+    ],
+    answers: [
+      { value: "didn't follow", NL: "niet gevolgd" },
+      { value: "1-3 days", NL: "1-3 dagen" },
+      { value: "4-6 days", NL: "4-6 dagen" },
+      { value: "7-9 days", NL: "7-9 dagen" },
+      { value: "10-12 days", NL: "10-12 dagen" },
+      { value: "more than 12 days", NL: "meer dan 12 dagen" },
+    ],
+    answerLabels: [
+      { value: "0" },
+      { value: "1+" },
+      { value: "4+" },
+      { value: "7+" },
+      { value: "10+" },
+      { value: "12+" },
     ],
   },
 ];

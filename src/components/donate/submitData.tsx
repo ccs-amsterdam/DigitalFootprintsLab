@@ -9,7 +9,7 @@ const submitData = async (settings, status, setStatus) => {
   const url = settings?.server?.donationUrl.value;
 
   await postAnswers(url, backup, meta, testUser, status, setStatus, finished);
-  await postUserLogs(url, backup, meta, status, setStatus, finished);
+  //await postUserLogs(url, backup, meta, status, setStatus, finished);
   for (const name of dataNames)
     await postData(url, backup, meta, name, testUser, status, setStatus, finished);
 
@@ -30,38 +30,6 @@ const postAnswers = async (url, backup, meta, testUser, status, setStatus, finis
     status,
     setStatus,
     testUser,
-    true,
-    finished
-  );
-};
-
-const postUserLogs = async (url, backup, meta, status, setStatus, finished) => {
-  let log = await db.getLog();
-  log = log.map((l) => l.log);
-  await postBody(
-    url,
-    backup,
-    "user_logs",
-    meta.userId,
-    0,
-    log,
-    status,
-    setStatus,
-    false,
-    true,
-    finished
-  );
-  const userMeta = [{ user_agent: navigator.userAgent }];
-  await postBody(
-    url,
-    backup,
-    "user_meta",
-    meta.userId,
-    0,
-    userMeta,
-    status,
-    setStatus,
-    false,
     true,
     finished
   );

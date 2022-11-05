@@ -81,28 +81,34 @@ export interface TranslatedValue {
 ///// QUESTIONS
 
 export interface QuestionInput {
-  type: "topItems" | "simpleQuestion" | "youtubeChannels";
+  type: "topItems" | "simpleQuestion" | "scaleQuestion" | "youtubeChannels";
   title: string | TranslatedValueInput;
   question: string | TranslatedValueInput;
   answers?: (string | TranslatedValueInput)[];
+  answerLabels?: TranslatedValueInput[];
+  items?: TranslatedValueInput[];
   intro?: string | TranslatedValueInput;
   data?: string;
   field?: string;
   top?: number;
+  horizontal?: boolean;
   detail?: string;
   canAdd?: boolean;
   canAddIntro?: string | TranslatedValueInput;
 }
 
 export interface Question {
-  type: "topItems" | "simpleQuestion";
+  type: "topItems" | "simpleQuestion" | "scaleQuestion";
   title: TranslatedValue;
   question: TranslatedValue;
   answers: TranslatedValue[];
+  answerLabels?: TranslatedValue;
+  items?: TranslatedValue[];
   intro?: TranslatedValue;
   data?: TranslatedValue;
   field?: TranslatedValue;
   top?: TranslatedValue;
+  horizontal?: boolean;
   detail?: TranslatedValue;
   canAdd?: TranslatedValue;
   canAddIntro?: TranslatedValue;

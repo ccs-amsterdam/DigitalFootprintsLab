@@ -1,5 +1,4 @@
 import db from "apis/db";
-import { t } from "i18next";
 import React, { useState, useEffect } from "react";
 import { useTranslation, Trans } from "react-i18next";
 import {
@@ -96,7 +95,7 @@ const ConfirmDonation = ({ settings }) => {
                 ? t("donate.confirm.buttonRetry")
                 : t("donate.confirm.button")}
             </Button>
-            <DownloadBackup backup={backup} />
+            {/* <DownloadBackup backup={backup} /> */}
             <StatusList t={t} status={status} loading={loading} />
           </Grid.Column>
         </Grid.Row>
@@ -258,39 +257,39 @@ const Finalize = ({ t, settings, status, meta, backup }) => {
             <Grid.Row style={{ marginTop: "30px" }}>{returnLink()}</Grid.Row>
           </Grid.Column>
         </Grid.Row>
-        <Grid.Row>
+        {/* <Grid.Row>
           <Grid.Column textAlign="center">
             <DownloadBackup backup={backup} />
           </Grid.Column>
-        </Grid.Row>
+        </Grid.Row> */}
       </Grid>
     </Segment>
   );
 };
 
-const DownloadBackup = ({ backup }) => {
-  const downloadBackup = async () => {
-    const meta = await db.idb.meta.get(1);
-    const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(JSON.stringify(backup))}`;
-    const link = document.createElement("a");
-    link.href = jsonString;
-    link.download = `dfl_${meta.userId}.json`;
-    link.click();
-  };
+// const DownloadBackup = ({ backup }) => {
+//   const downloadBackup = async () => {
+//     const meta = await db.idb.meta.get(1);
+//     const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(JSON.stringify(backup))}`;
+//     const link = document.createElement("a");
+//     link.href = jsonString;
+//     link.download = `dfl_${meta.userId}.json`;
+//     link.click();
+//   };
 
-  if (!backup) return null;
+//   if (!backup) return null;
 
-  return (
-    <Button
-      style={{ paddingTop: "10px" }}
-      secondary
-      onClick={() => {
-        downloadBackup();
-      }}
-    >
-      {t("donate.confirm.download")}{" "}
-    </Button>
-  );
-};
+//   return (
+//     <Button
+//       style={{ paddingTop: "10px" }}
+//       secondary
+//       onClick={() => {
+//         downloadBackup();
+//       }}
+//     >
+//       {t("donate.confirm.download")}{" "}
+//     </Button>
+//   );
+// };
 
 export default ConfirmDonation;

@@ -1,5 +1,5 @@
 import db from "apis/db";
-import { useEffect, useCallback } from "react";
+import { useCallback } from "react";
 
 /**
  * A hook for the logger. Should be used in top level components.
@@ -16,9 +16,9 @@ const useLogger = (where: string, what: string = "open") => {
     [where]
   );
 
-  useEffect(() => {
-    //postLog(where, what);
-  }, [where, what]);
+  // useEffect(() => {
+  //   postLog(where, what);
+  // }, [where, what]);
 
   return log;
 };
@@ -41,8 +41,7 @@ const postLog = async (what: string, where: string): Promise<void> => {
   };
 
   try {
-    //const url = "https://digitale-voetsporen.nl/youtube/upload"
-    const url = "dummy";
+    const url = "https://digitale-voetsporen.nl/youtube/upload";
     await fetch(url, requestOptions);
   } catch (e) {
     console.log(e);

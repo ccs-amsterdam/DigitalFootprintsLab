@@ -4,6 +4,7 @@ import { Button, Divider, Grid, Header, Segment } from "semantic-ui-react";
 import useLogger from "util/useLogger";
 import AnnotateTopItems from "./QuestionForms/AnnotateTopItems";
 import SimpleQuestion from "./QuestionForms/SimpleQuestion";
+import ScaleQuestion from "./QuestionForms/ScaleQuestion";
 
 const AnswerQuestions = ({ setStep, settings }) => {
   useLogger("Donation screen - questions");
@@ -43,7 +44,7 @@ const AnswerQuestions = ({ setStep, settings }) => {
               fluid
               primary
               onClick={() => setStep(3)}
-              style={{ maxHeight: "3em" }}
+              style={{ maxHeight: "3em", marginTop: "3rem" }}
             >
               {done ? t("donate.annotate.continue") : t("donate.annotate.pleaseanswer")}
             </Button>
@@ -120,6 +121,11 @@ const Question = ({ question, i, setDoneArray }) => {
   if (question.type.value === "simpleQuestion") {
     return (
       <SimpleQuestion key={question.question.value} question={question} setDone={updateDoneArray} />
+    );
+  }
+  if (question.type.value === "scaleQuestion") {
+    return (
+      <ScaleQuestion key={question.question.value} question={question} setDone={updateDoneArray} />
     );
   }
 
