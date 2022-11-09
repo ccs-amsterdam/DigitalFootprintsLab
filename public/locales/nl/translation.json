@@ -1,5 +1,4 @@
 {
-
   "common": {
     "channel": "kanaal",
     "channels": "kanalen",
@@ -37,6 +36,10 @@
     "youtube": {
       "description": "Kanalen en video's",
       "label": "Youtube"
+    },
+    "tiktok": {
+      "description": "Voor TikTok is deze optie beperkt, omdat de data alleen de URLs van de videos bevat.",
+      "label": "TikTok"
     }
   },
   "donate": {

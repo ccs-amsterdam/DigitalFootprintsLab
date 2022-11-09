@@ -11,6 +11,7 @@ import InitRoute from "./components/routing/InitRoute";
 import DataSquare from "./components/home/DataSquare";
 import BrowsingHistory from "./components/explore/BrowsingHistory";
 import YoutubeHistory from "./components/explore/YoutubeHistory";
+import TikTokHistory from "./components/explore/TikTokHistory";
 import SearchHistory from "./components/explore/SearchHistory";
 import RemoveData from "./components/donate/RemoveData";
 import DonationScreen from "components/donate/DonationScreen";
@@ -27,6 +28,7 @@ const items = [
   { label: "Browsing", path: "/browsing", Component: BrowsingHistory },
   { label: "Search", path: "/search", Component: SearchHistory },
   { label: "Youtube", path: "/youtube", Component: YoutubeHistory },
+  { label: "TikTok", path: "/tiktok", Component: TikTokHistory },
   { label: "Remove", path: "/remove", Component: RemoveData },
   { label: "Donate", path: "/donate", Component: DonationScreen },
 ];
@@ -46,7 +48,7 @@ const Page = () => {
         width: `${size.width}px`,
       }}
     >
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <BrowserRouter>
         <div
           style={{
             height: "100%",

@@ -27,7 +27,13 @@ export const gatherSettings: GatherSettings[] = [
     cookbook: createCookbook(ttRecipes),
     instructions: tiktokTakeoutInstruction,
     importMap: {
-      "TikTok following": { data: "TikTok", idFields: ["name", "date"] },
+      "TikTok following": { data: "TikTok", idFields: ["Date"] },
+      "TikTok favorite videos": { data: "TikTok", idFields: ["Date"] },
+      "TikTok like list": { data: "TikTok", idFields: ["Date"] },
+      "TikTok login history": { data: "TikTok", idFields: ["Date"] },
+      "TikTok search history": { data: "TikTok", idFields: ["Date"] },
+      "TikTok share history": { data: "TikTok", idFields: ["Date"] },
+      "TikTok browse history": { data: "TikTok", idFields: ["Date"] },
     },
   },
 ];

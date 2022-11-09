@@ -19,14 +19,14 @@ const ExploreMenuDropdown = ({ disabled = false }) => {
       style={{ color: "white", paddingLeft: "0" }}
     >
       <Dropdown.Menu>
-        <MenuDropdownItem
+        {/* <MenuDropdownItem
           key={"remove"}
           label={t("routing.buttons.remove")}
           path={"/remove"}
           selected={location.pathname === "/remove"}
           icon={"eye slash"}
           disabled={disabled}
-        />
+        /> */}
         <MenuDropdownItem
           key={"donate"}
           label={t("routing.buttons.donate")}

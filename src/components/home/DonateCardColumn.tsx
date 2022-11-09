@@ -22,27 +22,9 @@ const DonateCardColumn = () => {
 
   return (
     <>
-      <FilterCard />
+      {/* <FilterCard /> */}
       <DonateCard requestedData={requestedData} statuses={statuses} />
     </>
-  );
-};
-
-const FilterCard = () => {
-  const { t } = useTranslation();
-  const navigate = useNavigate();
-
-  const onClick = () => {
-    navigate("/remove");
-  };
-
-  return (
-    <CardTemplate
-      name={t("home.donate.removeCard.name")}
-      subname={t("home.donate.removeCard.subname")}
-      icon={"eye slash"}
-      onClick={onClick}
-    ></CardTemplate>
   );
 };
 

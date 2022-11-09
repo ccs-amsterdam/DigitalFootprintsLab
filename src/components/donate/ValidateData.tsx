@@ -1,13 +1,10 @@
 import db from "apis/db";
 import useDashboardData from "components/explore/dashboardData/useDashboardData";
-import Wordcloud from "components/explore/dashboards/dashboardParts/Wordcloud";
 import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Button, Header, Segment, Step, List, Dimmer, Loader } from "semantic-ui-react";
 import useLogger from "util/useLogger";
 import { ValidationQuestion } from "types";
-
-const WORDCLOUD_COLORS = ["#564615", "#1f6175", "#421f7f"];
 
 const ValidateData = ({ setStep, settings }) => {
   useLogger("Donation screen - validation");
@@ -81,13 +78,13 @@ const ValidateDataParts = ({ questions, setOuterStep }) => {
           );
         })}
       </Step.Group>
-      <Header textAlign="center" as="h3">
+      {/* <Header textAlign="center" as="h3">
         <Trans
           i18nKey="donate.validate.header1"
           values={{ dataname: dataNames[step] }}
           components={{ i: <i /> }}
         />
-      </Header>
+      </Header> */}
       <ValidateDataPart questions={questions} dataName={dataNames[step]} setStep={setStep} />
     </div>
   );
@@ -105,10 +102,6 @@ const ValidateDataPart = React.memo(({ questions, dataName, setStep }: ValidateD
   const [allAnswered, setAllAnswered] = useState(false);
   const { t } = useTranslation();
 
-  let field = "";
-  if (dataName === "Browsing") field = "domain";
-  if (dataName === "Search") field = "words";
-  if (dataName === "Youtube") field = "channel";
   const dashData = useDashboardData(dataName);
 
   useEffect(() => {
@@ -151,32 +144,7 @@ const ValidateDataPart = React.memo(({ questions, dataName, setStep }: ValidateD
       <Dimmer active={validation == null || Object.keys(validation).length === 0}>
         <Loader />
       </Dimmer>
-      <div style={{ width: "100%" }}>
-        {/* <Header>
-            <i>{field.toUpperCase()}</i>
-          </Header> */}
-        {/* <div style={{ maxWidth: "400px" }}>
-            <QueryInput dashData={dashData} setSelection={setQuerySelection} iconColor="black" />
-          </div> */}
-        <div
-          style={{
-            height: "300px",
-            width: "100%",
-            border: "1px solid lightgrey",
-            borderRadius: "10px",
-            boxShadow: "0px 0px 10px grey",
-          }}
-        >
-          <Wordcloud
-            dashData={dashData}
-            group={field}
-            //inSelection={querySelection}
-            inSelection={null}
-            colors={WORDCLOUD_COLORS}
-            unclickable={true}
-          />
-        </div>
-      </div>
+      <div style={{ width: "100%" }}></div>
       <div>
         <Header textAlign="center" as="h3" style={{ paddingTop: "15px" }}>
           <Trans

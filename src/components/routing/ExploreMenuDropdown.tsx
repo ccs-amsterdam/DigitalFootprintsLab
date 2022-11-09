@@ -1,4 +1,3 @@
-import React from "react";
 import { useLocation } from "react-router-dom";
 import { Dropdown, SemanticICONS } from "semantic-ui-react";
 import { useSelector } from "react-redux";
@@ -23,6 +22,8 @@ const ExploreMenuDropdown = ({ disabled = false }) => {
         return [t("dataTypes.search.label"), "search"];
       case "Youtube":
         return [t("dataTypes.youtube.label"), "youtube"];
+      case "TikTok":
+        return [t("dataTypes.tiktok.label"), "database"];
       default:
         return ["", null];
     }

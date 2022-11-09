@@ -1,5 +1,4 @@
 {
-
   "common": {
     "channel": "channel",
     "channels": "channels",
@@ -36,6 +35,10 @@
     "youtube": {
       "description": "Channels and videos",
       "label": "Youtube"
+    },
+    "tiktok": {
+      "description": "For TikTok data there are limited exploration options, because the data only contains URLs of videos.",
+      "label": "TikTok"
     }
   },
   "donate": {

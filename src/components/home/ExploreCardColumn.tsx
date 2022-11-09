@@ -12,6 +12,7 @@ const ExploreCardColumn = () => {
       <Browsing t={t} />
       <Search t={t} />
       <Youtube t={t} />
+      <TikTok t={t} />
     </>
   );
 };
@@ -45,6 +46,17 @@ const Youtube = ({ t }) => {
       label={t("dataTypes.youtube.label")}
       subname={t("dataTypes.youtube.description")}
       icon={"youtube"}
+    />
+  );
+};
+
+const TikTok = ({ t }) => {
+  return (
+    <ExploreCard
+      name={"TikTok"}
+      label={t("dataTypes.tiktok.label")}
+      subname={t("dataTypes.tiktok.description")}
+      icon={"database"}
     />
   );
 };
