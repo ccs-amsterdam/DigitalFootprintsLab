@@ -96,7 +96,7 @@ const ConfirmDonation = ({ settings }) => {
                 ? t("donate.confirm.buttonRetry")
                 : t("donate.confirm.button")}
             </Button>
-            <DownloadBackup backup={backup} />
+
             <StatusList t={t} status={status} loading={loading} />
           </Grid.Column>
         </Grid.Row>

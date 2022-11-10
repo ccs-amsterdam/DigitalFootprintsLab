@@ -9,6 +9,7 @@ export const contact = {
   title: {
     value: "Need help? Contact us!",
     NL: "Hulp nodig? Neem contact op!",
+    PL: "polish version",
   },
   message: {
     value: "Send us an email, and we will get back to you within 24 hours",

@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { Icon, Step } from "semantic-ui-react";
 import DonationInformation from "./DonationInformation";
-import AnswerQuestions from "./AnswerQuestions";
 import ConfirmDonation from "./ConfirmDonation";
 import ValidateData from "./ValidateData";
 
@@ -20,9 +19,9 @@ const DonationScreen = () => {
           return <DonationInformation setStep={setStep} settings={settings} />;
         case 1:
           return <ValidateData setStep={setStep} settings={settings} />;
+        // case 2:
+        //   return <AnswerQuestions setStep={setStep} settings={settings} />;
         case 2:
-          return <AnswerQuestions setStep={setStep} settings={settings} />;
-        case 3:
           return <ConfirmDonation settings={settings} />;
         default:
           return null;
@@ -117,7 +116,7 @@ const DonationSteps = ({ step, setStep }) => {
             <Step.Title>{t("donate.step2.title")}</Step.Title>
           </Step.Content>
         </Step>
-        <Step
+        {/* <Step
           active={step === 2}
           disabled={maxStep < 2}
           onClick={() => onClick(2)}
@@ -127,15 +126,15 @@ const DonationSteps = ({ step, setStep }) => {
           <Step.Content style={{ display: step === 2 ? "" : "none" }}>
             <Step.Title>{t("donate.step3.title")}</Step.Title>
           </Step.Content>
-        </Step>
+        </Step> */}
         <Step
-          active={step === 3}
-          disabled={maxStep < 3}
-          onClick={() => onClick(4)}
+          active={step === 2}
+          disabled={maxStep < 2}
+          onClick={() => onClick(3)}
           style={stepStyle}
         >
           <Icon name="student" />
-          <Step.Content style={{ display: step === 4 ? "" : "none" }}>
+          <Step.Content style={{ display: step === 3 ? "" : "none" }}>
             <Step.Title>{t("donate.step4.title")}</Step.Title>
           </Step.Content>
         </Step>

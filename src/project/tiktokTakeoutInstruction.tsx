@@ -34,6 +34,25 @@ const tiktokTakeoutInstruction_NL: Instruction = {
   ],
 };
 
+// add here polish version
+
+const tiktokTakeoutInstruction_PL: Instruction = {
+  title: "TikTok Takeout",
+  introduction: `Instructies voor het importeren van je TikTok data`,
+  fileHint: "user_data.json",
+
+  steps: [
+    {
+      title: "Download je TikTok takeout data",
+      items: [
+        {
+          text: "Als je aan dit onderzoek meedoet dan zou je eerder een email moeten hebben ontvangen met instructies voor het opvragen van je TikTok takeout data. Als je deze instructies gevolgd hebt, dan zou je een email van TikTok moeten hebben ontvangen met een download link",
+        },
+      ],
+    },
+  ],
+};
+
 const tiktokTakeoutInstruction = {
   default: tiktokTakeoutInstruction_EN,
   en: tiktokTakeoutInstruction_EN,
