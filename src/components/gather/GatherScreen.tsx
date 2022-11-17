@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { gatherSettings } from "project/gatherSettings";
 import { useTranslation } from "react-i18next";
 import GatherSteps from "./GatherSteps";
+import useLogger from "util/useLogger";
 
 const GatherScreen = () => {
   const { t, i18n } = useTranslation();
@@ -10,6 +11,7 @@ const GatherScreen = () => {
   const location = useLocation();
   const platformPath = location.pathname.split("/").slice(-1)[0];
   const platform = gatherSettings.find((gs) => gs.name.replace(" ", "_") === platformPath);
+  const log = useLogger("Gatherscreen", "open");
 
   const instruction = platform?.instructions?.[language] || platform?.instructions?.default;
 
@@ -35,7 +37,7 @@ const GatherScreen = () => {
           }}
         >
           <Segment style={{ height: "100%", overflow: "auto" }}>
-            <GatherSteps t={t} platform={platform} instruction={instruction} />
+            <GatherSteps t={t} platform={platform} instruction={instruction} log={log} />
           </Segment>
         </Grid.Column>
         {/* <Grid.Column width={6} style={{ height: "calc(100% - 40px)" }}>

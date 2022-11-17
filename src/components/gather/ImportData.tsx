@@ -4,12 +4,10 @@ import db from "apis/db";
 import { miseEnPlace } from "data-donation-importers";
 import { DropZone } from "data-donation-importers";
 import { useNavigate } from "react-router-dom";
-import useLogger from "util/useLogger";
 
-const ImportData = ({ t, platform, instruction }) => {
+const ImportData = ({ t, platform, instruction, log }) => {
   const navigate = useNavigate();
 
-  const log = useLogger("Gatherscreen", "open");
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
 

@@ -1,0 +1,232 @@
+{
+  "common": {
+    "channel": "channel",
+    "channels": "channels",
+    "date": "date",
+    "domain": "domain",
+    "domains": "domains",
+    "list": "list",
+    "queries": "queries",
+    "query": "query",
+    "search": "search",
+    "searches": "searches",
+    "title": "title",
+    "top": "top",
+    "total": "total",
+    "type": "type",
+    "views": "views",
+    "visit": "visit",
+    "visits": "visits",
+    "copied": "copied",
+    "cancel": "cancel",
+    "delete": "delete",
+    "item": "item",
+    "items": "items"
+  },
+  "dataTypes": {
+    "browsing": {
+      "description": "Jakie strony odwiedziłeś(-łaś)?",
+      "label": "Przeglądanie"
+    },
+    "search": {
+      "description": "Co wyszukiwałeś(-łaś)?",
+      "label": "Wyszukiwanie"
+    },
+    "youtube": {
+      "description": "Kanały i filmiki",
+      "label": "Youtube"
+    },
+    "tiktok": {
+      "description": "W przypadku danych z TikToka opcje eksploracji są ograniczone, ponieważ dane zawierają tylko adresy URL filmów.",
+      "label": "TikTok"
+    }
+  },
+  "donate": {
+    "annotate": {
+      "nodata": "Żadne dane <b>{{data}}</b> nie zostały zaimportowane, więc nie możesz odpowiedzieć na to pytanie.",
+      "continue": "Kontynuuj udostępnianie danych",
+      "dropdown": "Wyszukaj kanał lub tytuł filmiku z tego kanału",
+      "header": "Proszę o odpowiedź na następujące pytania",
+      "noadd": "Nic więcej do dodania!",
+      "pleaseanswer": "Proszę odpowiedz na wszystkie pytania, żeby kontynuować",
+      "question": "Czy ten kanał zawiera treści dotyczące wiadomości i spraw bieżących?"
+    },
+    "confirm": {
+      "server": "Twoje dane będą wysłane do",
+      "button": "Udostępnij dane",
+      "buttonRetry": "Spróbuj ponownie wysłać dane",
+      "thankyou": "Dziękujemy za udział!",
+      "cleanup": "Możesz od razu usunąć swoje dane. Zwróć uwagę, że to usuwa dane tylko z tej aplikacji. Jeśli przechowujesz dane na swoim komputerze, możesz je również z niego usunąć.",
+      "delete": "Usuń dane",
+      "donated": {
+        "failure": "Nie udało się przesłać danych <b>{{filename}}</b>. Spróbuj ponownie, jeśli problem będzie się powtarzał skontaktuj się z badaczami lub firmą badawczą",
+        "success": "Przesłano {{n}} <b>{{filename}}</b> plików"
+      },
+      "header": "Potwierdź proszę, że zrozumiałeś(-łaś) i akceptujesz następujące warunki",
+      "loader": "Przesyłanie plików",
+      "testuser": "Jesteś zalogowany jako użytkownik testowy, więc Twoje prawdziwe dane nie zostaną przekazane. Serwer zobaczy tylko, jakie typy danych przesłałeś i ile elementów",
+      "download": "Możesz również pobrać dane"
+    },
+    "info": {
+      "continue": "Kontynuuj udostępnianie danych"
+    },
+    "remove": {
+      "button": "Search",
+      "header": "Filtruj Hasła",
+      "list1": "Wpisz po jednych wyszukiwanym haśle na wiersz",
+      "list2": "<span>secret</span> będzie też pasować z  <span>www.supersecret.com</span>",
+      "list3": "Hasła muszą składać się z przynajmniej 3 znaków."
+    },
+    "step1": {
+      "description": "Co nam udostępniasz?",
+      "title": "Udostępnianie danych"
+    },
+    "step2": {
+      "description": "Czy to są twoje dane?",
+      "title": "Zatwierdź dane"
+    },
+    "step3": {
+      "description": "ostatnie wymaganie",
+      "title": "Zanim udostępnisz"
+    },
+    "step4": {
+      "description": "Sfinalizuj udostępnianie danych",
+      "title": "Zakończ udostępnianie"
+    },
+    "validate": {
+      "continue": "KONTYNUUJ",
+      "header1": "W chmurze słów widzisz najlepsze elementy z Twoich  <i>{{dataname}}</i> danych.",
+      "header2": "Następujące pytania pomoże nam zrozumieć na ile te dane są dokładne. "
+    }
+  },
+  "explore": {
+    "statistics": {
+      "header": "Statystki"
+    },
+    "search": {
+      "placeholder": "Wpisz tutaj żeby filtrować dane"
+    },
+    "table": {
+      "show": "pokaż tabelę",
+      "hide": "ukryj tabelę",
+      "delete": {
+        "confirm": "Czy na pewno chcesz usunąć {{n}} {{items}}?",
+        "dontask": "Nie pytaj ponownie"
+      }
+    }
+  },
+  "gather": {
+    "importdata": {
+      "step": "Krok",
+      "next": "Następny krok",
+      "dropzone": {
+        "header": "Tutaj trafiają twoje dane!",
+        "p1": "Użyj tego niebieskiego pola, aby załadować pobrane dane do aplikacji",
+        "p2": "Jeśli dane są w folderze, musisz je przeciągnąć do tego pola. Jeśli jest to plik (lub spakowany folder), możesz również kliknąć na to pole."
+      },
+      "file": {
+        "header": "Co to za plik?",
+        "hint": "Plik ma (zwykle) nazwę: "
+      },
+      "header": "Importuj swoje dane",
+      "where": {
+        "chrome": {
+          "header": "Znajdowanie pobranych plików w Chrome",
+          "l1": "Kliknij na trzy kropki w prawym górnym rogu",
+          "l2": "Wybierz 'Pobrane pliki'",
+          "l3": "Kliknij 'pokaż w folderze'"
+        },
+        "firefox": {
+          "header": "Znajdowanie pobranych plików w Firefox ",
+          "l2": "Wybierz 'Pobrane pliki'",
+          "l3": "Kliknij ikonę folderu (po prawej stronie w wyskakującym okienku), kliknij 'Pokaż w folderze'"
+        },
+        "general": "Domyślnie większość przeglądarek zapisuje pobrane pliki w folderze Pobrane na Twoim komputerze. Jeśli masz problem ze znalezieniem folderu, możesz go również otworzyć z przeglądarki",
+        "header": "Gdzie są moje pobrane pliki?",
+        "safari": {
+          "header": "Znajdowanie pobranych plików w Safari",
+          "l1": "Kliknij ikonę pobierania w prawym górnym rogu",
+          "l2": "Kliknij ikonę lupy obok pliku, aby otworzyć folder"
+        }
+      }
+    }
+  },
+  "home": {
+    "deleteButton": {
+      "buttonLabel": "Usuń dane",
+      "content1": "Czy chcesz usunąć wszystkie pobrane dane z przeglądarki?",
+      "content2": "Zwróć uwagę, że wszystkie pobrane dane będą nadal znajdować się na twoim komputerze, więc możesz chcieć je również usunąć",
+      "header": "Usuń dane z przeglądarki"
+    },
+    "donate": {
+      "description": "Wspieraj badania naukowe, udostępniając swoje dane",
+      "donateCard": {
+        "name": "Udostępnij",
+        "status": {
+          "any": "Niektóre typy danych nie zostały jeszcze zebrane (pomyślnie). Możesz kontynuować, ale niektórych danych będzie brakować",
+          "notReady": "<b>{{name}}</b> jeszcze nie zebrano",
+          "ready": "<b>{{name}}</b> gotowy do udostępnienia"
+        },
+        "subname": "Kliknij tutaj, aby przejść do strony udostępnia danych"
+      },
+      "removeCard": {
+        "name": "Wyklucz dane",
+        "subname": "Użyj słów kluczowych, aby wyszukać i usunąć wszelkie dane, których nie chcesz udostępniać"
+      },
+      "title": "Krok 3. Udostępnij"
+    },
+    "explore": {
+      "description": "Ten krok jest opcjonalny (i nie dotyczy danych z TikToka)",
+      "title": "Korok 2. Eksploruj"
+    },
+    "gather": {
+      "description": "Kliknij kartę, aby zebrać swoje dane",
+      "downloadfolder": {
+        "firefox": {
+          "l1": ""
+        }
+      },
+      "gatherCard": {
+        "click": "Kliknij tutaj, aby zebrać następujące dane:"
+      },
+      "title": "Krok 1. Zbierz dane"
+    },
+    "navi": {
+      "header": "Cześć! W tej aplikacji są trzy kroki to przejścia:",
+      "ok": "OK, rozumiem!",
+      "step1": "W pierwszym kroku zbierasz dane poprzez kliknięcie jednej z kart w kolumnie <b>Pobierz</b> i postępując zgodnie z instrukcją. Ta akcja nie udostępnia jeszcze twoich danych, tylko wyłącznie ładuje je w twojej przeglądarce",
+      "step2": "W drugim kroku możesz n <b>Eksploruj</b> własne dane. Jeśli znajdziesz dane, których nie chcesz udostępniać, tutaj możesz je również usunąć.",
+      "step3": "W ostatnim kroku możesz <b>Udostępnij dane</b> swoje dane do badań naukowych. Dane zostaną udostępnione dopiero po wykonaniu wszystkich kroków i wyrażeniu zgody. Pamiętaj, że możesz również użyć <b>Wyklucz dane</b> >, aby wykluczyć niektóre dane z darowizny, jeśli nie zrobiłeś tego jeszcze w kroku <b>Eksploruj</b>."
+    }
+  },
+  "routing": {
+    "buttons": {
+      "gather": "Pobierz",
+      "explore": "Eksploruj",
+      "back": "Powrót do przeglądu",
+      "donate": "Udostępnij dane",
+      "remove": "Wyklucz dane"
+    },
+    "leavemessage": "Czy na pewno chcesz wyjść? Wszystkie dane zostaną utracone",
+    "welcome": {
+      "button": "Świetnie, to zaczynamy!",
+      "header": "Witamy w Digital Footprints Lab!",
+      "notpersistent": {
+        "header": "Jeśli to możliwe, użyj innej przeglądarki",
+        "p":"Ta aplikacja działa najlepiej w najnowszych wersjach Chrome, Safari, Edge, Firefox i Opera. W przypadku niektórych przeglądarek, takich jak Firefox, działa lepiej, gdy nie jest w trybie prywatnym. Możesz nadal korzystać z aplikacji w bieżącej przeglądarce, ale Twoje dane nie zostaną zapisane, jeśli opuścisz stronę. Nie martw się na zapas! Żeby nie stracić postępu przez przypadek, dostaniesz ostrzeżenie zanim odświeżysz lub opuścisz stronę. "
+      },
+      "p1": "Ta aplikacja umożliwia zgromadzić i eksplorować Twój cyfrowych śladów. Wszystkie dane są bezpiecznie przechowywane i przetwarzane na Twoim własnym urządzeniu, więc <b>nie stykają się z internetem</b>.",
+      "p2": "Możesz również przekazać wybrane dane do badań naukowych. Te dane będą wykorzystywane wyłącznie do <b>badań niekomercyjnych</b> przez wybraną grupę naukowców. Te badania są zatwierdzone przez radę etyczna uczelni.",
+      "subheader1": "Zbierz i zbadaj swoje cyfrowe ślady",
+      "subheader2": "Udostępnij dane w celu wsparcia badań naukowych",
+      "noid": {
+        "placeholder": "Podaj ID użytkownika",
+        "testuser": "Zaloguj się jako użytkownik testowy",
+        "customid": "Zaloguj się przy użyciu własnego ID",
+        "header": "Podaj ID użytkownika lub zaloguj się jako użytkownik testowy",
+        "p1": "Link, który przeniósł Cię do tej strony nie zawierał ID użytkownika. Jeśli bierzesz udział w badaniu, nie powinno to być możliwe i powinieneś skontaktować się z badaczami lub firmą badawczą.",
+        "p2": "Możesz samodzielnie podać (unikatowy) identyfikator użytkownika lub zalogować się jako użytkownik testowy. Jako użytkownik testowy Twoje prawdziwe dane nie zostaną wysłane na serwer. Jeśli wykonasz kroki udostępniania danych, serwer otrzymać zgłoszenie z wygenerowanymi, nieprawdziwymi danymi."
+      }
+    }
+  }
+}

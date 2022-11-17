@@ -11,7 +11,7 @@ const default_image_style = {
   marginBottom: "15px",
 };
 
-export default function GatherSteps({ t, platform, instruction }) {
+export default function GatherSteps({ t, platform, instruction, log }) {
   // selected is an index for instruction.steps + 1.
   // if selected == instruction.steps.length (so the item after the last step),
   // the import step is shown
@@ -104,7 +104,7 @@ export default function GatherSteps({ t, platform, instruction }) {
           })}
         </List>
       );
-    return <ImportData t={t} platform={platform} instruction={instruction} />;
+    return <ImportData t={t} platform={platform} instruction={instruction} log={log} />;
   };
 
   const title =

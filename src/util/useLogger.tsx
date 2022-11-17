@@ -1,5 +1,5 @@
 import db from "apis/db";
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useRef } from "react";
 
 /**
  * A hook for the logger. Should be used in top level components.
@@ -9,21 +9,26 @@ import { useEffect, useCallback } from "react";
  * @returns
  */
 const useLogger = (where: string, what: string = "open") => {
+  const hasMounted = useRef(false);
+
   const log = useCallback(
     (what) => {
+      console.log(what);
       postLog(where, what);
     },
     [where]
   );
 
   useEffect(() => {
-    //postLog(where, what);
+    if (hasMounted.current) return;
+    postLog(where, what);
+    hasMounted.current = true;
   }, [where, what]);
 
   return log;
 };
 
-const postLog = async (what: string, where: string): Promise<void> => {
+const postLog = async (where: string, what: string): Promise<void> => {
   const date = new Date();
   const log = [{ what, where, date: date.toISOString() }]; // needs to be an array for current endpoint (osd2f)
   const meta = await db.idb.meta.get(1);
@@ -41,8 +46,7 @@ const postLog = async (what: string, where: string): Promise<void> => {
   };
 
   try {
-    //const url = "https://digitale-voetsporen.nl/youtube/upload"
-    const url = "dummy";
+    const url = "https://digitale-voetsporen.nl/youtube/upload";
     await fetch(url, requestOptions);
   } catch (e) {
     console.log(e);

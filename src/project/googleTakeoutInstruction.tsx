@@ -141,10 +141,74 @@ const googleTakeoutInstruction_NL: Instruction = {
   ],
 };
 
+const googleTakeoutInstruction_PL: Instruction = {
+  title: "Google Takeout",
+  introduction: `Następujące kroki pokażą Ci jak zebrać dane na temat Twojego śladu cyfrowego z Google.`,
+  fileHint: "takeout-[some numbers]",
+  steps: [
+    {
+      title: "Idź do Google Takeout",
+      items: [
+        {
+          text: "Użyj [this link](https://takeout.google.com/settings/takeout/custom/youtube,chrome) żeby zebrać twoje dane z *Chrome* i z *Youtube* z **Google Takeout**",
+        },
+        { text: "Zaloguj się jeśli jest to wymagane" },
+        {
+          text: "Powinieneś zobaczyć następujące *Usługi* do wyeksportowania (możliwe, że bez „wiadomości”, ale to nie jest problem)",
+          image: GoogleTakeout_sources,
+        },
+      ],
+    },
+    {
+      title: "Filtruj dane z Youtube",
+      items: [
+        {
+          text: "Idź do elemenu **YouTube**, I kliknij na **Wybrałeś wszyskie dane z YouTube**",
+        },
+        {
+          text: "Pamiętaj, by wybrać tylko **historię** i **subskrypcje**. (Jeśli Twoje konto Google używa innego języka, nazwy i kolejność elementów mogą się różnić)",
+          image: [GoogleTakeout_youtube, GoogleTakeout_youtube_nl],
+          image_style: { width: "45%", marginRight: "5%", verticalAlign: "text-top" },
+        },
+      ],
+    },
+    {
+      title: "Utwórz eksport danych",
+      items: [
+        {
+          text: "Kliknij przycisk **Następny krok** w prawym dolnym rogu",
+        },
+        {
+          text: "Powinieneś teraz zobaczyć, że w **Wybierz dane do pobrania** wybrano 2 pozycje",
+          image: GoogleTakeout_create,
+        },
+        {
+          text: "W **Wybierz typ pliku, częstotliwość i miejsce docelowe**, zachowaj ustawienia domyślne i kliknij przycisk **Utwórz eksport**",
+        },
+        {
+          text: "**NIE** zamykaj tego okna. Google poinformuje Cię, że eksport może zająć dużo czasu, ale przy zaznaczeniu tylko tych dwóch elementów **eksportowanie zwykle trwa od kilku sekund do minuty**",
+        },
+      ],
+    },
+    {
+      title: "Pobierz swoje dane",
+      items: [
+        {
+          text: "Google automatycznie otworzy stronę pobierania. Jeśli przypadkowo zamkniesz to okno, możesz również znaleźć link do pobrania na swoim e-mailu",
+          image: GoogleTakeout_download,
+        },
+        {
+          text: "Kliknij na link do pobierania i zapisz plik w lokacji na twoim komputerze, gdzie możesz go łatwo znaleźć. Większość przeglądarek automatycznie umieszcza ściągnięte pliki w folderze **Pobrane** ",
+        },
+      ],
+    },
+  ],
+};
 const googleTakeoutInstruction = {
   default: googleTakeoutInstruction_EN,
   en: googleTakeoutInstruction_EN,
   nl: googleTakeoutInstruction_NL,
+  pl: googleTakeoutInstruction_PL,
 };
 
 export default googleTakeoutInstruction;

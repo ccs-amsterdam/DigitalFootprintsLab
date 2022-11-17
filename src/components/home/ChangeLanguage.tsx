@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 const languageOptions = [
   { key: "en", value: "en", text: "English" },
   { key: "nl", value: "nl", text: "Nederlands" },
+  { key: "pl", value: "pl", text: "Polski" },
 ];
 
 const ChangeLanguage = ({ style = {} }) => {
