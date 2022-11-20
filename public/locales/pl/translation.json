@@ -56,7 +56,7 @@
       "button": "Udostępnij dane",
       "buttonRetry": "Spróbuj ponownie wysłać dane",
       "thankyou": "Dziękujemy za udział!",
-      "cleanup": "Możesz od razu usunąć swoje dane. Zwróć uwagę, że to usuwa dane tylko z tej aplikacji. Jeśli przechowujesz dane na swoim komputerze, możesz je również z niego usunąć.",
+      "cleanup": "Ukończyłeś to badanie i możesz teraz zamknąć aplikację. Przed zamknięciem zalecamy usunięcie danych z aplikacji. Zwróć uwagę, że to usuwa dane wyłącznie bezpośrednio z tej aplikacji. Jeśli przechowujesz dane na swoim komputerze, jeśli chcesz się ich pozbyć, to musisz usunąć je z komputera samodzielnie.",
       "delete": "Usuń dane",
       "donated": {
         "failure": "Nie udało się przesłać danych <b>{{filename}}</b>. Spróbuj ponownie, jeśli problem będzie się powtarzał skontaktuj się z badaczami lub firmą badawczą",
