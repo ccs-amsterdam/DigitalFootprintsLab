@@ -56,7 +56,7 @@
       "button": "Donate your data",
       "buttonRetry": "Try sending the data again",
       "thankyou": "Thank you for your donation!",
-      "cleanup": "You can immediately delete your data. Note that this only deletes the data from this application. If you stored data on your computer, you might also want to delete it there.",
+      "cleanup": "You have now completed the study, and can close this application. We recommend that you delete your data from this application before closing. Note that this only deletes the data from this application. If you stored data on your computer, you might also want to delete it there.",
       "delete": "Delete data",
       "donated": {
         "failure": "Failed to submit <b>{{filename}}</b> data. Please try again, and contact the researchers or survey company if the problem persists",

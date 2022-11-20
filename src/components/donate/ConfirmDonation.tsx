@@ -208,31 +208,37 @@ const Finalize = ({ t, settings, status, meta, backup }) => {
   };
 
   const returnLink = () => {
-    if (!meta?.returnURL)
-      return (
-        <Button negative onClick={onDelete}>
-          {t("donate.confirm.delete")}
-        </Button>
-      );
-
     return (
-      <>
-        <Button.Group fluid>
-          <Button
-            primary
-            onClick={() => {
-              window.location.href = meta.returnURL;
-            }}
-          >
-            {settings?.confirmDonation?.finishButton?.trans}
-          </Button>
-          <Button.Or />
-          <Button negative onClick={onDelete}>
-            {t("donate.confirm.delete")} + {settings?.confirmDonation?.finishButton?.trans}
-          </Button>
-        </Button.Group>
-      </>
+      <Button negative onClick={onDelete}>
+        {t("donate.confirm.delete")}
+      </Button>
     );
+
+    // if (!meta?.returnURL)
+    //   return (
+    //     <Button negative onClick={onDelete}>
+    //       {t("donate.confirm.delete")}
+    //     </Button>
+    //   );
+
+    // return (
+    //   <>
+    //     <Button.Group fluid>
+    //       <Button
+    //         primary
+    //         onClick={() => {
+    //           window.location.href = meta.returnURL;
+    //         }}
+    //       >
+    //         {settings?.confirmDonation?.finishButton?.trans}
+    //       </Button>
+    //       <Button.Or />
+    //       <Button negative onClick={onDelete}>
+    //         {t("donate.confirm.delete")} + {settings?.confirmDonation?.finishButton?.trans}
+    //       </Button>
+    //     </Button.Group>
+    //   </>
+    // );
   };
 
   return (

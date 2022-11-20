@@ -58,7 +58,7 @@
       "button": "Doneer je gegevens",
       "buttonRetry": "Probeer nog een keer te versturen",
       "thankyou": "Bedankt voor je donatie!",
-      "cleanup": "Je kunt direct je data verwijderen. Let er op dat dit alleen de data uit deze applicatie verwijderd. Als je data op je computer heb opgeslagen dan wil je deze wellicht ook verwijderen.",
+      "cleanup": "Je bent nu klaar met deze studie, en kunt de applicatie sluiten. Wij raden aan om je data eerst uit deze applicatie te verwijderen. Let er op dat dit alleen de data uit deze applicatie verwijderd. Als je data op je computer heb opgeslagen dan wil je deze wellicht ook verwijderen.",
       "delete": "Verwijder data",
       "donated": {
         "failure": "<b>{{filename}}</b> kunnen niet worden ingediend. Probeer het opnieuw en neem contact op met de onderzoekers of het onderzoeksbureau als het probleem aanhoudt",
