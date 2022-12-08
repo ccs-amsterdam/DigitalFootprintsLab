@@ -148,7 +148,7 @@ const importData = async (platform, files, log) => {
 
     const result = await mep.cook(); // returns array of objects with data, or null if can't find
     if (result.status !== "success") continue;
-
+    console.log(result);
     await db.addData(
       result.data,
       platform?.importMap[recipe].data,

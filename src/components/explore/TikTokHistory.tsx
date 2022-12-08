@@ -3,7 +3,7 @@ import Wordcloud from "./dashboards/dashboardParts/Wordcloud";
 
 const GROUP = "_source";
 const SEARCHON = ["_source"];
-const COLUMNS = ["_source", "Date", "Link", "UserName", "SearchTerm"];
+const COLUMNS = ["_source", "Date", "Link", "UserName", "SearchTerm", "_RAW_DATA"];
 
 /**
  * A dashboard for the TikTok history data.
@@ -37,7 +37,7 @@ const VisComponent = ({ dashData, inSelection, outSelection, setOutSelection }) 
 const calcStatistics = (dashData, selection) => {
   if (!dashData) return [];
   const counts = dashData.count(GROUP, selection, " ");
-
+  console.log(dashData);
   const searches = dashData.N(selection);
   let top_queries = [];
   const n_top_queries = 5;

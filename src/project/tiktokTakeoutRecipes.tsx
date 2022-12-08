@@ -13,6 +13,7 @@ const tiktok_following = {
       selector: ["UserName"],
     },
   ],
+  raw_row_data: true,
   transformers: [],
 };
 
@@ -31,6 +32,7 @@ const tiktok_favvideos = {
       selector: ["Link"],
     },
   ],
+  raw_row_data: true,
   transformers: [],
 };
 
@@ -46,9 +48,10 @@ const tiktok_likelist = {
     },
     {
       name: "Link",
-      selector: ["VideoLink"],
+      selector: ["Link", "VideoLink"],
     },
   ],
+  raw_row_data: true,
   transformers: [],
 };
 
@@ -83,6 +86,7 @@ const tiktok_loginhist = {
       selector: ["IP"],
     },
   ],
+  raw_row_data: true,
   transformers: [],
 };
 
@@ -101,6 +105,8 @@ const tiktok_searchhist = {
       selector: ["SearchTerm"],
     },
   ],
+  raw_row_data: true,
+
   transformers: [],
 };
 
@@ -127,6 +133,8 @@ const tiktok_sharehist = {
       selector: ["Method"],
     },
   ],
+  raw_row_data: true,
+
   transformers: [],
 };
 
@@ -142,9 +150,10 @@ const tiktok_browsehist = {
     },
     {
       name: "Link",
-      selector: ["VideoLink"],
+      selector: ["Link", "VideoLink"],
     },
   ],
+  raw_row_data: true,
   transformers: [],
 };
 
