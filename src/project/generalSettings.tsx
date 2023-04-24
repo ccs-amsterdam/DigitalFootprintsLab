@@ -14,7 +14,7 @@ export const contact = {
     value: "Send us an email, and we will get back to you within 24 hours",
     NL: "Stuur ons een email, en wij reageren binnen 24 uur",
   },
-  email: "digitale-voetsporen.fsw@vu.nl",
+  email: "secret@for.reviewers",
   //phone: "test",
 };
 

@@ -35,6 +35,8 @@
     "redux-thunk": "^2.3.0",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^2.0.3",
+    "vega": "^5.24.0",
+    "vega-lite": "^5.7.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
