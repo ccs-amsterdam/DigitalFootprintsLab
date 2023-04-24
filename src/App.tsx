@@ -46,7 +46,7 @@ const Page = () => {
         width: `${size.width}px`,
       }}
     >
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <BrowserRouter>
         <div
           style={{
             height: "100%",
