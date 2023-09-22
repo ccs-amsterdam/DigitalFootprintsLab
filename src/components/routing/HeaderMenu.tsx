@@ -13,7 +13,7 @@ const menuStyle = {
   zIndex: 10,
   display: "flex",
   flexWrap: "wrap",
-  fontSize: "min(max(2vw, 1em),1.1em)",
+  fontSize: "min(max(2vw, 1em),1.3em)",
   borderRadius: "0",
 };
 

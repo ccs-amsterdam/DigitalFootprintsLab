@@ -19,18 +19,29 @@ const ChangeLanguage = ({ style = {} }) => {
   return (
     <Dropdown
       item
-      text={label.toUpperCase()}
-      value={value}
       icon={null}
-      direction="left"
-      options={languageOptions}
-      onChange={(e, d) => changeLanguageHandler(d.value)}
+      text={label.toUpperCase()}
       style={{
         color: "white",
         paddingLeft: "0",
+        fontSize: "inherit",
         ...style,
       }}
-    />
+    >
+      <Dropdown.Menu style={{ transition: "all 1s linear", right: 0, left: -100 }}>
+        {languageOptions.map((option) => {
+          return (
+            <Dropdown.Item
+              key={option.key}
+              value={option.value}
+              onClick={() => changeLanguageHandler(option.value)}
+            >
+              {option.text}
+            </Dropdown.Item>
+          );
+        })}
+      </Dropdown.Menu>
+    </Dropdown>
   );
 };
 

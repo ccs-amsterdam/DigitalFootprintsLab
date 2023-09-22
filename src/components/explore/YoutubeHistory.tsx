@@ -60,7 +60,9 @@ const calcStatistics = (dashData, selection) => {
       {top_queries.map((mv) => {
         return (
           <List.Item key={mv.key}>
-            <List.Content>{`${mv.key.replace(/www[^.]*\./, "")} (${mv.count})`}</List.Content>
+            <List.Content style={{ color: "white" }}>{`${mv.key.replace(/www[^.]*\./, "")} (${
+              mv.count
+            })`}</List.Content>
           </List.Item>
         );
       })}

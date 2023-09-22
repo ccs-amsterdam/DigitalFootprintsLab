@@ -16,7 +16,7 @@ const ExploreMenuDropdown = ({ disabled = false }) => {
       item
       icon={null}
       text={t("routing.buttons.donate")}
-      style={{ color: "white", paddingLeft: "0" }}
+      style={{ color: "white", paddingLeft: "0", fontSize: "inherit" }}
     >
       <Dropdown.Menu>
         <MenuDropdownItem

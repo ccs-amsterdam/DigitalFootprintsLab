@@ -27,6 +27,7 @@ const MenuDropdownItem = ({
         background: selected ? "white" : "#ffffff10",
         color: selected ? "#3b3a3a" : "white",
         marginTop: "10px",
+        marginBottom: "10px",
         border: "1px solid #ffffff80",
         height: "40px",
         fontSize: "min(max(1.2vw, 12px), 18px)",
@@ -40,10 +41,13 @@ const MenuDropdownItem = ({
       }}
       onClick={() => navigate(path)}
     >
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", alignItems: "center" }}>
         <div>
           {icon ? (
-            <Icon name={icon} size="huge" style={{ color: "#4183c4" }} />
+            <Icon
+              name={icon}
+              style={{ marginRight: "0.5rem", fontSize: "1.4rem", color: "#4183c4" }}
+            />
           ) : img ? (
             <img src={img} alt={"logo"} style={{ width: "28px", paddingRight: "10px" }} />
           ) : null}

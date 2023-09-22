@@ -24,21 +24,6 @@ export default function BrowsingHistory() {
   );
 }
 
-// const VisComponent = ({ dashData, inSelection, setOutSelection }) => {
-//   if (!dashData) return null;
-//   return (
-//     <div>
-//       <CirclePack
-//         dashData={dashData}
-//         group={GROUP}
-//         grouptype="domain"
-//         inSelection={inSelection}
-//         setOutSelection={setOutSelection}
-//       />
-//     </div>
-//   );
-// };
-
 const VisComponent = ({ dashData, inSelection, outSelection, setOutSelection }) => {
   if (!dashData) return null;
   return (

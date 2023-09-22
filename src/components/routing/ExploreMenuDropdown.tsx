@@ -36,7 +36,7 @@ const ExploreMenuDropdown = ({ disabled = false }) => {
       item
       icon={null}
       text={t("routing.buttons.explore")}
-      style={{ color: "white", paddingLeft: "0" }}
+      style={{ color: "white", paddingLeft: "0", fontSize: "inherit" }}
     >
       <Dropdown.Menu>
         {statuses.map((status) => {

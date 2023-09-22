@@ -13,7 +13,7 @@ const GatherMenuDropdown = () => {
       item
       icon={null}
       text={t("routing.buttons.gather")}
-      style={{ color: "white", paddingLeft: "0" }}
+      style={{ color: "white", paddingLeft: "0", fontSize: "inherit" }}
     >
       <Dropdown.Menu style={{ transition: "all 1s linear" }}>
         {gatherSettings.map((platform) => {

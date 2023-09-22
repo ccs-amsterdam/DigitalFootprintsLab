@@ -218,6 +218,7 @@ const Statistics = ({ statistics }) => {
         const f = transCommon(statistic.field, t);
         const label = s + " " + f;
 
+        console.log(statistic);
         return (
           <>
             <div

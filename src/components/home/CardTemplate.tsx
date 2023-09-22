@@ -56,9 +56,14 @@ const CardTemplate = ({
       <Card.Content style={{ background: disabled ? "#ffffffcc" : "#ffffff" }}>
         {icon ? (
           <Icon
-            size="huge"
             name={icon}
-            style={{ float: "left", width: "66px", height: "55px", color: "#4183c4" }}
+            style={{
+              float: "left",
+              fontSize: "3rem",
+              width: "50px",
+              height: "50px",
+              color: "#4183c4",
+            }}
           />
         ) : (
           <img src={img} alt={"logo"} style={{ float: "left", width: "66px", height: "55px" }} />
